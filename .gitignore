@@ -4,3 +4,4 @@ out/
 public/audio/
 .cache/
 *.log
+renders/*-hq.mp4

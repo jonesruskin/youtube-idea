@@ -5,7 +5,7 @@
 A YouTube channel of serialized, animated space stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev) and voiced with ElevenLabs.
 
 **Episode 1, "What If Aliens Left You Their Spaceship?"**, is in `renders/`:
-- `ep01.mp4`: 10:03, 1080p. No voiceover yet; it has an original score and SFX.
+- `ep01.mp4`: 10:03, 1080p (web-size copy; re-render for the master). No voiceover yet; it has an original score and SFX.
 - `ep01.srt`: every narration and dialogue line, speaker-labelled
 - `ep01-thumbnail.png`
 - `ep01-metadata.md`: title, description, chapters, sources, tags and mid-roll positions
