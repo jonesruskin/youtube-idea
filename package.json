@@ -1,0 +1,37 @@
+{
+  "name": "the-blink-files",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Blink Files: channel bible + Remotion studio for animated space what-if episodes",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "lint:episode": "tsx scripts/lint-episode.ts",
+    "srt": "tsx scripts/make-srt.ts",
+    "score": "tsx scripts/make-score.ts",
+    "voice": "tsx scripts/tts.ts",
+    "metadata": "tsx scripts/metadata.ts",
+    "render": "tsx scripts/render.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.537",
+    "@remotion/cli": "4.0.537",
+    "@remotion/renderer": "4.0.537",
+    "d3-geo": "3.1.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.537",
+    "topojson-client": "3.1.0",
+    "world-atlas": "2.0.2"
+  },
+  "devDependencies": {
+    "@types/d3-geo": "3.1.0",
+    "@types/node": "22.10.2",
+    "@types/react": "18.3.12",
+    "@types/topojson-client": "3.1.5",
+    "dotenv": "16.4.7",
+    "tsx": "4.19.2",
+    "typescript": "5.7.2"
+  }
+}

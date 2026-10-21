@@ -1,0 +1,67 @@
+// Episode scripts are plain data (no React) so Node scripts — linter, SRT,
+// score generator, TTS — can import them as easily as the Remotion renderer.
+
+export type Speaker =
+  | 'EXECUTOR'
+  | 'JONAH'
+  | 'GRANDMA'
+  | 'MRS_BELLO'
+  | 'KADE'
+  | 'ANCHOR'
+  | 'CAPTAIN'
+  | 'FISHERMAN'
+  | 'ASSISTANT';
+
+export type Line = {
+  speaker: Speaker;
+  text: string;
+  /** Seconds of silence after the line (dramatic beat). */
+  pause?: number;
+};
+
+export type Mood =
+  | 'wonder'
+  | 'warm'
+  | 'mystery'
+  | 'comic'
+  | 'tension'
+  | 'triumph'
+  | 'silence';
+
+export type Sfx = 'whoosh' | 'impact' | 'riser' | 'chime' | 'decloak' | 'thunder' | 'powercut' | 'stamp';
+
+export type Shot = {
+  id: string;
+  /** Key into the scene registry (src/scenes.tsx). */
+  scene: string;
+  /** Free-form props forwarded to the scene component. */
+  props?: Record<string, unknown>;
+  lines?: Line[];
+  /** Seconds to hold before the first line starts. */
+  lead?: number;
+  /** Seconds to hold after the last line ends. */
+  tail?: number;
+  /** Minimum shot length in seconds (for wordless visual beats). */
+  min?: number;
+  /** Chapter title — starts a YouTube chapter at this shot. */
+  chapter?: string;
+  /** Place a mid-roll ad break at the END of this shot (after an open loop). */
+  midroll?: boolean;
+  /** Executor's Footnote — a numbered science pop-up. */
+  footnote?: {n: number; text: string; source: string};
+  /** Score mood from this shot onward. */
+  mood?: Mood;
+  /** Sound effect at the start of the shot. */
+  sfx?: Sfx;
+};
+
+export type Episode = {
+  id: string;
+  file: string; // "FILE 01"
+  title: string;
+  youtubeTitle: string;
+  thumbnailText: string;
+  commentPrompt: string;
+  fps: number;
+  shots: Shot[];
+};
