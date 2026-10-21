@@ -605,7 +605,7 @@ export const ep01: Episode = {
       footnote: {
         n: 8,
         text: 'A 20-metre wooden fishing boat with gear can weigh 30–50 tonnes. A car-sized ship lifting it would need around 400 kilonewtons of thrust — more than a jumbo jet engine.',
-        source: 'Rough estimate: 40,000 kg × 9.81 m/s² ≈ 392 kN; a GE90 makes ~500 kN at max',
+        source: 'Estimate: 40,000 kg × 9.81 m/s² ≈ 392 kN; a Boeing 747-400 engine (PW4056) makes ≈ 252 kN',
       },
       tail: 1,
     },

@@ -29,7 +29,7 @@
 - **Sealed mystery:** the messages are from themselves.
 
 ### LOOSE FILES (between seasons, standalone, 8–12 min)
-Leaked Executor or Perihelion-style records on other anomalies. Each one tests a premise for a future File:
+Leaked pages from Kade's private dossiers on other anomalies. Each one tests a premise for a future File:
 - *What If You Found a Second Moon in Your Backyard?*
 - *What If Gravity Turned Off for One Second Every Night?*
 - *What If You Received a Letter From Earth 1,000 Years in the Future?*

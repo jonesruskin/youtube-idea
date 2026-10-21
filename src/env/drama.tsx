@@ -182,14 +182,14 @@ export const Storm: React.FC = () => {
         ))}
         {flash > 0 && <path d="M1400,0 L1340,200 L1390,210 L1300,420" stroke="#E8F0FF" strokeWidth={6} fill="none" />}
         <Sea frame={frame} y={700} amp={40} color="#13254A" speed={0.07} />
-        <Boat x={960} y={760 - lift * 380} tilt={boatTilt} frame={frame} />
+        <Boat x={960} y={760 - lift * 290} tilt={boatTilt} frame={frame} />
         {lift > 0 &&
           Array.from({length: 14}, (_, i) => {
             const p = (frame * 0.05 + i / 14) % 1;
-            return <line key={i} x1={760 + i * 30} y1={800 - lift * 380 + p * 300} x2={760 + i * 30} y2={830 - lift * 380 + p * 300} stroke="#9FD3FF" strokeWidth={4} opacity={1 - p} />;
+            return <line key={i} x1={760 + i * 30} y1={800 - lift * 290 + p * 300} x2={760 + i * 30} y2={830 - lift * 290 + p * 300} stroke="#9FD3FF" strokeWidth={4} opacity={1 - p} />;
           })}
         <Sea frame={frame} y={790} amp={55} color="#0E1C3C" speed={0.09} />
-        <Ship x={960} y={interpolate(t, [0, 1.5], [-200, 220], {extrapolateRight: 'clamp'}) - lift * 60} scale={1.1} frame={frame} beam={props.beat === 'lift' ? Math.min(1, t) : interpolate(t, [2.2, 3], [0, 0.6], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />
+        <Ship x={960} y={interpolate(t, [0, 1.5], [-200, 220], {extrapolateRight: 'clamp'}) - lift * 90} scale={1.1} frame={frame} beam={props.beat === 'lift' ? Math.min(1, t) : interpolate(t, [2.2, 3], [0, 0.6], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />
         <Rain frame={frame} count={180} opacity={0.45} />
       </Camera>
       <rect width={1920} height={1080} fill="#E8F0FF" opacity={flash * 0.25} />
@@ -259,7 +259,7 @@ export const KadeIntro: React.FC = () => {
   const {frame, progress, ramp, lineAt} = useShot();
   return (
     <Stage bg="#05070F">
-      <Camera progress={progress} from={[1.15, 1100, 520]} to={[1.0, 960, 540]}>
+      <Camera progress={progress} from={[1.06, 1000, 540]} to={[1.0, 960, 540]}>
         <rect x={-200} y={-200} width={2400} height={1500} fill="#0A0E22" />
         <Stars frame={frame} count={120} opacity={0.6} />
         <Skyline seed={81} base={1000} color="#141A3E" window="#9FC8FF" style="tower" minH={200} maxH={620} litChance={0.5} frame={frame} />

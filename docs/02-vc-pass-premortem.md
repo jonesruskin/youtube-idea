@@ -8,7 +8,7 @@
 
 The concept is better than what's in the category. The **Will** spine is the strongest serial hook I've seen pitched for faceless animation. But three things keep me from writing a cheque today:
 
-1. **The moat is thin, and the window is short.** Ifverse and IFOLOGY are two weeks old. By the time this ships there will be fifty "What If" animation channels, and their recommendation graph will be crowded. A new name doesn't create distance. What creates distance is a format nobody else can produce: a serialized mystery with recurring characters and payoffs. That only counts as a moat if you ship it **every week for 12 weeks without slipping.** One founder writing 1,500-word scripts plus code-built animation is a capacity risk I can't diligence away.
+1. **The moat is thin, and the window is short.** Ifverse and IFOLOGY are two weeks old. By the time this ships there will be fifty "What If" animation channels, and their recommendation graph will be crowded. A new name doesn't create distance. What creates distance is a format nobody else can produce: a serialized mystery with recurring characters and payoffs. That only counts as a moat if you ship it **every week for 12 weeks without slipping.** One founder writing 1,200-word scripts plus code-built animation is a capacity risk I can't diligence away.
 2. **Production quality against illustrated competitors.** Remotion vector art is clean, but competitors use painted backgrounds. If the first 30 seconds look cheaper, retention dies before the story can work. You haven't shown me a retention curve yet.
 3. **The founder's taste is the product.** That's a strength, but it's also key-person risk. Nothing in the pipeline encodes *why* an episode works, apart from the linter and the bible. Write those down harder.
 
@@ -53,4 +53,4 @@ Every data point we have is from body-power fantasies. Objects might perform eve
 - Mid-roll ads unlock at 8:00. Episode 1 runs **10:03 with 2 mid-rolls** placed on cliffhangers (6:10 and 8:12).
 - RPM for a global 13–24 animation audience usually falls between **$1.5 and $5** per 1,000 views. Space and science topics trend toward the upper half.
 - On 1M views/month across the channel, that is about **$1.5K–5K/month**. Shorts add reach but very little revenue.
-- **ElevenLabs:** one full pass of an episode is about 6,800 characters, roughly 7K credits on the standard models. The Creator plan (~100–121K credits/month) covers about 12+ episodes with retakes. Check the current pricing page.
+- **ElevenLabs:** one full pass of Episode 1 is about 6,400 characters, roughly 6.5K credits on the standard models. The Creator plan (~100–121K credits/month) covers about 12+ episodes with retakes. Check the current pricing page.

@@ -28,7 +28,7 @@ EXECUTOR'S FOOTNOTES (the real science in this story)
 (5) Average Earth–Moon distance: 384,400 km. Apollo 11 needed about three days to get there. — Source: NASA
 (6) The Moon always keeps the same face toward Earth, so from the near side, Earth stays almost fixed in the sky. — Source: Tidal locking — NASA
 (7) With no wind or rain, the Apollo footprints could survive for millions of years. — Source: NASA
-(8) A 20-metre wooden fishing boat with gear can weigh 30–50 tonnes. A car-sized ship lifting it would need around 400 kilonewtons of thrust — more than a jumbo jet engine. — Source: Rough estimate: 40,000 kg × 9.81 m/s² ≈ 392 kN; a GE90 makes ~500 kN at max
+(8) A 20-metre wooden fishing boat with gear can weigh 30–50 tonnes. A car-sized ship lifting it would need around 400 kilonewtons of thrust — more than a jumbo jet engine. — Source: Estimate: 40,000 kg × 9.81 m/s² ≈ 392 kN; a Boeing 747-400 engine (PW4056) makes ≈ 252 kN
 
 THE BLINK FILES — every series is a File. File 01: THE WILL. Twelve heirs. Twelve inheritances. One sealed Item Thirteen.
 New heir every week. Subscribe so the Executor can find you.

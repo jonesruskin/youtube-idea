@@ -12,7 +12,7 @@ The video already renders without a voice (timings are estimated). Once you add 
    - **Starter** (~$5–6/mo, ~30K credits) is enough to test voices and voice Episode 1 a few times.
    - **Creator** (~$22/mo, ~100–121K credits) is the realistic plan for 1–2 episodes a week with retakes.
    - Prices change, so check the live pricing page.
-3. **Credit math:** Episode 1 is ~6,800 characters. On the standard multilingual model that's about 7K credits per full pass. Re-runs only re-voice lines you changed, because everything is cached.
+3. **Credit math:** Episode 1 is ~6,400 characters. On the standard multilingual model that's about 6.5K credits per full pass. Re-runs only re-voice lines you changed, because everything is cached.
 
 ## 2. Create an API key
 1. Log in, click your **profile (bottom-left) → API Keys**.
