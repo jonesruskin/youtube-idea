@@ -84,9 +84,6 @@ export const GrandmaHouse: React.FC<{x: number; y: number; night?: boolean; door
     <path d="M-170,-40 L-10,-310" stroke={C.ink} strokeWidth={5} />
     <rect x={-10} y={-330} width={90} height={14} fill="#B9A792" stroke={C.ink} strokeWidth={4} />
     <rect x={10} y={-480} width={70} height={150} fill="#6B3A2E" stroke={C.ink} strokeWidth={5} />
-    <text x={260} y={-300} textAnchor="middle" fill="#2B5E60" fontFamily={fonts.display} fontWeight={900} fontSize={22} opacity={0.6}>
-      THIS HOUSE IS NOT FOR SALE
-    </text>
   </g>
 );
 

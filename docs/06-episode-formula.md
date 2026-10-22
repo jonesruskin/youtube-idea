@@ -27,6 +27,8 @@ Each scene must connect to the next with **"but"** or **"therefore"**, never "an
 
 ## Show, don't tell
 - **No text slates, no rule cards, no pop-up notes.** Science is shown as gold hologram diagrams with labels of 1–3 words.
+- **Write for the viewer, not for us.** Nothing from planning conversations appears on screen. No slogans painted on buses or houses, no captions explaining a gag. The only words in frame are ones that would really be there (a business card, a phone screen). Check with `npm run audit:text`.
+- **Never state the moral.** The linter fails any line like "money can't buy…" or "the truth is…". Show it.
 - The power's rules are taught **by demonstration**, in threes: open palm floats, fist drops, hug does nothing.
 - Every abstract number gets a picture: "Betelgeuse would swallow Mars", "90% of a rocket is fuel".
 - If a viewer with the sound off can't follow the scene, redraw it.

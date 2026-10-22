@@ -72,7 +72,7 @@ The richest man on Earth, who builds rockets. He is never a cartoon villain: he 
 - **Worlds:**
   - five parallax depth layers
   - time-of-day skies (dawn pink, noon blue, golden hour, sunset, storm) with painted clouds
-  - colourful facades with real Lagos signage humour ("NO CONDITION IS PERMANENT")
+  - colourful facades with wordless signboards (painted shapes and colours, no slogans on buses or houses)
   - a colour grade per scene, with film grain and a vignette over everything
 - **Hologram style:** gold `#F6D58C` line art on deep navy.
 - **Thumbnail:** one impossible image plus two words ("NO GRAVITY").

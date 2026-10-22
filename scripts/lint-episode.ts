@@ -49,7 +49,11 @@ for (const s of tl.shots.filter((x) => x.midroll)) {
 // 6. Every science beat must cite a source (it goes in the description, not on screen).
 for (const s of tl.shots) if (s.science && !s.science.source) errors.push(`Science in "${s.id}" has no source.`);
 
-// 7. Chapters: YouTube needs ≥3, first at 0:00, each ≥10s.
+// 7. Show the moral, never say it. A line that states the lesson reads as a sermon and costs retention.
+const SERMON = /money can'?t buy|the (real )?truth is|the moral|lesson (is|here)|be grateful|appreciate what you have|remember,? kids/i;
+for (const l of tl.lines) if (SERMON.test(l.text)) errors.push(`Line "${l.text}" states the moral out loud — show it instead.`);
+
+// 8. Chapters: YouTube needs ≥3, first at 0:00, each ≥10s.
 const chapters = tl.shots.filter((s) => s.chapter);
 if (chapters.length < 3) errors.push('Fewer than 3 chapters.');
 if (chapters[0]?.start !== 0) errors.push('First chapter must start at 0:00.');

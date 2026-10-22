@@ -7,6 +7,7 @@
   "scripts": {
     "studio": "remotion studio src/index.ts",
     "lint:episode": "tsx scripts/lint-episode.ts",
+    "audit:text": "tsx scripts/audit-text.ts",
     "srt": "tsx scripts/make-srt.ts",
     "score": "tsx scripts/make-score.ts",
     "voice": "tsx scripts/tts.ts",

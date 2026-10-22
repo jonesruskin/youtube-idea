@@ -21,13 +21,15 @@ A YouTube channel of animated space-science stories built for **8–12 minute ep
 | [05 · Season One](docs/05-season-one.md) | 12 episodes, the twist ladder, seeds → payoffs |
 | [06 · Episode formula](docs/06-episode-formula.md) | The ten-section structure, retention rules, show-don't-tell, packaging |
 | [07 · Series framework](docs/07-series-framework.md) | How the channel keeps going: Files, Loose Files, Shorts |
+| [08 · Borrowed Day](docs/08-borrowed-day.md) | New format study: "What If You Were ___ for One Day?" — market data, the Return mechanic, pilot beat sheet, pre-mortem, the untested assumption |
 | [ElevenLabs setup](docs/ELEVENLABS_SETUP.md) | Step-by-step key and voice setup |
 
 ## Studio quickstart
 ```bash
 npm install
 npm run studio                                   # live preview in the browser
-npm run lint:episode ep01                        # runtime, beats every 45s, mid-rolls, chapters
+npm run lint:episode ep01                        # runtime, beats every 45s, mid-rolls, chapters, no sermons
+npm run audit:text                               # every word drawn on screen, slogans flagged
 npx tsx scripts/make-screenplay.ts ep01          # readable screenplay from the script
 npx tsx scripts/preview.ts ep01 --scale=0.25     # one still per shot → out/preview/ep01
 npm run voice ep01                               # ElevenLabs voiceover + lip-sync timings (needs .env)

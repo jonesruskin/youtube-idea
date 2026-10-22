@@ -62,8 +62,9 @@ export type Expression =
   | 'warm';
 
 type Face = {
-  brow: number; // inner-brow raise (+) / furrow (-)
+  brow: number; // inner-brow raise (+) / furrow (-). Furrows read as anger: keep them for smug/villain faces only.
   browY: number;
+  quirk?: number; // lifts the left brow only (puzzled, sceptical)
   eyeOpen: number; // 0 = closed, 1 = normal, 1.25 = wide
   mouth: 'smile' | 'grin' | 'open' | 'o' | 'flat' | 'frown' | 'smirk' | 'wobble';
 };
@@ -75,10 +76,11 @@ const FACES: Record<Expression, Face> = {
   ecstatic: {brow: 6, browY: -8, eyeOpen: 1.15, mouth: 'grin'},
   nervous: {brow: 8, browY: -2, eyeOpen: 1.05, mouth: 'wobble'},
   curious: {brow: 5, browY: -6, eyeOpen: 1.1, mouth: 'o'},
-  confused: {brow: -4, browY: 0, eyeOpen: 1, mouth: 'wobble'},
+  confused: {brow: 2, browY: 0, eyeOpen: 1, mouth: 'wobble', quirk: 9},
   alarmed: {brow: 10, browY: -9, eyeOpen: 1.25, mouth: 'open'},
-  determined: {brow: -9, browY: 3, eyeOpen: 0.85, mouth: 'flat'},
-  serious: {brow: -4, browY: 2, eyeOpen: 0.9, mouth: 'flat'},
+  // Level, slightly lowered brows: focused rather than cross.
+  determined: {brow: 1, browY: 3, eyeOpen: 0.95, mouth: 'flat'},
+  serious: {brow: 2, browY: 1, eyeOpen: 0.95, mouth: 'flat'},
   smug: {brow: -3, browY: 1, eyeOpen: 0.7, mouth: 'smirk'},
   sleep: {brow: 2, browY: 2, eyeOpen: 0, mouth: 'smile'},
   surprised: {brow: 8, browY: -10, eyeOpen: 1.25, mouth: 'o'},
@@ -295,7 +297,7 @@ export const Figure: React.FC<FigureProps> = ({
   };
   const brow = (side: -1 | 1) => {
     const bx = side * headR * 0.36;
-    const by = headY - headR * 0.34 + face.browY - emphasis * 5;
+    const by = headY - headR * 0.34 + face.browY - emphasis * 5 - (side === -1 ? face.quirk ?? 0 : 0);
     const inner = bx - side * headR * 0.16;
     const outer = bx + side * headR * 0.16;
     return <path key={`b${side}`} d={`M${inner},${by - face.brow} L${outer},${by}`} stroke={stroke} strokeWidth={6} strokeLinecap="round" />;
