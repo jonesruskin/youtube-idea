@@ -229,6 +229,28 @@ If this assumption is wrong, the plan of "live the lives of great people" picks 
 
 ---
 
+## Episode 1 is built
+**"What If You Were the Richest Person on Earth for One Day?"** It is `episodes/bd01-richest/script.ts`, rendered to `renders/bd01.mp4` (8:11, voiced). The screenplay is [`screenplay-bd01.md`](screenplay-bd01.md).
+
+What changed from the §6 beat sheet while building it:
+- **The peak is a private concert in an empty stadium, not a rocket launch.** A rocket billionaire reads as one specific real person; an empty stadium does not. The stadium kit is also reused by Ep 2 (the footballer).
+- **Three beats were added** because the real voice ran shorter than estimated:
+  - The islands seen from the jet: dopamine.
+  - One "no" that darkens a whole town's windows: the weight.
+  - The gala where a joke with no punchline gets the biggest laugh: the hollowness, shown, never said.
+- **Also added:** cereal eaten standing up in a 40-room penthouse, set against the Return's one shared plate. And the plate-washing that Mama's last line pays off.
+
+### How to make the next borrowed day
+1. Copy `episodes/bd01-richest/` and write the new script with the same shape: peak first, wake, good hours, crack (mid-roll 1), weight, peak finished, midnight (mid-roll 2), the Return (≤90s), the question.
+2. Reuse sets first:
+   - `stadium` (football, concerts)
+   - `penthouse` rooms
+   - `jet`
+   - `lagos` (the Return is always the same home)
+   - `midnight` (always the same)
+   Only the borrowed world is new.
+3. `npm run voice:local <id>`, then `npm run lint:episode <id>` (≥8:00 with the real voice), then the preview contact sheet, then `npm run audit:text`, then `npm run render <id>`.
+
 ## Production rules carried over from the founder's review of Ep1
 
 These apply to every episode from now on, Blink Files and Borrowed Day alike.

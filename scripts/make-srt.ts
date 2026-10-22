@@ -33,6 +33,15 @@ const NAMES: Record<string, string> = {
   CAPTAIN: 'CAPTAIN (RADIO)',
   FISHERMAN: 'FISHERMAN',
   ASSISTANT: 'ASSISTANT',
+  NARRATOR: 'NARRATOR',
+  RICHEST: 'YOU (AS THE RICHEST)',
+  MARCUS: 'MARCUS',
+  ADA: 'ADA',
+  FRIEND: 'OLD FRIEND',
+  PRESIDENT: 'THE PRESIDENT (PHONE)',
+  MAMA: 'MAMA',
+  SISTER: 'LITTLE SISTER',
+  YOU: 'YOU',
 };
 // Split long lines into ≤2-row cues of ~42 chars so they read comfortably.
 const chunk = (text: string, max = 84) => {

@@ -225,6 +225,31 @@ const SFX: Record<Sfx, (t: number) => void> = {
       tone(t + k * 0.6 + 0.3, 0.3, 950, 650, 0.045, () => 1);
     }
   },
+  // A cascade of small metallic clinks (coins landing).
+  coins: (t) => {
+    for (let k = 0; k < 22; k++) {
+      const d = k * 0.07 + ((k * 37) % 11) * 0.006;
+      bell(t + d, 2600 + ((k * 571) % 1900), 0.012, 0.18);
+      addNoise(t + d, 0.02, 0.12, (x) => 1 - x, 0.7);
+    }
+  },
+  // Launch whistle, then a deep bloom and crackle.
+  firework: (t) => {
+    tone(t, 0.7, 900, 2400, 0.03, (x) => x);
+    tone(t + 0.7, 1.4, 60, 30, 0.45, (x) => Math.exp(-x * 4));
+    addNoise(t + 0.7, 0.5, 0.45, (x) => Math.exp(-x * 6), 0.3);
+    for (let k = 0; k < 16; k++) addNoise(t + 0.9 + k * 0.06 + ((k * 13) % 5) * 0.01, 0.03, 0.18, (x) => 1 - x, 0.8);
+  },
+  // Twelve slow, deep chimes compressed into one strike plus tick.
+  clock: (t) => {
+    for (let k = 0; k < 4; k++) addNoise(t + k * 0.5, 0.02, 0.25, (x) => 1 - x, 0.9);
+    bell(t + 2, 196, 0.12, 3.2);
+    bell(t + 2, 392, 0.05, 2.4);
+  },
+  // A big stadium crowd: a long swell of filtered noise.
+  crowd: (t) => {
+    for (let k = 0; k < 10; k++) addNoise(t + k * 0.04, 4.5, 0.07, (x) => Math.min(1, x * 4) * (1 - x) * 1.4 * (0.8 + 0.2 * Math.sin(x * 22 + k)), 0.05 + k * 0.012);
+  },
 };
 for (const s of tl.shots) if (s.sfx) SFX[s.sfx](s.start);
 

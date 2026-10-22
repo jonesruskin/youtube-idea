@@ -3,20 +3,15 @@ import {Easing, interpolate} from 'remotion';
 import {Figure} from '../../characters/Figure';
 import {extra} from '../../characters/registry';
 import {useShot} from '../../engine/shot-context';
-import {Camera} from '../../fx/camera';
+import {Camera, lerpCam, Par} from '../../fx/camera';
 import {Glow} from '../../fx/sky';
 import {Executor} from '../../fx/vey';
 import {C, fonts} from '../../theme';
 import {Goat, Palm, Radio, Stage} from '../common';
 import {Car, Facades, FarCity, Grade, HOLO, Motes, Okada, PaintedClouds, PowerLines, Road, Shadow, Sky, SunShafts, Umbrella, type TimeOfDay} from '../kit';
 
-/** Parallax: far layers move less than the camera. */
-export const Par: React.FC<{depth: number; fx: number; fy?: number; children: React.ReactNode}> = ({depth, fx, fy = 540, children}) => (
-  <g transform={`translate(${(fx - 960) * (1 - depth)},${(fy - 540) * (1 - depth) * 0.5})`}>{children}</g>
-);
-
+export {Par, lerpCam};
 type Cam = [number, number, number];
-export const lerpCam = (a: Cam, b: Cam, p: number): Cam => [a[0] + (b[0] - a[0]) * p, a[1] + (b[1] - a[1]) * p, a[2] + (b[2] - a[2]) * p];
 
 /** Jonah's stall: wooden box, tin roof, shelves of phones, the ONE DAY poster. */
 export const JonahStall: React.FC<{x: number; y: number; frame: number; night?: boolean; radio?: number}> = ({x, y, frame, night, radio = 0}) => (

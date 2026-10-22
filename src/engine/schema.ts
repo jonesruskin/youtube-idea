@@ -16,7 +16,17 @@ export type Speaker =
   | 'ANCHOR'
   | 'CAPTAIN'
   | 'FISHERMAN'
-  | 'ASSISTANT';
+  | 'ASSISTANT'
+  // Borrowed Day
+  | 'NARRATOR'
+  | 'RICHEST'
+  | 'MARCUS'
+  | 'ADA'
+  | 'FRIEND'
+  | 'PRESIDENT'
+  | 'MAMA'
+  | 'SISTER'
+  | 'YOU';
 
 export type Line = {
   speaker: Speaker;
@@ -34,7 +44,7 @@ export type Mood =
   | 'triumph'
   | 'silence';
 
-export type Sfx = 'whoosh' | 'impact' | 'riser' | 'chime' | 'decloak' | 'thunder' | 'powercut' | 'stamp' | 'float' | 'crash' | 'sneeze' | 'cheer' | 'horn' | 'siren';
+export type Sfx = 'whoosh' | 'impact' | 'riser' | 'chime' | 'decloak' | 'thunder' | 'powercut' | 'stamp' | 'float' | 'crash' | 'sneeze' | 'cheer' | 'horn' | 'siren' | 'coins' | 'firework' | 'clock' | 'crowd';
 
 /** Retention beats the linter tracks: something to laugh at, wonder at, feel, or wonder about. */
 export type Beat = 'laugh' | 'wow' | 'heart' | 'loop';
@@ -72,6 +82,8 @@ export type Shot = {
 
 export type Episode = {
   id: string;
+  /** Which channel's branding this episode carries (src/channels.ts). Default 'blink'. */
+  channel?: 'blink' | 'borrowed';
   file: string; // "FILE 01"
   title: string;
   youtubeTitle: string;

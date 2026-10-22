@@ -11,6 +11,7 @@
     "srt": "tsx scripts/make-srt.ts",
     "score": "tsx scripts/make-score.ts",
     "voice": "tsx scripts/tts.ts",
+    "voice:local": "tsx scripts/tts-local.ts",
     "metadata": "tsx scripts/metadata.ts",
     "render": "tsx scripts/render.ts",
     "typecheck": "tsc --noEmit"

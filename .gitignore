@@ -1,7 +1,9 @@
 node_modules/
 .env
 out/
-public/audio/
+# generated score/SFX stay local; voiced lines are committed so a render is reproducible without TTS setup
+public/audio/*
+!public/audio/bd01/
 .cache/
 *.log
 renders/*-hq.mp4

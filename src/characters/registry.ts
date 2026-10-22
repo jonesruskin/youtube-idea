@@ -18,9 +18,10 @@ export type HairStyle =
   | 'braids'
   | 'bun'
   | 'cap'
-  | 'puffs';
+  | 'puffs'
+  | 'locs';
 
-export type TopStyle = 'jacket' | 'tee' | 'suit' | 'wrapper' | 'cardigan' | 'vest' | 'blouse';
+export type TopStyle = 'jacket' | 'tee' | 'suit' | 'wrapper' | 'cardigan' | 'vest' | 'blouse' | 'hoodie';
 
 export type CharacterDesign = {
   id: string;
@@ -53,6 +54,10 @@ export type CharacterDesign = {
   patches?: boolean;
   tie?: string;
   earrings?: boolean;
+  /** Security earpiece: a coiled wire from the ear to the collar. */
+  earpiece?: boolean;
+  /** Apron colour, worn over the top. */
+  apron?: string;
 };
 
 export const characters = {
@@ -288,6 +293,156 @@ export const characters = {
     signature: '#C77DFF',
     glasses: 'round',
     wrinkles: true,
+  },
+  // ── BORROWED DAY (channel 2) ─────────────────────────────────────────
+  // The Richest is fictional: drawn to resemble no real billionaire (locs, round gold glasses, linen, no tie).
+  richest: {
+    id: 'richest',
+    speaker: 'RICHEST',
+    name: 'The Richest Person on Earth',
+    heir: 0,
+    height: 1.08,
+    build: 0.92,
+    head: 0.98,
+    skin: '#8A5536',
+    skinShade: '#6B3F27',
+    hair: 'locs',
+    hairColor: '#4A4850',
+    top: 'suit',
+    topColor: '#EDE3CC',
+    topAccent: '#CDBE9C',
+    innerColor: '#FFFFFF',
+    pants: '#E4D8BC',
+    shoes: '#8B5A3C',
+    signature: '#F6C453',
+    glasses: 'round',
+  },
+  /** "You": the channel's recurring everyday avatar. Never named. */
+  you: {
+    id: 'you',
+    speaker: 'YOU',
+    name: 'You',
+    heir: 0,
+    height: 0.96,
+    build: 0.95,
+    head: 1.08,
+    skin: '#6B3F27',
+    skinShade: '#52301C',
+    hair: 'shortCrop',
+    hairColor: '#17110F',
+    top: 'hoodie',
+    topColor: '#8E96A3',
+    topAccent: '#737B88',
+    innerColor: '#F4EFE6',
+    pants: '#2B3A67',
+    shoes: '#3A3A42',
+    signature: '#7FD6FF',
+  },
+  mama: {
+    id: 'mama',
+    speaker: 'MAMA',
+    name: 'Mama',
+    heir: 0,
+    height: 0.9,
+    build: 1.14,
+    head: 1.0,
+    skin: '#5C3521',
+    skinShade: '#44261A',
+    hair: 'headwrap',
+    hairColor: '#D9573B',
+    top: 'wrapper',
+    topColor: '#E7A33E',
+    topAccent: '#7A2E2E',
+    innerColor: '#7A2E2E',
+    pants: '#E7A33E',
+    shoes: '#3B2A20',
+    signature: '#F2873A',
+    earrings: true,
+    apron: '#F4EFE6',
+  },
+  sister: {
+    id: 'sister',
+    speaker: 'SISTER',
+    name: 'Little Sister',
+    heir: 0,
+    height: 0.66,
+    build: 0.82,
+    head: 1.24,
+    skin: '#6B3F27',
+    skinShade: '#52301C',
+    hair: 'braids',
+    hairColor: '#17110F',
+    top: 'tee',
+    topColor: '#E35D8F',
+    topAccent: '#B8406E',
+    innerColor: '#FFFFFF',
+    pants: '#F2C14E',
+    shoes: '#FFFFFF',
+    signature: '#FF8AB8',
+  },
+  marcus: {
+    id: 'marcus',
+    speaker: 'MARCUS',
+    name: 'Marcus (head of security)',
+    heir: 0,
+    height: 1.18,
+    build: 1.32,
+    head: 0.95,
+    skin: '#4E2C1B',
+    skinShade: '#3A2014',
+    hair: 'bald',
+    hairColor: '#17110F',
+    top: 'suit',
+    topColor: '#1E2230',
+    topAccent: '#141722',
+    innerColor: '#F4F4F4',
+    pants: '#1E2230',
+    shoes: '#111111',
+    signature: '#9FB4FF',
+    tie: '#1E2230',
+    earpiece: true,
+  },
+  ada: {
+    id: 'ada',
+    speaker: 'ADA',
+    name: 'Ada (chief of staff)',
+    heir: 0,
+    height: 0.98,
+    build: 0.9,
+    head: 1.0,
+    skin: '#E9C7A6',
+    skinShade: '#CFA987',
+    hair: 'bob',
+    hairColor: '#141414',
+    top: 'blouse',
+    topColor: '#2F5D8A',
+    topAccent: '#244A6E',
+    innerColor: '#2F5D8A',
+    pants: '#2A2F3A',
+    shoes: '#2A2A2A',
+    signature: '#8FD3FF',
+    glasses: 'square',
+  },
+  friend: {
+    id: 'friend',
+    speaker: 'FRIEND',
+    name: 'Old school friend',
+    heir: 0,
+    height: 1.0,
+    build: 1.12,
+    head: 1.02,
+    skin: '#A86E48',
+    skinShade: '#8A5536',
+    hair: 'shortCrop',
+    hairColor: '#17110F',
+    top: 'tee',
+    topColor: '#D9A441',
+    topAccent: '#B8862F',
+    innerColor: '#FFFFFF',
+    pants: '#3B3B3B',
+    shoes: '#2A2A2A',
+    signature: '#FFD27A',
+    beard: true,
   },
 } satisfies Record<string, CharacterDesign>;
 

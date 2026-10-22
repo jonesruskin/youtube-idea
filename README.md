@@ -11,6 +11,15 @@ A YouTube channel of animated space-science stories built for **8–12 minute ep
 - `ep01-thumbnail.png`, `ep01-metadata.md` (title, description, chapters, sources, mid-roll times)
 - Readable script: [`docs/screenplay-ep01.md`](docs/screenplay-ep01.md)
 
+## Second channel: BORROWED DAY
+*Every episode, you borrow someone's life for 24 hours. At midnight, you give it back.* Same engine, separate channel. The format study is in [`docs/08-borrowed-day.md`](docs/08-borrowed-day.md).
+
+**Episode 1, "What If You Were the Richest Person on Earth for One Day?"**, is in `renders/`:
+- `bd01.mp4`: 8:11, 1080p, fully voiced (free Kokoro voices; see [`docs/BORROWED_DAY_VOICE.md`](docs/BORROWED_DAY_VOICE.md)), original score and SFX
+- `bd01.srt`, `bd01-described.srt`, `bd01-thumbnail.png`, `bd01-metadata.md`
+- Readable script: [`docs/screenplay-bd01.md`](docs/screenplay-bd01.md)
+- Sets: `src/env/bd01/` (stadium, penthouse, jet, avenue, call, midnight, Lagos). Channel branding lives in `src/channels.ts`.
+
 ## Read these first
 | Doc | What it is |
 |---|---|
@@ -33,6 +42,7 @@ npm run audit:text                               # every word drawn on screen, s
 npx tsx scripts/make-screenplay.ts ep01          # readable screenplay from the script
 npx tsx scripts/preview.ts ep01 --scale=0.25     # one still per shot → out/preview/ep01
 npm run voice ep01                               # ElevenLabs voiceover + lip-sync timings (needs .env)
+npm run voice:local bd01                         # free local Kokoro voiceover (docs/BORROWED_DAY_VOICE.md)
 npm run render ep01                              # score + SRTs + metadata + thumbnail + MP4 → renders/
 ```
 

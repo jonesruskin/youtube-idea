@@ -41,6 +41,19 @@ export const POSES = {
   pilotPoint: {lArm: [-20, 70], rArm: [110, -10], lLeg: [0, 0], rLeg: [0, 0], noLegs: true},
   sitHug: {lArm: [-10, 115], rArm: [10, -115], lLeg: [0, 0], rLeg: [0, 0], noLegs: true},
   lie: {lArm: [-8, 0], rArm: [8, 0], lLeg: [-2, 0], rLeg: [2, 0]},
+  // Seated on a chair: thighs forward, shins down. Place the figure's feet on the floor.
+  sit: {lArm: [-14, 30], rArm: [14, -30], lLeg: [80, -80], rLeg: [88, -88]},
+  sitTalk: {lArm: [-14, 30], rArm: [28, -70], lLeg: [80, -80], rLeg: [88, -88]},
+  // Hand up near the face: holds a toothbrush / phone / food (pass it via `holding`).
+  brushTeeth: {lArm: [-10, 4], rArm: [-20, -150], lLeg: [-3, 1], rLeg: [3, -1]},
+  phoneEar: {lArm: [-10, 4], rArm: [-10, -165], lLeg: [-3, 1], rLeg: [3, -1], headTilt: 6},
+  sitEat: {lArm: [-14, 30], rArm: [-20, -150], lLeg: [80, -80], rLeg: [88, -88]},
+  handOnHeart: {lArm: [-10, 4], rArm: [20, -125], lLeg: [-3, 1], rLeg: [3, -1], headTilt: 4},
+  bow: {lArm: [-10, 4], rArm: [20, -125], lLeg: [-3, 1], rLeg: [3, -1], lean: 14, headTilt: 10},
+  cards: {lArm: [-40, 95], rArm: [40, -95], lLeg: [80, -80], rLeg: [88, -88]},
+  sitPhone: {lArm: [-14, 30], rArm: [-10, -165], lLeg: [80, -80], rLeg: [88, -88], headTilt: 6},
+  sitReach: {lArm: [-14, 30], rArm: [95, -15], lLeg: [80, -80], rLeg: [88, -88]},
+  sitJoy: {lArm: [-135, -25], rArm: [135, 25], lLeg: [80, -80], rLeg: [88, -88], headTilt: -6},
 } satisfies Record<string, Pose>;
 
 export type PoseName = keyof typeof POSES;
@@ -59,7 +72,8 @@ export type Expression =
   | 'sleep'
   | 'surprised'
   | 'sad'
-  | 'warm';
+  | 'warm'
+  | 'bittersweet';
 
 type Face = {
   brow: number; // inner-brow raise (+) / furrow (-). Furrows read as anger: keep them for smug/villain faces only.
@@ -85,6 +99,8 @@ const FACES: Record<Expression, Face> = {
   sleep: {brow: 2, browY: 2, eyeOpen: 0, mouth: 'smile'},
   surprised: {brow: 8, browY: -10, eyeOpen: 1.25, mouth: 'o'},
   sad: {brow: 10, browY: 2, eyeOpen: 0.8, mouth: 'frown'},
+  // Smiling, but the brows give it away: the smile stops reaching the eyes.
+  bittersweet: {brow: 8, browY: 1, eyeOpen: 0.82, mouth: 'smile'},
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -336,6 +352,31 @@ export const Figure: React.FC<FigureProps> = ({
         });
         return <g>{curls}</g>;
       }
+      case 'bob':
+        return <path d={`M${-headR * 1.12},${headY + headR * 0.55} Q${-headR * 1.3},${headY - headR * 1.3} 0,${headY - headR * 1.2} Q${headR * 1.3},${headY - headR * 1.3} ${headR * 1.12},${headY + headR * 0.55} Z`} fill={hc} stroke={stroke} strokeWidth={sw} />;
+      case 'ponytail':
+        return <path d={`M${headR * 0.6},${headY - headR * 0.7} Q${headR * 1.7},${headY - headR * 0.6} ${headR * 1.35},${headY + headR * 0.9} Q${headR * 1.1},${headY + headR * 0.2} ${headR * 0.7},${headY - headR * 0.1} Z`} fill={hc} stroke={stroke} strokeWidth={4} />;
+      case 'locs':
+        // Shoulder-length locs hanging from the crown and framing the face.
+        return (
+          <g>
+            {Array.from({length: 16}, (_, i) => {
+              const a = Math.PI * (0.88 + (i / 15) * 1.24);
+              const bx = Math.cos(a) * headR * 0.95;
+              const by = headY - headR * 0.15 + Math.sin(a) * headR * 0.95;
+              const side = Math.abs(Math.cos(a));
+              const len = headR * (0.5 + side * 0.85 + ((i * 7) % 3) * 0.08);
+              const ex = bx + Math.cos(a) * headR * 0.22;
+              const ey = by + len;
+              return (
+                <g key={i}>
+                  <path d={`M${bx},${by} Q${bx + Math.cos(a) * headR * 0.3},${by + len * 0.5} ${ex},${ey}`} stroke={stroke} strokeWidth={headR * 0.26} strokeLinecap="round" fill="none" />
+                  <path d={`M${bx},${by} Q${bx + Math.cos(a) * headR * 0.3},${by + len * 0.5} ${ex},${ey}`} stroke={i % 3 === 0 ? '#A9ABB2' : hc} strokeWidth={headR * 0.17} strokeLinecap="round" fill="none" />
+                </g>
+              );
+            })}
+          </g>
+        );
       case 'gele':
         return (
           <g>
@@ -394,6 +435,19 @@ export const Figure: React.FC<FigureProps> = ({
             ))}
           </g>
         );
+      case 'bob':
+        return <path d={`M${-headR * 1.05},${headY + headR * 0.1} Q${-headR * 1.1},${headY - headR * 1.2} 0,${headY - headR * 1.15} Q${headR * 1.1},${headY - headR * 1.2} ${headR * 1.05},${headY + headR * 0.1} Q${headR * 0.85},${headY - headR * 0.45} ${headR * 0.2},${headY - headR * 0.5} Q${-headR * 0.4},${headY - headR * 0.35} ${-headR * 0.75},${headY - headR * 0.6} Q${-headR * 0.95},${headY - headR * 0.2} ${-headR * 1.05},${headY + headR * 0.1} Z`} fill={hc} stroke={stroke} strokeWidth={4} />;
+      case 'ponytail':
+        return <path d={`M${-headR},${headY - headR * 0.05} Q${-headR},${headY - headR * 1.1} 0,${headY - headR * 1.08} Q${headR},${headY - headR * 1.1} ${headR},${headY - headR * 0.05} Q${headR * 0.6},${headY - headR * 0.75} 0,${headY - headR * 0.72} Q${-headR * 0.6},${headY - headR * 0.75} ${-headR},${headY - headR * 0.05} Z`} fill={hc} stroke={stroke} strokeWidth={4} />;
+      case 'locs':
+        return (
+          <g>
+            <path d={`M${-headR * 1.02},${headY - headR * 0.05} Q${-headR * 1.05},${headY - headR * 1.25} 0,${headY - headR * 1.2} Q${headR * 1.05},${headY - headR * 1.25} ${headR * 1.02},${headY - headR * 0.05} Q${headR * 0.7},${headY - headR * 0.68} 0,${headY - headR * 0.68} Q${-headR * 0.7},${headY - headR * 0.68} ${-headR * 1.02},${headY - headR * 0.05} Z`} fill={hc} stroke={stroke} strokeWidth={4} />
+            {[-0.62, -0.31, 0, 0.31, 0.62].map((x, i) => (
+              <path key={i} d={`M${x * headR},${headY - headR * 1.12} q${x * 6},${headR * 0.25} ${x * 4},${headR * 0.42}`} stroke="#A9ABB2" strokeWidth={3} fill="none" opacity={0.85} />
+            ))}
+          </g>
+        );
       case 'afro':
         return null;
       default:
@@ -436,6 +490,9 @@ export const Figure: React.FC<FigureProps> = ({
           [0.3, 0.55, 0.8].map((t, i) => (
             <path key={i} d={`M${-hipW / 2 - 6 - 16 * t},${hipY + (-8 - hipY) * t} L${hipW / 2 + 6 + 16 * t},${hipY + (-8 - hipY) * t}`} stroke={d.topAccent} strokeWidth={5} />
           ))}
+        {d.top === 'hoodie' && (
+          <path d={`M${-shW * 0.42},${shY + 8} Q${-shW * 0.5},${shY - 30} 0,${shY - 26} Q${shW * 0.5},${shY - 30} ${shW * 0.42},${shY + 8} Z`} fill={d.topAccent} stroke={stroke} strokeWidth={sw} />
+        )}
         {/* back arm */}
         <Limbs path={LA.d} color={d.topColor} w={limb} />
         <circle cx={LA.hx} cy={LA.hy} r={limb * 0.62} fill={d.skin} stroke={stroke} strokeWidth={4} />
@@ -447,6 +504,17 @@ export const Figure: React.FC<FigureProps> = ({
             <path d={`M0,${shY + torso * 0.42} L0,${hipY + 10}`} stroke={d.topAccent} strokeWidth={4} />
             {d.tie && <path d={`M-6,${shY + 6} L6,${shY + 6} L9,${shY + torso * 0.36} L0,${shY + torso * 0.45} L-9,${shY + torso * 0.36} Z`} fill={d.tie} stroke={stroke} strokeWidth={2.5} />}
           </>
+        )}
+        {d.top === 'hoodie' && (
+          <>
+            <path d={`M${-shW * 0.28},${hipY - torso * 0.32} L${shW * 0.28},${hipY - torso * 0.32} L${shW * 0.22},${hipY - 4} L${-shW * 0.22},${hipY - 4} Z`} fill={d.topAccent} stroke={stroke} strokeWidth={3} />
+            {[-1, 1].map((k) => (
+              <path key={k} d={`M${k * 9},${shY + 4} l${k * 2},${torso * 0.3}`} stroke={d.innerColor} strokeWidth={3} strokeLinecap="round" />
+            ))}
+          </>
+        )}
+        {d.apron && (
+          <path d={`M${-shW * 0.3},${shY + torso * 0.3} L${shW * 0.3},${shY + torso * 0.3} L${shW * 0.36},${hipY + 30} L${-shW * 0.36},${hipY + 30} Z`} fill={d.apron} stroke={stroke} strokeWidth={3.5} strokeLinejoin="round" />
         )}
         {d.top === 'wrapper' && (
           <path d={`M${-shW / 2 + 6},${shY + torso * 0.45} L${shW / 2 - 6},${shY + torso * 0.45}`} stroke={d.topAccent} strokeWidth={7} />
@@ -464,6 +532,9 @@ export const Figure: React.FC<FigureProps> = ({
           {hairBack}
           {d.earrings && [-1, 1].map((s) => <circle key={s} cx={s * headR * 0.98} cy={headY + headR * 0.28} r={5} fill={C.gold} stroke={stroke} strokeWidth={2} />)}
           <circle cx={0} cy={headY} r={headR} fill={d.skin} stroke={stroke} strokeWidth={sw} />
+          {d.earpiece && (
+            <path d={`M${headR * 0.98},${headY + headR * 0.1} q${headR * 0.25},${headR * 0.3} ${headR * 0.05},${headR * 0.6} q-${headR * 0.15},${headR * 0.3} ${headR * 0.1},${headR * 0.8}`} stroke="#D8DDE6" strokeWidth={2.5} fill="none" />
+          )}
           {d.beard && <path d={`M${-headR * 0.85},${headY + headR * 0.1} Q0,${headY + headR * 1.35} ${headR * 0.85},${headY + headR * 0.1} Q0,${headY + headR * 0.75} ${-headR * 0.85},${headY + headR * 0.1} Z`} fill={d.hairColor} opacity={0.85} />}
           {hairFront}
           {eye(-1)}
