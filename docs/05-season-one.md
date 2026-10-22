@@ -1,36 +1,41 @@
-# 05 · Season One: FILE 01 · THE WILL
+# 05 · Season One: FILE 01 · THE GIFTS
 
-Twelve episodes, **one heir each**, released weekly. Two a week is better if production allows. Each episode is fully enjoyable on its own. Watching them in order is what gives the reward.
+Twelve episodes, **one gift each**, released weekly. Each episode stands on its own; watching them in order is what pays off.
 
-| Ep | YouTube title | Thumbnail text | The jaw-drop | The laugh | The lump in the throat | Clue (Item 13) | Arc movement |
-|---|---|---|---|---|---|---|---|
-| 1 | What If Aliens Left You Their Spaceship? | MOON BY 4AM | Earth hanging smaller than his thumb | The flip-flop; the unimpressed goat | Grandma's first flight: "Nobody told me it was this… shiny." | Tiny second seat | Will, Executor, Rules, Kade's contest established |
-| 2 | What If Aliens Left You an Asteroid Worth $10 Quintillion? | RICHER THAN EARTH | Mags owns more than the world economy (~$100T) a hundred thousand times over | A 71-year-old coupon-clipper negotiating with central banks | She spends her first kilo paying off every school lunch debt in Yorkshire | A playroom inside the asteroid with height marks | Jonah ferries her; heirs start to meet |
-| 3 | What If Aliens Left You a Pet That Eats Cars? | IT ATE A FERRARI | Biscuit's first flight into orbit | Biscuit eats Kade's leased Rolls-Royce | Arjun obeys "let it go when it asks" | Biscuit hums a tune it shouldn't know | Kade's first contest attempt fails |
-| 4 | What If Aliens Left You a Whole Planet? | IT'S ALL MINE | Two suns setting over an empty ocean | Kenji tries to explain Haven to HR | The night guard is the only person Kenji trusts enough to bring | A small bedroom with painted stars | Haven becomes the heirs' safe house |
-| 5 | What If Aliens Left You Every Language? | MY CAT TALKS | Hamid hears whales, machines and the Vey | His cat Pamuk is unbearably rude | He translates his late wife's last voicemail, left in a dialect he never understood | "The-one-sent-ahead" | **TWIST:** "heirs" → **"guardians"** |
-| 6 | What If Aliens Left You a Cure for Everything? | ONE A DAY | A ward of patients and one drop | Sofia and the Executor argue over the "one person per day" fine print | **Sofia heals Kade** when he collapses. He's dying, and no one else would help him | Calibrated for a small, non-human body | Kade: "Ask your Executor how they *really* died." (midpoint flip) |
-| 7 | What If Aliens Left You a Body Double? | TWO OF ME | Chloé lives two lives at once | The double is better at her life than she is | The double finds out it's a copy. The rule breaks, and **Kade wins it.** | A second, smaller face template | **First heir loses an inheritance** |
-| 8 | What If Aliens Left You Unlimited Energy? | FREE POWER FOREVER | Tyrell lights Detroit for free in a blackout | Energy CEOs try to out-polite each other | The Double, now Kade's, chooses its own home (Rule 3) and goes back to live with Chloé. On paper, Kade still legally holds Item Seven | "Nursery warmth" setting | Kade's empire wobbles; Priya starts to doubt him |
-| 9 | What If Aliens Left You a Window to Anywhere? | I SAW WHAT ATE IT | Betelgeuse, live: wrapped in something black | Sven, 66, finally proven right, refuses to be smug (and fails) | The Executor confesses: "They did not die. They were eaten. They sent away what they loved." | Default view: a child's bedroom | **TWIST:** the Quiet |
-| 10 | What If Aliens Left You a Suit That Survives Anything? | THE MOON, ON FOOT | Mei walks where no human has: the Executor's vault at the edge of the system | The suit must "always be returned folded," mid-crisis | Mei, told "no" all her life, goes farther than any human ever has | A child-size suit folded inside | Item Thirteen's vault is found (still sealed) |
-| 11 | What If Aliens Left You a Garden That Grows Anything? | A HOUSE IN 5 MINUTES | Isabela grows a forest in the drought | Eleven heirs, one planet, one kitchen | Pip is found: the last heir | A fruit labeled "her favourite" | **TWIST:** Kade claims Item 13 by loophole. He still legally holds Item Seven (the Double), so he counts as one of "all twelve heirs" |
-| 12 | What If Aliens Left You… Their Last Child? | ITEM 13 | The vault opens | Pip interrogates the Executor ("Mr. Shiny") | The music box, the only thing that wakes her. All twelve kindnesses replayed. **"Hello."** | — | Kade withdraws; guardians accepted. "There is one more clause. It concerns Earth." |
+Every episode follows the Ep1 pattern:
+- cold open on the power at its most spectacular (in medias res)
+- "one day earlier", then who the heir is and what they want
+- the gift arrives
+- discovery and comedy
+- the gift's science, shown in hologram diagrams
+- a dopamine montage
+- the power's catch bites
+- a temptation (usually Kade)
+- a rescue only this power can do
+- home
+- a season clue, then a teaser for the next heir
+
+| Ep | Title | Thumbnail | The rescue | The running gag | The heart | Season clue |
+|---|---|---|---|---|---|---|
+| 1 | What If Everything You Touched Lost Its Gravity? | NO GRAVITY | Jonah floats a collapsed market roof and catches Kemi in a storm | Everything weightless drifts up, including the goat | He throws away his ticket to Mars, his phone, to reach her | A 13th dot in his palm |
+| 2 | What If You Had the Moon's Gravity? | GRANNY JUMP | Mags leaps a flooded street, carrying kids to the roofs | She floats off whenever she sneezes | She finally admits who's been paying the lunch debts | Her jump leaves a faint 13th footprint |
+| 3 | What If You Had a Black Hole in Your Hand? | IT ATE A CAR | Arjun swallows a wildfire wall | It eats Kade's car | The stray dog stays by him | His black hole "hums" a lullaby |
+| 4 | What If You Had Saturn's Rings? | NOTHING GETS IN | Kenji shields a crowd during a stadium collapse | Nobody can hand him anything | He brings the night guard into the rings | The rings show 13 bands, not 12 |
+| 5 | What If You Could Fly Like a Comet? | FASTER THAN JETS | Hamid flies a heart for transplant across Turkey | His cat rides along and hates it | His wife's old voicemail | **TWIST:** Vey writing says "guardians" |
+| 6 | What If You Could Heal With Sunlight? | ONLY UNTIL SUNSET | Sofia races the sunset to heal a ward of patients | Arguing with the Executor about sunset times | **She heals Kade** when no one else would | Kade: "Ask your Executor how their star *really* died." |
+| 7 | What If There Were Two of You? | WHICH ONE IS ME | Chloé's two selves save two places at once | Her twin is better at her life | **One self chooses Kade** | Kade gains a gifted ally |
+| 8 | What If You Could Hold a Tiny Sun? | NO MORE NIGHT | Tyrell lights Detroit in a blizzard blackout | Energy CEOs out-polite each other | Chloé's twin comes home | The Pocket Sun flickers in the shape of a cradle |
+| 9 | What If You Could See Anything in the Universe? | I SAW WHAT ATE IT | Sven sees an asteroid early enough to warn a town | Finally proven right; he refuses to be smug, and fails | The Executor confesses what happened | **TWIST:** the Quiet put Betelgeuse out |
+| 10 | What If Anything You Pointed At Orbited You? | NOTHING FALLS | Mei catches a falling cable car | Her coffee orbits her | Told "no" all her life, she catches 40 people | She tracks the 13th thread to the ocean |
+| 11 | What If You Could Grow a Forest in Minutes? | A HOUSE IN 5 MIN | Isabela grows a firebreak forest | Eleven heirs, one kitchen | Pip is found | **TWIST:** Kade reaches the 13th first |
+| 12 | What If Your Power Was Useless? | THE 13TH | Pip's Twinkle calms the last Vey child | Pip interrogates "Mr. Shiny" | All twelve kindnesses replayed. The child's first word: "Hello." | "There is one more gift. It is for Earth." (S2) |
 
 ## Seeds → payoffs (rewatch map)
-
 | Seed | Where | Payoff |
 |---|---|---|
-| "Nobody saw. Nobody… except me." | Ep1 cold open (and every cold open) | Ep12: all twelve unseen kindnesses are the selection criterion |
-| The radio keeps playing | Ep1 final minute | Ep12 montage opens on Mrs. Bello's window |
-| "Which one was yours?" "…The dark one." | Ep1 desert | Ep9: the Executor's grief explained |
-| Small second seat | Ep1 | Ep12: the child's seat. Jonah flies her home. |
-| "I am not permitted to explain physics you have not discovered yet." | Ep1 Moon | Ep9: what the Executor *is* permitted to say has limits, and so does what it chose not to say |
-| Kade: "I only need one of you to slip." | Ep1 | Ep7, Ep11 |
-| Sofia heals Kade | Ep6 | Ep12: kindness repaid; he withdraws |
-| Biscuit's hummed tune | Ep3 | Ep12: the same melody as the music box |
-| Vey word "the-one-sent-ahead" | Ep5 | Ep12: the child's title |
-| "Home = the place where you sleep" | Ep1 | Ep12: the child sleeps in Jonah's ship, so for her, home is with the heirs |
-
-## Every episode ends with the Ledger
-`HEIRS FOUND n/12 · ITEM THIRTEEN: SEALED` · next clause teaser · *"I'm still reading."*
+| "Nobody else saw that. Remember it anyway." | Ep1 (radio and toffee) | Ep12: why the twelve were chosen |
+| The 13th dot in Jonah's palm | Ep1 ending | Ep12: the child |
+| Betelgeuse "switched off" instead of exploding | Ep1 | Ep9: the Quiet |
+| Kade: "There are eleven more of you." | Ep1 | Ep7, Ep11 |
+| The toffee "for a very important day" | Ep1 (setup and payoff in the same episode) | Proves to the audience that this show pays off its setups |
+| Sofia heals Kade | Ep6 | Ep12: he chooses the child's side |

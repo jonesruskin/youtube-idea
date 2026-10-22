@@ -1,7 +1,9 @@
 import React, {useId} from 'react';
 import {useCurrentFrame} from 'remotion';
+import {useShotOptional} from '../engine/shot-context';
 import {C} from '../theme';
 import {characters, type CharacterDesign, type CharacterId} from './registry';
+import {emphasisAt, visemeAt, type Viseme} from './visemes';
 
 /**
  * Character rig. Flat "night-ink" style: real skin tones, navy ink outline, signature-color rim light.
@@ -121,6 +123,11 @@ export type FigureProps = {
   seed?: number;
   /** Overrides (props held in hand etc.) rendered at the right hand. */
   holding?: React.ReactNode;
+  /** Gift glow on the palm(s): 0..1. Jonah's Zero-G Touch is orange. */
+  palmGlow?: number;
+  glowHand?: 'r' | 'l' | 'both';
+  /** Fist-clench (0 open … 1 closed): the off-switch for Zero-G Touch. */
+  fist?: number;
 };
 
 export const Figure: React.FC<FigureProps> = ({
@@ -141,15 +148,34 @@ export const Figure: React.FC<FigureProps> = ({
   opacity = 1,
   seed = 0,
   holding,
+  palmGlow = 0,
+  glowHand = 'r',
+  fist = 0,
 }) => {
   const frame = useCurrentFrame() + seed * 17;
   const id = useId().replace(/:/g, '');
   const d: CharacterDesign = typeof char === 'string' ? characters[char] : char;
+  // Automatic lip-sync: if this character's speaker has a line playing right now, follow it.
+  const shotCtx = useShotOptional();
+  const live = d.speaker && shotCtx ? shotCtx.lineNow(d.speaker) : null;
+  const isTalking = talking || Boolean(live);
+  const vis: Viseme | null = live
+    ? visemeAt(live.text, live.t, live.duration, live.chars)
+    : talking
+      ? visemeAt('hello there how are you doing today', (frame / 30) % 3.2, 3.2)
+      : null;
+  const emphasis = live ? emphasisAt(live.text, live.t, live.duration) : 0;
   let p: Pose = typeof pose === 'string' ? POSES[pose] : pose;
   if (toPose) p = blendPose(p, typeof toPose === 'string' ? POSES[toPose] : toPose, blend);
   if (walk !== undefined) {
     const s = Math.sin(walk);
     p = {...p, lLeg: [s * 22, Math.max(0, -s) * 25], rLeg: [-s * 22, Math.max(0, s) * -25], lArm: [p.lArm[0] - s * 14, p.lArm[1]], rArm: [p.rArm[0] - s * 14, p.rArm[1]]};
+  }
+
+  if (isTalking) {
+    // Conversational hand movement: the gesturing arm drifts with the rhythm of speech.
+    const g = Math.sin(frame * 0.21) * 7 + Math.sin(frame * 0.53) * 3;
+    p = {...p, rArm: [p.rArm[0] + g * 0.4, p.rArm[1] + g], headTilt: (p.headTilt ?? 0) + Math.sin(frame * 0.33) * 2.2};
   }
 
   const h = d.height;
@@ -208,13 +234,30 @@ export const Figure: React.FC<FigureProps> = ({
   const skirtPath = `M${-hipW / 2 - 6},${hipY} L${hipW / 2 + 6},${hipY} L${hipW / 2 + 22},${-8} L${-hipW / 2 - 22},${-8} Z`;
 
   const mouthY = headY + headR * 0.42;
-  const talkOpen = talking ? 0.25 + 0.75 * Math.abs(Math.sin(frame * 0.85 + Math.sin(frame * 0.31) * 2)) : 0;
   const mouth = (() => {
     const w = headR * 0.34;
-    const m = talking && face.mouth !== 'open' ? 'talk' : face.mouth;
+    const m = vis ? 'talk' : face.mouth;
     switch (m) {
-      case 'talk':
-        return <ellipse cx={0} cy={mouthY + 2} rx={w * 0.55} ry={2 + talkOpen * headR * 0.13} fill="#3A1414" stroke={stroke} strokeWidth={3} />;
+      case 'talk': {
+        const v = vis!;
+        // Base expression shapes the corners (smiling while talking reads very differently).
+        const smile = face.mouth === 'smile' || face.mouth === 'grin' ? 1 : face.mouth === 'frown' ? -1 : 0;
+        const rx = w * (0.42 + v.wide * 0.5 - v.round * 0.3);
+        const ry = 1.5 + v.open * headR * 0.2;
+        if (v.pressed || v.open < 0.06) {
+          return <path d={`M${-rx},${mouthY + 2 - smile * 3} Q0,${mouthY + 4 + smile * 5} ${rx},${mouthY + 2 - smile * 3}`} stroke={stroke} strokeWidth={4.5} fill="none" strokeLinecap="round" />;
+        }
+        const top = mouthY + 2 - ry * 0.45 - smile * 2;
+        const bot = mouthY + 2 + ry;
+        const path = `M${-rx},${mouthY + 2 - smile * 3} Q0,${top - ry * 0.25} ${rx},${mouthY + 2 - smile * 3} Q${rx * 0.9},${bot} 0,${bot + ry * 0.15} Q${-rx * 0.9},${bot} ${-rx},${mouthY + 2 - smile * 3} Z`;
+        return (
+          <g>
+            <path d={path} fill="#3A1414" stroke={stroke} strokeWidth={3.5} strokeLinejoin="round" />
+            {v.open > 0.35 && <ellipse cx={0} cy={bot - ry * 0.25} rx={rx * 0.45} ry={ry * 0.28} fill="#C2464F" />}
+            {(v.teeth || v.open > 0.5) && <rect x={-rx * 0.6} y={top - ry * 0.05} width={rx * 1.2} height={Math.max(2, ry * 0.32)} rx={2} fill="#FFFFFF" />}
+          </g>
+        );
+      }
       case 'smile':
         return <path d={`M${-w},${mouthY - 2} Q0,${mouthY + w * 0.7} ${w},${mouthY - 2}`} stroke={stroke} strokeWidth={4} fill="none" strokeLinecap="round" />;
       case 'grin':
@@ -252,7 +295,7 @@ export const Figure: React.FC<FigureProps> = ({
   };
   const brow = (side: -1 | 1) => {
     const bx = side * headR * 0.36;
-    const by = headY - headR * 0.34 + face.browY;
+    const by = headY - headR * 0.34 + face.browY - emphasis * 5;
     const inner = bx - side * headR * 0.16;
     const outer = bx + side * headR * 0.16;
     return <path key={`b${side}`} d={`M${inner},${by - face.brow} L${outer},${by}`} stroke={stroke} strokeWidth={6} strokeLinecap="round" />;
@@ -276,6 +319,21 @@ export const Figure: React.FC<FigureProps> = ({
       }
       case 'bun':
         return <circle cx={0} cy={headY - headR * 1.1} r={headR * 0.42} fill={hc} stroke={stroke} strokeWidth={sw} />;
+      case 'puffs':
+        return (
+          <g>
+            {[-1, 1].map((s) => (
+              <circle key={s} cx={s * headR * 0.85} cy={headY - headR * 0.85} r={headR * 0.48} fill={hc} stroke={stroke} strokeWidth={sw} />
+            ))}
+          </g>
+        );
+      case 'curlsGrey': {
+        const curls = Array.from({length: 11}, (_, i) => {
+          const a = Math.PI + (i / 10) * Math.PI;
+          return <circle key={i} cx={Math.cos(a) * headR * 1.02} cy={headY - headR * 0.15 + Math.sin(a) * headR * 1.0} r={headR * 0.3} fill={hc} stroke={stroke} strokeWidth={3} />;
+        });
+        return <g>{curls}</g>;
+      }
       case 'gele':
         return (
           <g>
@@ -321,6 +379,16 @@ export const Figure: React.FC<FigureProps> = ({
             <path d={`M${-headR},${headY} Q${-headR},${headY - headR * 1.15} 0,${headY - headR * 1.1} Q${headR},${headY - headR * 1.15} ${headR},${headY} Q${headR * 0.7},${headY - headR * 0.7} 0,${headY - headR * 0.7} Q${-headR * 0.7},${headY - headR * 0.7} ${-headR},${headY} Z`} fill={hc} stroke={stroke} strokeWidth={4} />
             {[-1, 1].map((s) => (
               <path key={s} d={`M${s * headR * 0.95},${headY} q${s * 6},${headR * 0.8} 0,${headR * 1.4}`} stroke={hc} strokeWidth={10} fill="none" strokeLinecap="round" />
+            ))}
+          </g>
+        );
+      case 'puffs':
+        return <path d={`M${-headR},${headY - headR * 0.05} Q${-headR},${headY - headR * 1.05} 0,${headY - headR * 1.02} Q${headR},${headY - headR * 1.05} ${headR},${headY - headR * 0.05} Q${headR * 0.6},${headY - headR * 0.68} 0,${headY - headR * 0.66} Q${-headR * 0.6},${headY - headR * 0.68} ${-headR},${headY - headR * 0.05} Z`} fill={hc} stroke={stroke} strokeWidth={4} />;
+      case 'curlsGrey':
+        return (
+          <g>
+            {[-0.55, -0.15, 0.25, 0.6].map((x, i) => (
+              <circle key={i} cx={x * headR} cy={headY - headR * 0.82 + (i % 2) * 6} r={headR * 0.27} fill={hc} stroke={stroke} strokeWidth={3} />
             ))}
           </g>
         );
@@ -422,8 +490,22 @@ export const Figure: React.FC<FigureProps> = ({
         </g>
         {/* front arm */}
         <Limbs path={RA.d} color={d.topColor} w={limb} />
-        <circle cx={RA.hx} cy={RA.hy} r={limb * 0.62} fill={d.skin} stroke={stroke} strokeWidth={4} />
+        <circle cx={RA.hx} cy={RA.hy} r={limb * 0.62 * (1 - fist * 0.18)} fill={d.skin} stroke={stroke} strokeWidth={4} />
+        {fist > 0.5 && <path d={`M${RA.hx - limb * 0.35},${RA.hy - limb * 0.1} l${limb * 0.7},0`} stroke={d.skinShade} strokeWidth={3} />}
         {holding && <g transform={`translate(${RA.hx},${RA.hy})`}>{holding}</g>}
+        {palmGlow > 0 &&
+          (glowHand === 'both' ? [LA, RA] : glowHand === 'l' ? [LA] : [RA]).map((hnd, i) => (
+            <g key={`pg${i}`} opacity={palmGlow * (1 - fist)}>
+              <circle cx={hnd.hx} cy={hnd.hy} r={limb * 3.2} fill={d.signature} opacity={0.18 + 0.06 * Math.sin(frame * 0.4)} />
+              <circle cx={hnd.hx} cy={hnd.hy} r={limb * 1.5} fill={d.signature} opacity={0.4} />
+              <circle cx={hnd.hx} cy={hnd.hy} r={limb * 0.5} fill="#FFF3D6" />
+              {[0, 1, 2, 3, 4, 5].map((k) => {
+                const a = (k / 6) * Math.PI * 2 + frame * 0.05;
+                const rr = limb * (1.8 + 0.6 * Math.sin(frame * 0.2 + k));
+                return <circle key={k} cx={hnd.hx + Math.cos(a) * rr} cy={hnd.hy + Math.sin(a) * rr} r={2.5} fill="#FFE2B0" />;
+              })}
+            </g>
+          ))}
       </g>
     </g>
   );

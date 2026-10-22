@@ -1,49 +1,46 @@
 # 06 · Episode formula: how a Blink File is built
 
-## The seven sections (our signature, not theirs)
+## The story spine
+Each scene must connect to the next with **"but"** or **"therefore"**, never "and then". That is what makes viewers keep watching without noticing why.
 
-| # | Section | Job | Ep1 timing |
+| # | Section | Job | Ep1 |
 |---|---|---|---|
-| 0 | **Flash-forward** (≤10s) | Open on the *payoff*: the heir mid-joy with the inheritance | 0:00 |
-| 1 | **The Clause** | Cold open: the heir's unseen kindness. Then the Executor reads their clause from the will. | 0:08 |
-| 2 | **The Blink** (Ep1–3 only, then 15s) | Re-establish the spine for newcomers: star out, broadcast, twelve heirs | 0:52 |
-| 3 | **The Delivery** | How the inheritance arrives. Always spectacular, always funny. | 2:00 |
-| 4 | **The Rules** | Three fine-print rules on the pearl slate. Plant the loophole here. | 2:38 |
-| 5 | **The Joyride** | 2–3 minutes of pure wish-fulfilment: the "I want that" core. Executor's Footnotes carry the real science. | 3:17 |
-| 6 | **The Loophole** | Kade (or circumstance) pushes the heir toward breaking a rule. Escape through *cleverness* (physics, wording, kindness), never luck. | 6:10 |
-| 7 | **The Ledger** | Emotional button, the Item-13 clue, the Ledger card, the next clause, "I'm still reading." | 9:00 |
+| 1 | **Cold open** (≤45s) | The power at its most spectacular, mid-crisis, then a freeze-frame on a cliffhanger plus the title. Three open loops at once: *how?*, *what happens next?*, and *what's the mistake?* | Flying bus, sneeze, freeze |
+| 2 | **Their world** | Who they are, what they want, what they're stuck in. One unseen kindness. Two laughs. | Phone stall, Tunde, the radio, the toffee |
+| 3 | **The night a star died** | The event, shown (Ep1 tells it in full; later episodes recap in 15s) | Orion, the size reveal, twelve threads |
+| 4 | **The gift** | Discovery through comedy, with a "rule of three" test so the power's rules are obvious | Floating on the roof, the fall, flip-flop tests, the hug |
+| 5 | **The science** | The Executor's hologram shows where the power comes from in real space science | ISS 90% gravity, Newton's cannon |
+| 6 | **The best day** | A dopamine montage with the catch hidden inside it | Fridge, bike, oranges, the goat |
+| 7 | **The catch bites** | The episode's opening crisis catches up. **Mid-roll 1** lands on that cliffhanger. | The bus and the sneeze |
+| 8 | **The offer** | Kade offers the heir their dream | Mars |
+| 9 | **The storm** | A rescue only this power can do. It costs the heir their dream. **Mid-roll 2** lands mid-rescue. | The market roof, Kemi, throwing the phone |
+| 10 | **Home** | Setup payoffs, the emotional button, then the season clue and the next heir's teaser | Toffee, fridge, 13th dot, Mags |
 
-**Runtime:** aim for 9:30–11:00. Never pad to reach 8:00; that's a floor, not a target. Mid-rolls go **after an open loop**, never mid-joke:
-- #1 at the end of the Joyride, on the Item-13 clue
-- #2 at the Loophole's "he's not going to make it" beat
+**Runtime:** 9–11 min. 8:00 is a floor, never a target.
 
 ## Retention rules (enforced by `npm run lint:episode`)
-- A spoken hook within **15s**.
-- Something new (a mood change, SFX, chapter or footnote) at least every **75s**.
-- **No single shot longer than ~16s.** Split it or move the camera.
-- At least 3 chapters, starting at 0:00.
-- Every footnote has a source.
+- A spoken hook within 15s.
+- A **beat** (`laugh`, `wow`, `heart` or `loop`) at least every **45s**. Aim for a laugh every ~30s.
+- No shot over ~16s without internal camera movement.
+- Mid-rolls only after open loops, at least 90s apart.
+- Every science idea must carry a source. The source goes in the description; it never appears on screen.
 
-## Writing rules
-- **The viewer is the heir.** Narration describes *the heir's* experience in a way the viewer can step into. The title always says "You".
-- **Wonder needs numbers.** "384,400 km", "Forty minutes. Thirty-nine if you stop asking." A real number makes a fantasy feel earned.
-- **Three laughs minimum.** Most come from the Executor's literalism and from ordinary people reacting to cosmic things (the goat).
-- **One lump in the throat**, always tied to the heir's *inner* trait (Jonah has never left Lagos, so the payoff is flying Grandma over it).
-- **The loophole must be planted in the Rules section.** If the audience couldn't have solved it, it's a cheat.
-- **The cold-open kindness is never commented on.** It's the season's answer, hidden in plain sight.
-- **No cruelty, no gore.** Keep it 13+.
+## Show, don't tell
+- **No text slates, no rule cards, no pop-up notes.** Science is shown as gold hologram diagrams with labels of 1–3 words.
+- The power's rules are taught **by demonstration**, in threes: open palm floats, fist drops, hug does nothing.
+- Every abstract number gets a picture: "Betelgeuse would swallow Mars", "90% of a rocket is fuel".
+- If a viewer with the sound off can't follow the scene, redraw it.
 
 ## Packaging
-- **Title:** `What If Aliens Left You [Their/a/an] [Dream Object]?` For the "useful" items, sharpen with a stake or number ("…a Cure for Everything?").
-- **Thumbnail (1280×720, rendered from code, `<id>-thumbnail`):** a case-file strip, a red **HEIR #NN** stamp, the glowing inheritance, a joyful or shocked face, and 2–4 words that ask a question the title doesn't answer ("MOON BY 4AM").
-- **Description:** generated by `npm run metadata`. It includes the logline, comment prompt, chapters with real timestamps, footnotes with sources, and a fiction disclaimer.
-- **Pinned comment:** the Item-13 question for the episode ("Who do YOU think the small seat is for?").
-- **Shorts (3 per episode):** the Delivery gag, the best Joyride beat, and the Loophole escape. Each ends on "Full File on the channel."
+- **Title:** "What If [You / Everything You Touched] [the power in plain words]?"
+- **Thumbnail:** one impossible image (a bus held up by one finger) plus two words ("NO GRAVITY") in white and orange.
+- **Description:** generated by `npm run metadata`, with chapters, sources for the science, and the comment prompt.
+- **Captions:** `ep01.srt` (dialogue, for YouTube) and `ep01-described.srt` (with stage directions, for review).
+- **Pinned comment:** the season question ("Why are there THIRTEEN dots?").
 
 ## Production checklist
-1. Write `episodes/epNN-*/script.ts` (shots, lines, footnotes, chapters, midrolls).
-2. `npm run lint:episode epNN`
-3. `npx tsx scripts/preview.ts epNN --scale=0.25`, then build a contact sheet and review every shot.
-4. `npm run voice epNN` (ElevenLabs; see `ELEVENLABS_SETUP.md`). Timings re-flow automatically.
-5. `npm run render epNN`. This writes the MP4, thumbnail, SRT, metadata and score.
-6. Upload, paste the metadata, set the manual mid-rolls, upload the SRT as captions, and run Test & Compare with 3 thumbnails.
+1. Write `episodes/epNN-*/script.ts`, giving every shot an `action` and `beats`.
+2. `npm run lint:episode epNN`, then `npx tsx scripts/make-screenplay.ts epNN` and read the screenplay aloud.
+3. `npx tsx scripts/preview.ts epNN --scale=0.25` and review a contact sheet of every shot.
+4. `npm run voice epNN` (see `ELEVENLABS_SETUP.md`). Timing and lip-sync re-flow to the real voice.
+5. `npm run render epNN`.

@@ -1,79 +1,78 @@
 # 03 · Channel bible: THE BLINK FILES
 
-> **Every series is a File.** File 01 is **THE WILL**.
+> **Every series is a File.** File 01 is **THE GIFTS**.
 > Motto: ***Be kind when no one's watching. Someone is.***
 
 ## The one-sentence pitch
-**Betelgeuse went dark. Three days later, every radio on Earth received the last will and testament of the alien civilization that lived there, and they left everything they owned to twelve ordinary humans.**
+**Betelgeuse died. With its last light, the people who lived there sent their powers to Earth: twelve gifts, for twelve ordinary people.**
 
-## The spine, in the order viewers learn it
+A child can repeat it, and every viewer can picture it landing in *their* hand.
 
-1. **The Blink.** Betelgeuse, the red star on Orion's shoulder, can be seen from every country on Earth. One night it went out. It didn't explode; it went dark like a switch.
-   - Grounded in reality: in 2019–20 Betelgeuse really did fade to about a third of its brightness (the "Great Dimming").
-   - It's about 550 light-years away, so whatever happened there happened 550 years ago.
-2. **The Broadcast.** Three days later, every radio, phone and TV on Earth received the same transmission from the outer solar system: *"This is the last will and testament of the Vey. We are gone. We leave everything we owned… to twelve of you."*
-3. **The clever bit.** The Vey sent their **Executor** (a probe) centuries ago. It has been waiting in our solar system for one signal: the moment humans *saw* Betelgeuse go dark. Light takes 550 years to cross that distance, so **their own death was the timer.** When we saw it, the will activated.
-4. **Twelve heirs. Eight billion candidates.** Nobody knows who the heirs are, so every viewer can imagine it's them. The Executor signs off every episode with: *"If you're wondering whether it could be you… I'm still reading."*
+## How a viewer learns the spine (Episode 1 order)
+1. **Cold open:** a teenager is holding a bus in the air. *How?* The hook is the power, never the lore.
+2. **The night a star died:** Orion, the red star on his shoulder, how huge it is (shown: it swallows the orbits of Mercury, Venus, Earth and Mars), then it switches off.
+3. **Twelve silver threads** fall from the dark spot onto twelve places on Earth. One lands in a sleeping boy's palm.
+4. **The Executor**, "the last machine of the Vey", explains in one line: *"Before their star went out, they gave away the one thing they could not take with them: their gifts."*
+5. **The episode's last line opens the season:** *"Twelve gifts were sent. Thirteen arrived."*
 
-## The Vey (lore bible: reveal slowly)
-- An old, gentle civilization of builders who lived in a ring of constructed worlds around Betelgeuse, drinking its light.
-- **Design language:** pearl surfaces, gold filigree and a cool inner glow. Every inheritance looks Vey-made, so the audience learns to recognize it.
-- **What really happened (revealed in Ep9):** they didn't die of old age. **Something put Betelgeuse out.** The Vey call it ***the Quiet***: a thing that moves between stars and swallows their light. Knowing they couldn't outrun it, the Vey sent away what they loved most, with everything she would need.
-- **Item Thirteen (revealed in Ep12):** the last Vey, *a child*, in stasis. All twelve inheritances were what parents leave a child: a ship with a small seat, a planet with a little bedroom, a healer calibrated for a small body, a pet who keeps looking for someone, a music box that plays her lullaby.
+There is no will, no legal language, and no text slates. If an idea can't be shown, it isn't in the episode.
 
-## The mysteries (one sentence each; that's the rule)
+## Power design rules (what makes a gift work on YouTube)
+1. **Readable in one frame.** A glowing palm and a floating bus need no explanation.
+2. **There's an obvious on and off.** Jonah: an open glowing palm means float; a fist means gravity returns; a slow squeeze means a gentle landing. Normal touch, hugs and handshakes are just normal.
+3. **It helps people.** Every episode's climax is a rescue that only this power could pull off.
+4. **It comes from real space science,** shown in hologram diagrams: Newton's cannon, buoyancy, the ISS's 90% gravity, rocket fuel.
+5. **It has a funny side effect** that becomes the episode's running gag. In Ep1, everything weightless slowly drifts upward, including the goat.
+
+## The Twelve and their gifts (File 01)
+| # | Heir | Gift | The sky it comes from | Why you'd want it | The catch |
+|---|---|---|---|---|---|
+| 1 | Jonah, 17, Lagos | **Zero-G Touch** | The space station: falling and missing | Lift anything, fly by throwing things | Everything weightless drifts up; let go too fast and it crashes |
+| 2 | Mags, 71, Yorkshire | **Moon Legs** | The Moon's 1/6 gravity | Leap over buses, never fall hard again | She can't stay on the ground when she sneezes |
+| 3 | Arjun, 12, Jaipur | **Black Hole Hand** | Black holes | Swallow floods, fires, falling debris | It gets hungrier the more he uses it |
+| 4 | Kenji, 34, Tokyo | **Saturn's Rings** | Saturn's rings | An orbiting ice shield that protects crowds | The rings orbit *him*, so he can never stand close to anyone |
+| 5 | Hamid, 58, Istanbul | **Comet** | Comets | Fly with a glowing tail | Like a comet, he only gets brighter the closer he goes to the Sun (heat) |
+| 6 | Sofia, 29, Buenos Aires | **Sunlight Hands** | The Sun | Heal anything | She can only heal while the Sun is up |
+| 7 | Chloé, 24, Marseille | **Gemini** | Twin stars | Be two of yourself | The twin has its own opinions |
+| 8 | Tyrell, 31, Detroit | **Pocket Sun** | Fusion | Light and heat on demand; end blackouts | It runs on his mood |
+| 9 | Sven, 66, Kiruna | **Hubble Eyes** | Telescopes and old light | See anything, any distance, even the past | He can't un-see |
+| 10 | Mei, 19, Chengdu | **Orbit** | Gravity wells | Anything she points at orbits her; she catches falling people | Big things orbit slowly |
+| 11 | Isabela, 40, Pará | **Terraform** | Planet-making | Grow a forest in minutes | Growth follows her heartbeat |
+| 12 | Pip, 8, Québec | **Twinkle** | Starlight through air | Makes any light twinkle. "The most useless power in the universe" | Until the finale |
+
+## Mysteries (one sentence each)
 | Mystery | Planted | Paid off |
 |---|---|---|
-| What is Item Thirteen? | Ep1 Ledger: "SEALED until all twelve are together" | Ep12: a child |
-| Why these twelve? | Every cold open shows a small kindness nobody saw | Ep12: the Executor replays all twelve. "We were looking for people who are kind when no one is watching." |
-| Who is the small seat for? (plus 10 other odd details) | One per episode (see `05-season-one.md`) | Ep12 |
-| What happened to the Vey? | Ep1: "Which one was yours?" "…The dark one." | Ep9: the Quiet |
-| Will Kade win? | Ep1: "I only need one of you to slip." | Ep7 (he wins one), Ep11 (he wins Item Thirteen on a loophole), Ep12 (he withdraws) |
+| **Why are there thirteen?** | Ep1 ending: a 13th dot appears in Jonah's palm | Ep12: the 13th thread carried the last Vey, a child |
+| **Why these twelve?** | Every episode shows a small kindness nobody saw (Jonah: the radio; Kemi's toffee) | Ep12: the Executor replays all twelve. "We weren't looking for the strongest. We were looking for people who are kind when no one is watching." |
+| **What does Kade want?** | Ep1: he tries to *hire* Jonah, then says "There are eleven more of you" | Ep9: he knows what put Betelgeuse out |
+| **What happened to the Vey?** | Ep1: Betelgeuse "switched off" instead of exploding | Ep9: something put it out. The Vey call it *the Quiet*. |
 
 **Twist ladder:**
-- **Ep5:** the will's key word was mistranslated: not "heirs" but **"guardians."** *They didn't leave us their things. They left us a job.*
-- **Ep7:** an heir loses. Kade wins an inheritance.
-- **Ep9:** "Something put it out."
-- **Ep11:** Kade claims Item Thirteen.
-- **Ep12:** a child.
+- **Ep5:** Hamid reads Vey script. The gifts weren't meant to make heroes; they were meant to make **guardians**.
+- **Ep7:** one of Chloé's two selves goes to work for Kade.
+- **Ep9:** something put the star out.
+- **Ep11:** Kade finds the thirteenth first.
+- **Ep12:** it's a child. Pip's "useless" Twinkle is the only thing that calms her.
 
-## Why the finale won't feel like a betrayal
-1. **Every answer is seeded on screen, and fairly.** A viewer who rewatches can find all twelve odd details and all twelve kindnesses.
-2. **The twist reframes what came before; it doesn't contradict it.** "Heirs" become "guardians", gifts become a dowry, and a contest becomes custody.
-3. **The "useless" item pays off.** Pip's music box, mocked all season, is the only thing that wakes the child. Audiences love it when the dismissed thing turns out to matter.
-4. **The villain's turn is earned.** Sofia healed Kade in Ep6 when nobody else would. In Ep12 he returns the kindness. The theme pays off through the antagonist too.
-5. **The finale opens a door rather than leaving a hole.** The central question is fully answered, and a new one opens: *"There is one more clause. It concerns Earth."* (Season 2: THE GUARDIANS.)
+## The Executor
+A floating pearl prism with gold rings, and the narrator. Precise, polite and accidentally hilarious ("That is the fourth flip-flop thrown at me today. I believe it is how humans say hello."). It explains science by **projecting gold hologram diagrams**, never by putting words on screen. It knows more than it says.
 
-## Recurring cast (non-heirs)
-- **The Executor.** Pearl prism with orbiting gold rings. Precise, literal, unfailingly polite, and accidentally hilarious. It is the narrator: it reads every file to us. Running bits: it quotes statistics about human behavior ("the most common human response"); it is "not permitted to explain physics you have not discovered yet"; Pip calls it "Mr. Shiny".
-- **Desmond Kade.** The richest man on Earth until Mags. Silver hair, immaculate manners, never raises his voice. He is the will's **contester**: if an heir breaks a rule, the inheritance passes to him. Running gag: *"That was a leased vehicle."* Hidden motive: he has seen classified images of the Quiet and wants the inheritances to build an escape for humanity, with himself first in line.
-- **Priya.** Kade's assistant. Deadpan, and secretly on the heirs' side by Ep10.
+## Desmond Kade
+The richest man on Earth, who builds rockets. He is never a cartoon villain: he makes offers people would genuinely want (Mars!). He wants the gifted on his payroll before he explains why. His line *"There are eleven more of you"* drives the season.
 
 ## Tone
-- **Wonder first, then comedy, then heart.** Every episode needs a jaw-drop, at least three laughs, and one lump in the throat.
-- The Executor's dry wit carries the humor. It is never mean.
-- Stakes are real, but **no gore and no cruelty**, so the story suits ages 13+ and still lands with adults.
-- The science is real wherever the story touches it, and footnoted.
+- **A laugh every ~30 seconds,** a wow every ~minute, and one lump in the throat per episode.
+- **Each scene causes the next** ("but" or "therefore", never "and then").
+- **Everything is shown.** Science comes as diagrams in the Executor's hologram style, with 1–3-word labels at most.
+- **13+.** Real stakes, no cruelty.
 
-## Visual identity: "Night Ink & Pearl"
-- **Characters:** flat color, real skin tones, navy-ink outlines (5px at 1×), and a rim light in the character's signature color. Faces are expressive with big readable eyes. One design per character, defined once in `src/characters/registry.ts`.
-- **Palette:** night `#070A1C`, ink `#0B1026`, pearl `#F4EFE6`, gold `#E8C27A`, stamp red `#E2483D`, Betelgeuse orange `#FF7A3D`.
-- **Typography:**
-  - Cormorant Garamond for the Vey's will
-  - Unbounded for titles
-  - Space Grotesk for UI
-  - IBM Plex Mono for ledger and stamps
-- **On-screen text is used sparingly.** It appears only for place/time stamps, footnotes, the Rules, the Ledger and title cards. Never captions in the picture; captions ship as `.srt`.
-- **Thumbnails:** a case-file strip, a red **HEIR #NN** stamp, the glowing inheritance, one reaction face, and 2–4 words of curiosity (e.g. "MOON BY 4AM").
-
-## Voice casting (ElevenLabs)
-| Speaker | Direction |
-|---|---|
-| Executor | Calm, warm-dry, faintly formal. Mid-low register. Precise consonants. Think museum curator who loves you. |
-| Jonah | 17, Nigerian English, quick and funny, cracks when emotional. |
-| Grandma Ada | 81, Nigerian English, commanding, then delighted. |
-| Mrs. Bello | Older, soft, Yoruba-accented English. |
-| Kade | 60s, smooth transatlantic, never hurried. |
-| Priya | 30s, crisp, deadpan. |
-| Anchor | Generic news cadence. |
-| Captain / Fishermen | Ghanaian or Nigerian English, urgent. |
+## Visual identity: "Lagos Light"
+- **Characters:** flat colour, real skin tones, navy-ink outlines and a signature-colour rim light. Every character is defined once in `src/characters/registry.ts`. Lip-sync is phoneme-based (`src/characters/visemes.ts`).
+- **Worlds:**
+  - five parallax depth layers
+  - time-of-day skies (dawn pink, noon blue, golden hour, sunset, storm) with painted clouds
+  - colourful facades with real Lagos signage humour ("NO CONDITION IS PERMANENT")
+  - a colour grade per scene, with film grain and a vignette over everything
+- **Hologram style:** gold `#F6D58C` line art on deep navy.
+- **Thumbnail:** one impossible image plus two words ("NO GRAVITY").

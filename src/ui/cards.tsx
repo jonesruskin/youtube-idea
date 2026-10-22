@@ -279,7 +279,7 @@ export const Ledger: React.FC = () => {
 
 /** Final card: the Executor's sign-off + the comment prompt. */
 export const EndCard: React.FC = () => {
-  const {frame, ramp, speaking, lineAt} = useShot();
+  const {frame, ramp, speaking, lineAt, props} = useShot();
   return (
     <Stage bg={C.night}>
       <Stars frame={frame} count={300} drift={[0.015, 0]} />
@@ -290,10 +290,10 @@ export const EndCard: React.FC = () => {
       <g opacity={ramp(lineAt(1) + 2.2, 0.8)}>
         <rect x={460} y={730} width={1000} height={110} rx={18} fill={C.ink} stroke={C.gold} strokeWidth={3} />
         <text x={960} y={798} textAnchor="middle" fill={C.gold} fontFamily={fonts.ui} fontWeight={700} fontSize={38}>
-          What would YOU do on your first night with the ship?
+          {(props.prompt as string) ?? ''}
         </text>
         <text x={960} y={920} textAnchor="middle" fill={C.pearl} opacity={0.7} fontFamily={fonts.mono} fontSize={28} letterSpacing={6}>
-          NEXT · ITEM TWO: THE ASTEROID
+          {(props.next as string) ?? ''}
         </text>
       </g>
     </Stage>

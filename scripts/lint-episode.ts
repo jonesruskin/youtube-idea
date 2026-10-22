@@ -22,14 +22,17 @@ for (const s of tl.shots) {
   if (s.duration > 16) warnings.push(`Shot "${s.id}" runs ${s.duration.toFixed(1)}s — split it or add a camera beat.`);
 }
 
-// 4. Re-hooks: something new (sfx, mood change, chapter, footnote or midroll loop) at least every 75s.
-let lastHook = 0;
+// 4. Retention beats: a laugh, a wow, a heart moment or a new open loop at least every 45s.
+let lastBeat = 0;
 for (const s of tl.shots) {
-  if (s.sfx || s.mood || s.chapter || s.footnote) {
-    if (s.start - lastHook > 75) warnings.push(`No re-hook between ${formatTimestamp(lastHook)} and ${formatTimestamp(s.start)}.`);
-    lastHook = s.start;
+  if (s.beats?.length) {
+    if (s.start - lastBeat > 45) errors.push(`No beat (laugh/wow/heart/loop) between ${formatTimestamp(lastBeat)} and ${formatTimestamp(s.start)}.`);
+    lastBeat = s.start;
   }
 }
+if (tl.duration - lastBeat > 45) errors.push(`No beat after ${formatTimestamp(lastBeat)}.`);
+const laughs = tl.shots.filter((s) => s.beats?.includes('laugh')).length;
+if (laughs < tl.duration / 40) warnings.push(`Only ${laughs} laughs in ${formatTimestamp(tl.duration)} — aim for one every ~30s.`);
 
 // 5. Mid-rolls must sit on open loops, and not before 2:30 or within 90s of each other.
 const mids = tl.shots.filter((s) => s.midroll).map((s) => s.end);
@@ -43,8 +46,8 @@ for (const s of tl.shots.filter((x) => x.midroll)) {
   if (!/\?|not|yet|n't|never|\.\.\./i.test(last)) warnings.push(`Mid-roll after "${s.id}" does not end on an open loop.`);
 }
 
-// 6. Every footnote must cite a source.
-for (const s of tl.shots) if (s.footnote && !s.footnote.source) errors.push(`Footnote ${s.footnote.n} has no source.`);
+// 6. Every science beat must cite a source (it goes in the description, not on screen).
+for (const s of tl.shots) if (s.science && !s.science.source) errors.push(`Science in "${s.id}" has no source.`);
 
 // 7. Chapters: YouTube needs ≥3, first at 0:00, each ≥10s.
 const chapters = tl.shots.filter((s) => s.chapter);
@@ -57,6 +60,7 @@ console.log(`  runtime   ${formatTimestamp(tl.duration)} (${tl.duration.toFixed(
 console.log(`  timings   ${Object.keys(voice).length ? 'ElevenLabs voice' : 'estimated (no voiceover yet)'}`);
 console.log(`  mid-rolls ${mids.map(formatTimestamp).join(', ') || '—'}`);
 console.log(`  chapters  ${chapters.map((c) => `${formatTimestamp(c.start)} ${c.chapter}`).join(' | ')}`);
+console.log(`  beats     ${laughs} laughs · ${tl.shots.filter((s) => s.beats?.includes('wow')).length} wows · ${tl.shots.filter((s) => s.beats?.includes('heart')).length} hearts · ${tl.shots.filter((s) => s.beats?.includes('loop')).length} open loops`);
 warnings.forEach((w) => console.log(`  ⚠ ${w}`));
 errors.forEach((e) => console.log(`  ✖ ${e}`));
 if (errors.length) process.exit(1);

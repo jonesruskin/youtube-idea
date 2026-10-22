@@ -197,6 +197,34 @@ const SFX: Record<Sfx, (t: number) => void> = {
     tone(t, 0.25, 120, 60, 0.45, (x) => Math.exp(-x * 10));
     addNoise(t, 0.08, 0.5, (x) => 1 - x, 0.5);
   },
+  // Zero-G: a rising glassy shimmer.
+  float: (t) => {
+    tone(t, 1.4, 300, 900, 0.07, (x) => Math.sin(Math.PI * x));
+    for (let k = 0; k < 6; k++) bell(t + k * 0.09, 1046.5 * Math.pow(1.122, k), 0.02, 0.6);
+  },
+  crash: (t) => {
+    addNoise(t, 1.1, 0.8, (x) => Math.exp(-x * 4), 0.35, 0.05);
+    tone(t, 0.8, 70, 35, 0.4, (x) => Math.exp(-x * 5));
+  },
+  sneeze: (t) => {
+    addNoise(t, 0.35, 0.3, (x) => (x < 0.7 ? x / 0.7 : 1) * 0.6, 0.05, 0.12);
+    addNoise(t + 0.38, 0.25, 0.7, (x) => Math.exp(-x * 9), 0.6);
+  },
+  cheer: (t) => {
+    for (let k = 0; k < 8; k++) addNoise(t + k * 0.05, 2.2, 0.08, (x) => Math.sin(Math.PI * x) * (0.7 + 0.3 * Math.sin(x * 30 + k)), 0.08 + k * 0.01);
+  },
+  horn: (t) => {
+    [0, 0.45].forEach((d) => {
+      tone(t + d, 0.32, 392, 392, 0.06, (x) => (x < 0.9 ? 1 : (1 - x) * 10));
+      tone(t + d, 0.32, 494, 494, 0.05, (x) => (x < 0.9 ? 1 : (1 - x) * 10));
+    });
+  },
+  siren: (t) => {
+    for (let k = 0; k < 4; k++) {
+      tone(t + k * 0.6, 0.3, 650, 950, 0.045, () => 1);
+      tone(t + k * 0.6 + 0.3, 0.3, 950, 650, 0.045, () => 1);
+    }
+  },
 };
 for (const s of tl.shots) if (s.sfx) SFX[s.sfx](s.start);
 

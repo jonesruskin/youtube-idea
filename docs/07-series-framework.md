@@ -3,18 +3,18 @@
 **The Blink Files** is a channel of *Files*. Each File is a 12-episode series built on one impossible cosmic event, set in the same universe, using the same studio, cast library and format signatures. Between Files, **Loose Files** (one-off episodes) keep the cadence going and seed the next series.
 
 ## The File template
-1. **The Event** (one sentence a 12-year-old can repeat): *"Betelgeuse went dark, and its people left their things to twelve of us."*
-2. **Twelve wish-fulfilment entries**, one per episode: twelve heirs, twelve worlds, twelve gifts. The most desirable four go first.
-3. **Rules**: the fine print that creates loopholes and tension without forced dilemmas.
-4. **A sealed mystery** (the "Item Thirteen"), planted in Ep1 with a clue in every episode.
+1. **The Event** (one sentence a 12-year-old can repeat): *"Betelgeuse died, and its people sent their powers to twelve of us."*
+2. **Twelve powers**, one per episode. Each one must be readable in one frame, have an obvious off-switch, help people, and come from real space science. The four most desirable go first.
+3. **A catch per power** that turns into the episode's running gag and its crisis.
+4. **A season mystery in one line** ("Twelve gifts were sent. Thirteen arrived."), planted in Ep1 with a clue in every episode.
 5. **Twist ladder:** Ep5 reframe · Ep7 loss · Ep9 truth · Ep11 reversal · Ep12 payoff plus a door.
 6. **A narrator with a point of view**: the Executor, or the equivalent figure in a new File.
 7. **A theme expressed by the payoff**: in File 01, *be kind when no one's watching.*
 
 ## Planned Files
 
-### FILE 02 · THE GUARDIANS (direct sequel to THE WILL)
-*The twelve heirs are now guardians of the last Vey child, and the Quiet has turned toward the Sun.*
+### FILE 02 · THE GUARDIANS (direct sequel to THE GIFTS)
+*The twelve gifted are now guardians of the last Vey child, and the Quiet has turned toward the Sun.*
 - **Format shift:** "What If You Had to Hide a Child From a Thing That Eats Stars?" Each episode is one guardian's skill against one problem.
 - **Sealed mystery:** what the child's name means, and what she can do.
 
@@ -35,8 +35,8 @@ Leaked pages from Kade's private dossiers on other anomalies. Each one tests a p
 - *What If You Received a Letter From Earth 1,000 Years in the Future?*
 
 ### SHORTS SERIES
-- **Footnotes:** 45-second science bites lifted from the Executor's Footnotes ("Why Earth never sets on the Moon").
-- **The Contest:** 60-second courtroom gags with the Executor ruling on absurd human claims to the inheritances.
+- **Hologram Minutes:** 45-second science bites built from the Executor's hologram diagrams ("Why astronauts float: they're falling and missing").
+- **Gift Tests:** 30-second gags (Jonah vs. the goat, Mags vs. a sneeze) that tease the next episode.
 
 ## Calendar (sustainable for 1–2 people)
 - **Weekly:** 1 long episode (Thursday, 18:00 UTC) and 3 Shorts (Mon/Wed/Sat).
@@ -44,7 +44,7 @@ Leaked pages from Kade's private dossiers on other anomalies. Each one tests a p
 
 ## How to start a new episode
 ```
-cp -r episodes/ep01-the-ship episodes/ep02-the-asteroid   # then rewrite script.ts
+cp -r episodes/ep01-zero-g episodes/ep02-moon-legs   # then rewrite script.ts
 # add it to src/episodes.ts
 # new characters → src/characters/registry.ts; new places → src/env/*.tsx + src/scenes.tsx
 npm run lint:episode ep02

@@ -18,6 +18,12 @@ const ts = (s: number) => {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')},${String(ms % 1000).padStart(3, '0')}`;
 };
 const NAMES: Record<string, string> = {
+  KEMI: 'KEMI',
+  TUNDE: 'TUNDE',
+  CUSTOMER: 'CUSTOMER',
+  PASSENGER: 'PASSENGER',
+  IYA: 'IYA OSUN',
+  MAGS: 'MAGS',
   EXECUTOR: 'EXECUTOR',
   JONAH: 'JONAH',
   GRANDMA: 'GRANDMA',
@@ -57,7 +63,7 @@ const silent: Cue[] = tl.shots
   .filter((s) => !s.lines?.length)
   .map((s) => {
     const p = (s.props ?? {}) as Record<string, string>;
-    const text = s.scene === 'card' ? `[${p.text} — ${p.sub}]` : s.scene === 'titleCard' ? `[THE BLINK FILES · ${episode.file} · Item One: ${episode.title}]` : `[${s.id}]`;
+    const text = s.action ? `[${s.action}]` : `[${s.id}]`;
     return {start: s.start + 0.2, end: s.end - 0.2, text};
   });
 const events = [...tl.lines.map((l) => ({kind: 'line' as const, start: l.start, l})), ...silent.map((c) => ({kind: 'silent' as const, start: c.start, c}))].sort((a, b) => a.start - b.start);
@@ -83,3 +89,15 @@ mkdirSync(join(ROOT, 'renders'), {recursive: true});
 const out = join(ROOT, 'renders', `${id}.srt`);
 writeFileSync(out, cues.join('\n'));
 console.log(`${n} cues → ${out}`);
+
+// Described version for reviewing without voice: each shot's stage direction as a bracketed cue
+// (shown for its first ~3s, before the dialogue for that moment), then the dialogue.
+const described: {start: number; end: number; text: string}[] = [];
+for (const s of tl.shots) {
+  if (s.action) described.push({start: s.start + 0.05, end: s.start + Math.min(3.2, s.duration - 0.1), text: `[${s.action}]`});
+}
+for (const l of tl.lines) described.push({start: l.start, end: l.end, text: `${NAMES[l.speaker]}: ${l.text}`});
+described.sort((a, b) => a.start - b.start);
+const dOut = join(ROOT, 'renders', `${id}-described.srt`);
+writeFileSync(dOut, described.map((c, i) => `${i + 1}\n${ts(c.start)} --> ${ts(c.end)}\n${c.text}\n`).join('\n'));
+console.log(`${described.length} described cues → ${dOut}`);

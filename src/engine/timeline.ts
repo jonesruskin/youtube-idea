@@ -4,7 +4,7 @@ import type {Episode, Line, Shot} from './schema';
  * Voice timings written by scripts/tts.ts once ElevenLabs is connected.
  * Key: `${shotId}:${lineIndex}` → measured duration + audio file in /public.
  */
-export type VoiceMap = Record<string, {seconds: number; file: string}>;
+export type VoiceMap = Record<string, {seconds: number; file: string; chars?: number[]}>;
 
 /** Narration pace used until real voiceover exists (~155 words per minute). */
 const WORDS_PER_SECOND = 2.6;
@@ -26,6 +26,8 @@ export type TimedLine = Line & {
   end: number;
   startInShot: number;
   audio?: string;
+  /** Per-character start times (s, from line start) when voiced — drives lip-sync. */
+  chars?: number[];
 };
 
 export type TimedShot = Shot & {
@@ -60,6 +62,7 @@ export const buildTimeline = (episode: Episode, voice: VoiceMap = {}): Timeline 
         start: start + cursor,
         end: start + cursor + seconds,
         audio: measured?.file,
+        chars: measured?.chars,
       };
       cursor += seconds + (line.pause ?? 0) + LINE_GAP;
       return tl;

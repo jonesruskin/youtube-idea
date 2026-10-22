@@ -1,3 +1,5 @@
+import type {Speaker} from '../engine/schema';
+
 /**
  * THE single source of truth for character design. Every episode draws characters from
  * here, so Jonah in episode 1 is pixel-identical to Jonah in episode 12.
@@ -15,13 +17,16 @@ export type HairStyle =
   | 'ponytail'
   | 'braids'
   | 'bun'
-  | 'cap';
+  | 'cap'
+  | 'puffs';
 
 export type TopStyle = 'jacket' | 'tee' | 'suit' | 'wrapper' | 'cardigan' | 'vest' | 'blouse';
 
 export type CharacterDesign = {
   id: string;
   name: string;
+  /** Script speaker this character voices — the rig lip-syncs automatically when they talk. */
+  speaker?: Speaker;
   /** Heir number in File 01 (0 = not an heir). */
   heir: number;
   /** Overall height multiplier (1 = average adult). */
@@ -53,6 +58,7 @@ export type CharacterDesign = {
 export const characters = {
   jonah: {
     id: 'jonah',
+    speaker: 'JONAH',
     name: 'Jonah Okafor',
     heir: 1,
     height: 0.92,
@@ -73,6 +79,7 @@ export const characters = {
   },
   grandma: {
     id: 'grandma',
+    speaker: 'GRANDMA',
     name: 'Grandma Ada Okafor',
     heir: 0,
     height: 0.86,
@@ -95,6 +102,7 @@ export const characters = {
   },
   mrsBello: {
     id: 'mrsBello',
+    speaker: 'MRS_BELLO',
     name: 'Mrs. Bello',
     heir: 0,
     height: 0.84,
@@ -115,6 +123,7 @@ export const characters = {
   },
   kade: {
     id: 'kade',
+    speaker: 'KADE',
     name: 'Desmond Kade',
     heir: 0,
     height: 1.1,
@@ -135,6 +144,7 @@ export const characters = {
   },
   assistant: {
     id: 'assistant',
+    speaker: 'ASSISTANT',
     name: 'Priya (Kade’s assistant)',
     heir: 0,
     height: 0.95,
@@ -155,6 +165,7 @@ export const characters = {
   },
   anchor: {
     id: 'anchor',
+    speaker: 'ANCHOR',
     name: 'News anchor',
     heir: 0,
     height: 1.0,
@@ -172,6 +183,111 @@ export const characters = {
     shoes: '#111111',
     signature: '#7FD6FF',
     tie: '#E2483D',
+  },
+  kemi: {
+    id: 'kemi',
+    speaker: 'KEMI',
+    name: 'Kemi Bello (7)',
+    heir: 0,
+    height: 0.6,
+    build: 0.8,
+    head: 1.22,
+    skin: '#6B3F27',
+    skinShade: '#52301C',
+    hair: 'puffs',
+    hairColor: '#1A1210',
+    top: 'tee',
+    topColor: '#F2C14E',
+    topAccent: '#D9A441',
+    innerColor: '#F2C14E',
+    pants: '#E07A5F',
+    shoes: '#E07A5F',
+    signature: '#FFD45C',
+  },
+  tunde: {
+    id: 'tunde',
+    speaker: 'TUNDE',
+    name: 'Tunde Bakare (17)',
+    heir: 0,
+    height: 1.0,
+    build: 0.95,
+    head: 1.05,
+    skin: '#8A5536',
+    skinShade: '#6E4128',
+    hair: 'cap',
+    hairColor: '#151010',
+    top: 'tee',
+    topColor: '#F4F4F4',
+    topAccent: '#C9C9C9',
+    innerColor: '#F4F4F4',
+    pants: '#1F2A44',
+    shoes: '#E2483D',
+    signature: '#7FD6FF',
+    glasses: 'square',
+  },
+  iya: {
+    id: 'iya',
+    speaker: 'IYA',
+    name: 'Iya Osun, orange seller',
+    heir: 0,
+    height: 0.9,
+    build: 1.12,
+    head: 1.0,
+    skin: '#5C3521',
+    skinShade: '#44261A',
+    hair: 'headwrap',
+    hairColor: '#E07A1F',
+    top: 'wrapper',
+    topColor: '#3C8D6E',
+    topAccent: '#F2873A',
+    innerColor: '#F2873A',
+    pants: '#3C8D6E',
+    shoes: '#3B2A20',
+    signature: '#F2873A',
+    wrinkles: true,
+  },
+  customer: {
+    id: 'customer',
+    speaker: 'CUSTOMER',
+    name: 'Customer',
+    heir: 0,
+    height: 0.95,
+    build: 1.05,
+    head: 1.0,
+    skin: '#7A4A2E',
+    skinShade: '#5E3620',
+    hair: 'braids',
+    hairColor: '#1A1210',
+    top: 'blouse',
+    topColor: '#C2464F',
+    topAccent: '#9E3540',
+    innerColor: '#C2464F',
+    pants: '#2B3A67',
+    shoes: '#3B2A20',
+    signature: '#FF8A8A',
+    earrings: true,
+  },
+  mags: {
+    id: 'mags',
+    speaker: 'MAGS',
+    name: 'Margaret "Mags" Whitfield (71)',
+    heir: 2,
+    height: 0.82,
+    build: 1.12,
+    head: 1.02,
+    skin: '#F0CDB4',
+    skinShade: '#D6AE93',
+    hair: 'curlsGrey',
+    hairColor: '#D9D9DE',
+    top: 'cardigan',
+    topColor: '#7A3E7A',
+    topAccent: '#5E2E5E',
+    innerColor: '#F4EFE6',
+    pants: '#4A4A5A',
+    shoes: '#3B2A20',
+    signature: '#C77DFF',
+    glasses: 'round',
+    wrinkles: true,
   },
 } satisfies Record<string, CharacterDesign>;
 

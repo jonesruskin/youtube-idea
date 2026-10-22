@@ -24,6 +24,12 @@ const SETTINGS: Record<Speaker, {stability: number; similarity_boost: number; st
   JONAH: {stability: 0.38, similarity_boost: 0.8, style: 0.55},
   GRANDMA: {stability: 0.45, similarity_boost: 0.8, style: 0.5},
   MRS_BELLO: {stability: 0.5, similarity_boost: 0.8, style: 0.35},
+  KEMI: {stability: 0.4, similarity_boost: 0.8, style: 0.5},
+  TUNDE: {stability: 0.4, similarity_boost: 0.8, style: 0.55},
+  CUSTOMER: {stability: 0.45, similarity_boost: 0.8, style: 0.45},
+  PASSENGER: {stability: 0.3, similarity_boost: 0.75, style: 0.65},
+  IYA: {stability: 0.4, similarity_boost: 0.8, style: 0.55},
+  MAGS: {stability: 0.45, similarity_boost: 0.8, style: 0.5},
   KADE: {stability: 0.55, similarity_boost: 0.85, style: 0.4},
   ANCHOR: {stability: 0.7, similarity_boost: 0.8, style: 0.15},
   CAPTAIN: {stability: 0.3, similarity_boost: 0.75, style: 0.6},
@@ -67,14 +73,16 @@ for (let i = 0; i < flat.length; i++) {
     console.error(`✖ ${line.key} (${line.speaker}): ${res.status} ${await res.text()}`);
     process.exit(1);
   }
-  type Align = {character_end_times_seconds?: number[]};
+  type Align = {character_end_times_seconds?: number[]; character_start_times_seconds?: number[]};
   const body = (await res.json()) as {audio_base64: string; alignment?: Align; normalized_alignment?: Align};
   const audio = Buffer.from(body.audio_base64, 'base64');
   writeFileSync(abs, audio);
   const ends = body.alignment?.character_end_times_seconds ?? body.normalized_alignment?.character_end_times_seconds ?? [];
   // Fallback: 128 kbps CBR → bytes × 8 / 128000.
   const seconds = (ends.length ? ends[ends.length - 1] : (audio.length * 8) / 128000) + 0.05;
-  map[line.key] = {seconds, file};
+  // Per-character start times drive the rig's lip-sync (src/characters/visemes.ts).
+  const starts = body.alignment?.character_start_times_seconds ?? body.normalized_alignment?.character_start_times_seconds;
+  map[line.key] = {seconds, file, chars: starts && starts.length === line.text.length ? starts : undefined};
   writeFileSync(mapPath, JSON.stringify(map, null, 2));
   made++;
   console.log(`✔ ${line.key.padEnd(22)} ${line.speaker.padEnd(10)} ${seconds.toFixed(2)}s`);

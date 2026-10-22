@@ -1,17 +1,36 @@
 import React from 'react';
 import {AbsoluteFill, Audio, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {SCENES} from '../scenes';
-import {Footnote} from '../ui/Footnote';
-import type {Episode as EpisodeData} from './schema';
+import {Finish} from '../ui/Finish';
+import type {Episode as EpisodeData, Shot} from './schema';
 import {ShotProvider} from './shot-context';
 import {buildTimeline, toFrames, type TimedShot, type VoiceMap} from './timeline';
 import {EPISODES} from '../episodes';
 
 export type EpisodeProps = {episodeId: string; voice: VoiceMap; hasScore: boolean};
 
-const SoftCut: React.FC<{children: React.ReactNode}> = ({children}) => {
+/** Motivated entrances: a soft cut by default, whip-pans, flashes and fades where the story moves. */
+const Enter: React.FC<{kind: Shot['transition']; children: React.ReactNode}> = ({kind = 'cut', children}) => {
   const f = useCurrentFrame();
-  return <AbsoluteFill style={{opacity: interpolate(f, [0, 4], [0, 1], {extrapolateRight: 'clamp'})}}>{children}</AbsoluteFill>;
+  if (kind === 'whip') {
+    const x = interpolate(f, [0, 9], [1, 0], {extrapolateRight: 'clamp', easing: (t) => 1 - Math.pow(1 - t, 3)});
+    return (
+      <AbsoluteFill style={{transform: `translateX(${x * 1920}px)`, filter: x > 0.02 ? `blur(${x * 24}px)` : undefined}}>{children}</AbsoluteFill>
+    );
+  }
+  if (kind === 'flash') {
+    const w = interpolate(f, [0, 8], [1, 0], {extrapolateRight: 'clamp'});
+    return (
+      <AbsoluteFill>
+        {children}
+        <AbsoluteFill style={{background: '#FFF6E6', opacity: w}} />
+      </AbsoluteFill>
+    );
+  }
+  if (kind === 'fade') {
+    return <AbsoluteFill style={{opacity: interpolate(f, [0, 14], [0, 1], {extrapolateRight: 'clamp'})}}>{children}</AbsoluteFill>;
+  }
+  return <AbsoluteFill style={{opacity: interpolate(f, [0, 3], [0.4, 1], {extrapolateRight: 'clamp'})}}>{children}</AbsoluteFill>;
 };
 
 const ShotView: React.FC<{shot: TimedShot; fps: number}> = ({shot, fps}) => {
@@ -19,10 +38,9 @@ const ShotView: React.FC<{shot: TimedShot; fps: number}> = ({shot, fps}) => {
   if (!Scene) throw new Error(`Unknown scene "${shot.scene}" in shot "${shot.id}"`);
   return (
     <ShotProvider shot={shot} fps={fps}>
-      <SoftCut>
+      <Enter kind={shot.transition}>
         <Scene />
-        {shot.footnote && <Footnote n={shot.footnote.n} text={shot.footnote.text} fps={fps} duration={shot.duration} />}
-      </SoftCut>
+      </Enter>
     </ShotProvider>
   );
 };
@@ -37,6 +55,7 @@ export const Episode: React.FC<EpisodeProps> = ({episodeId, voice, hasScore}) =>
           <ShotView shot={s} fps={ep.fps} />
         </Sequence>
       ))}
+      <Finish />
       {hasScore && <Audio src={staticFile(`audio/${episodeId}-score.wav`)} />}
       {tl.lines
         .filter((l) => l.audio)

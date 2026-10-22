@@ -12,7 +12,7 @@ The video already renders without a voice (timings are estimated). Once you add 
    - **Starter** (~$5–6/mo, ~30K credits) is enough to test voices and voice Episode 1 a few times.
    - **Creator** (~$22/mo, ~100–121K credits) is the realistic plan for 1–2 episodes a week with retakes.
    - Prices change, so check the live pricing page.
-3. **Credit math:** Episode 1 is ~6,400 characters. On the standard multilingual model that's about 6.5K credits per full pass. Re-runs only re-voice lines you changed, because everything is cached.
+3. **Credit math:** Episode 1 is ~6,000 characters. On the standard multilingual model that's about 6K credits per full pass. Re-runs only re-voice lines you changed, because everything is cached.
 
 ## 2. Create an API key
 1. Log in, click your **profile (bottom-left) → API Keys**.
@@ -22,7 +22,7 @@ The video already renders without a voice (timings are estimated). Once you add 
 
 ## 3. Choose the voices (one per character)
 1. Open **Voices → Voice Library** (or **Explore**).
-2. Use the search filters (accent, age, gender, use case "narrative/storytelling"). Audition with a line from the script; the Executor's "Item One. To the one who fixes what everyone else throws away… we leave our ship." is a good test.
+2. Use the search filters (accent, age, gender, use case "narrative/storytelling"). Audition with a line from the script; the Executor's "That is the fourth flip-flop thrown at me today. I believe it is how humans say hello." is a good test of deadpan.
 3. Click **Add to My Voices** for each pick.
 4. In **My Voices**, open each voice → **⋯ → Copy voice ID**.
 
@@ -32,11 +32,15 @@ The video already renders without a voice (timings are estimated). Once you add 
 | Jonah | `VOICE_JONAH` | 17, Nigerian English, quick, funny, bright |
 | Grandma Ada | `VOICE_GRANDMA` | Older Nigerian woman, commanding, warm |
 | Mrs. Bello | `VOICE_MRS_BELLO` | Older, soft, gentle |
+| Kemi (7) | `VOICE_KEMI` | Small child, earnest, Nigerian English |
+| Tunde | `VOICE_TUNDE` | 17, cocky, Lagos posh |
+| Customer | `VOICE_CUSTOMER` | Deadpan Lagos auntie |
+| Bus passenger | `VOICE_PASSENGER` | Loud, panicked, comic |
+| Iya Osun (orange seller) | `VOICE_IYA` | Older market woman, outraged |
+| Mags (teaser) | `VOICE_MAGS` | 71, Yorkshire, dry |
 | Desmond Kade | `VOICE_KADE` | 60s, smooth, unhurried, polished |
 | Priya (assistant) | `VOICE_ASSISTANT` | 30s, crisp, deadpan |
 | News anchor | `VOICE_ANCHOR` | Broadcast cadence |
-| Captain (radio) | `VOICE_CAPTAIN` | West African English, urgent |
-| Fisherman | `VOICE_FISHERMAN` | Can reuse the Captain's voice |
 
 > Want something nobody else has? Use **Voice Design** to generate an original Executor voice from a text description. It becomes the channel's audio signature.
 

@@ -19,7 +19,7 @@ export const RemotionRoot: React.FC = () => (
           defaultProps={{episodeId: ep.id, voice: {}, hasScore: false}}
           calculateMetadata={calculateEpisodeMetadata}
         />
-        <Still id={`${ep.id}-thumbnail`} component={Thumbnail as any} width={1280} height={720} defaultProps={{text: ep.thumbnailText, heir: 'HEIR #01'}} />
+        <Still id={`${ep.id}-thumbnail`} component={Thumbnail as any} width={1280} height={720} defaultProps={{text: ep.thumbnailText, heir: ''}} />
       </React.Fragment>
     ))}
     <Composition id="CharacterSheet" component={CharacterSheet} durationInFrames={60} fps={30} width={1920} height={1080} />

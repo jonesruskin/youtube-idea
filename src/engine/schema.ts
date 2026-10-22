@@ -6,7 +6,13 @@ export type Speaker =
   | 'JONAH'
   | 'GRANDMA'
   | 'MRS_BELLO'
+  | 'KEMI'
+  | 'TUNDE'
+  | 'CUSTOMER'
+  | 'PASSENGER'
+  | 'IYA'
   | 'KADE'
+  | 'MAGS'
   | 'ANCHOR'
   | 'CAPTAIN'
   | 'FISHERMAN'
@@ -28,7 +34,10 @@ export type Mood =
   | 'triumph'
   | 'silence';
 
-export type Sfx = 'whoosh' | 'impact' | 'riser' | 'chime' | 'decloak' | 'thunder' | 'powercut' | 'stamp';
+export type Sfx = 'whoosh' | 'impact' | 'riser' | 'chime' | 'decloak' | 'thunder' | 'powercut' | 'stamp' | 'float' | 'crash' | 'sneeze' | 'cheer' | 'horn' | 'siren';
+
+/** Retention beats the linter tracks: something to laugh at, wonder at, feel, or wonder about. */
+export type Beat = 'laugh' | 'wow' | 'heart' | 'loop';
 
 export type Shot = {
   id: string;
@@ -47,8 +56,14 @@ export type Shot = {
   chapter?: string;
   /** Place a mid-roll ad break at the END of this shot (after an open loop). */
   midroll?: boolean;
-  /** Executor's Footnote — a numbered science pop-up. */
-  footnote?: {n: number; text: string; source: string};
+  /** Stage direction — what the viewer SEES. Feeds the screenplay doc and the descriptive SRT cues. */
+  action?: string;
+  /** Retention beats delivered by this shot. */
+  beats?: Beat[];
+  /** How we arrive in this shot. Default: cut. */
+  transition?: 'cut' | 'fade' | 'whip' | 'flash';
+  /** Real science the shot SHOWS visually; the source goes to the YouTube description, never on screen. */
+  science?: {text: string; source: string};
   /** Score mood from this shot onward. */
   mood?: Mood;
   /** Sound effect at the start of the shot. */
@@ -62,6 +77,10 @@ export type Episode = {
   youtubeTitle: string;
   thumbnailText: string;
   commentPrompt: string;
+  /** Description opener, tags and pinned comment for YouTube (scripts/metadata.ts). */
+  logline: string;
+  tags: string[];
+  pinnedComment: string;
   fps: number;
   shots: Shot[];
 };

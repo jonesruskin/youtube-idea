@@ -41,11 +41,11 @@ Viewers spot clones, and YouTube's July 2025 / July 2026 "inauthentic content" r
 | Theirs | Ours |
 |---|---|
 | Black silhouette stickman in a hoodie, smug face | Flat colored characters with real skin tones, navy-ink outlines and a signature-color rim light |
-| "What If You Could/Were [body power]" | "What If Aliens Left You [a thing]": inheritances, not body powers |
-| Thumbnail of 1–2 caps words ending in a period ("TOO SLOW.") | Case-file thumbnail: torn paper strip, red **HEIR #NN** stamp, a curiosity phrase ("MOON BY 4AM") |
-| Villain or event forces a binary moral choice ("the ball or the boy") | **The Rules**: three fine-print rules per inheritance. Tension comes from loopholes and clever thinking, not a forced dilemma |
-| Hidden organization ("Project IF") and a mysterious recurring figure | **The Contest**: a rival legally contests the will in the open. The Executor is a funny alien estate lawyer, not a shadowy figure |
-| A separate "Is any of this real?" science segment | **Executor's Footnotes**: numbered pop-up notes woven into the story as it happens |
-| Part 1/2/3 trilogies | 12 standalone episodes held together by one sealed mystery (Item Thirteen) |
+| "What If You Could/Were [body power]" — mostly comic-book powers (flight, speed, telekinesis) | Powers too (it's what the audience wants), but **each one comes from real space science** — Zero-G Touch (the ISS), Moon Legs, Saturn's Rings, Black Hole Hand — and every power is a gift from a dead star |
+| Thumbnail of 1–2 caps words ending in a period ("TOO SLOW.") over a black stickman | Full-colour real-world scene with one impossible image (a bus held up by one finger) and two words in white and orange, no period ("NO GRAVITY") |
+| Villain or event forces a binary moral choice ("the ball or the boy") | **A catch per power** that becomes the episode's running gag *and* its crisis (weightless things drift up → the bus drifts toward the power lines). The rescue costs the hero their dream; nobody hands them a dilemma |
+| Hidden organization ("Project IF") and a mysterious recurring figure | **Kade** recruits in the open by offering people their dreams (Mars!). The Executor is a funny, deadpan mentor, not a shadowy figure |
+| A separate "Is any of this real?" science segment | Science is **shown inside the story** as the Executor's gold hologram diagrams (Newton's cannon, the ISS at 90% gravity), with sources only in the description |
+| Part 1/2/3 trilogies | 12 standalone episodes, one new heir each, held together by one mystery ("Twelve gifts were sent. Thirteen arrived.") |
 
 The anti-clone rule: if a frame, title or beat could be mistaken for theirs, redo it.
