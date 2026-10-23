@@ -492,8 +492,8 @@ def render(tl):
             mix.add("hits", s + 0.25, boom(0.9, 4), 0.9)
             mix.add("hall", s + 0.3, organ(["D2", "A2", "D3", "F3", "A3", "D4"], L + 1.5, a=0.3, r=3.0), 1.0)
         elif c == "space":
-            chords(mix, s, e, PROG_MINOR, 60, "organ", 1.0)
-            melody(mix, s + 4, e, THEME_MINOR, 60, "organ", 0.8, octave=0)
+            chords(mix, s, e, PROG_MINOR, 60, "organ", 0.7)
+            melody(mix, s + 4, e, THEME_MINOR, 60, "organ", 0.55, octave=0)
             for k in range(int(L // 3)):
                 mix.add("music", s + 1.5 + k * 3, bell(rng.choice(["D6", "A6", "F6", "E6"]), 4, 0.35), 0.7)
             if r["shot"] == "why-820":
@@ -543,11 +543,11 @@ def render(tl):
                 t += rng.uniform(0.9, 1.6)
             mix.add("fx", s, wind(L + 1, 1.0, 0.6), 0.8)
         elif c == "chase":
-            ostinato(mix, s, e - 1.6, 132, ["D3", "D3", "F3", "D3", "G3", "D3", "F3", "E3"], 0.75)
+            ostinato(mix, s, e - 1.6, 132, ["D3", "D3", "F3", "D3", "G3", "D3", "F3", "E3"], 0.55)
             beat = 60 / 132
             t = s
             while t < e - 1.6:
-                mix.add("hits", t, taiko(1.0), 0.9)
+                mix.add("hits", t, taiko(1.0), 0.7)
                 t += beat * 2
             mix.add("music", e - 1.8, strings(["Bb2", "D3", "E3", "A3", "Bb3"], 2.5, a=0.05, r=2.0, bright=3500), 1.0)
             mix.add("hits", e - 1.8, boom(0.7, 3), 0.8)
@@ -596,9 +596,13 @@ def render(tl):
             chords(mix, shots["climb"]["start"], sky, PROG_MINOR[4:], 66, "strings", 0.75)
             mix.add("hits", sky - 3.2, riser(3.2, 0.7), 0.8)
             mix.add("hits", sky, boom(1.0, 5), 1.0)
-            chords(mix, sky, e, PROG_MAJOR, 60, "organ", 1.2)
-            chords(mix, sky, e, PROG_MAJOR, 60, "strings", 0.9, choir_vowel="ah")
-            melody(mix, sky + 0.1, e, THEME_MAJOR, 60, "strings", 0.8, octave=0)
+            # the full swell lands on "look up"; it settles under the narration that follows
+            settle = shots["past-jupiter"]["start"]
+            chords(mix, sky, settle, PROG_MAJOR, 60, "organ", 1.2)
+            chords(mix, sky, settle, PROG_MAJOR, 60, "strings", 0.9, choir_vowel="ah")
+            melody(mix, sky + 0.1, settle, THEME_MAJOR, 60, "strings", 0.8, octave=0)
+            chords(mix, settle, e, PROG_MAJOR[4:] + PROG_MAJOR[:4], 60, "organ", 0.55)
+            chords(mix, settle, e, PROG_MAJOR[4:] + PROG_MAJOR[:4], 60, "strings", 0.45, choir_vowel="oo")
             for k in range(int((e - sky) // 2)):
                 mix.add("music", sky + 1 + k * 2, bell(rng.choice(["D6", "F#6", "A6"]), 5, 0.3), 0.5)
         elif c == "turn":
@@ -661,9 +665,11 @@ def main():
     music = reverb(mix.music, room_ir, 0.32) + reverb(mix.hall, hall_ir, 0.45) * 0.9
     hits = reverb(mix.hits, room_ir, 0.2)
     fx = reverb(mix.fx, room_ir, 0.12)
-    duck_m = duck_curve(n, tl["lines"], 9.0)
-    duck_f = duck_curve(n, tl["lines"], 5.0)
-    out = music * duck_m[:, None] + hits * (0.5 + 0.5 * duck_m[:, None]) + fx * duck_f[:, None]
+    # Narration must sit ≥10 dB over the bed: music ducks 15 dB under every line, hits 11 dB, sound design 8 dB.
+    duck_m = duck_curve(n, tl["lines"], 15.0)
+    duck_h = duck_curve(n, tl["lines"], 11.0)
+    duck_f = duck_curve(n, tl["lines"], 8.0)
+    out = music * duck_m[:, None] + hits * duck_h[:, None] + fx * duck_f[:, None]
     # hard silences (the blackout; the blink) — 15 ms edges
     t = np.arange(n) / SR
     g = np.ones(n, np.float32)
@@ -673,7 +679,7 @@ def main():
     out = out[: int((tl["duration"] + 0.5) * SR)]
     # level: score sits under the voice; master loudness is set in the final ffmpeg pass
     rms = np.sqrt(np.mean(out ** 2))
-    out *= 10 ** (-21 / 20) / (rms + 1e-9)
+    out *= 10 ** (-22 / 20) / (rms + 1e-9)
     out = limiter(out, 0.89)
     out = np.clip(out, -0.97, 0.97)
     path = os.path.join(ROOT, "public", "audio", f"{tl['id']}-score.wav")

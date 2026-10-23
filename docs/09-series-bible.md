@@ -78,5 +78,7 @@ npx tsx scripts/export-timeline.ts sun01 > out/sun01-timeline.json        # re-e
 ~/.venv-sun/bin/python scripts/score_cinema.py out/sun01-timeline.json   # score + sound design
 npx tsx scripts/preview.ts sun01 --scale=0.4                              # contact sheet of every shot
 REMOTION_BROWSER=/path/to/headless_shell npm run render sun01             # video + master + SRT + thumbnail + metadata
+~/.venv-sun/bin/python scripts/remix_cinema.py sun01                      # after any score/voice change: new soundtrack, no video re-render
 ```
+**Mix rule (checked on File 001):** the narration must sit at least 10 dB above the music on average, and no line may sit less than 6 dB above it. The score ducks 15 dB under every line, and loud cues settle under narration. Measure on the final file before shipping.
 The Python steps need Python 3.12 with `kokoro`, `torch` (CPU), `soundfile`, `scipy` and `faster-whisper`, plus `espeak-ng` (see `requirements.txt`).

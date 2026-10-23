@@ -5,7 +5,7 @@
 A YouTube channel of animated space-science survival stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev): the narration is voiced locally with Kokoro-82M (Apache-2.0), and the score is synthesised from scratch.
 
 **Launch episode: File 001, "The Sun Went Out. Here's Your Day 1 to Day 365"** is in `renders/`:
-- `sun01.mp4`: 8:44, 1080p, with the narration, Mira and the radio voiced, the original score, and soft English subtitles embedded
+- `sun01.mp4`: 8:44, 1080p web copy (under 90 MB), with the narration, Mira and the radio voiced, the original score, and soft English subtitles embedded. The upload master `sun01-hq.mp4` (about 245 MB, higher bitrate) is git-ignored.
 - `sun01.srt`: captions for YouTube. `sun01-described.srt` adds stage directions for review.
 - `sun01-thumbnail.png`, `sun01-metadata.md` (title, description with chapters and science sources, tags, mid-roll times, pinned comment)
 - Format and cast: [`docs/09-series-bible.md`](docs/09-series-bible.md). Script: `episodes/sun01-the-sun-went-out/script.ts`.
