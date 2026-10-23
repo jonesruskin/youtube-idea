@@ -5,3 +5,4 @@ public/audio/
 .cache/
 *.log
 renders/*-hq.mp4
+research/niche-scan/data/*.json

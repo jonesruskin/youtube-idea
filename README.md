@@ -21,6 +21,7 @@ A YouTube channel of animated space-science stories built for **8–12 minute ep
 | [05 · Season One](docs/05-season-one.md) | 12 episodes, the twist ladder, seeds → payoffs |
 | [06 · Episode formula](docs/06-episode-formula.md) | The ten-section structure, retention rules, show-don't-tell, packaging |
 | [07 · Series framework](docs/07-series-framework.md) | How the channel keeps going: Files, Loose Files, Shorts |
+| [08 · Niche scan, Oct 2026](docs/08-niche-scan-2026-10.md) | Where the unsaturated, high-viral formats are, and the two bets to test after Ep1 (tool: `research/niche-scan/`) |
 | [ElevenLabs setup](docs/ELEVENLABS_SETUP.md) | Step-by-step key and voice setup |
 
 ## Studio quickstart
