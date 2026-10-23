@@ -6,3 +6,4 @@ public/audio/
 *.log
 renders/*-hq.mp4
 research/niche-scan/data/*.json
+__pycache__/
