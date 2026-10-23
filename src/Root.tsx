@@ -4,6 +4,7 @@ import {CharacterSheet} from './CharacterSheet';
 import {calculateEpisodeMetadata, Episode, type EpisodeProps} from './engine/Episode';
 import {EPISODES} from './episodes';
 import {Thumbnail} from './Thumbnail';
+import {ToonLab} from './ToonLab';
 import {SunThumbnail} from './env/sun01/thumbnail';
 
 export const RemotionRoot: React.FC = () => (
@@ -23,6 +24,7 @@ export const RemotionRoot: React.FC = () => (
         <Still id={`${ep.id}-thumbnail`} component={(ep.id === 'sun01' ? SunThumbnail : Thumbnail) as any} width={1280} height={720} defaultProps={{text: ep.thumbnailText, heir: ''}} />
       </React.Fragment>
     ))}
+    <Composition id="ToonLab" component={ToonLab as any} durationInFrames={300} fps={30} width={1920} height={1080} defaultProps={{scene: 'lineup'}} />
     <Composition id="CharacterSheet" component={CharacterSheet} durationInFrames={60} fps={30} width={1920} height={1080} />
   </>
 );
