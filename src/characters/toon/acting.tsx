@@ -169,6 +169,7 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
               breath={c.breath}
               seed={i}
               rim={c.rim ? '#FFB25A' : undefined}
+              carry={r.hold === 'toast' ? 'toast' : undefined}
             />
           );
         }

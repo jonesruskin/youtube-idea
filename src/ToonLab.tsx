@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {Actors, type Act, type CastEntry} from './characters/toon/acting';
 import {ShotProvider} from './engine/shot-context';
+import {PhotoGlobe} from './fx/PhotoGlobe';
 import type {TimedShot} from './engine/timeline';
 
 /** Rig test bench: model sheet, walk/run cycles, gesture and expression ranges. Not part of any episode. */
@@ -96,5 +97,21 @@ export const ToonLab: React.FC<{scene: string}> = ({scene}) => {
         </svg>
       </AbsoluteFill>
     </ShotProvider>
+  );
+};
+
+export const EarthLab: React.FC<{v: number}> = ({v}) => {
+  const variants = [
+    {center: [10, 40] as [number, number], sun: [-20, 20] as [number, number] | null, lights: 1, ice: 90},
+    {center: [10, 40] as [number, number], sun: null, lights: 1, ice: 75},
+    {center: [80, 25] as [number, number], sun: null, lights: 0.3, ice: 55},
+    {center: [-40, 30] as [number, number], sun: null, lights: 0.05, ice: 35},
+  ];
+  return (
+    <AbsoluteFill style={{background: '#02030A', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
+      {variants.map((p, i) => (
+        <PhotoGlobe key={i} size={440} {...p} />
+      ))}
+    </AbsoluteFill>
   );
 };

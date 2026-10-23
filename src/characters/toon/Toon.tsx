@@ -159,6 +159,16 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
       const h = R * 0.4 * open;
       const rw = w * (1 - f.round * 0.55) * (0.75 + s.talk * 0.25);
       const lift = f.smile * R * 0.06;
+      if (f.smile < -0.1) {
+        // fear / dismay: corners down, the top lip arches up — never reads as a grin
+        const dn = -f.smile * R * 0.1;
+        return (
+          <g>
+            <path d={`M${mx - rw},${mouthY + dn} Q${mx},${mouthY - h * 0.95} ${mx + rw},${mouthY + dn} Q${mx},${mouthY + h * 0.8} ${mx - rw},${mouthY + dn} Z`} fill="#4A1C22" stroke={ink} strokeWidth={sw * 0.8} strokeLinejoin="round" />
+            {open > 0.35 && <ellipse cx={mx} cy={mouthY + h * 0.25} rx={rw * 0.4} ry={h * 0.18} fill="#D95F6A" />}
+          </g>
+        );
+      }
       return (
         <g>
           <path d={`M${mx - rw},${mouthY - lift} Q${mx},${mouthY - h * 0.2 + lift * 0.5} ${mx + rw},${mouthY - lift} Q${mx + rw * 0.8},${mouthY + h} ${mx},${mouthY + h * 1.05} Q${mx - rw * 0.8},${mouthY + h} ${mx - rw},${mouthY - lift} Z`} fill="#4A1C22" stroke={ink} strokeWidth={sw * 0.8} strokeLinejoin="round" />
@@ -206,8 +216,8 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
       const hat = d.hat ?? '#C2464F';
       return (
         <g>
-          <path d={`M${-R * 1.02},${headY - R * 0.15} Q${-R * 1.05},${headY - R * 1.28} 0,${headY - R * 1.25} Q${R * 1.05},${headY - R * 1.28} ${R * 1.02},${headY - R * 0.15} Z`} fill={hat} stroke={ink} strokeWidth={sw} />
-          <path d={`M${-R * 1.06},${headY - R * 0.38} Q0,${headY - R * 0.55} ${R * 1.06},${headY - R * 0.38} L${R * 1.06},${headY - R * 0.12} Q0,${headY - R * 0.28} ${-R * 1.06},${headY - R * 0.12} Z`} fill={hat} stroke={ink} strokeWidth={sw * 0.9} />
+          <path d={`M${-R * 1.0},${headY - R * 0.5} Q${-R * 1.05},${headY - R * 1.32} 0,${headY - R * 1.3} Q${R * 1.05},${headY - R * 1.32} ${R * 1.0},${headY - R * 0.5} Z`} fill={hat} stroke={ink} strokeWidth={sw} />
+          <path d={`M${-R * 1.04},${headY - R * 0.74} Q0,${headY - R * 0.9} ${R * 1.04},${headY - R * 0.74} L${R * 1.02},${headY - R * 0.52} Q0,${headY - R * 0.68} ${-R * 1.02},${headY - R * 0.52} Z`} fill={hat} stroke={ink} strokeWidth={sw * 0.9} />
           <circle cx={0} cy={headY - R * 1.32} r={R * 0.2} fill="#F4EFE6" stroke={ink} strokeWidth={sw * 0.8} />
         </g>
       );

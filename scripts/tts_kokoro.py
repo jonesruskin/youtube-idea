@@ -17,13 +17,15 @@ SR = 24000
 
 # Per speaker: Kokoro voice, speed, and post-processing. af_heart is Kokoro's only A-grade voice.
 VOICES = {
-    "NARRATOR": {"voice": "af_heart", "speed": 0.9, "fx": None},
-    "MIRA": {"voice": "af_bella", "speed": 1.04, "fx": "child"},
-    "RADIO": {"voice": "am_michael", "speed": 0.86, "fx": "radio"},
+    "NARRATOR": {"voice": "af_heart", "speed": 0.86, "fx": None},
+    "MIRA": {"voice": "af_bella", "speed": 1.0, "fx": "child"},
+    "RADIO": {"voice": "am_michael", "speed": 0.9, "fx": "radio"},
+    # Mr. Ito: British English voice, slowed and pitched down a touch for age.
+    "ITO": {"voice": "bm_george", "speed": 0.88, "fx": "elder", "lang": "b"},
 }
 
 # Pronunciation fixes (Kokoro inline phonemes); the script and captions keep normal spelling.
-PRONOUNCE = {"Mira": "[Mira](/mˈɪɹə/)"}
+PRONOUNCE = {"Mira": "[Mira](/mˈɪɹə/)", "Ito": "[Ito](/ˈiːtoʊ/)"}
 
 def spoken(text):
     for word, sub in PRONOUNCE.items():
@@ -37,6 +39,8 @@ def ffmpeg_fx(audio, fx):
         sf.write(src, audio, SR)
         if fx == "child":
             af = "rubberband=pitch=1.2:tempo=1.0:formant=shifted,highpass=f=120"
+        elif fx == "elder":
+            af = "rubberband=pitch=0.94:tempo=1.0:formant=preserved,highpass=f=70"
         else:
             af = "highpass=f=350,lowpass=f=3200,acompressor=threshold=0.1:ratio=6:attack=2:release=60,volume=1.6,alimiter=limit=0.7"
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-af", af, "-ar", str(SR), dst], check=True)
@@ -74,7 +78,9 @@ def main():
     os.makedirs(os.path.join(ROOT, "public", "voice"), exist_ok=True)
     map_path = os.path.join(ROOT, "public", "voice", f"{ep}.json")
     vmap = json.load(open(map_path)) if os.path.exists(map_path) else {}
-    pipe = KPipeline(lang_code="a", repo_id="hexgrad/Kokoro-82M")
+    pipes = {}
+    live = {l["key"] for l in tl["lines"]}
+    vmap = {k: v for k, v in vmap.items() if k in live}  # drop lines from older drafts
     made = 0
     for line in tl["lines"]:
         cfg = VOICES[line["speaker"]]
@@ -84,7 +90,10 @@ def main():
         if os.path.exists(abs_) and vmap.get(line["key"], {}).get("file") == rel:
             continue
         chunks, words, offset = [], [], 0.0
-        for r in pipe(spoken(line["text"]), voice=cfg["voice"], speed=cfg["speed"]):
+        lang = cfg.get("lang", "a")
+        if lang not in pipes:
+            pipes[lang] = KPipeline(lang_code=lang, repo_id="hexgrad/Kokoro-82M")
+        for r in pipes[lang](spoken(line["text"]), voice=cfg["voice"], speed=cfg["speed"]):
             a = r.audio.numpy()
             for t in r.tokens or []:
                 if t.start_ts is not None and t.end_ts is not None and t.text.strip() and any(c.isalnum() for c in t.text):
@@ -107,6 +116,7 @@ def main():
         json.dump(vmap, open(map_path, "w"), indent=1)
         made += 1
         print(f"✔ {line['key']:<26} {line['speaker']:<9} {seconds:6.2f}s", flush=True)
+    json.dump(vmap, open(map_path, "w"), indent=1)
     print(f"\n{made} line(s) voiced, {len(tl['lines']) - made} cached.")
 
 if __name__ == "__main__":

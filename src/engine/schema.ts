@@ -20,6 +20,7 @@ export type Speaker =
   // File 001 onward
   | 'NARRATOR'
   | 'MIRA'
+  | 'ITO'
   | 'RADIO';
 
 export type Line = {
@@ -77,6 +78,14 @@ export type Shot = {
   mood?: Mood;
   /** Sound effect at the start of the shot. */
   sfx?: Sfx;
+  /** One bold kinetic word/number on screen (the genre's emphasis device). Used sparingly. */
+  callout?: {text: string; at?: number | string; pos?: 'center' | 'top' | 'low' | 'left' | 'right'; color?: string};
+  /** Corner tag that marks a jump in time: Day N and the outside temperature. */
+  hud?: {day: number; temp: number};
+  /** Plot development delivered by this shot (the linter enforces one at least every 30 s). */
+  dev?: string;
+  /** Marks one of the episode's reveals (1..n). */
+  twist?: number;
 };
 
 export type Episode = {

@@ -37,6 +37,7 @@ const SETTINGS: Record<Speaker, {stability: number; similarity_boost: number; st
   ASSISTANT: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
   NARRATOR: {stability: 0.6, similarity_boost: 0.8, style: 0.3},
   MIRA: {stability: 0.4, similarity_boost: 0.8, style: 0.5},
+  ITO: {stability: 0.5, similarity_boost: 0.8, style: 0.4},
   RADIO: {stability: 0.7, similarity_boost: 0.8, style: 0.1},
 };
 

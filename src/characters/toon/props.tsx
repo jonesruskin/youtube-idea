@@ -19,7 +19,8 @@ export type PropKind =
   | 'cane'
   | 'toast'
   | 'radio'
-  | 'match';
+  | 'match'
+  | 'drawing';
 
 /** Props drawn at the hand position (origin = hand centre). R = the holder's head radius. */
 export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({kind, R, frame}) => {
@@ -29,6 +30,14 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
     case 'torch':
       return (
         <g>
+          <path d={`M${R * 0.7},0 L${R * 9},${-R * 2.6} L${R * 9},${R * 2.6} Z`} fill="url(#torchCone)" style={{mixBlendMode: 'screen'}} />
+          <defs>
+            <linearGradient id="torchCone" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stopColor="#FFF4D6" stopOpacity={0.55} />
+              <stop offset="1" stopColor="#FFF4D6" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <circle cx={R * 0.7} cy={0} r={R * 0.5} fill="#FFF4D6" opacity={0.35} style={{mixBlendMode: 'screen'}} />
           <rect x={-R * 0.12} y={-R * 0.12} width={R * 0.7} height={R * 0.24} rx={R * 0.06} fill="#3A3F52" stroke={ink} strokeWidth={sw} />
           <rect x={R * 0.52} y={-R * 0.17} width={R * 0.16} height={R * 0.34} rx={R * 0.05} fill="#C9CED6" stroke={ink} strokeWidth={sw} />
           <circle cx={R * 0.7} cy={0} r={R * 0.14} fill="#FFF6D6" />
@@ -133,6 +142,17 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
           <path d={`M0,0 L${R * 0.3},${-R * 0.3}`} stroke="#E8D3A0" strokeWidth={sw} />
           <circle cx={R * 0.32} cy={-R * 0.42} r={R * 0.4} fill="#FFB867" opacity={0.25} />
           <path d={`M${R * 0.3},${-R * 0.3} q-${R * 0.08},-${R * 0.12} 0,-${R * 0.26} q${R * 0.08},${R * 0.14} 0,${R * 0.26}`} fill="#FFD27A" />
+        </g>
+      );
+    case 'drawing':
+      // a child's drawing of the Sun — in grey, because she has forgotten its colour
+      return (
+        <g transform={`translate(${-R * 0.2},${-R * 1.1})`}>
+          <rect x={-R * 0.7} y={-R * 0.5} width={R * 1.4} height={R * 1.0} fill="#FFFDF6" stroke={ink} strokeWidth={sw} />
+          <circle cx={0} cy={0} r={R * 0.22} fill="none" stroke="#8A8F9C" strokeWidth={sw} />
+          {Array.from({length: 8}, (_, k) => (
+            <path key={k} d={`M0,${-R * 0.3} L0,${-R * 0.4}`} stroke="#8A8F9C" strokeWidth={sw * 0.8} transform={`rotate(${k * 45})`} />
+          ))}
         </g>
       );
     default:

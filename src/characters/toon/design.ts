@@ -111,7 +111,9 @@ export const extra = (seed: number): ToonDesign => {
   const kid = r(1) < 0.16;
   const elder = !kid && r(2) < 0.18;
   const [skin, skinShade] = SKINS[Math.floor(r(3) * SKINS.length)];
-  const hair = HAIRS[(seed * 5 + Math.floor(r(4) * HAIRS.length)) % HAIRS.length];
+  const pick = HAIRS[(seed * 5 + Math.floor(r(4) * HAIRS.length)) % HAIRS.length];
+  // kids never go bald or wear flat caps; they get the playful cuts
+  const hair: Hair = kid && (pick === 'bald' || pick === 'cap' || pick === 'scarf') ? (['ponytail', 'curly', 'afro'] as Hair[])[seed % 3] : pick;
   const top = TOPS[(seed * 7 + Math.floor(r(5) * 3)) % TOPS.length];
   const top2 = TOPS[(seed * 3 + 5) % TOPS.length];
   return {
@@ -124,7 +126,7 @@ export const extra = (seed: number): ToonDesign => {
     hair: elder && r(9) < 0.5 ? 'bald' : hair,
     hairColor: elder ? '#D8D8DE' : HAIR_COLORS[Math.floor(r(10) * HAIR_COLORS.length)],
     hat: ['#C2464F', '#3E7CB1', '#2A9D8F', '#E9C46A', '#6D597A'][Math.floor(r(11) * 5)],
-    glasses: r(12) < 0.22,
+    glasses: !kid && r(12) < 0.22,
     beard: !kid && r(13) < 0.25,
     elder,
     outfits: {

@@ -25,7 +25,9 @@ export const Dog: React.FC<{
   breath?: boolean;
   seed?: number;
   rim?: string;
-}> = ({x, y, s = 1, pose = 'stand', flip = false, wag = 0.5, lookUp = 0, breath = false, seed = 0, rim}) => {
+  /** Something in his mouth. */
+  carry?: 'toast';
+}> = ({x, y, s = 1, pose = 'stand', flip = false, wag = 0.5, lookUp = 0, breath = false, seed = 0, rim, carry}) => {
   const f = useCurrentFrame() + seed * 13;
   const ink = C.ink;
   const sw = 4.5;
@@ -100,6 +102,12 @@ export const Dog: React.FC<{
           <g transform={`rotate(${run ? 18 + gait * 14 : 8 + Math.sin(f / 18) * 3},-14,-22)`}>
             <path d="M-14,-22 q-30,4 -28,46 q14,10 24,-6 z" fill={SHADE} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />
           </g>
+          {carry === 'toast' && (
+            <g transform="translate(46,30) rotate(-12)">
+              <path d="M-4,-14 L-4,16 L40,16 L40,-14 Q18,-30 -4,-14 Z" fill="#E3A15A" stroke={ink} strokeWidth={3.5} />
+              <path d="M2,-8 L2,10 L34,10 L34,-8 Q18,-20 2,-8 Z" fill="#F6D29A" />
+            </g>
+          )}
           {breath && (
             <g opacity={0.6}>
               {[0, 1].map((k) => {

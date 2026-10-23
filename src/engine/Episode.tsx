@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, Audio, Easing, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {SCENES} from '../scenes';
 import {Finish} from '../ui/Finish';
+import {Callout, DayTag} from '../ui/Callouts';
 import {Frost} from '../fx/cinema/atmos';
 import type {Episode as EpisodeData, Shot} from './schema';
 import {ShotProvider} from './shot-context';
@@ -87,6 +88,8 @@ const ShotView: React.FC<{shot: TimedShot; fps: number}> = ({shot, fps}) => {
       <Enter kind={shot.transition}>
         <Scene />
       </Enter>
+      <DayTag />
+      <Callout />
     </ShotProvider>
   );
 };

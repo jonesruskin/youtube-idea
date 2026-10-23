@@ -18,10 +18,27 @@ model = WhisperModel("small.en", device="cpu", compute_type="int8")
 
 NUM = {"one": "1", "two": "2", "three": "3", "seven": "7", "eight": "8", "nine": "9", "ten": "10", "eleven": "11", "twenty": "20", "thirty": "30", "hundred": "100"}
 
+UNITS = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split()
+TENS = "_ _ twenty thirty forty fifty sixty seventy eighty ninety".split()
+
+def spell(n):
+    """Digits → words the way the narrator says them (365 → three sixty five), so numbers don't count as errors."""
+    n = int(n)
+    if n < 20:
+        return UNITS[n]
+    if n < 100:
+        return TENS[n // 10] + ("" if n % 10 == 0 else " " + UNITS[n % 10])
+    if n < 1000:
+        h, r = divmod(n, 100)
+        return UNITS[h] + (" hundred" if r == 0 else " " + spell(r))
+    return " ".join(spell(d) for d in str(n))
+
 def norm(s):
-    s = s.lower().replace("’", "'").replace("-", " ")
-    s = re.sub(r"[^a-z0-9' ]", " ", s)
-    return [NUM.get(w, w) for w in s.split()]
+    s = s.lower().replace("’", "'").replace("-", " ").replace("onto", "on to")
+    s = re.sub(r"(\d+)\.(\d+)", r"\1 \2", s)
+    s = re.sub(r"\d+", lambda m: " " + spell(m.group()) + " ", s)
+    s = re.sub(r"[^a-z' ]", " ", s)
+    return [w for w in s.split() if w not in ("and", "hundred")]
 
 def wer(ref, hyp):
     d = [[0] * (len(hyp) + 1) for _ in range(len(ref) + 1)]

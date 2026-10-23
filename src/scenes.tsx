@@ -5,7 +5,7 @@ import {GlobeThreads, Holo} from './env/ep01/holo';
 import {House, KadeCall, Market, OkadaRide, RadioNight, Teaser} from './env/ep01/places';
 import {Roof} from './env/ep01/roof';
 import {Street} from './env/ep01/street';
-import {SUN01_SCENES} from './env/sun01';
+import {SUN_SCENES} from './env/sun';
 
 /** Scene keys used by episode scripts → components. New episodes add environments here. */
 export const SCENES: Record<string, React.FC> = {
@@ -27,6 +27,6 @@ export const SCENES: Record<string, React.FC> = {
   kadeCall: KadeCall,
   radioWindow: RadioNight,
   teaser: Teaser,
-  // File 001 · The Sun Went Out (scene keys don't collide with Ep1's)
-  ...SUN01_SCENES,
+  // File 001 · The Sun Went Out (v2). Keys don't collide with Ep1's.
+  ...SUN_SCENES,
 };

@@ -48,9 +48,13 @@ export const buildTimeline = (episode: Episode, voice: VoiceMap = {}): Timeline 
   let t = 0;
   const shots: TimedShot[] = [];
   const all: TimedLine[] = [];
+  // The narrated File format cuts tighter: shorter breaths before and after each shot's lines.
+  const cinema = episode.style === 'cinema';
+  const lead = cinema ? 0.15 : 0.3;
+  const pad = cinema ? 0.32 : SHOT_PAD;
   episode.shots.forEach((shot, index) => {
     const start = t;
-    let cursor = shot.lead ?? 0.3;
+    let cursor = shot.lead ?? lead;
     const timedLines: TimedLine[] = (shot.lines ?? []).map((line, i) => {
       const key = `${shot.id}:${i}`;
       const measured = voice[key];
@@ -67,7 +71,7 @@ export const buildTimeline = (episode: Episode, voice: VoiceMap = {}): Timeline 
       cursor += seconds + (line.pause ?? 0) + LINE_GAP;
       return tl;
     });
-    const spoken = cursor + (shot.tail ?? 0) + (timedLines.length ? SHOT_PAD - LINE_GAP : 0);
+    const spoken = cursor + (shot.tail ?? 0) + (timedLines.length ? pad - LINE_GAP : 0);
     const duration = Math.max(shot.min ?? 2, spoken);
     shots.push({...shot, index, start, end: start + duration, duration, timedLines});
     all.push(...timedLines);
