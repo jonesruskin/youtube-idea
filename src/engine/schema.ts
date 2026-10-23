@@ -16,7 +16,11 @@ export type Speaker =
   | 'ANCHOR'
   | 'CAPTAIN'
   | 'FISHERMAN'
-  | 'ASSISTANT';
+  | 'ASSISTANT'
+  // File 001 onward
+  | 'NARRATOR'
+  | 'MIRA'
+  | 'RADIO';
 
 export type Line = {
   speaker: Speaker;
@@ -60,8 +64,13 @@ export type Shot = {
   action?: string;
   /** Retention beats delivered by this shot. */
   beats?: Beat[];
-  /** How we arrive in this shot. Default: cut. */
-  transition?: 'cut' | 'fade' | 'whip' | 'flash';
+  /** How we arrive in this shot. Default: cut. Cinema transitions: pullback (out of an extreme close-up), zoomThrough (into a window),
+   *  iris (out of the watch face), frost (frost grows over the frame, then thaws), fog (breath fogs the lens). */
+  transition?: 'cut' | 'fade' | 'whip' | 'flash' | 'pullback' | 'zoomThrough' | 'iris' | 'frost' | 'fog';
+  /** Score cue from this shot onward (cinema episodes; scripts/score_cinema.py). */
+  cue?: string;
+  /** Slide 2.39:1 letterbox bars in for this shot (reserved for the biggest moments). */
+  letterbox?: boolean;
   /** Real science the shot SHOWS visually; the source goes to the YouTube description, never on screen. */
   science?: {text: string; source: string};
   /** Score mood from this shot onward. */
@@ -82,5 +91,7 @@ export type Episode = {
   tags: string[];
   pinnedComment: string;
   fps: number;
+  /** 'cinema' = narrated File format: Kokoro voice, cinematic score, letterbox and transitions. */
+  style?: 'cinema';
   shots: Shot[];
 };

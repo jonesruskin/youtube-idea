@@ -35,6 +35,9 @@ const SETTINGS: Record<Speaker, {stability: number; similarity_boost: number; st
   CAPTAIN: {stability: 0.3, similarity_boost: 0.75, style: 0.6},
   FISHERMAN: {stability: 0.45, similarity_boost: 0.75, style: 0.4},
   ASSISTANT: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  NARRATOR: {stability: 0.6, similarity_boost: 0.8, style: 0.3},
+  MIRA: {stability: 0.4, similarity_boost: 0.8, style: 0.5},
+  RADIO: {stability: 0.7, similarity_boost: 0.8, style: 0.1},
 };
 
 const voiceFor = (s: Speaker) => {

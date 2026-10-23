@@ -1,10 +1,10 @@
 import type {Episode, Line, Shot} from './schema';
 
 /**
- * Voice timings written by scripts/tts.ts once ElevenLabs is connected.
+ * Voice timings written by scripts/tts.ts (ElevenLabs) or scripts/tts_kokoro.py (Kokoro, local).
  * Key: `${shotId}:${lineIndex}` → measured duration + audio file in /public.
  */
-export type VoiceMap = Record<string, {seconds: number; file: string; chars?: number[]}>;
+export type VoiceMap = Record<string, {seconds: number; file: string; chars?: number[]; words?: {w: string; s: number; e: number}[]}>;
 
 /** Narration pace used until real voiceover exists (~155 words per minute). */
 const WORDS_PER_SECOND = 2.6;

@@ -57,7 +57,7 @@ if (chapters[0]?.start !== 0) errors.push('First chapter must start at 0:00.');
 const words = tl.lines.reduce((n, l) => n + wordCount(l.text), 0);
 console.log(`\n${episode.youtubeTitle}`);
 console.log(`  runtime   ${formatTimestamp(tl.duration)} (${tl.duration.toFixed(1)}s, ${tl.shots.length} shots, ${words} words)`);
-console.log(`  timings   ${Object.keys(voice).length ? 'ElevenLabs voice' : 'estimated (no voiceover yet)'}`);
+console.log(`  timings   ${Object.keys(voice).length ? 'voiced' : 'estimated (no voiceover yet)'}`);
 console.log(`  mid-rolls ${mids.map(formatTimestamp).join(', ') || '—'}`);
 console.log(`  chapters  ${chapters.map((c) => `${formatTimestamp(c.start)} ${c.chapter}`).join(' | ')}`);
 console.log(`  beats     ${laughs} laughs · ${tl.shots.filter((s) => s.beats?.includes('wow')).length} wows · ${tl.shots.filter((s) => s.beats?.includes('heart')).length} hearts · ${tl.shots.filter((s) => s.beats?.includes('loop')).length} open loops`);

@@ -12,7 +12,21 @@ const chapters = tl.shots.filter((s) => s.chapter).map((s) => `${formatTimestamp
 const notes = tl.shots.filter((s) => s.science).map((s, i) => `(${i + 1}) ${s.science!.text} — Source: ${s.science!.source}`);
 const mids = tl.shots.filter((s) => s.midroll).map((s) => formatTimestamp(s.end));
 
-const description = `${episode.logline}
+const fileDescription = `${episode.logline}
+
+${episode.commentPrompt} Tell us below 👇
+
+${chapters.join('\n')}
+
+THE REAL SCIENCE IN THIS STORY
+${notes.join('\n')}
+
+THE BLINK FILES — every File, the world ends a different way. Every File, your watch counts down first. Subscribe: the next countdown has already started.
+
+This is a work of fiction. The Sun cannot simply vanish — it has about five billion years of fuel left. Everything that happens after it does is real physics.
+#whatif #space #survival #animation #theblinkfiles`;
+
+const description = episode.style === 'cinema' ? fileDescription : `${episode.logline}
 
 ${episode.commentPrompt} Tell us below — the Executor is still reading.
 

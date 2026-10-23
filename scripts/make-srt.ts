@@ -33,7 +33,13 @@ const NAMES: Record<string, string> = {
   CAPTAIN: 'CAPTAIN (RADIO)',
   FISHERMAN: 'FISHERMAN',
   ASSISTANT: 'ASSISTANT',
+  NARRATOR: '',
+  MIRA: 'MIRA',
+  RADIO: '(RADIO)',
 };
+// Narrated File episodes: the narrator is unlabelled, and the viewer-facing file carries no stage directions.
+const cinema = episode.style === 'cinema';
+const label = (speaker: string) => (NAMES[speaker] ? `${NAMES[speaker]}${cinema && speaker === 'RADIO' ? ' ' : ': '}` : '');
 // Split long lines into ≤2-row cues of ~42 chars so they read comfortably.
 const chunk = (text: string, max = 84) => {
   const words = text.split(' ');
@@ -60,7 +66,7 @@ let lastSpeaker = '';
 // Wordless beats (time cards, title) get a bracketed description so the file reads as a full log.
 type Cue = {start: number; end: number; text: string};
 const silent: Cue[] = tl.shots
-  .filter((s) => !s.lines?.length)
+  .filter((s) => !s.lines?.length && !cinema)
   .map((s) => {
     const p = (s.props ?? {}) as Record<string, string>;
     const text = s.action ? `[${s.action}]` : `[${s.id}]`;
@@ -79,8 +85,8 @@ for (const ev of events) {
   let t = l.start;
   parts.forEach((p, i) => {
     const d = ((l.end - l.start) * p.length) / total;
-    const label = i === 0 && l.speaker !== lastSpeaker ? `${NAMES[l.speaker]}: ` : '';
-    cues.push(`${++n}\n${ts(t)} --> ${ts(t + d)}\n${wrap2(label + p)}\n`);
+    const lab = i === 0 && l.speaker !== lastSpeaker ? label(l.speaker) : '';
+    cues.push(`${++n}\n${ts(t)} --> ${ts(t + d)}\n${wrap2(lab + p)}\n`);
     t += d;
   });
   lastSpeaker = l.speaker;
@@ -96,7 +102,7 @@ const described: {start: number; end: number; text: string}[] = [];
 for (const s of tl.shots) {
   if (s.action) described.push({start: s.start + 0.05, end: s.start + Math.min(3.2, s.duration - 0.1), text: `[${s.action}]`});
 }
-for (const l of tl.lines) described.push({start: l.start, end: l.end, text: `${NAMES[l.speaker]}: ${l.text}`});
+for (const l of tl.lines) described.push({start: l.start, end: l.end, text: `${NAMES[l.speaker] || 'NARRATOR'}: ${l.text}`});
 described.sort((a, b) => a.start - b.start);
 const dOut = join(ROOT, 'renders', `${id}-described.srt`);
 writeFileSync(dOut, described.map((c, i) => `${i + 1}\n${ts(c.start)} --> ${ts(c.end)}\n${c.text}\n`).join('\n'));

@@ -1,10 +1,16 @@
 # THE BLINK FILES
 
-> *Betelgeuse died. With its last light, the people who lived there sent their powers to Earth — twelve gifts, for twelve ordinary people.*
+> *Every File, the world ends a different way. Every File, your watch counts down first.*
 
-A YouTube channel of animated space-science stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev) and voiced with ElevenLabs.
+A YouTube channel of animated space-science survival stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev): the narration is voiced locally with Kokoro-82M (Apache-2.0), and the score is synthesised from scratch.
 
-**Episode 1 — "What If Everything You Touched Lost Its Gravity?"** is in `renders/`:
+**Launch episode: File 001, "The Sun Went Out. Here's Your Day 1 to Day 365"** is in `renders/`:
+- `sun01.mp4`: 8:44, 1080p, with the narration, Mira and the radio voiced, the original score, and soft English subtitles embedded
+- `sun01.srt`: captions for YouTube. `sun01-described.srt` adds stage directions for review.
+- `sun01-thumbnail.png`, `sun01-metadata.md` (title, description with chapters and science sources, tags, mid-roll times, pinned comment)
+- Format and cast: [`docs/09-series-bible.md`](docs/09-series-bible.md). Script: `episodes/sun01-the-sun-went-out/script.ts`.
+
+**Earlier pilot, "What If Everything You Touched Lost Its Gravity?"** (the Zero-G episode, held for a later slot):
 - `ep01.mp4`: ~9:10, 1080p (web-size copy). No voiceover yet; it has an original score and SFX.
 - `ep01.srt`: dialogue captions for YouTube
 - `ep01-described.srt`: dialogue plus stage directions, for reviewing before the voice exists
@@ -22,6 +28,7 @@ A YouTube channel of animated space-science stories built for **8–12 minute ep
 | [06 · Episode formula](docs/06-episode-formula.md) | The ten-section structure, retention rules, show-don't-tell, packaging |
 | [07 · Series framework](docs/07-series-framework.md) | How the channel keeps going: Files, Loose Files, Shorts |
 | [08 · Niche scan, Oct 2026](docs/08-niche-scan-2026-10.md) | Where the unsaturated, high-viral formats are, and the two bets to test after Ep1 (tool: `research/niche-scan/`) |
+| [09 · Series bible](docs/09-series-bible.md) | **The launch format**: the recurring cast, the watch mystery and its payoff, the episode formula, film language, sound, and how to produce a File |
 | [ElevenLabs setup](docs/ELEVENLABS_SETUP.md) | Step-by-step key and voice setup |
 
 ## Studio quickstart
