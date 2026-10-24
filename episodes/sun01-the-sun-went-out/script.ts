@@ -457,7 +457,7 @@ const shots: Shot[] = [
   }),
   sh('a-third', sc('diagram', {v: 'tide', step: 1}), {
     science: {text: "The Sun’s tide-raising force is about 46% of the Moon’s; at spring tide the two add up.", source: "NOAA Ocean Service, ‘Tides and Water Levels’ tutorial"},
-    callout: {text: '−⅓', at: 'l0+1.6'},
+    callout: {text: '−33%', at: 'l0+1.6'},
     action: 'The Sun’s bulge is removed: the tide shrinks by a third.',
     lines: [I('Without the Sun, this week’s big tides would be a third smaller.')],
   }),
