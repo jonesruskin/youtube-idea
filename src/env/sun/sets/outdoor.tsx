@@ -439,7 +439,7 @@ registerSet('snowstreet', {
             {c.v === 'vent' && <MetroEntrance x={1900} base={950} grate={1460} frame={c.frame} />}
             {c.v === 'door' && <StreetDoor frame={c.frame} />}
             {c.v !== 'door' && <PawPrints from={c.v === 'vent' ? 700 : 1500} to={c.v === 'vent' ? 1420 : 2400} base={990} />}
-            {c.p.woof !== undefined && <Woof t={c.t - c.at(c.p.woof, 0.35)} x={1085} y={470} />}
+            {c.p.woof !== undefined && <Woof t={c.t - c.at(c.p.woof, 0.35)} x={985} y={610} />}
           </g>
         ),
       },

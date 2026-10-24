@@ -207,15 +207,18 @@ const Workshop: React.FC<{c: SetCtx}> = ({c}) => (
         {i % 3 === 2 && <path d={`M${x},300 L${x},460`} stroke="#E9C46A" strokeWidth={14} />}
       </g>
     ))}
-    {/* Ito's framed print of the 1919 eclipse: the Moon, the corona, and three faint lines far too straight */}
+    {/* Ito's framed print of the 1919 eclipse: the Moon, the corona, and three faint lines far too straight —
+        each one crosses the whole corona and comes out the other side (an orbital ring of the shell, edge-on) */}
     <g transform="translate(1530,300) rotate(1.5)">
       <rect x={-78} y={-62} width={156} height={124} fill="#5A3822" stroke={INK} strokeWidth={4} />
       <rect x={-66} y={-50} width={132} height={100} fill="#3A3836" />
       <circle cx={0} cy={0} r={34} fill="#D8D2C4" opacity={0.18} />
       <circle cx={0} cy={0} r={24} fill="#E8E2D4" opacity={0.35} />
-      {[-58, 64, 200].map((a) => (
-        <path key={a} d={`M${Math.cos((a * Math.PI) / 180) * 18},${Math.sin((a * Math.PI) / 180) * 18} L${Math.cos((a * Math.PI) / 180) * 62},${Math.sin((a * Math.PI) / 180) * 62}`} stroke="#F4EFE6" strokeWidth={1.6} opacity={0.75} />
-      ))}
+      {[18, 74, 142].flatMap((a) =>
+        [a, a + 180].map((b) => (
+          <path key={b} d={`M${Math.cos((b * Math.PI) / 180) * 18},${Math.sin((b * Math.PI) / 180) * 18} L${Math.cos((b * Math.PI) / 180) * 62},${Math.sin((b * Math.PI) / 180) * 62}`} stroke="#F4EFE6" strokeWidth={1.6} opacity={0.75} />
+        )),
+      )}
       <circle cx={0} cy={0} r={16} fill="#0A0A0C" />
       <rect x={-24} y={66} width={48} height={18} fill="#E9DCC6" stroke={INK} strokeWidth={2} />
       <text x={0} y={80} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={700} fontSize={13} fill={INK}>

@@ -1,8 +1,10 @@
 # The Sun Went Out. Here's Your Day 1 to Day 365
 
 **Thumbnail text:** WHO BUILT THIS?
-**Runtime:** 8:10
-**Manual mid-roll positions:** 4:39, 6:36 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
+**Thumbnails for Test & Compare:** sun01-thumbnail.png, sun01-thumbnail-b.png, sun01-thumbnail-c.png (upload all of them; YouTube serves each to a share of viewers and keeps the one with the best watch time)
+**End screen:** the last 15 s (from 8:25) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 8:29 to the end.
+**Runtime:** 8:40
+**Manual mid-roll positions:** 4:45, 6:59 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
 
 ## Description (paste as-is)
 
@@ -13,18 +15,18 @@ Something just counted the planets and stopped at Earth. What would you say back
 
 0:00 Minute zero
 0:46 Hour one
-2:07 Day 1
-2:47 Day 2
-3:34 Day 3
-3:56 Day 5
-4:09 Day 7
-4:39 Day 8
-5:12 Day 30
-5:59 Day 40
-6:21 Day 100
-6:36 Day 180
-7:00 Day 300
-7:20 Day 365
+2:14 Day 1
+2:53 Day 2
+3:40 Day 3
+4:02 Day 5
+4:15 Day 7
+4:45 Day 8
+5:21 Day 30
+6:08 Day 40
+6:44 Day 100
+6:59 Day 180
+7:22 Day 300
+7:42 Day 365
 
 THE REAL SCIENCE IN THIS STORY
 (1) Sunlight takes about 8 minutes 20 seconds to cross the 150 million km to Earth, so we would not notice anything for 8:20. — Source: NASA Science, ‘Sun: Facts’ (science.nasa.gov/sun)
@@ -39,7 +41,8 @@ THE REAL SCIENCE IN THIS STORY
 (10) A few metres underground the temperature stays close to the yearly average (about 10–16 °C in many places), whatever the weather. — Source: US Department of Energy, ‘Geothermal Heat Pumps’
 (11) The atmosphere holds about 1.2 million billion tonnes of oxygen; even with no photosynthesis, breathing and burning would take thousands of years to use a meaningful share. — Source: Keeling & Manning, ‘Studies of Recent Changes in Atmospheric O2 Content’, Treatise on Geochemistry (2014)
 (12) Anything that absorbs starlight must give off waste heat as infrared; this is how astronomers search for Dyson spheres. — Source: Freeman Dyson, ‘Search for Artificial Stellar Sources of Infrared Radiation’, Science (1960)
-(13) Life around deep-sea hydrothermal vents runs on chemical energy from inside the Earth (chemosynthesis), not sunlight. — Source: NOAA Ocean Exploration, ‘Hydrothermal Vents’
+(13) Satellites have measured the Sun's total brightness continuously since 1978. It naturally varies by about 0.1% over the 11-year solar cycle, so a screen that blocked a hundred-thousandth of its light would be lost in the noise. — Source: NASA, ‘Solar Irradiance Datasets’ (scdi.smce.nasa.gov/solar_data_access.html); G. Kopp, Living Reviews in Solar Physics (2025)
+(14) Life around deep-sea hydrothermal vents runs on chemical energy from inside the Earth (chemosynthesis), not sunlight. — Source: NOAA Ocean Exploration, ‘Hydrothermal Vents’
 
 THE BLINK FILES — one family, one year, the end of the world as physics would really play it. Part 2 continues from Day 365. Subscribe so you don't miss the reply.
 
@@ -52,3 +55,5 @@ what if the sun disappeared, what if the sun went out, day 1 to day 365, surviva
 
 ## Pinned comment
 It counted to three and stopped. What do we say back? Best answer gets read out in Part 2. 👇
+
+Also: did anyone spot what’s in Mr. Ito’s 1919 eclipse photo? 👀

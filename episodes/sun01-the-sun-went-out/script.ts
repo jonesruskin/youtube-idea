@@ -876,14 +876,14 @@ const shots: Shot[] = [
     action: 'The camera glides around the shell. Each of its slats is wider than Earth.',
     lines: [N('A shell. Built around a star.', 0.8)],
   }),
-  sh('not-in-a-day', stage('metro', 'workshop', push(1.7, 1.95, 1080, 600), [c(IT, 1000, 900, {outfit: 'cold', pose: 'think', facing: 'right', expr: 'focused'})], [{at: 'l0+0.4', who: IT, look: [0.8, -0.5]}]), {
+  sh('not-in-a-day', stage('metro', 'workshop', push(1.6, 1.75, 1220, 560), [c(IT, 1000, 900, {outfit: 'cold', pose: 'think', facing: 'right', expr: 'focused'})], [{at: 'l0+0.4', who: IT, look: [0.8, -0.5]}]), {
     cue: 'curious',
     action: 'Ito in his workshop, beside his old framed eclipse photograph, shaking his head.',
     lines: [I('Nobody could build that in a day.')],
   }),
   sh('blinds', sc('diagram', {v: 'blinds', step: 0}), {
     dev: 'the shell was always there, edge-on, like an open blind',
-    science: {text: "Satellites have measured the Sun's total brightness since 1978. It naturally wobbles by about 0.1%, so a screen that blocked a millionth of its light would be lost in the noise.", source: 'NASA Earth Observatory, ‘Solar Irradiance’ (SORCE / TSIS total solar irradiance record)'},
+    science: {text: "Satellites have measured the Sun's total brightness continuously since 1978. It naturally varies by about 0.1% over the 11-year solar cycle, so a screen that blocked a hundred-thousandth of its light would be lost in the noise.", source: 'NASA, ‘Solar Irradiance Datasets’ (scdi.smce.nasa.gov/solar_data_access.html); G. Kopp, Living Reviews in Solar Physics (2025)'},
     beats: ['wow'],
     action: 'A window blind with its slats open, sunlight streaming through. Beside it, the Sun in a ring of the same slats, edge-on, light pouring between them.',
     lines: [I('It was always there. Edge-on, like the slats of a blind.')],

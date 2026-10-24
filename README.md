@@ -4,17 +4,18 @@
 
 A YouTube channel of animated space-science survival stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev): the narration is voiced locally with Kokoro-82M (Apache-2.0), and the score is synthesised from scratch.
 
-**Launch episode: File 001, "The Sun Went Out. Here's Your Day 1 to Day 365" (v2)** is in `renders/`:
-- `sun01.mp4`: about 8:10, 1080p web copy with soft English subtitles. The upload master `sun01-hq.mp4` is git-ignored.
-- **The story:** something closes a shell around the Sun. You, your sister Mira, Biscuit the dog and Mr. Ito, the astronomer upstairs, survive the freeze and solve it in five reveals, each proven from real evidence: light delay, tides, a thermal camera, an energy beam, a signal. It ends on a cliffhanger into Part 2.
+**Launch episode: File 001, "The Sun Went Out. Here's Your Day 1 to Day 365" (v2.1)** is in `renders/`:
+- `sun01.mp4`: about 8:40, 1080p web copy with soft English subtitles. The upload master `sun01-hq.mp4` is git-ignored.
+- **The story:** at 6:44 a shell around the Sun closes. It wasn't built that morning: it had been there for a century, furled edge-on like an open blind, and someone closed it. You, your sister Mira, Biscuit the dog and Mr. Ito, the astronomer upstairs, survive the freeze and solve it in six reveals, each proven from real evidence: light delay, tides, a thermal camera, the blind, an energy beam, a signal. It ends on a cliffhanger into Part 2.
 - **Built to the genre's numbers:**
-  - 135 shots at about 3.6 s each
-  - a development every 30 s or less, and 14 laughs
-  - a real NASA Earth
-  - voices by Kokoro, with Mr. Ito on a British voice
+  - 140 shots at about 3.6 s each
+  - a development every 30 s or less, two mid-video re-hooks, and 14 laughs
+  - true whip pans, a Day tag with a year bar, and characters who look at whoever is talking
+  - every prop drawn to real-world scale (see `ScaleLab`)
+  - Foley, a real NASA Earth, and voices by Kokoro (Mr. Ito on a British voice)
   - an original synthesised score with a recurring "shell" motif
-- `sun01.srt` (captions), `sun01-described.srt` (with stage directions), `sun01-thumbnail.png`, and `sun01-metadata.md` (title, description with chapters and 13 science sources, tags, mid-roll times, pinned comment)
-- Format, cast and review gates: [`docs/09-series-bible.md`](docs/09-series-bible.md). Logic audit: [`docs/10-sun01-logic-audit.md`](docs/10-sun01-logic-audit.md). Script: `episodes/sun01-the-sun-went-out/script.ts`.
+- `sun01.srt` (captions), `sun01-described.srt` (with stage directions), three thumbnails for YouTube's Test & Compare (`sun01-thumbnail.png`, `-b`, `-c`), and `sun01-metadata.md` (title, description with chapters and 14 science sources, tags, mid-roll times, end-screen layout, pinned comment)
+- Format, cast and review gates: [`docs/09-series-bible.md`](docs/09-series-bible.md). Logic audit, shell physics and the Episode 2 answer: [`docs/10-sun01-logic-audit.md`](docs/10-sun01-logic-audit.md). Script: `episodes/sun01-the-sun-went-out/script.ts`.
 
 **Earlier pilot, "What If Everything You Touched Lost Its Gravity?"** (the Zero-G episode, held for a later slot):
 - `ep01.mp4`: ~9:10, 1080p (web-size copy). No voiceover yet; it has an original score and SFX.
@@ -34,8 +35,8 @@ A YouTube channel of animated space-science survival stories built for **8–12 
 | [06 · Episode formula](docs/06-episode-formula.md) | The ten-section structure, retention rules, show-don't-tell, packaging |
 | [07 · Series framework](docs/07-series-framework.md) | How the channel keeps going: Files, Loose Files, Shorts |
 | [08 · Niche scan, Oct 2026](docs/08-niche-scan-2026-10.md) | Where the unsaturated, high-viral formats are, and the two bets to test after Ep1 (tool: `research/niche-scan/`) |
-| [09 · Series bible](docs/09-series-bible.md) | **The launch format (v2)**: the cast and height chart, the serial story, the episode formula, film language, sound, the review gates, and how to produce a File |
-| [10 · File 001 logic audit](docs/10-sun01-logic-audit.md) | Every physics claim with its numbers, the clue chain, temperatures, continuity, and the v1 holes and their fixes |
+| [09 · Series bible](docs/09-series-bible.md) | **The launch format (v2.1)**: the cast and height chart, the serial story, the episode formula, film language, sound, the review gates, and how to produce a File |
+| [10 · File 001 logic audit](docs/10-sun01-logic-audit.md) | Every physics claim with its numbers, how the shell can exist and close in a second, the Episode 2 answer, the clue chain, temperatures, continuity, and every fix |
 | [ElevenLabs setup](docs/ELEVENLABS_SETUP.md) | Step-by-step key and voice setup |
 
 ## Studio quickstart

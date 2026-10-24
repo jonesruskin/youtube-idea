@@ -27,14 +27,15 @@ Sources: transcripts and YouTube auto-frames of *Bunker Survival 1 Year* (2.0M),
 The height chart is enforced in code: scenes choose a *depth*, never a per-character scale, and the linter fails any shot where two people on the same floor line differ in depth. Extras come from a seeded generator (age, height, build, skin, hair, hats, glasses, beards); kids never go bald.
 
 ## The serial story
-- **File 001.** Something closes a shell around the Sun. Over a year, the family deduces the following, each step from evidence they can see:
+- **File 001.** A shell around the Sun, there unseen for at least a century, closes. Over a year, the family deduces the following, each step from evidence they can see:
   1. **It happened at the Sun**: Venus and Jupiter go dark late, by exactly their light-delay.
   2. **The Sun is still there**: the tides are normal, and Earth still orbits.
-  3. **It is a shell**: a thermal camera shows a warm disc bigger than the Sun.
+  3. **It is a shell**: a thermal camera shows a warm disc twice as wide as the Sun. It wasn't built that day; it was always there, furled edge-on like an open blind, and at 6:44 someone closed it.
   4. **It is taking the Sun's energy**: a beam leaves the shell.
 
   On Day 365 a door opens in the shell for one second. Then a signal counts the planets, 1, 2, 3, and stops at Earth. *"That's us."*
-- **File 002: The Reply.** What humanity sends back, and what answers.
+- **File 002: The Reply.** What humanity sends back, and what answers. Ito proves it was always there: every eclipse photo since 1919 shows the same three straight lines through the corona, fixed against the stars rather than turning with the Sun (full answer: `docs/10-sun01-logic-audit.md`, "The answer we hold for Episode 2").
+- **File 003 hook.** The beam's recoil makes the Sun a very slow rocket: *it isn't just taking the light; it's steering the Sun.*
 - **Rule:** every File must work for someone who has never seen another. The previous File is recapped in the cold open with one image.
 
 ## The episode formula (≈8:00–8:40)

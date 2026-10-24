@@ -493,15 +493,22 @@ export const DiagramScene: React.FC = () => {
           <path d="M240,230 L240,662 M560,230 L560,662" stroke="#B8AC96" strokeWidth={3} />
           <rect x={220} y={214} width={360} height={22} rx={6} fill="#B8AC96" stroke={INK} strokeWidth={4} />
         </g>
-        {/* the Sun in its ring of slats */}
-        <g>
+        {/* the Sun in its ring of slats (a cross-section): rays stream out between them, until the ring shuts and
+            the light is trapped inside — the Sun still burns, the outside goes dark */}
+        <clipPath id="blindsSpace">
+          <rect x={905} y={-400} width={1600} height={1900} />
+        </clipPath>
+        <g clipPath="url(#blindsSpace)">
           <circle cx={S[0]} cy={S[1]} r={R * 1.9} fill="#FFB13B" opacity={0.12 * open} />
           {Array.from({length: 24}, (_, k) => {
             const a = ((k + 0.5) / 24) * Math.PI * 2;
             return <path key={k} d={`M${S[0] + Math.cos(a) * 130},${S[1] + Math.sin(a) * 130} L${S[0] + Math.cos(a) * 820},${S[1] + Math.sin(a) * 820}`} stroke="#FFE6A8" strokeWidth={10} opacity={0.3 * open} strokeLinecap="round" />;
           })}
-          <circle cx={S[0]} cy={S[1]} r={R * 0.48} fill="#FFC14A" opacity={0.25 + 0.75 * open} />
-          <circle cx={S[0]} cy={S[1]} r={R * 0.48} fill="none" stroke="#FFE9A8" strokeWidth={6} opacity={open} />
+        </g>
+        <g>
+          <circle cx={S[0]} cy={S[1]} r={R} fill="#FF9E3A" opacity={0.22 * turn} />
+          <circle cx={S[0]} cy={S[1]} r={R * 0.48} fill="#FFC14A" />
+          <circle cx={S[0]} cy={S[1]} r={R * 0.48} fill="none" stroke="#FFE9A8" strokeWidth={6} />
           {Array.from({length: N}, (_, k) => {
             const a = (k / N) * Math.PI * 2;
             const L = ((2 * Math.PI * R) / N) * 1.12;
@@ -510,7 +517,7 @@ export const DiagramScene: React.FC = () => {
             const y = S[1] + Math.sin(a) * R;
             const dx = (Math.cos(o) * L) / 2;
             const dy = (Math.sin(o) * L) / 2;
-            return <path key={k} d={`M${x - dx},${y - dy} L${x + dx},${y + dy}`} stroke={turn > 0.5 ? '#2A2E3E' : '#C9C2B0'} strokeWidth={9} strokeLinecap="round" />;
+            return <path key={k} d={`M${x - dx},${y - dy} L${x + dx},${y + dy}`} stroke={turn > 0.5 ? '#7E88AA' : '#C9C2B0'} strokeWidth={9 + 5 * turn} strokeLinecap="round" />;
           })}
           <circle cx={S[0]} cy={S[1]} r={R} fill="none" stroke={INK} strokeWidth={2} opacity={0.4} />
         </g>
