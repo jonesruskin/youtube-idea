@@ -209,6 +209,66 @@ export const CloseupScene: React.FC = () => {
     );
   }
 
+  if (v === 'calendar') {
+    // The kitchen calendar in candlelight. Its pages flip on their own, a whole year of them, and stop on one
+    // date circled in red: the day you will know.
+    const MONTHS = ['JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC', 'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN'];
+    const flip = clamp(t / Math.max(1.2, c.dur * 0.55)) * 12;
+    const m = Math.min(12, Math.floor(flip));
+    const frac = m < 12 ? flip - m : 0;
+    const ring = clamp((t - c.dur * 0.55 - 0.15) / 0.6);
+    const page = (k: number, sy = 1) => (
+      <g transform={`translate(960,190) scale(1,${sy}) translate(-960,-190)`}>
+        <rect x={600} y={190} width={720} height={790} rx={10} fill="#FFFDF6" stroke={INK} strokeWidth={6} />
+        <rect x={600} y={190} width={720} height={150} fill="#D9443A" stroke={INK} strokeWidth={6} />
+        <text x={960} y={300} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={96} fill="#FFFDF6" letterSpacing={8}>
+          {MONTHS[k]}
+        </text>
+        {Array.from({length: 35}, (_, d) => {
+          const day = d + 1;
+          if (day > 30) return null;
+          const x = 650 + (d % 7) * 98;
+          const y = 400 + Math.floor(d / 7) * 112;
+          return (
+            <text key={d} x={x + 30} y={y + 60} textAnchor="middle" fontFamily={fonts.ui} fontWeight={700} fontSize={44} fill={k === 12 && day === 13 ? '#D9443A' : '#3A3442'} opacity={0.85}>
+              {day}
+            </text>
+          );
+        })}
+      </g>
+    );
+    return wrap(
+      '#0A0E22',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#2A2238" />
+        {Array.from({length: 40}, (_, i) => (
+          <rect key={i} x={i * 56} y={0} width={22} height={H} fill="#211B2E" opacity={0.6} />
+        ))}
+        <rect x={610} y={200} width={720} height={790} rx={10} fill="#000" opacity={0.35} />
+        {page(Math.min(12, m + 1))}
+        {frac > 0 ? page(m, Math.max(0.02, 1 - frac)) : page(m)}
+        {/* spiral binding */}
+        {Array.from({length: 14}, (_, i) => (
+          <g key={i}>
+            <rect x={632 + i * 49} y={170} width={14} height={44} rx={7} fill="#B8BEC6" stroke={INK} strokeWidth={3} />
+          </g>
+        ))}
+        <circle cx={960} cy={150} r={12} fill="#5A5E6A" stroke={INK} strokeWidth={3} />
+        {/* the red ring, drawn by hand, around the 13th of next June */}
+        {m === 12 && ring > 0 && (
+          <g>
+            <ellipse cx={1170} cy={556} rx={58} ry={48} fill="none" stroke="#D9443A" strokeWidth={9} strokeLinecap="round" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - ring} transform="rotate(-8,1170,556)" />
+            <text x={1232} y={510} fontFamily={fonts.display} fontWeight={900} fontSize={70} fill="#D9443A" opacity={clamp(ring * 2 - 1)} transform="rotate(12,1232,510)">
+              ?
+            </text>
+          </g>
+        )}
+        <Glow x={360} y={900} r={700} color="#FFB867" opacity={0.3 + 0.05 * Math.sin(f * 0.4)} />
+      </g>,
+      <Grade color="#2A3A8A" amount={0.18} />,
+    );
+  }
+
   if (v === 'pawprints') {
     const sweep = interpolate(p, [0, 1], [-30, 15]);
     return (

@@ -57,8 +57,10 @@ if (chapters[0]?.start !== 0) errors.push('First chapter must start at 0:00.');
 // 8. The narrated File format (cinema) has stricter gates, benchmarked against the genre's hits.
 const cinemaReport: string[] = [];
 if (episode.style === 'cinema') {
-  const n = tl.shots.length;
-  const avg = tl.duration / n;
+  // the end card is YouTube's end-screen slot (subscribe + next video), not story pacing: it doesn't count
+  const story = tl.shots.filter((s, i) => !(i === tl.shots.length - 1 && s.scene === 'end'));
+  const n = story.length;
+  const avg = story.reduce((a, s) => a + s.duration, 0) / n;
   cinemaReport.push(`avg shot ${avg.toFixed(2)}s`);
   if (avg > 3.7) errors.push(`Average shot is ${avg.toFixed(2)}s — the genre cuts every ~3s (gate 3.7s).`);
   // a long shot must have acting or a camera move

@@ -439,6 +439,7 @@ registerSet('snowstreet', {
             {c.v === 'vent' && <MetroEntrance x={1900} base={950} grate={1460} frame={c.frame} />}
             {c.v === 'door' && <StreetDoor frame={c.frame} />}
             {c.v !== 'door' && <PawPrints from={c.v === 'vent' ? 700 : 1500} to={c.v === 'vent' ? 1420 : 2400} base={990} />}
+            {c.p.woof !== undefined && <Woof t={c.t - c.at(c.p.woof, 0.35)} x={1085} y={470} />}
           </g>
         ),
       },
@@ -455,6 +456,23 @@ registerSet('snowstreet', {
   ),
   handheld: 0.6,
 });
+
+/** The comic sound-word for a bark far off in the dark: pops in with overshoot, wobbles, fades. */
+const Woof: React.FC<{t: number; x: number; y: number}> = ({t, x, y}) => {
+  if (t < 0 || t > 1.6) return null;
+  const pop = t < 0.12 ? 0.3 + (t / 0.12) * 0.9 : t < 0.22 ? 1.2 - ((t - 0.12) / 0.1) * 0.2 : 1;
+  const fade = Math.min(1, Math.max(0, (1.6 - t) / 0.4));
+  return (
+    <g transform={`translate(${x},${y}) rotate(${-8 + Math.sin(t * 18) * 2}) scale(${pop})`} opacity={fade}>
+      {[-1, 0, 1].map((k) => (
+        <path key={k} d={`M${-70},${k * 16} L${-100},${k * 26}`} stroke="#FFF6E0" strokeWidth={4} strokeLinecap="round" opacity={0.8} />
+      ))}
+      <text textAnchor="middle" dominantBaseline="central" fontFamily="'Unbounded', sans-serif" fontWeight={900} fontSize={46} fill="#FFE08A" stroke="#0B1026" strokeWidth={7} paintOrder="stroke" letterSpacing={2}>
+        WOOF!
+      </text>
+    </g>
+  );
+};
 
 const PawPrints: React.FC<{from: number; to: number; base: number}> = ({from, to, base}) => (
   <g>

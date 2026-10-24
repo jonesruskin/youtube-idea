@@ -7,7 +7,8 @@ import {fonts} from '../theme';
 /**
  * The two kinds of on-screen text File 001 allows:
  *  - a CALLOUT: one bold word or number that punches the line being spoken (pops with overshoot, holds, fades);
- *  - the DAY TAG: when the story jumps in time — "DAY 7" and the outside temperature, ticking into place.
+ *  - the DAY TAG: when the story jumps in time — "DAY 7" and the outside temperature, ticking into place, over a
+ *    thin year bar that fills from the last day shown to this one (the viewer always knows how far through we are).
  */
 const POS = {center: 540, top: 230, low: 880, left: 540, right: 540} as const;
 
@@ -42,7 +43,7 @@ export const Callout: React.FC = () => {
   );
 };
 
-export const DayTag: React.FC = () => {
+export const DayTag: React.FC<{prevDay?: number}> = ({prevDay = 0}) => {
   const {shot, t} = useShot();
   const h = shot.hud;
   if (!h) return null;
@@ -51,16 +52,24 @@ export const DayTag: React.FC = () => {
   // the temperature ticks down to its value
   const temp = Math.round(interpolate(t, [0.3, 1.1], [h.temp + Math.min(12, Math.abs(h.temp) * 0.3 + 3), h.temp], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}));
   const cold = h.temp <= 0;
+  const year = interpolate(t, [0.35, 1.3], [prevDay / 365, h.day / 365], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic)});
+  const BAR = 330;
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
       <svg viewBox="0 0 1920 1080" width="100%" height="100%">
         <g transform={`translate(${-60 + 150 * inK},${shot.letterbox ? 220 : 150})`} opacity={inK * outK}>
-          <rect x={-20} y={-74} width={10} height={150} fill={cold ? '#9FD8FF' : '#FFB25A'} />
+          <rect x={-20} y={-74} width={10} height={186} fill={cold ? '#9FD8FF' : '#FFB25A'} />
           <text x={10} y={-10} fontFamily={fonts.display} fontWeight={900} fontSize={84} fill="#FFF6E0" stroke="#0B1026" strokeWidth={10} paintOrder="stroke" letterSpacing={3}>
             DAY {h.day}
           </text>
           <text x={14} y={62} fontFamily={fonts.mono} fontWeight={600} fontSize={52} fill={cold ? '#9FD8FF' : '#FFD08A'} stroke="#0B1026" strokeWidth={8} paintOrder="stroke">
             {temp > 0 ? `+${temp}` : temp === 0 ? '0' : `−${Math.abs(temp)}`}°C
+          </text>
+          <rect x={12} y={96} width={BAR} height={10} rx={5} fill="#0B1026" opacity={0.55} />
+          <rect x={12} y={96} width={Math.max(10, BAR * year)} height={10} rx={5} fill={cold ? '#9FD8FF' : '#FFB25A'} />
+          <rect x={12 + BAR - 2} y={90} width={3} height={22} fill="#FFF6E0" opacity={0.7} />
+          <text x={12 + BAR + 12} y={110} fontFamily={fonts.mono} fontWeight={600} fontSize={26} fill="#FFF6E0" stroke="#0B1026" strokeWidth={5} paintOrder="stroke" opacity={0.85}>
+            365
           </text>
         </g>
       </svg>

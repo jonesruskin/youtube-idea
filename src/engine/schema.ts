@@ -86,6 +86,8 @@ export type Shot = {
   dev?: string;
   /** Marks one of the episode's reveals (1..n). */
   twist?: number;
+  /** Picture treatment for the whole shot: 'flashforward' drains the colour and adds film grain. */
+  look?: 'flashforward';
 };
 
 export type Episode = {

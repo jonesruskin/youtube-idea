@@ -11,11 +11,23 @@ import {EPISODES} from '../episodes';
 
 export type EpisodeProps = {episodeId: string; voice: VoiceMap; hasScore: boolean};
 
+/** Whip-pan length in frames. The outgoing shot is held this much longer and slides out as the new one slides in. */
+const WHIP = 9;
+const whipEase = (t: number) => 1 - Math.pow(1 - t, 3);
+
+/** The outgoing half of a whip-pan: after `at` frames the whole shot slides off to the left, blurring. */
+const Exit: React.FC<{at: number | null; children: React.ReactNode}> = ({at, children}) => {
+  const f = useCurrentFrame();
+  if (at === null || f < at) return <>{children}</>;
+  const e = interpolate(f, [at, at + WHIP], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: whipEase});
+  return <AbsoluteFill style={{transform: `translateX(${-e * 1920}px)`, filter: `blur(${e * 24}px)`}}>{children}</AbsoluteFill>;
+};
+
 /** Motivated entrances: a soft cut by default, whip-pans, flashes and fades where the story moves. */
 const Enter: React.FC<{kind: Shot['transition']; children: React.ReactNode}> = ({kind = 'cut', children}) => {
   const f = useCurrentFrame();
   if (kind === 'whip') {
-    const x = interpolate(f, [0, 9], [1, 0], {extrapolateRight: 'clamp', easing: (t) => 1 - Math.pow(1 - t, 3)});
+    const x = interpolate(f, [0, WHIP], [1, 0], {extrapolateRight: 'clamp', easing: whipEase});
     return (
       <AbsoluteFill style={{transform: `translateX(${x * 1920}px)`, filter: x > 0.02 ? `blur(${x * 24}px)` : undefined}}>{children}</AbsoluteFill>
     );
@@ -80,17 +92,44 @@ const Enter: React.FC<{kind: Shot['transition']; children: React.ReactNode}> = (
   return <AbsoluteFill style={{opacity: interpolate(f, [0, 3], [0.4, 1], {extrapolateRight: 'clamp'})}}>{children}</AbsoluteFill>;
 };
 
-const ShotView: React.FC<{shot: TimedShot; fps: number}> = ({shot, fps}) => {
+/** Film grain and gate weave over a flash-forward, so it reads as "not yet" at a glance. */
+const FlashForwardGrain: React.FC = () => {
+  const f = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%">
+        <filter id="ffgrain">
+          <feTurbulence type="fractalNoise" baseFrequency={0.9} numOctaves={2} seed={f % 23} />
+          <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.35 0" />
+        </filter>
+        <rect width={1920} height={1080} filter="url(#ffgrain)" opacity={0.35} />
+        <rect x={((f * 37) % 1700) + 100} y={0} width={2} height={1080} fill="#FFFFFF" opacity={0.18} />
+        <rect width={1920} height={1080} fill="none" stroke="#000" strokeWidth={90} opacity={0.35} />
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+const ShotView: React.FC<{shot: TimedShot; fps: number; prevDay: number; exitAt: number | null}> = ({shot, fps, prevDay, exitAt}) => {
   const Scene = SCENES[shot.scene];
   if (!Scene) throw new Error(`Unknown scene "${shot.scene}" in shot "${shot.id}"`);
   return (
+    <Exit at={exitAt}>
     <ShotProvider shot={shot} fps={fps}>
       <Enter kind={shot.transition}>
-        <Scene />
+        {shot.look === 'flashforward' ? (
+          <AbsoluteFill style={{filter: 'saturate(0.18) contrast(1.25) brightness(1.08) sepia(0.25)'}}>
+            <Scene />
+          </AbsoluteFill>
+        ) : (
+          <Scene />
+        )}
       </Enter>
-      <DayTag />
+      {shot.look === 'flashforward' && <FlashForwardGrain />}
+      <DayTag prevDay={prevDay} />
       <Callout />
     </ShotProvider>
+    </Exit>
   );
 };
 
@@ -121,13 +160,24 @@ const Letterbox: React.FC<{shots: TimedShot[]; fps: number}> = ({shots, fps}) =>
 export const Episode: React.FC<EpisodeProps> = ({episodeId, voice, hasScore}) => {
   const ep: EpisodeData = EPISODES[episodeId];
   const tl = buildTimeline(ep, voice);
+  // the last Day shown before each shot (flash-forwards don't count), for the year bar
+  let story = 0;
+  const prevDays = tl.shots.map((s) => {
+    const prev = story;
+    if (s.hud && s.look !== 'flashforward') story = s.hud.day;
+    return prev;
+  });
   return (
     <AbsoluteFill style={{background: '#000'}}>
-      {tl.shots.map((s) => (
-        <Sequence key={s.id} from={toFrames(s.start, ep.fps)} durationInFrames={Math.max(1, toFrames(s.duration, ep.fps))} name={`${s.index} ${s.id}`}>
-          <ShotView shot={s} fps={ep.fps} />
-        </Sequence>
-      ))}
+      {tl.shots.map((s, i) => {
+        const len = Math.max(1, toFrames(s.duration, ep.fps));
+        const whipOut = tl.shots[i + 1]?.transition === 'whip';
+        return (
+          <Sequence key={s.id} from={toFrames(s.start, ep.fps)} durationInFrames={len + (whipOut ? WHIP : 0)} name={`${s.index} ${s.id}`}>
+            <ShotView shot={s} fps={ep.fps} prevDay={prevDays[i]} exitAt={whipOut ? len : null} />
+          </Sequence>
+        );
+      })}
       <Finish />
       {ep.style === 'cinema' && <Letterbox shots={tl.shots} fps={ep.fps} />}
       {hasScore && <Audio src={staticFile(`audio/${episodeId}-score.wav`)} />}

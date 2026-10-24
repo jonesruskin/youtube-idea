@@ -39,7 +39,7 @@ const RealEarth: React.FC<{x: number; y: number; d: number; center: [number, num
   </div>
 );
 
-const SealedSun: React.FC<{x: number; y: number; r: number; frame: number}> = ({x, y, r, frame}) => <Shell cx={x} cy={y} r={r} close={1} spin={frame * 0.004} seam={0.5} frame={frame} n={90} />;
+const SealedSun: React.FC<{x: number; y: number; r: number; frame: number}> = ({x, y, r, frame}) => <Shell cx={x} cy={y} r={r} turn={1} spin={frame * 0.004} seam={0.5} frame={frame} />;
 const Planet: React.FC<{x: number; y: number; r: number; col: string; lit?: number; ring?: boolean}> = ({x, y, r, col, lit = 1, ring}) => (
   <g>
     {lit > 0 && <circle cx={x} cy={y} r={r * 2.2} fill={col} opacity={0.12 * lit} />}
@@ -430,18 +430,90 @@ export const DiagramScene: React.FC = () => {
   }
 
   if (v === 'beam') {
-    const draw = ease(clamp((t - 0.3) / 1.5));
+    // Starts as the familiar top-down map, then tilts to the side: the beam rises straight out of the plane
+    // the planets move in, so it can never cross one of them.
+    const tilt = ease(clamp((t - 0.2) / 1.6));
+    const ryf = 1 - 0.74 * tilt;
+    const draw = ease(clamp((t - 0.5) / 1.6));
+    const cy = 600;
+    const orbits = [150, 240, 330, 480, 700].map((r, i) => {
+      const a = i * 1.7 + f * 0.003 * (6 - i);
+      return {r, i, x: 960 + Math.cos(a) * r, y: cy + Math.sin(a) * r * ryf, front: Math.sin(a) > 0};
+    });
+    const planet = (o: (typeof orbits)[number]) => <circle key={`p${o.r}`} cx={o.x} cy={o.y} r={[10, 16, 18, 12, 30][o.i]} fill={['#B8B0A4', '#F2D49A', '#2E7BD6', '#D9443A', '#D9B48A'][o.i]} />;
+    const len = draw * 760 * (0.12 + 0.88 * tilt);
     return (
-      <Board frame={f}>
-        <SealedSun x={960} y={540} r={60} frame={f} />
-        {[150, 240, 330, 480, 700].map((r, i) => (
-          <g key={r}>
-            <circle cx={960} cy={540} r={r} fill="none" stroke="#FFFFFF" strokeOpacity={0.12} strokeWidth={3} />
-            <circle cx={960 + Math.cos(i * 1.7 + f * 0.003 * (6 - i)) * r} cy={540 + Math.sin(i * 1.7 + f * 0.003 * (6 - i)) * r} r={[10, 16, 18, 12, 30][i]} fill={['#B8B0A4', '#F2D49A', '#2E7BD6', '#D9443A', '#D9B48A'][i]} />
-          </g>
+      <Board frame={f} cy={520}>
+        {orbits.map((o) => (
+          <ellipse key={o.r} cx={960} cy={cy} rx={o.r} ry={o.r * ryf} fill="none" stroke={o.i === 2 ? '#6FB8FF' : '#FFFFFF'} strokeOpacity={o.i === 2 ? 0.35 : 0.12} strokeWidth={3} />
         ))}
-        <path d={`M1010,520 L${1010 + draw * 1100},${520 - draw * 560}`} stroke="#FFB13B" strokeWidth={8} />
-        <path d={`M1010,520 L${1010 + draw * 1100},${520 - draw * 560}`} stroke="#FFB13B" strokeWidth={30} opacity={0.2} />
+        <ellipse cx={960} cy={cy} rx={760} ry={760 * ryf} fill="#6FB8FF" opacity={0.04} />
+        {orbits.filter((o) => !o.front).map(planet)}
+        <SealedSun x={960} y={cy} r={60} frame={f} />
+        {orbits.filter((o) => o.front).map(planet)}
+        <path d={`M960,${cy - 60} L960,${cy - 60 - len}`} stroke="#FFB13B" strokeWidth={8} />
+        <path d={`M960,${cy - 60} L960,${cy - 60 - len}`} stroke="#FFB13B" strokeWidth={30} opacity={0.2} />
+        {draw > 0 && <circle cx={960} cy={cy - 60 - len} r={10} fill="#FFE9B0" />}
+      </Board>
+    );
+  }
+
+  if (v === 'blinds') {
+    // Left: a window blind. Right: the Sun in a ring of the same slats, at twice its radius (a cross-section).
+    // Step 0: every slat edge-on, light streams through both. Step 1: they all turn face-on at once. Dark.
+    const turn = step === 1 ? ease(clamp((t - 0.45) / 1.1)) : 0.04 * (0.5 + 0.5 * Math.sin(f * 0.05));
+    const open = 1 - turn;
+    const th = (turn * Math.PI) / 2;
+    const S: [number, number] = [1330, 540];
+    const R = 250;
+    const N = 36;
+    const z = step === 1 ? interpolate(p, [0, 1], [1.0, 1.06]) : interpolate(p, [0, 1], [1.5, 1.0], {easing: ease});
+    const cx = step === 1 ? 960 : interpolate(p, [0, 1], [520, 960], {easing: ease});
+    return (
+      <Board frame={f} z={z} cx={cx} cy={540}>
+        {/* the room with the blind */}
+        <g>
+          <rect x={120} y={150} width={760} height={780} rx={30} fill="#2A2238" stroke={INK} strokeWidth={6} />
+          <rect x={120} y={800} width={760} height={130} fill="#3A2E2A" />
+          <rect x={230} y={230} width={340} height={430} fill={`rgb(${Math.round(40 + 120 * open)},${Math.round(60 + 140 * open)},${Math.round(110 + 120 * open)})`} stroke="#E9DCC6" strokeWidth={14} />
+          {open > 0.05 && <circle cx={480} cy={320} r={46} fill="#FFF3C2" opacity={open} />}
+          {/* light shafts through the gaps, landing on the floor */}
+          <g opacity={open * 0.9} style={{mixBlendMode: 'screen'}}>
+            {Array.from({length: 13}, (_, k) => {
+              const y = 250 + k * 31;
+              return <path key={k} d={`M232,${y} L568,${y} L${868},${y + 420} L${532},${y + 420} Z`} fill="#FFE6A8" opacity={0.08} />;
+            })}
+            <path d="M560,800 L860,800 L880,900 L590,900 Z" fill="#FFE6A8" opacity={0.25} />
+          </g>
+          {Array.from({length: 13}, (_, k) => {
+            const y = 252 + k * 31;
+            const h = 3 + 30 * Math.sin(th);
+            return <rect key={k} x={232} y={y - h / 2} width={336} height={h} rx={h / 2} fill="#D8CDB8" stroke={INK} strokeWidth={2.5} />;
+          })}
+          <path d="M240,230 L240,662 M560,230 L560,662" stroke="#B8AC96" strokeWidth={3} />
+          <rect x={220} y={214} width={360} height={22} rx={6} fill="#B8AC96" stroke={INK} strokeWidth={4} />
+        </g>
+        {/* the Sun in its ring of slats */}
+        <g>
+          <circle cx={S[0]} cy={S[1]} r={R * 1.9} fill="#FFB13B" opacity={0.12 * open} />
+          {Array.from({length: 24}, (_, k) => {
+            const a = ((k + 0.5) / 24) * Math.PI * 2;
+            return <path key={k} d={`M${S[0] + Math.cos(a) * 130},${S[1] + Math.sin(a) * 130} L${S[0] + Math.cos(a) * 820},${S[1] + Math.sin(a) * 820}`} stroke="#FFE6A8" strokeWidth={10} opacity={0.3 * open} strokeLinecap="round" />;
+          })}
+          <circle cx={S[0]} cy={S[1]} r={R * 0.48} fill="#FFC14A" opacity={0.25 + 0.75 * open} />
+          <circle cx={S[0]} cy={S[1]} r={R * 0.48} fill="none" stroke="#FFE9A8" strokeWidth={6} opacity={open} />
+          {Array.from({length: N}, (_, k) => {
+            const a = (k / N) * Math.PI * 2;
+            const L = ((2 * Math.PI * R) / N) * 1.12;
+            const o = a + th; // radial when open, tangential when closed
+            const x = S[0] + Math.cos(a) * R;
+            const y = S[1] + Math.sin(a) * R;
+            const dx = (Math.cos(o) * L) / 2;
+            const dy = (Math.sin(o) * L) / 2;
+            return <path key={k} d={`M${x - dx},${y - dy} L${x + dx},${y + dy}`} stroke={turn > 0.5 ? '#2A2E3E' : '#C9C2B0'} strokeWidth={9} strokeLinecap="round" />;
+          })}
+          <circle cx={S[0]} cy={S[1]} r={R} fill="none" stroke={INK} strokeWidth={2} opacity={0.4} />
+        </g>
       </Board>
     );
   }

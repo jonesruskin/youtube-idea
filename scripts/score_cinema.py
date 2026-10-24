@@ -323,6 +323,68 @@ def ice_crack(vel=1.0):
     ping = np.sin(2 * np.pi * rng.uniform(900, 1600) * t) * np.exp(-t * 9)
     return pan((filt(sos_hp(1200), clicks) * 1.5 + ping * 0.25).astype(np.float32) * vel * 0.5, rng.uniform(-0.6, 0.6))
 
+def knock(vel=1.0):
+    """A knuckle on a solid wooden door: a woody thump (~190 Hz body) with a short bright tap on top."""
+    n = int(0.35 * SR)
+    t = np.arange(n) / SR
+    body = np.sin(2 * np.pi * 190 * t) * np.exp(-t * 38) + 0.5 * np.sin(2 * np.pi * 330 * t) * np.exp(-t * 55)
+    tap = filt(sos_bp(900, 3200), rng.standard_normal(n).astype(np.float32)) * np.exp(-t * 180).astype(np.float32) * 1.4
+    return pan(np.tanh((body + tap) * 1.3).astype(np.float32) * 0.7 * vel, 0.35)
+
+def crunch(dur=0.32, vel=1.0):
+    """Dry toast in a dog's jaws: a fast scatter of brittle, band-passed grains."""
+    n = int(dur * SR)
+    grains = (rng.random(n) > 0.985).astype(np.float32) * rng.standard_normal(n).astype(np.float32)
+    grains = np.convolve(grains, np.exp(-np.arange(int(0.004 * SR)) / (0.0012 * SR)).astype(np.float32), "same")
+    y = filt(sos_bp(1400, 7500), grains) * env(n, 0.005, 0.12)
+    return pan(y * 2.2 * vel, 0.15)
+
+def bark(vel=1.0, far=True):
+    """One dog bark: a voiced 'rruf' with a falling pitch, two formants and breath; far away it loses its highs."""
+    n = int(0.26 * SR)
+    t = np.arange(n) / SR
+    f0 = 620 * np.exp(-t * 3.2) + 170
+    ph = 2 * np.pi * np.cumsum(f0) / SR
+    src = sum(np.sin(k * ph) / k for k in range(1, 9)).astype(np.float32)
+    voiced = filt(sos_bp(500, 1100), src) * 1.6 + filt(sos_bp(1500, 2600), src) * 0.8
+    breath = filt(sos_bp(800, 3000), rng.standard_normal(n).astype(np.float32)) * 0.25
+    e = (np.clip(t / 0.012, 0, 1) * np.exp(-np.maximum(0, t - 0.05) * 14)).astype(np.float32)
+    y = np.tanh((voiced + breath) * e * 2.2).astype(np.float32)
+    if far:
+        y = filt(sos_lp(2400), y)
+    return pan(y * 0.9 * vel, 0.45)
+
+def slam(vel=1.0):
+    """A heavy street door blown against its frame: low wooden boom, rattle of the latch."""
+    n = int(0.9 * SR)
+    t = np.arange(n) / SR
+    f = 60 + 90 * np.exp(-t * 25)
+    body = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 7)
+    crack = filt(sos_bp(300, 2500), rng.standard_normal(n).astype(np.float32)) * np.exp(-t * 45).astype(np.float32)
+    rattle = filt(sos_bp(2000, 6000), rng.standard_normal(n).astype(np.float32)) * (np.sin(2 * np.pi * 22 * t) > 0.6) * np.exp(-t * 6) * 0.25
+    return pan(np.tanh((body + crack + rattle) * 1.6).astype(np.float32) * 0.8 * vel, -0.2)
+
+def page_flip(vel=1.0):
+    """One calendar page flicked over: a papery swish."""
+    n = int(0.16 * SR)
+    t = np.arange(n) / SR
+    y = filt(sos_bp(1800, 9000), rng.standard_normal(n).astype(np.float32)) * (np.sin(np.pi * t / 0.16) ** 2).astype(np.float32)
+    return pan(y * 0.35 * vel, rng.uniform(-0.3, 0.3))
+
+def slat_ripple(dur, vel=1.0):
+    """Thousands of slats turning in a wave: a cascade of small clicks that thickens, then thins, with a hollow
+    shutter rumble under it (a Venetian blind the size of a star)."""
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    dens = np.sin(np.pi * np.clip(t / dur, 0, 1)) ** 1.5
+    clicks = (rng.random(n) < 0.0016 * dens).astype(np.float32) * rng.uniform(0.3, 1, n).astype(np.float32)
+    k = np.exp(-np.arange(int(0.01 * SR)) / (0.0018 * SR)).astype(np.float32)
+    clk = filt(sos_bp(1800, 5200), np.convolve(clicks, k, "same")) * 2.5
+    rumble = filt(sos_bp(60, 400), rng.standard_normal(n).astype(np.float32)) * dens.astype(np.float32) * 0.35
+    l = clk + rumble
+    r = np.roll(clk, int(0.006 * SR)) + rumble
+    return (np.stack([l, r], 1) * vel * 0.8).astype(np.float32)
+
 def static(dur, vel=1.0):
     n = int(dur * SR)
     x = filt(sos_bp(400, 5000), rng.standard_normal(n).astype(np.float32))
@@ -493,9 +555,10 @@ def render(tl):
             roar = filt(sos_lp(900), brown(int((L + 1) * SR)))
             mix.add("fx", s, pan((roar * 0.5).astype(np.float32), 0), 1.0)
             close_end = shots["shell-closes"]["end"]
-            for k in range(14):
-                t = s + 0.6 + (close_end - s - 1.2) * (k / 14) ** 0.8
-                mix.add("fx", t, tick(k % 3 == 0, 1.3), 0.9)
+            # the slats turn from 0.9 s after the shot starts until ~0.8 s before it ends (space.tsx 'close')
+            sc0 = shots["shell-closes"]["start"]
+            turn_len = max(1.4, close_end - sc0 - 1.7)
+            mix.add("fx", sc0 + 0.9, slat_ripple(turn_len, 1.2), 1.0)
             mix.add("hits", close_end - 0.6, boom(1.0, 4), 1.0)
             shell_motif(mix, close_end - 0.6, 0.9)
             mix.add("fx", shots["light-race"]["start"], whoosh(3.0, 0.9), 0.9)
@@ -664,6 +727,31 @@ def render(tl):
                 t0 = s + 0.5 + k * 1.0
                 for j in range((k % 3) + 1):
                     mix.add("fx", t0 + j * 0.16, beep(1320, 0.08, 0.5), 0.5)
+    # Foley tied to what happens on screen (times mirror the shot's acts)
+    def line_start(key, fallback):
+        return lines[key]["start"] if key in lines else fallback
+    if "knock" in shots:
+        k0 = shots["knock"]["start"]
+        for grp in (0.25, 1.45):
+            for j in range(3):
+                mix.add("fx", k0 + grp + j * 0.24, knock(1.0 - 0.1 * j), 1.1)
+    if "toast-steal" in shots:
+        mix.add("fx", line_start("toast-steal:0", shots["toast-steal"]["start"]) + 1.3, crunch(0.34, 1.0), 1.0)
+    if "lights-out" in shots:
+        mix.add("fx", shots["lights-out"]["start"] + 0.5, crunch(0.22, 0.6), 0.7)
+    if "bark" in shots:
+        mix.add("fx", shots["bark"]["start"] + 0.35, bark(1.0, far=True), 1.0)
+    if "biscuit-bolts" in shots:
+        mix.add("fx", shots["biscuit-bolts"]["start"] + 0.12, slam(1.0), 1.0)
+    if "this-year" in shots:
+        ty = shots["this-year"]
+        span = max(1.2, (ty["end"] - ty["start"]) * 0.55)
+        for k in range(12):
+            mix.add("fx", ty["start"] + span * (k + 0.5) / 12, page_flip(0.9), 0.9)
+    if "closed-them" in shots:
+        ct = shots["closed-them"]
+        mix.add("fx", ct["start"] + 0.45, slat_ripple(1.1, 1.0), 1.0)
+
     # per-shot sound effects and whip transitions
     for sh in tl["shots"]:
         t0 = sh["start"]

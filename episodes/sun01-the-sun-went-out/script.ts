@@ -20,6 +20,8 @@ type K = [number, number, number, number, number?];
 const hold = (z: number, x: number, y: number): K[] => [[0, z, x, y], [1, z * 1.04, x, y]];
 const push = (z0: number, z1: number, x: number, y: number, x1 = x, y1 = y, r = 0): K[] => [[0, z0, x, y, 0], [1, z1, x1, y1, r]];
 const move = (a: [number, number, number], b: [number, number, number], at = 0): K[] => [[at, ...a], [1, ...b]];
+/** A push on a Dutch angle (roll° growing as it pushes): reserved for moments when the world tips over. */
+const dutch = (z0: number, z1: number, x: number, y: number, r: number): K[] => [[0, z0, x, y, r * 0.55], [1, z1, x, y, r]];
 
 const Y = 'you';
 const MI = 'mira';
@@ -66,7 +68,7 @@ const shots: Shot[] = [
     cue: 'open',
     lead: 0.3,
     dev: 'something closes around the Sun',
-    action: 'The Sun fills the frame, alive and roaring. Dark plates slide in from every side and lock together. Black.',
+    action: 'The Sun fills the frame, alive and roaring, inside a faint lattice of thin bright slats. The slats turn, a wave rolling down from the north. The light strobes through the closing gaps. Black.',
     lines: [N('At six forty-four this morning, something closed around the Sun.', 0.3)],
   }),
   sh('light-race', sc('space', {v: 'race'}), {
@@ -310,6 +312,12 @@ const shots: Shot[] = [
   sh('every-hour', sc('closeup', {v: 'thermo'}), {
     action: 'A thermometer on the balcony rail. Its red line sinks.',
     lines: [N('A little more every hour.')],
+  }),
+  sh('this-year', sc('closeup', {v: 'calendar'}), {
+    beats: ['loop'],
+    dev: 'the promise: by the end of the year you will know',
+    action: 'The kitchen calendar. Its pages flip by themselves, month after month, to one date circled in red.',
+    lines: [N("By the end of this year, you'll know exactly what happened to the Sun. You won't like it.", 0.4)],
   }),
 
   // ══ DAY 1 ══════════════════════════════════════════════════════════════════════════════════
@@ -598,7 +606,7 @@ const shots: Shot[] = [
     action: 'Your building goes dark. You strike a match and light the candles.',
     lines: [N('Your building goes dark at midnight.')],
   }),
-  sh('smoke', stage('stairs', 'smoke', push(1.4, 1.8, 960, 640), [c(Y, 900, 940, {...COLD, hold: 'torch', pose: 'torch', facing: 'right', expr: 'worried'})], [{at: 'l0', who: Y, look: [1, 0.5]}]), {
+  sh('smoke', stage('stairs', 'smoke', dutch(1.4, 1.8, 960, 640, -5), [c(Y, 900, 940, {...COLD, hold: 'torch', pose: 'torch', facing: 'right', expr: 'worried'})], [{at: 'l0', who: Y, look: [1, 0.5]}]), {
     dev: 'a fire downstairs',
     sfx: 'crash',
     action: 'Torch beam in the stairwell. Grey smoke curls out from under a neighbour’s door.',
@@ -608,7 +616,7 @@ const shots: Shot[] = [
     action: 'The torch finds door 3B: orange firelight flickering underneath, smoke pouring out.',
     lines: [N('Next door, someone is burning their furniture. Indoors.')],
   }),
-  sh('invisible', stage('stairs', 'smoke', push(2.6, 3.0, 900, 600), [c(Y, 900, 940, {...COLD, pose: 'coverMouth', facing: 'front', expr: 'scared'})]), {
+  sh('invisible', stage('stairs', 'smoke', dutch(2.6, 3.0, 900, 600, 6), [c(Y, 900, 940, {...COLD, pose: 'coverMouth', facing: 'front', expr: 'scared'})]), {
     science: {text: "Burning fuel indoors produces carbon monoxide, which is colourless and odourless; it is a leading cause of winter poisonings.", source: "US CDC, ‘Carbon Monoxide Poisoning’"},
     callout: {text: 'INVISIBLE', at: 'l0+1.4'},
     action: 'You cover your mouth.',
@@ -629,7 +637,7 @@ const shots: Shot[] = [
     action: 'Running down the stairs: you with the torch, Mira at your heels, Ito with his cane, Biscuit ahead.',
     lines: [N('You get everyone out.')],
   }),
-  sh('biscuit-bolts', stage('snowstreet', 'door', push(1.3, 1.6, 900, 640), [
+  sh('biscuit-bolts', stage('snowstreet', 'door', dutch(1.3, 1.6, 900, 640, -6), [
     c(Y, 760, 960, {...COLD, hoodUp: true, hold: 'torch', facing: 'right', expr: 'scared'}),
     c(B, 980, 960, {}),
   ], [
@@ -641,7 +649,7 @@ const shots: Shot[] = [
     action: 'The street door bangs open into a wall of wind and snow. Biscuit bolts into the dark.',
     lines: [N('At the door, Biscuit panics.')],
   }),
-  sh('mira-shouts', stage('snowstreet', 'door', push(2.4, 2.9, 900, 560), [c(MI, 900, 960, {...COLD, facing: 'right', expr: 'scared', pose: 'reach'})], [{at: 0, who: MI, loop: 'shiver', dur: 3}], {wind: 1}), {
+  sh('mira-shouts', stage('snowstreet', 'door', dutch(2.4, 2.9, 900, 560, 7), [c(MI, 900, 960, {...COLD, facing: 'right', expr: 'scared', pose: 'reach'})], [{at: 0, who: MI, loop: 'shiver', dur: 3}], {wind: 1}), {
     midroll: true,
     letterbox: true,
     beats: ['loop'],
@@ -663,10 +671,10 @@ const shots: Shot[] = [
     action: 'You turn on the spot, sweeping the torch. Nothing.',
     lines: [N('Then again, it is always night now.')],
   }),
-  sh('bark', stage('snowstreet', 'search', push(2.8, 3.2, 800, 580), [c(Y, 800, 960, {...COLD, hoodUp: true, hold: 'torch', facing: 'right', expr: 'surprised'})], [{at: 0.6, who: Y, turn: 0.8}]), {
+  sh('bark', stage('snowstreet', 'search', push(2.8, 3.2, 800, 580), [c(Y, 800, 960, {...COLD, hoodUp: true, hold: 'torch', facing: 'right', expr: 'surprised'})], [{at: 0.6, who: Y, turn: 0.8}], {woof: 0.35}), {
     min: 2.2,
-    sfx: 'chime',
-    action: 'Somewhere far off, a single bark. Your head snaps round.',
+    beats: ['laugh'],
+    action: 'Somewhere far off, a single bark (a little "WOOF!" pops out of the dark). Your head snaps round.',
   }),
   sh('pawprints', sc('closeup', {v: 'pawprints'}), {
     dev: 'paw prints',
@@ -727,6 +735,15 @@ const shots: Shot[] = [
     dev: 'the city moves underground',
     action: 'Down the metro stairs: you carrying Mira on your back, Ito, and behind them a line of torches.',
     lines: [N('By morning, half the city has followed him underground.')],
+  }),
+
+  sh('day40-tease', stage('surface', 'noon', push(1.35, 1.55, 1080, 560), [c(IT, 1080, 940, {...COLD, hold: 'thermal', pose: 'reachUp', facing: 'right', expr: 'scared'})]), {
+    transition: 'flash',
+    look: 'flashforward',
+    hud: {day: 40, temp: -41},
+    beats: ['loop'],
+    action: 'A flash-forward, drained of colour: Ito on the frozen surface, aiming a camera at the empty sky.',
+    lines: [N('Day forty changes everything.', 0.3)],
   }),
 
   // ══ DAY 30 · the tunnel city ═══════════════════════════════════════════════════════════════
@@ -841,7 +858,7 @@ const shots: Shot[] = [
   }),
   sh('bigger', stage('surface', 'noon', push(2.7, 3.2, 1080, 560), [c(IT, 1080, 940, {...COLD, hold: 'thermal', pose: 'hold', facing: 'front', expr: 'scared'})]), {
     action: 'Ito lowers the camera. His glasses have frosted.',
-    lines: [I('And it is bigger than the Sun. Much bigger.')],
+    lines: [I('And it is bigger than the Sun. Twice as wide.')],
   }),
   sh('shell-reveal', sc('space', {v: 'shellReveal'}), {
     letterbox: true,
@@ -856,8 +873,28 @@ const shots: Shot[] = [
     letterbox: true,
     callout: {text: 'A SHELL', at: 'l0+0.2'},
     dev: 'it is a shell around the Sun',
-    action: 'The camera glides around the shell. Its plates are each bigger than Earth.',
+    action: 'The camera glides around the shell. Each of its slats is wider than Earth.',
     lines: [N('A shell. Built around a star.', 0.8)],
+  }),
+  sh('not-in-a-day', stage('metro', 'workshop', push(1.7, 1.95, 1080, 600), [c(IT, 1000, 900, {outfit: 'cold', pose: 'think', facing: 'right', expr: 'focused'})], [{at: 'l0+0.4', who: IT, look: [0.8, -0.5]}]), {
+    cue: 'curious',
+    action: 'Ito in his workshop, beside his old framed eclipse photograph, shaking his head.',
+    lines: [I('Nobody could build that in a day.')],
+  }),
+  sh('blinds', sc('diagram', {v: 'blinds', step: 0}), {
+    dev: 'the shell was always there, edge-on, like an open blind',
+    science: {text: "Satellites have measured the Sun's total brightness since 1978. It naturally wobbles by about 0.1%, so a screen that blocked a millionth of its light would be lost in the noise.", source: 'NASA Earth Observatory, ‘Solar Irradiance’ (SORCE / TSIS total solar irradiance record)'},
+    beats: ['wow'],
+    action: 'A window blind with its slats open, sunlight streaming through. Beside it, the Sun in a ring of the same slats, edge-on, light pouring between them.',
+    lines: [I('It was always there. Edge-on, like the slats of a blind.')],
+  }),
+  sh('closed-them', sc('diagram', {v: 'blinds', step: 1}), {
+    twist: 4,
+    sfx: 'impact',
+    callout: {text: 'CLOSED', at: 'l0+1.1'},
+    dev: 'at 6:44 the slats were turned',
+    action: 'Every slat turns at once. The window goes dark. The Sun goes dark.',
+    lines: [N('And at six forty-four, someone closed them.', 0.5)],
   }),
   sh('who-built', stage('metro', 'tent', push(2.0, 2.4, 1000, 620), [c(MI, 900, 900, {outfit: 'cold', facing: 'right', expr: 'scared'}), c(Y, 1100, 900, {outfit: 'cold', facing: 'left', expr: 'worried'})]), {
     cue: 'mystery',
@@ -969,9 +1006,9 @@ const shots: Shot[] = [
     action: 'Map of the solar system: the shell, and a straight line leaving it, pointing away from every planet.',
     lines: [I('It is not blocking the Sun.')],
   }),
-  sh('taking-it', stage('surface', 'deep', push(2.8, 3.3, 1000, 560), [c(IT, 1000, 940, {...COLD, hold: 'thermal', pose: 'hold', facing: 'front', expr: 'scared'})]), {
+  sh('taking-it', stage('surface', 'deep', dutch(2.8, 3.3, 1000, 560, -5), [c(IT, 1000, 940, {...COLD, hold: 'thermal', pose: 'hold', facing: 'front', expr: 'scared'})]), {
     cue: 'shellSting',
-    twist: 4,
+    twist: 5,
     letterbox: true,
     callout: {text: 'TAKING IT', at: 'l0+0.3'},
     sfx: 'impact',
@@ -1023,7 +1060,7 @@ const shots: Shot[] = [
     min: 2.6,
     sfx: 'riser',
     dev: 'the shell opens',
-    action: 'In space: a seam in the shell slides open. A blade of sunlight escapes.',
+    action: 'In space: one slat of the shell turns back, for one second. A blade of sunlight escapes.',
   }),
   sh('one-second', stage('surface', 'flash', hold(1.0, 960, 500), [
     c(Y, 820, 940, {...COLD, hoodUp: true, facing: 'front', expr: 'surprised'}),
@@ -1080,7 +1117,7 @@ const shots: Shot[] = [
   }),
   sh('thats-us', stage('metro', 'radios', push(2.8, 3.4, 1100, 600), [c(MI, 1160, 900, {outfit: 'cold', facing: 'front', expr: 'scared'})]), {
     cue: 'shellSting',
-    twist: 5,
+    twist: 6,
     letterbox: true,
     beats: ['loop'],
     sfx: 'impact',
@@ -1089,8 +1126,9 @@ const shots: Shot[] = [
   }),
   sh('end', sc('end'), {
     cue: 'end',
-    action: 'Black. The shell, turning. Text: PART 2: THE REPLY.',
-    lines: [N('What would you say back? Tell us in the comments.'), N('Part two. The reply.', 1.4)],
+    min: 15,
+    action: 'The end screen: the shell turning, its three pulses, PART 2 · THE REPLY, and room for the subscribe and next-video cards.',
+    lines: [N('What would you say back? Tell us in the comments.'), N("Part two is coming. Subscribe, so you're here when it replies.", 1.0)],
   }),
 ];
 
@@ -1117,7 +1155,7 @@ export const sun01: Episode = {
     'earth without the sun',
     'the blink files',
   ],
-  pinnedComment: 'It counted to three and stopped. What do we say back? Best answer gets read out in Part 2. 👇',
+  pinnedComment: 'It counted to three and stopped. What do we say back? Best answer gets read out in Part 2. 👇\n\nAlso: did anyone spot what’s in Mr. Ito’s 1919 eclipse photo? 👀',
   fps: 30,
   style: 'cinema',
   shots,

@@ -189,8 +189,8 @@ export const ThermalScene: React.FC = () => {
           <g transform={`translate(960,540) scale(${z}) translate(-960,-540)`}>
             <circle cx={960} cy={540} r={150} fill="url(#warm)" opacity={0.75 * appear} />
             <circle cx={960} cy={540} r={90} fill="#FFB13B" opacity={0.25 * appear} />
-            {/* a faint ring where the real Sun would be, to show it's bigger */}
-            <circle cx={960} cy={540} r={34} fill="none" stroke="#9FE8FF" strokeWidth={2} strokeDasharray="6 6" opacity={0.7 * appear} />
+            {/* a faint ring where the real Sun would be: the warm disc is twice as wide (the shell sits at 2 solar radii) */}
+            <circle cx={960} cy={540} r={75} fill="none" stroke="#9FE8FF" strokeWidth={3} strokeDasharray="8 7" opacity={0.75 * appear} />
             {c.v === 'beam' && <path d="M1060,470 L1700,40" stroke="#FFB13B" strokeWidth={5} opacity={0.75 * clamp((c.t - 0.8) / 1)} />}
             {c.v === 'beam' && <path d="M1060,470 L1700,40" stroke="#E0442A" strokeWidth={18} opacity={0.3 * clamp((c.t - 0.8) / 1)} />}
           </g>
@@ -238,7 +238,7 @@ export const TitleScene: React.FC = () => {
         <Stars frame={c.frame} count={500} w={W} h={H} seed={88} maxR={2} />
         <g transform={`translate(960,470) scale(${s}) translate(-960,-470)`}>
           <circle cx={960} cy={420} r={330} fill="none" stroke="#FF7A2A" strokeWidth={26} opacity={0.12} filter="blur(14px)" />
-          <Shell cx={960} cy={420} r={300} close={1} spin={c.frame * 0.004} seam={0.55} frame={c.frame} />
+          <Shell cx={960} cy={420} r={300} turn={1} spin={c.frame * 0.004} seam={0.55} frame={c.frame} />
           <text x={960} y={860} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={120} fill="#F4EFE6" letterSpacing={8} opacity={a}>
             THE SUN WENT OUT
           </text>
@@ -249,23 +249,44 @@ export const TitleScene: React.FC = () => {
   );
 };
 
-/** End card: the shell turning; "PART 2 · THE REPLY". */
+/**
+ * End screen (15 s): the shell turning with its three pulses; then it rises and shrinks to make room for YouTube's
+ * end-screen elements — a "watch next" video slot (left, 16:9) and the subscribe button (right). The slots are
+ * drawn as soft frames so the layout reads as intentional even before the elements are attached in Studio.
+ */
 export const EndScene: React.FC = () => {
   const c = useSetCtx();
-  const a = clamp((c.t - c.at('l1', 3)) / 0.6);
+  const k = ease(clamp((c.t - 2.4) / 1.2));
+  const slots = clamp((c.t - 3.0) / 0.8);
+  const r = 260 - 120 * k;
+  const cy = 480 - 250 * k;
+  const title = clamp((c.t - 1.2) / 0.6);
   return (
     <AbsoluteFill style={{background: '#000'}}>
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%">
         <Stars frame={c.frame} count={500} w={W} h={H} seed={89} maxR={2} />
-        <Shell cx={960} cy={480} r={260} close={1} spin={c.frame * 0.006} seam={0.4 + 0.3 * Math.abs(Math.sin(c.frame * 0.15))} frame={c.frame} />
+        <Shell cx={960} cy={cy} r={r} turn={1} spin={c.frame * 0.006} seam={0.4 + 0.3 * Math.abs(Math.sin(c.frame * 0.15))} frame={c.frame} />
         {/* the pulses, one, two, three */}
         {Array.from({length: 3}, (_, i) => {
-          const rr = 280 + ((c.frame * 4 + i * 160) % 480);
-          return <circle key={i} cx={960} cy={480} r={rr} fill="none" stroke="#7FE8FF" strokeWidth={4} opacity={0.35 * (1 - (rr - 280) / 480)} />;
+          const rr = r * 1.08 + ((c.frame * 4 + i * 160) % 480) * (r / 260);
+          return <circle key={i} cx={960} cy={cy} r={rr} fill="none" stroke="#7FE8FF" strokeWidth={4} opacity={0.35 * (1 - (rr - r * 1.08) / (480 * (r / 260)))} />;
         })}
-        <text x={960} y={900} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={84} fill="#F4EFE6" letterSpacing={6} opacity={a}>
+        <text x={960} y={900 - 420 * k} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={84 - 18 * k} fill="#F4EFE6" letterSpacing={6} opacity={title}>
           PART 2 · THE REPLY
         </text>
+        <text x={960} y={556} textAnchor="middle" fontFamily={fonts.ui} fontWeight={700} fontSize={34} fill="#9FE8FF" letterSpacing={3} opacity={slots}>
+          WHAT WOULD YOU SAY BACK? TELL US BELOW ↓
+        </text>
+        <g opacity={slots}>
+          <text x={570} y={640} textAnchor="middle" fontFamily={fonts.ui} fontWeight={800} fontSize={30} fill="#F4EFE6" letterSpacing={4}>
+            WATCH NEXT
+          </text>
+          <rect x={250} y={664} width={640} height={360} rx={18} fill="#0B1230" stroke="#7FE8FF" strokeWidth={3} strokeDasharray="14 10" opacity={0.85} />
+          <text x={1450} y={640} textAnchor="middle" fontFamily={fonts.ui} fontWeight={800} fontSize={30} fill="#F4EFE6" letterSpacing={4}>
+            SUBSCRIBE
+          </text>
+          <circle cx={1450} cy={844} r={150} fill="#0B1230" stroke="#7FE8FF" strokeWidth={3} strokeDasharray="14 10" opacity={0.85} />
+        </g>
         <Vignette amount={0.6} />
       </svg>
     </AbsoluteFill>

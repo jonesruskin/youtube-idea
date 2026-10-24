@@ -14,7 +14,8 @@ import {Toon, type ToonState} from './Toon';
  * The acting system. A shot lists its CAST (who stands where, at what depth) and ACTS (timed directions:
  * walk to x, change pose, change expression, wave, nod, shiver…). Every frame resolves each character:
  * poses blend with ease + a little overshoot, walking derives its cycle from distance travelled (no foot
- * sliding), and every character breathes, blinks and lip-syncs to its own lines automatically.
+ * sliding), and every character breathes, blinks and lip-syncs to its own lines automatically. Listeners turn
+ * their eyes (and, facing front, their head) to whoever is speaking, and the speaker glances at the nearest listener.
  */
 export type Who = 'you' | 'mira' | 'ito' | 'biscuit' | `extra:${number}`;
 export type Facing = 'right' | 'left' | 'front' | 'back';
@@ -150,10 +151,46 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
   const {t, frame, shot} = useShot();
   const lines = shot.timedLines as unknown as LineInfo[];
   const list = cast.filter((c) => !only || only.includes(c.who)).sort((a, b) => a.y * a.depth - b.y * b.depth || a.depth - b.depth);
+  const resolved = list.map((c, i) => actorAt(c, acts, t, frame, lines, i));
+  // attention: who is talking right now (eased in over 0.3 s, out over 0.4 s after the line ends)
+  let speakerIdx = -1;
+  let attn = 0;
+  for (const l of lines) {
+    const idx = list.findIndex((c) => c.who !== 'biscuit' && designOf(c.who)?.speaker === l.speaker);
+    if (idx < 0) continue;
+    const w = clamp01((t - l.startInShot) / 0.3) * clamp01(1 - (t - (l.startInShot + (l.end - l.start))) / 0.4);
+    if (w > attn) {
+      attn = w;
+      speakerIdx = idx;
+    }
+  }
+  const attend = (i: number, r: (typeof resolved)[number]): {look: [number, number]; turn: number} => {
+    if (speakerIdx < 0 || attn <= 0 || r.facing === 'back' || list.length < 2) return {look: r.look, turn: r.turn};
+    let target = speakerIdx;
+    let k = attn;
+    if (i === speakerIdx) {
+      // the speaker glances at the nearest listener
+      let best = -1;
+      let bd = 1e9;
+      resolved.forEach((o, j) => {
+        if (j !== i && Math.abs(o.x - r.x) < bd) {
+          bd = Math.abs(o.x - r.x);
+          best = j;
+        }
+      });
+      if (best < 0) return {look: r.look, turn: r.turn};
+      target = best;
+      k = attn * 0.6;
+    }
+    const dx = resolved[target].x - r.x;
+    if (Math.abs(dx) < 20 || Math.hypot(r.look[0], r.look[1]) > 0.05) return {look: r.look, turn: r.turn};
+    const dir = Math.sign(dx) * (r.facing === 'left' ? -1 : 1);
+    return {look: [r.look[0] + (dir * 0.75 - r.look[0]) * k, r.look[1] + (-0.08 - r.look[1]) * k], turn: r.turn + (r.facing === 'front' ? dir * 0.3 * k : 0)};
+  };
   return (
     <g>
       {list.map((c, i) => {
-        const r = actorAt(c, acts, t, frame, lines, i);
+        const r = resolved[i];
         if (c.who === 'biscuit') {
           const running = r.moving?.kind === 'run';
           const pose = (r.moving ? 'run' : (r.poseName as DogPose)) ?? 'stand';
@@ -181,7 +218,8 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
         let bob = 0;
         let xo = 0;
         let yo = 0;
-        let turn = r.turn;
+        const att = attend(i, r);
+        let turn = att.turn;
         if (r.moving) {
           const g = gait(pose, r.moving.phase, r.moving.kind, d.elder);
           pose = g.pose;
@@ -220,7 +258,7 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
           bob,
           face: r.face,
           turn,
-          look: r.look,
+          look: att.look,
           talk: vis ? vis.open : 0,
           blink,
           outfit: c.outfit ?? 'home',

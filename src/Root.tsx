@@ -5,7 +5,7 @@ import {calculateEpisodeMetadata, Episode, type EpisodeProps} from './engine/Epi
 import {EPISODES} from './episodes';
 import {Thumbnail} from './Thumbnail';
 import {EarthLab, ScaleLab, ToonLab} from './ToonLab';
-import {SunThumbnail} from './env/sun/thumbnail';
+import {SunThumbnail, SunThumbnailB, SunThumbnailC} from './env/sun/thumbnail';
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -24,6 +24,8 @@ export const RemotionRoot: React.FC = () => (
         <Still id={`${ep.id}-thumbnail`} component={(ep.id === 'sun01' ? SunThumbnail : Thumbnail) as any} width={1280} height={720} defaultProps={{text: ep.thumbnailText, heir: ''}} />
       </React.Fragment>
     ))}
+    <Still id="sun01-thumbnail-b" component={SunThumbnailB} width={1280} height={720} />
+    <Still id="sun01-thumbnail-c" component={SunThumbnailC} width={1280} height={720} />
     <Composition id="ToonLab" component={ToonLab as any} durationInFrames={300} fps={30} width={1920} height={1080} defaultProps={{scene: 'lineup'}} />
     <Composition id="ScaleLab" component={ScaleLab as any} durationInFrames={30} fps={30} width={1920} height={1080} />
     <Composition id="EarthLab" component={EarthLab as any} durationInFrames={30} fps={30} width={1920} height={1080} defaultProps={{v: 0}} />
