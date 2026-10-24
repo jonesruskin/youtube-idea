@@ -1,14 +1,20 @@
 # THE BLINK FILES
 
-> *Every File, the world ends a different way. Every File, your watch counts down first.*
+> *One family. One impossible year. Every clue is real physics; the ending opens the next File.*
 
 A YouTube channel of animated space-science survival stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev): the narration is voiced locally with Kokoro-82M (Apache-2.0), and the score is synthesised from scratch.
 
-**Launch episode: File 001, "The Sun Went Out. Here's Your Day 1 to Day 365"** is in `renders/`:
-- `sun01.mp4`: 8:44, 1080p web copy (under 90 MB), with the narration, Mira and the radio voiced, the original score, and soft English subtitles embedded. The upload master `sun01-hq.mp4` (about 245 MB, higher bitrate) is git-ignored.
-- `sun01.srt`: captions for YouTube. `sun01-described.srt` adds stage directions for review.
-- `sun01-thumbnail.png`, `sun01-metadata.md` (title, description with chapters and science sources, tags, mid-roll times, pinned comment)
-- Format and cast: [`docs/09-series-bible.md`](docs/09-series-bible.md). Script: `episodes/sun01-the-sun-went-out/script.ts`.
+**Launch episode: File 001, "The Sun Went Out. Here's Your Day 1 to Day 365" (v2)** is in `renders/`:
+- `sun01.mp4`: about 8:10, 1080p web copy with soft English subtitles. The upload master `sun01-hq.mp4` is git-ignored.
+- **The story:** something closes a shell around the Sun. You, your sister Mira, Biscuit the dog and Mr. Ito, the astronomer upstairs, survive the freeze and solve it in five reveals, each proven from real evidence: light delay, tides, a thermal camera, an energy beam, a signal. It ends on a cliffhanger into Part 2.
+- **Built to the genre's numbers:**
+  - 135 shots at about 3.6 s each
+  - a development every 30 s or less, and 14 laughs
+  - a real NASA Earth
+  - voices by Kokoro, with Mr. Ito on a British voice
+  - an original synthesised score with a recurring "shell" motif
+- `sun01.srt` (captions), `sun01-described.srt` (with stage directions), `sun01-thumbnail.png`, and `sun01-metadata.md` (title, description with chapters and 13 science sources, tags, mid-roll times, pinned comment)
+- Format, cast and review gates: [`docs/09-series-bible.md`](docs/09-series-bible.md). Logic audit: [`docs/10-sun01-logic-audit.md`](docs/10-sun01-logic-audit.md). Script: `episodes/sun01-the-sun-went-out/script.ts`.
 
 **Earlier pilot, "What If Everything You Touched Lost Its Gravity?"** (the Zero-G episode, held for a later slot):
 - `ep01.mp4`: ~9:10, 1080p (web-size copy). No voiceover yet; it has an original score and SFX.
@@ -28,7 +34,8 @@ A YouTube channel of animated space-science survival stories built for **8–12 
 | [06 · Episode formula](docs/06-episode-formula.md) | The ten-section structure, retention rules, show-don't-tell, packaging |
 | [07 · Series framework](docs/07-series-framework.md) | How the channel keeps going: Files, Loose Files, Shorts |
 | [08 · Niche scan, Oct 2026](docs/08-niche-scan-2026-10.md) | Where the unsaturated, high-viral formats are, and the two bets to test after Ep1 (tool: `research/niche-scan/`) |
-| [09 · Series bible](docs/09-series-bible.md) | **The launch format**: the recurring cast, the watch mystery and its payoff, the episode formula, film language, sound, and how to produce a File |
+| [09 · Series bible](docs/09-series-bible.md) | **The launch format (v2)**: the cast and height chart, the serial story, the episode formula, film language, sound, the review gates, and how to produce a File |
+| [10 · File 001 logic audit](docs/10-sun01-logic-audit.md) | Every physics claim with its numbers, the clue chain, temperatures, continuity, and the v1 holes and their fixes |
 | [ElevenLabs setup](docs/ELEVENLABS_SETUP.md) | Step-by-step key and voice setup |
 
 ## Studio quickstart
