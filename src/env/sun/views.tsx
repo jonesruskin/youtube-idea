@@ -44,15 +44,27 @@ export const SkyScene: React.FC = () => {
           </defs>
           <g clipPath="url(#eye)">
             <rect x={0} y={0} width={W} height={H} fill="#03040C" />
-            <Stars frame={c.frame} count={120} w={W} h={H} seed={9} maxR={1.6} />
-            <g transform={`translate(${960 + Math.sin(c.frame * 0.05) * 3},540)`} opacity={fl}>
+            {/* after Jupiter is gone, the view sweeps as Ito hunts for it */}
+            <g transform={`translate(${c.frame * 0.6 + (out ? Math.sin((c.t - c.at('l0+1.4', 1.6)) * 1.6) * 260 : 0)},${c.frame * 0.15 + (out ? Math.cos((c.t - c.at('l0+1.4', 1.6)) * 1.1) * 120 : 0)})`}>
+              <Stars frame={c.frame} count={260} w={W} h={H} seed={9} maxR={2.6} />
+              <Stars frame={c.frame} count={200} w={W} h={H} seed={19} maxR={2.2} y0={-600} />
+              {[
+                [300, 300, 160, '#6F7FC8'],
+                [1500, 700, 220, '#9A6FC8'],
+                [900, 900, 140, '#6FA8C8'],
+                [1200, 200, 180, '#7F6FC8'],
+              ].map(([x, y, r, col], i) => (
+                <ellipse key={i} cx={x as number} cy={y as number} rx={r as number} ry={(r as number) * 0.55} fill={col as string} opacity={0.22} filter="blur(18px)" transform={`rotate(${i * 40},${x},${y})`} />
+              ))}
+            </g>
+            <g transform={`translate(${960 + Math.sin(c.frame * 0.05) * 6 + c.frame * 0.4},${540 + Math.cos(c.frame * 0.04) * 4}) scale(${1 + c.frame * 0.0025})`} opacity={fl}>
               <ellipse rx={150} ry={140} fill="#D9B48A" />
               {[-90, -50, -10, 30, 70, 105].map((y, i) => (
                 <ellipse key={y} cx={0} cy={y} rx={150 * Math.sqrt(1 - (y / 145) ** 2)} ry={10 + (i % 2) * 6} fill={i % 2 ? '#B07A52' : '#E8CDA8'} opacity={0.8} />
               ))}
               <ellipse cx={50} cy={40} rx={24} ry={14} fill="#C2664A" />
-              {[-330, -230, 260, 380].map((x) => (
-                <circle key={x} cx={x} cy={x * 0.02} r={9} fill="#F4EFE6" />
+              {[-330, -230, 260, 380].map((x, i) => (
+                <circle key={x} cx={x + Math.sin(c.frame * (0.03 + i * 0.01)) * 30} cy={x * 0.02} r={9} fill="#F4EFE6" />
               ))}
             </g>
             <path d="M960,110 L960,970 M530,540 L1390,540" stroke="#7FA0C8" strokeWidth={2} opacity={0.35} />
@@ -152,6 +164,7 @@ export const ThermalScene: React.FC = () => {
   return (
     <AbsoluteFill style={{background: '#06070C'}}>
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%">
+        <g transform={`translate(${Math.sin(c.frame * 0.09) * 9 + Math.sin(c.frame * 0.23) * 4},${Math.cos(c.frame * 0.07) * 7}) rotate(${Math.sin(c.frame * 0.05) * 0.8},960,540)`}>
         {/* the device */}
         <rect x={250} y={80} width={1420} height={920} rx={70} fill="#E9C46A" stroke={INK} strokeWidth={10} />
         <rect x={290} y={120} width={1340} height={840} rx={40} fill="#1A1A1A" />
@@ -193,6 +206,12 @@ export const ThermalScene: React.FC = () => {
             </linearGradient>
           </defs>
           <rect x={1520} y={260} width={24} height={500} fill="url(#ironbow)" stroke="#FFFFFF" strokeWidth={2} />
+          <rect x={330} y={160 + ((c.frame * 9) % 760)} width={1260} height={6} fill="#FFFFFF" opacity={0.12} />
+          {c.v === 'beam' &&
+            Array.from({length: 8}, (_, i) => {
+              const u = ((c.frame * 0.012 + i / 8) % 1);
+              return <circle key={i} cx={(1060 + u * 640 - 960) * z + 960} cy={(470 - u * 430 - 540) * z + 540} r={10} fill="#FFF3B0" opacity={0.8 * clamp((c.t - 0.8) / 1)} />;
+            })}
           <text x={380} y={220} fill="#FFFFFF" fontFamily={fonts.mono} fontSize={30}>
             ◉ REC
           </text>
@@ -201,6 +220,7 @@ export const ThermalScene: React.FC = () => {
           </text>
         </g>
         <circle cx={1560} cy={1000} r={0} />
+        </g>
         <Vignette amount={0.5} />
       </svg>
     </AbsoluteFill>

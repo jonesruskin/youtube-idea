@@ -26,7 +26,7 @@ const Board: React.FC<{frame: number; children: React.ReactNode; z?: number; cx?
       {Array.from({length: 25}, (_, i) => (
         <path key={i} d={`M${i * 80},0 L${i * 80},${H}`} stroke="#FFFFFF" strokeOpacity={0.03} />
       ))}
-      <g transform={`translate(960,540) scale(${z}) translate(${-cx},${-cy})`}>{children}</g>
+      <g transform={`translate(${960 + Math.sin(frame * 0.021) * 14},${540 + Math.cos(frame * 0.017) * 10}) scale(${z * (1 + frame * 0.0006)}) rotate(${Math.sin(frame * 0.013) * 0.6}) translate(${-cx},${-cy})`}>{children}</g>
       <Vignette amount={0.55} />
     </svg>
     {overlay}
@@ -193,7 +193,7 @@ export const DiagramScene: React.FC = () => {
   if (v === 'tide') {
     // Earth from above, ocean bulge toward the Moon; step 1: the Sun's part of the bulge is taken away.
     const sunPart = step === 0 ? 1 : 1 - ease(clamp((t - 0.4) / 1.2));
-    const bulge = 1 + 0.46 * sunPart;
+    const bulge = (1 + 0.46 * sunPart) * (1 + 0.05 * Math.sin(f * 0.12));
     return (
       <Board frame={f} overlay={<RealEarth x={960} y={540} d={460} center={[0, 90]} />}>
         <SealedSun x={160} y={540} r={90} frame={f} />
@@ -201,7 +201,7 @@ export const DiagramScene: React.FC = () => {
           <ellipse rx={230 + 110 * bulge} ry={250} fill="#4A9BEA" opacity={0.75} stroke="#9FD8FF" strokeWidth={4} />
           <ellipse rx={230 + 50} ry={240} fill="#4A9BEA" opacity={0.5} />
         </g>
-        <g transform="translate(1700,540)">
+        <g transform={`translate(${1720 + Math.sin(f * 0.03) * 40},${470 + Math.cos(f * 0.03) * 60})`}>
           <circle r={60} fill="#C9C4B8" stroke={INK} strokeWidth={5} />
           <circle cx={-14} cy={-10} r={12} fill="#A8A296" />
         </g>
@@ -230,7 +230,8 @@ export const DiagramScene: React.FC = () => {
         <Board frame={f} stars={false}>
           <circle cx={960} cy={540} r={320} fill="none" stroke="#FFFFFF" strokeOpacity={0.15} strokeWidth={4} strokeDasharray="12 12" />
           {t < cut && <path d={`M960,540 L${kx},${ky}`} stroke="#E8E2D6" strokeWidth={6} />}
-          {t >= cut && <path d={`M960,540 L${960 + Math.cos(a) * 120},${540 + Math.sin(a) * 120}`} stroke="#E8E2D6" strokeWidth={6} />}
+          {t >= cut && <path d={`M960,540 L${960 + Math.cos(a + (t - cut) * 3) * 120},${540 + Math.sin(a + (t - cut) * 3) * 120}`} stroke="#E8E2D6" strokeWidth={6} />}
+          {t >= cut && <path d={`M${kx0},${ky0} L${kx},${ky}`} stroke="#E8B04B" strokeWidth={6} strokeDasharray="16 14" opacity={0.7} />}
           <circle cx={960} cy={540} r={34} fill="#E8C4A2" stroke={INK} strokeWidth={5} />
           <g transform={`translate(${kx},${ky}) rotate(${a * 57})`}>
             <circle r={30} fill="#E8B04B" stroke={INK} strokeWidth={5} />
