@@ -452,11 +452,28 @@ def ostinato(mix, s, e, bpm, notes, gain=1.0):
         t += step
         i += 1
 
+SHELL = ["D2", "Eb2", "A1"]  # the shell's motif: a rising half-step that falls a tritone — wrong, patient, huge
+
+def shell_motif(mix, t, gain=1.0, long=4.0):
+    """Three low organ/brass notes + choir halo. Plays at every reveal of the shell."""
+    for k, n in enumerate(SHELL):
+        mix.add("hall", t + k * 0.9, organ([n, hz_up(n)], long - k * 0.6, a=0.15, r=1.8, bright=0.6), gain)
+    mix.add("hall", t + 1.2, choir(["D4", "Eb4", "A4"], long, "oo", a=1.2, r=2.2), 0.6 * gain)
+    mix.add("hits", t, braam("D1", long, 0.9), 0.6 * gain)
+
+def hz_up(n):
+    return n[:-1] + str(int(n[-1]) + 1)
+
+def beep(f=1320, dur=0.12, vel=1.0):
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    x = np.sin(2 * np.pi * f * t) * env(n, 0.004, dur * 0.5)
+    return pan((x * 0.5 * vel).astype(np.float32), 0)
+
 def render(tl):
     dur = tl["duration"]
     mix = Mix(dur)
     shots = {s["id"]: s for s in tl["shots"]}
-    # cue regions: a shot's cue holds until the next shot that sets one
     regions, cur = [], None
     for s in tl["shots"]:
         if s["cue"] and s["cue"] != (cur and cur["cue"]):
@@ -464,174 +481,213 @@ def render(tl):
                 cur["end"] = s["start"]
             cur = {"cue": s["cue"], "start": s["start"], "end": dur, "shot": s["id"]}
             regions.append(cur)
-    B = shots["blackout"]["start"] + 0.42  # the frame the Sun goes out
-    gate = []  # (start, end) of hard silence
+    B = shots["lights-out"]["start"]  # the frame the light goes out
+    gate = []
+    lines = {l["key"]: l for l in tl["lines"]}
 
     for r in regions:
         c, s, e = r["cue"], r["start"], r["end"]
         L = e - s
-        if c == "tick":
-            ticks(mix, s + 0.5, e, 1.0, 1.0)
-            mix.add("music", s, strings(["A5"], L, a=1.5, r=1.0, bright=6000, voices=(-3, 3)), 0.25)
+        if c == "open":
+            # the Sun roaring; plates clanking into place; the last lock is a braam
+            roar = filt(sos_lp(900), brown(int((L + 1) * SR)))
+            mix.add("fx", s, pan((roar * 0.5).astype(np.float32), 0), 1.0)
+            close_end = shots["shell-closes"]["end"]
+            for k in range(14):
+                t = s + 0.6 + (close_end - s - 1.2) * (k / 14) ** 0.8
+                mix.add("fx", t, tick(k % 3 == 0, 1.3), 0.9)
+            mix.add("hits", close_end - 0.6, boom(1.0, 4), 1.0)
+            shell_motif(mix, close_end - 0.6, 0.9)
+            mix.add("fx", shots["light-race"]["start"], whoosh(3.0, 0.9), 0.9)
+            mix.add("music", shots["light-race"]["start"], strings(["A5", "E6"], e - shots["light-race"]["start"], a=1.5, r=1.0, bright=7000, voices=(-3, 3)), 0.3)
         elif c == "morning":
-            arpeggio(mix, s, e, [["D3", "A3", "C#4", "F#4"], ["G2", "D3", "F#3", "B3"], ["B2", "F#3", "A3", "D4"], ["A2", "E3", "G3", "C#4"]], 84, 0.9)
-            mix.add("fx", s, city_morning(L + 1), 0.9)
-            ticks(mix, s, e, 1.0, 0.35)
-        elif c == "countdown":
+            arpeggio(mix, s, e, [["D3", "A3", "C#4", "F#4"], ["G2", "D3", "F#3", "B3"], ["B2", "F#3", "A3", "D4"], ["A2", "E3", "G3", "C#4"]], 88, 0.9)
+            mix.add("fx", s, city_morning(L + 1), 0.8)
+            # the light front is still coming: a faint high tone under the warmth
+            mix.add("music", s, strings(["A6"], L, a=3, r=1, bright=8000, voices=(-2, 2)), 0.12)
+        elif c == "race":
             ticks(mix, s, B, 1.0, 1.1)
-            rl = B - s + 0.8
-            mix.add("hits", B - rl, riser(rl, 1.0), 0.9)
-            mix.add("music", s - 1.5, strings(["D3", "A3", "D4", "Eb4", "A4"], B - s + 1.5, a=2.5, r=0.05, bright=4200), 0.9)
-            gate.append((B, B + 1.45))
-        elif c == "blackout":
-            mix.add("hits", B + 1.5, boom(1.0, 5), 1.0)
-            mix.add("hall", B + 1.65, organ(["D1", "D2", "A2", "D3", "F3", "A3"], e - B - 1.6, a=4.0, r=2.5), 1.3)
-            mix.add("hall", B + 2.2, choir(["D4", "F4", "A4"], e - B - 2.0, "oo", a=4, r=2.5), 0.7)
+            rl = B - s + 0.6
+            mix.add("hits", B - rl, riser(rl, 1.0), 0.95)
+            mix.add("music", s - 1.0, strings(["D3", "A3", "D4", "Eb4", "A4"], B - s + 1.0, a=2.0, r=0.05, bright=4200), 0.9)
+            gate.append((B, B + 1.3))
+        elif c == "silence":
+            mix.add("hits", B + 1.35, boom(1.0, 5), 1.0)
+            mix.add("hall", B + 1.45, organ(["D1", "D2", "A2", "D3", "F3"], e - B - 1.3, a=3.0, r=2.5), 1.2)
+            mix.add("hall", B + 2.0, choir(["D4", "F4", "A4"], e - B - 1.8, "oo", a=3, r=2.5), 0.7)
         elif c == "title":
-            mix.add("hits", s + 0.25, braam("D1", 5, 1.0), 1.0)
-            mix.add("hits", s + 0.25, boom(0.9, 4), 0.9)
-            mix.add("hall", s + 0.3, organ(["D2", "A2", "D3", "F3", "A3", "D4"], L + 1.5, a=0.3, r=3.0), 1.0)
-        elif c == "space":
-            chords(mix, s, e, PROG_MINOR, 60, "organ", 0.7)
-            melody(mix, s + 4, e, THEME_MINOR, 60, "organ", 0.55, octave=0)
-            for k in range(int(L // 3)):
-                mix.add("music", s + 1.5 + k * 3, bell(rng.choice(["D6", "A6", "F6", "E6"]), 4, 0.35), 0.7)
-            if r["shot"] == "why-820":
-                mix.add("fx", s + 0.4, whoosh(2.6, 0.8), 1)
+            mix.add("hits", s + 0.2, braam("D1", 5, 1.0), 1.0)
+            shell_motif(mix, s + 0.25, 0.7, long=L + 1)
         elif c == "unease":
             m = strings(["D2", "A2", "Eb3", "D3"], L, a=1.0, r=1.0, bright=1800)
             tt = np.arange(len(m)) / SR
             m *= (0.7 + 0.3 * np.sin(2 * np.pi * 9 * tt))[:, None].astype(np.float32)
-            mix.add("music", s, m, 0.9)
+            mix.add("music", s, m, 0.85)
             for k in range(int(L / 0.86)):
-                mix.add("hits", s + k * 0.86, heartbeat(0.7), 0.8)
-            mix.add("fx", s, metro_bed(L, 0.9) * 0.6, 0.8)
-        elif c == "dayTick":
-            for k in range(3):
-                mix.add("fx", s + 0.05 + k * 0.5, tick(k == 1, 1.1))
-            for k, n in enumerate(["F6", "D6", "A5"]):
-                mix.add("music", s + 0.3 + k * 0.35, bell(n, 3, 0.5), 0.8)
-            mix.add("music", s, strings(["D3", "A3", "F4"], L, a=0.6, r=1.0, bright=2400), 0.6)
-            mix.add("fx", s, ice_crack(0.8), 0.7)
+                mix.add("hits", s + k * 0.86, heartbeat(0.6), 0.7)
+        elif c == "curious":
+            # pizzicato-ish plucks + bells: Ito's excitement, the puzzle
+            notes = ["D4", "F4", "A4", "D5", "C5", "A4", "F4", "E4"]
+            t, i = s + 0.1, 0
+            while t < e - 0.2:
+                mix.add("music", t, piano(notes[i % len(notes)], 0.6, 0.55, bright=4500), 0.7)
+                t += 0.36
+                i += 1
+            mix.add("music", s, strings(["D3", "A3", "F4"], L, a=0.8, r=1.0, bright=2400), 0.45)
+        elif c == "reveal":
+            mix.add("music", s + 0.15, bell("A5", 5, 0.6), 0.9)
+            mix.add("hall", s + 0.1, choir(["D4", "F4", "A4"], L, "oo", a=1.0, r=2), 0.8)
+            mix.add("music", s, strings(["D3", "A3", "F4"], L, a=1.0, r=2, bright=2600), 0.6)
+        elif c == "sting":
+            mix.add("hits", s, boom(0.8, 3), 0.8)
+            mix.add("music", s, strings(["D3", "Ab3", "D4", "Eb4"], L, a=0.3, r=1.5, bright=3000), 0.75)
+            mix.add("music", s + 0.1, bell("D6", 4, 0.5), 0.7)
+        elif c == "shellSting":
+            shell_motif(mix, s + 0.05, 1.0, long=max(3.0, L))
         elif c == "work":
-            ostinato(mix, s, e, 100, ["D3", "A3", "F3", "A3"], 0.55)
-            chords(mix, s, e, [["D3", "A3", "D4", "F4"], ["Bb2", "F3", "Bb3", "D4"], ["G2", "D3", "G3", "Bb3"], ["A2", "E3", "A3", "C#4"]], 100, "strings", 0.6)
-            mix.add("fx", s, filt(sos_lp(700), wind(L + 1, 0.8, 0.4)), 0.8)
-        elif c == "aurora":
-            prog = [["D3", "A3", "D4", "F#4"], ["E3", "G#3", "B3", "E4"], ["D3", "A3", "D4", "F#4"], ["B2", "F#3", "B3", "D4"]]
-            chords(mix, s, e, prog, 56, "strings", 1.3, choir_vowel="ah")
-            for k in range(int(L // 1.2)):
-                mix.add("music", s + 0.6 + k * 1.2, bell(rng.choice(["F#6", "A6", "D7", "G#6", "E6"]), 5, 0.3), 0.9)
-            mix.add("fx", s, wind(L + 1, 0.5, 0.3), 0.6)
+            ostinato(mix, s, e, 104, ["D3", "A3", "F3", "A3"], 0.5)
+            chords(mix, s, e, [["D3", "A3", "D4", "F4"], ["Bb2", "F3", "Bb3", "D4"], ["G2", "D3", "G3", "Bb3"], ["A2", "E3", "A3", "C#4"]], 104, "strings", 0.55)
+            t = s
+            while t < e - 0.3:
+                mix.add("hits", t, taiko(0.6), 0.45)
+                t += 60 / 104 * 2
         elif c == "mystery":
-            mix.add("hall", s, organ(["D1", "D2"], L, a=1.5, r=2), 0.8)
-            for k, n in enumerate(["Bb4", "A4", "D5", "Eb5", "A4"]):
-                if s + 1 + k * 2.4 < e:
-                    mix.add("music", s + 1 + k * 2.4, piano(n, 4, 0.5), 0.8)
-            mix.add("fx", s, static(L, 1.0), 0.9)
-        elif c == "dread":
-            m = strings(["D2", "A2", "D3", "Eb3", "A3"], L, a=L * 0.7, r=1.5, bright=2200)
-            mix.add("music", s, m, 1.0)
+            mix.add("hall", s, organ(["D1", "D2"], L, a=1.5, r=2), 0.7)
+            for k, n in enumerate(["Bb4", "A4", "D5", "Eb5", "A4", "D5"]):
+                if s + 0.8 + k * 2.2 < e:
+                    mix.add("music", s + 0.8 + k * 2.2, piano(n, 4, 0.5), 0.8)
+            mix.add("fx", s, static(L, 0.6), 0.6)
+        elif c == "wonder":
+            prog = [["D3", "A3", "D4", "F#4"], ["E3", "G#3", "B3", "E4"], ["D3", "A3", "D4", "F#4"], ["B2", "F#3", "B3", "D4"]]
+            chords(mix, s, e, prog, 58, "strings", 1.2, choir_vowel="ah")
+            for k in range(int(L // 1.2)):
+                mix.add("music", s + 0.6 + k * 1.2, bell(rng.choice(["F#6", "A6", "D7", "G#6", "E6"]), 5, 0.3), 0.85)
+            mix.add("fx", s, wind(L + 1, 0.5, 0.3), 0.5)
+        elif c == "tension":
+            m = strings(["D2", "A2", "D3", "Eb3", "A3"], L, a=L * 0.5, r=1.0, bright=2200)
+            mix.add("music", s, m, 0.95)
             k, t = 0, s + 0.5
             while t < e:
-                mix.add("hits", t, heartbeat(0.8), 0.8)
-                t += max(0.45, 0.95 - k * 0.03)
+                mix.add("hits", t, heartbeat(0.75), 0.75)
+                t += max(0.5, 0.95 - k * 0.025)
                 k += 1
-            t = s + 2.0
-            while t < e - 1:
-                mix.add("fx", t, powerdown(1.4, 0.6), 0.7)
-                t += rng.uniform(0.9, 1.6)
-            mix.add("fx", s, wind(L + 1, 1.0, 0.6), 0.8)
+            mix.add("fx", s, wind(L + 1, 0.9, 0.6), 0.7)
+            for sid in ("grid-fail", "candles"):
+                if sid in shots:
+                    mix.add("fx", shots[sid]["start"] + 0.1, powerdown(1.6, 1.0), 1.0)
+            if "candles" in shots:
+                mix.add("fx", shots["candles"]["start"] + 0.6, match_strike(), 1.0)
         elif c == "chase":
-            ostinato(mix, s, e - 1.6, 132, ["D3", "D3", "F3", "D3", "G3", "D3", "F3", "E3"], 0.55)
-            beat = 60 / 132
+            ostinato(mix, s, e - 1.4, 136, ["D3", "D3", "F3", "D3", "G3", "D3", "F3", "E3"], 0.55)
             t = s
-            while t < e - 1.6:
+            while t < e - 1.4:
                 mix.add("hits", t, taiko(1.0), 0.7)
-                t += beat * 2
-            mix.add("music", e - 1.8, strings(["Bb2", "D3", "E3", "A3", "Bb3"], 2.5, a=0.05, r=2.0, bright=3500), 1.0)
-            mix.add("hits", e - 1.8, boom(0.7, 3), 0.8)
+                t += 60 / 136 * 2
+            mix.add("music", e - 1.5, strings(["Bb2", "D3", "E3", "A3", "Bb3"], 2.5, a=0.05, r=2.0, bright=3500), 1.0)
+            mix.add("hits", e - 1.5, boom(0.8, 3), 0.85)
             mix.add("fx", s, wind(L + 1, 1.3, 0.9), 0.9)
-            mix.add("fx", s + 1, footsteps(L - 2, 3.2, 1.0), 0.7)
+            mix.add("fx", s + 0.3, footsteps(L - 1, 3.2, 1.0), 0.7)
         elif c == "search":
             mix.add("fx", s, wind(L + 1, 0.9, 0.6), 0.9)
-            mix.add("fx", s + 0.5, footsteps(L - 1, 1.7, 1.0), 0.9)
-            for k, n in enumerate(["D5", "A5", "F5", "E5", "D5", "C6", "A5"]):
-                if s + 0.8 + k * 1.9 < e:
-                    mix.add("music", s + 0.8 + k * 1.9, piano(n, 4, 0.45), 0.8)
+            mix.add("fx", s + 0.4, footsteps(L - 1, 1.7, 1.0), 0.8)
+            for k, n in enumerate(["D5", "A5", "F5", "E5", "D5", "C6", "A5", "F5"]):
+                if s + 0.6 + k * 1.7 < e:
+                    mix.add("music", s + 0.6 + k * 1.7, piano(n, 4, 0.45), 0.8)
             mix.add("music", s, strings(["D4", "A4"], L, a=2, r=2, bright=2200), 0.4)
-        elif c == "below":
+        elif c == "warm":
+            prog = [["F2", "C3", "F3", "A3", "C4"], ["Bb2", "F3", "Bb3", "D4"], ["D3", "A3", "D4", "F4"], ["C3", "G3", "C4", "E4"]]
+            chords(mix, s, e, prog, 64, "strings", 1.0, choir_vowel="ah")
+            melody(mix, s + 1.0, e, THEME_MAJOR, 64, "piano", 0.5)
+        elif c == "tunnel":
             prog = [["F2", "C3", "F3", "A3"], ["C3", "G3", "C4", "E4"], ["D3", "A3", "D4", "F4"], ["Bb2", "F3", "Bb3", "D4"]]
-            chords(mix, s, e, prog, 70, "strings", 0.8)
-            chords(mix, s, e, prog, 70, "organ", 0.45, octave_bass=False)
-            mix.add("fx", s, metro_bed(L + 1, 1.0), 0.9)
-            melody(mix, s + 3.5, e, [(b, l, n) for b, l, n in THEME_MINOR], 70, "piano", 0.55)
-        elif c == "fail":
-            mix.add("fx", s, metro_bed(0.9, 1.0), 0.9)
-            mix.add("fx", s + 0.75, powerdown(2.2, 1.2), 1.0)
-            mix.add("hits", s + 0.8, boom(0.6, 3), 0.7)
-            mix.add("hall", s + 1.2, organ(["D1", "A1"], L - 1, a=2, r=1.5), 0.7)
-            t = s + 2.5
+            chords(mix, s, e, prog, 72, "strings", 0.75)
+            mix.add("fx", s, metro_bed(L + 1, 1.0), 0.8)
+            melody(mix, s + 2.0, e, THEME_MINOR, 72, "piano", 0.5)
+        elif c == "shell":
+            shell_motif(mix, s + 0.1, 1.1, long=min(8, L))
+            mix.add("hall", s, organ(["D1", "A1", "D2"], L, a=2.0, r=2.5, bright=0.4), 0.8)
+            for k in range(int(L // 2.5)):
+                mix.add("music", s + 1.5 + k * 2.5, bell(rng.choice(["Eb6", "A5", "D6"]), 5, 0.3), 0.6)
+        elif c == "dread":
+            mix.add("fx", s + 0.5, powerdown(2.2, 1.2), 1.0)
+            mix.add("hits", s + 0.6, boom(0.6, 3), 0.7)
+            mix.add("hall", s + 1.0, organ(["D1", "A1"], L - 1, a=2, r=1.5), 0.7)
+            t = s + 2.0
             while t < e:
                 mix.add("hits", t, heartbeat(0.8), 0.8)
                 t += 0.92
-            mix.add("music", e - 3, strings(["Eb3", "A3", "D4"], 3, a=2.5, r=0.3, bright=2000), 0.7)
+            mix.add("music", s + 2, strings(["Eb3", "A3", "D4"], L - 2, a=2.5, r=1.0, bright=2000), 0.7)
         elif c == "hope":
-            mix.add("fx", s + 0.45, powerdown(0.5, 0.3)[::-1], 0.8)
-            mix.add("fx", s + 0.9, crowd_cheer(4.5), 1.6)
+            mix.add("fx", s + 0.3, powerdown(0.5, 0.3)[::-1], 0.8)
+            mix.add("fx", s + 0.7, crowd_cheer(4.5), 1.5)
             prog = [["F2", "C3", "F3", "A3", "C4"], ["Bb2", "F3", "Bb3", "D4"], ["C3", "G3", "C4", "E4"], ["F2", "C3", "F3", "A3", "C4"]]
-            chords(mix, s + 0.6, e, prog, 66, "strings", 1.5, choir_vowel="ah")
-            mix.add("hits", s + 0.6, boom(0.6, 3), 0.6)
-            mix.add("fx", s, metro_bed(L + 1, 0.8), 0.7)
-        elif c == "deep":
-            mix.add("hall", s, organ(["D1", "A1", "D2"], L, a=2.5, r=2.5, bright=0.4), 0.9)
-            mix.add("hall", s + 1, choir(["D3", "A3", "F4"], L - 1, "oo", a=3, r=2.5), 0.8)
-            for k in range(int(L // 4.5)):
-                mix.add("fx", s + 0.8 + k * 4.5, whale(5, 1.0), 0.8)
-                mix.add("music", s + 2.5 + k * 4.5, bell("D6", 5, 0.4, ratio=1.0), 0.7)
-        elif c == "theme":
-            sky = shots["sky"]["start"]
-            # piano alone over the wall of suns; strings join on the climb; everything on "look up"
-            melody(mix, s + 0.3, sky, THEME_MINOR, 66, "piano", 0.9)
-            chords(mix, shots["climb"]["start"], sky, PROG_MINOR[4:], 66, "strings", 0.75)
-            mix.add("hits", sky - 3.2, riser(3.2, 0.7), 0.8)
-            mix.add("hits", sky, boom(1.0, 5), 1.0)
-            # the full swell lands on "look up"; it settles under the narration that follows
-            settle = shots["past-jupiter"]["start"]
-            chords(mix, sky, settle, PROG_MAJOR, 60, "organ", 1.2)
-            chords(mix, sky, settle, PROG_MAJOR, 60, "strings", 0.9, choir_vowel="ah")
-            melody(mix, sky + 0.1, settle, THEME_MAJOR, 60, "strings", 0.8, octave=0)
-            chords(mix, settle, e, PROG_MAJOR[4:] + PROG_MAJOR[:4], 60, "organ", 0.55)
-            chords(mix, settle, e, PROG_MAJOR[4:] + PROG_MAJOR[:4], 60, "strings", 0.45, choir_vowel="oo")
-            for k in range(int((e - sky) // 2)):
-                mix.add("music", sky + 1 + k * 2, bell(rng.choice(["D6", "F#6", "A6"]), 5, 0.3), 0.5)
-        elif c == "turn":
-            ticks(mix, s + 0.05, e + 0.2, 1.0, 1.3)
-            mix.add("music", s, strings(["A6"], L, a=0.6, r=0.3, bright=8000, voices=(-2, 2)), 0.35)
-            mix.add("hits", s, boom(0.4, 2.5), 0.6)
-        elif c == "blink":
-            mix.add("fx", s - 0.4, whoosh(1.4, 1.2), 1.0)
-            mix.add("music", s - 2.5, strings(["D5", "A5", "D6"], 2.6, a=2.4, r=0.05, bright=6000)[::-1].copy(), 0.6)
-            gate.append((s + 0.75, e))
-        elif c == "morningAgain":
-            arpeggio(mix, s, e, [["D3", "A3", "C#4", "F#4"], ["G2", "D3", "F#3", "B3"], ["B2", "F#3", "A3", "D4"], ["A2", "E3", "G3", "C#4"]], 84, 0.85)
-            mix.add("fx", s, city_morning(L + 1), 0.8)
-            mix.add("music", s, strings(["G#5", "D6"], L, a=3, r=2, bright=7000, voices=(-4, 4)), 0.18)
-        elif c == "reveal":
-            mix.add("music", s + 0.3, bell("A5", 5, 0.6), 0.9)
-            mix.add("hall", s + 0.2, choir(["Bb3", "D4", "F4"], L, "oo", a=1.5, r=2), 0.9)
-            mix.add("music", s, strings(["Bb2", "F3", "D4"], L, a=1.5, r=2, bright=2500), 0.6)
-            mix.add("fx", s + 1, ice_crack(0.6), 0.6)
-        elif c == "sting":
-            mix.add("hits", s, braam("D1", 5, 1.0), 1.0)
-            mix.add("hits", s, boom(0.9, 4), 0.9)
-            ticks(mix, s + 0.5, e, 2.0, 1.0)
-            mix.add("music", s, strings(["D3", "Ab3", "D4", "Eb4"], L, a=0.4, r=1.5, bright=3000), 0.8)
-        elif c == "outro":
-            chords(mix, s, e, PROG_MINOR, 60, "organ", 0.8)
-            melody(mix, s + 2, e, THEME_MINOR, 60, "organ", 0.6)
-            ticks(mix, s, dur, 1.0, 0.7)
-    # end card: the watch keeps ticking, slowing into silence
+            chords(mix, s + 0.5, e, prog, 66, "strings", 1.4, choir_vowel="ah")
+            mix.add("hits", s + 0.5, boom(0.6, 3), 0.6)
+            melody(mix, s + 3, e, THEME_MAJOR, 66, "piano", 0.5)
+        elif c == "finale":
+            chords(mix, s, e, PROG_MINOR, 60, "strings", 0.9, choir_vowel="oo")
+            melody(mix, s + 1, e, THEME_MINOR, 60, "piano", 0.7)
+            for k in range(int(L // 1.6)):
+                mix.add("music", s + 0.8 + k * 1.6, bell(rng.choice(["D6", "A6", "F6"]), 5, 0.25), 0.6)
+        elif c == "flash":
+            # the door opens: a riser into the one-second Sun, then a full major chord that cuts to silence
+            one = shots["one-second"]
+            fl = one["start"] + 0.15 + 0.3
+            mix.add("hits", fl - 2.6, riser(2.6, 1.0), 1.0)
+            mix.add("hall", fl, organ(["D2", "A2", "D3", "F#3", "A3", "D4", "F#4"], 1.15, a=0.02, r=0.4), 1.6)
+            mix.add("hall", fl, choir(["D4", "F#4", "A4", "D5"], 1.15, "ah", a=0.05, r=0.5), 1.2)
+            mix.add("hits", fl, boom(1.0, 5), 1.0)
+            mix.add("music", fl + 1.2, strings(["D3", "A3", "F4"], e - fl - 1.2, a=2.5, r=2, bright=2200), 0.6)
+        elif c == "afterglow":
+            mix.add("music", s, strings(["D4", "F#4", "A4"], L, a=0.5, r=2.0, bright=3000), 0.6)
+            mix.add("music", s + 0.4, bell("F#6", 5, 0.4), 0.7)
+        elif c == "signal":
+            mix.add("fx", s, static(L, 1.0), 0.9)
+            mix.add("hall", s, organ(["D1", "D2"], L, a=1.0, r=2), 0.6)
+            # the count: 1, 2, 3 pulses, each just before Ito says the number
+            for i in range(3):
+                key = f"counting:{i}"
+                if key in lines:
+                    t0 = lines[key]["start"] - 0.75
+                    for k in range(i + 1):
+                        mix.add("fx", t0 + k * 0.18, beep(1320, 0.11, 1.2), 1.0)
+            # and once more under the planets, then nothing
+            if "count-planets" in shots:
+                t0 = shots["count-planets"]["start"] + 0.2
+                for i in range(3):
+                    for k in range(i + 1):
+                        mix.add("fx", t0 + i * 0.9 + k * 0.16, beep(1320, 0.1, 0.9), 0.9)
+        elif c == "end":
+            chords(mix, s, e, PROG_MINOR, 60, "organ", 0.7)
+            melody(mix, s + 1.5, e, THEME_MINOR, 60, "organ", 0.55)
+            for k in range(int(L // 1.0)):
+                t0 = s + 0.5 + k * 1.0
+                for j in range((k % 3) + 1):
+                    mix.add("fx", t0 + j * 0.16, beep(1320, 0.08, 0.5), 0.5)
+    # per-shot sound effects and whip transitions
+    for sh in tl["shots"]:
+        t0 = sh["start"]
+        fx = sh.get("sfx")
+        if sh.get("transition") == "whip":
+            mix.add("fx", t0 - 0.15, whoosh(0.6, 1.0), 0.9)
+        if fx == "powercut":
+            mix.add("fx", t0, powerdown(1.0, 1.2), 1.0)
+        elif fx == "decloak":
+            mix.add("music", t0 + 0.9, bell("A6", 3, 0.5)[::-1].copy(), 0.6)
+        elif fx == "riser":
+            mix.add("hits", t0, riser(min(3, sh["end"] - t0), 0.8), 0.8)
+        elif fx == "impact":
+            mix.add("hits", t0, boom(1.0, 3.5), 1.0)
+        elif fx == "whoosh":
+            mix.add("fx", t0, whoosh(1.2, 1.2), 1.0)
+            mix.add("fx", t0, wind(2.5, 1.4, 1.0), 0.9)
+        elif fx == "chime":
+            mix.add("music", t0 + 0.1, bell("E6", 3, 0.6), 0.8)
+        elif fx == "crash":
+            mix.add("fx", t0, ice_crack(1.0), 0.8)
+        elif fx == "stamp":
+            for k in range(3):
+                mix.add("hits", t0 + 0.1 + k * 0.28, taiko(0.8), 0.9)
     return mix, gate, B
 
 def duck_curve(n, lines, depth_db, pad=0.12, release=0.55):
@@ -665,10 +721,10 @@ def main():
     music = reverb(mix.music, room_ir, 0.32) + reverb(mix.hall, hall_ir, 0.45) * 0.9
     hits = reverb(mix.hits, room_ir, 0.2)
     fx = reverb(mix.fx, room_ir, 0.12)
-    # Narration must sit ≥10 dB over the bed: music ducks 15 dB under every line, hits 11 dB, sound design 8 dB.
-    duck_m = duck_curve(n, tl["lines"], 15.0)
-    duck_h = duck_curve(n, tl["lines"], 11.0)
-    duck_f = duck_curve(n, tl["lines"], 8.0)
+    # Narration must sit ≥10 dB over the bed (≥6 dB on every line): music ducks 16 dB under every line, hits 18 dB, sound design 14 dB.
+    duck_m = duck_curve(n, tl["lines"], 16.0)
+    duck_h = duck_curve(n, tl["lines"], 18.0)
+    duck_f = duck_curve(n, tl["lines"], 14.0)
     out = music * duck_m[:, None] + hits * duck_h[:, None] + fx * duck_f[:, None]
     # hard silences (the blackout; the blink) — 15 ms edges
     t = np.arange(n) / SR

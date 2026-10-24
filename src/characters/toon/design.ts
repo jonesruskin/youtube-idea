@@ -22,7 +22,8 @@ export type ToonDesign = {
   outfits: Partial<Record<Outfit, [string, string, string, string]>>;
   hat?: string;
   glasses?: boolean;
-  beard?: boolean;
+  /** Facial hair style (always drawn with the mouth clearly on top). */
+  beard?: 'full' | 'goatee' | 'chinstrap';
   mustache?: string;
   /** Elderly: slight hunch, slower walk. */
   elder?: boolean;
@@ -127,7 +128,7 @@ export const extra = (seed: number): ToonDesign => {
     hairColor: elder ? '#D8D8DE' : HAIR_COLORS[Math.floor(r(10) * HAIR_COLORS.length)],
     hat: ['#C2464F', '#3E7CB1', '#2A9D8F', '#E9C46A', '#6D597A'][Math.floor(r(11) * 5)],
     glasses: !kid && r(12) < 0.22,
-    beard: !kid && r(13) < 0.25,
+    beard: !kid && r(13) < 0.25 ? (['full', 'goatee', 'chinstrap'] as const)[seed % 3] : undefined,
     elder,
     outfits: {
       home: [top, top, LEGS[Math.floor(r(14) * LEGS.length)], '#2A2A2A'],

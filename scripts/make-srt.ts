@@ -35,6 +35,7 @@ const NAMES: Record<string, string> = {
   ASSISTANT: 'ASSISTANT',
   NARRATOR: '',
   MIRA: 'MIRA',
+  ITO: 'MR. ITO',
   RADIO: '(RADIO)',
 };
 // Narrated File episodes: the narrator is unlabelled, and the viewer-facing file carries no stage directions.

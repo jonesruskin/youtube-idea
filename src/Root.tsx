@@ -5,7 +5,7 @@ import {calculateEpisodeMetadata, Episode, type EpisodeProps} from './engine/Epi
 import {EPISODES} from './episodes';
 import {Thumbnail} from './Thumbnail';
 import {EarthLab, ToonLab} from './ToonLab';
-import {SunThumbnail} from './env/sun01/thumbnail';
+import {SunThumbnail} from './env/sun/thumbnail';
 
 export const RemotionRoot: React.FC = () => (
   <>

@@ -60,6 +60,25 @@ const SCENES: Record<string, {cast: CastEntry[]; acts: Act[]; bg: string}> = {
       {at: 0, who: 'mira', to: 1900, gait: 'run', dur: 3.6},
     ],
   },
+  beards: {
+    bg: '#2A3348',
+    cast: (['extra:51', 'extra:54', 'extra:16', 'extra:5', 'extra:63', 'extra:19'] as const).flatMap((who, i) =>
+      (['neutral', 'laugh', 'scared'] as const).map((expr, j) => ({who, x: 170 + i * 315, y: 330 + j * 360, depth: 1.05, expr, outfit: 'home' as const})),
+    ),
+    acts: [],
+  },
+  hood: {
+    bg: '#2A3348',
+    cast: [
+      {who: 'you', x: 260, y: 560, depth: 1.5, outfit: 'cold', hoodUp: true},
+      {who: 'you', x: 700, y: 560, depth: 1.5, outfit: 'cold', hoodUp: true, facing: 'right'},
+      {who: 'you', x: 1120, y: 560, depth: 1.5, outfit: 'cold', hoodUp: true, facing: 'back'},
+      {who: 'you', x: 1560, y: 560, depth: 1.5, outfit: 'cold', hoodUp: false},
+      {who: 'you', x: 520, y: 1500, depth: 3.4, outfit: 'cold', hoodUp: true, expr: 'scared', breath: true},
+      {who: 'you', x: 1420, y: 1500, depth: 3.4, outfit: 'cold', hoodUp: true, expr: 'smile', facing: 'right'},
+    ],
+    acts: [],
+  },
   gestures: {
     bg: '#33405A',
     cast: [

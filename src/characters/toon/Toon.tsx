@@ -184,8 +184,17 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
   // ── hair / hats ─────────────────────────────────────────────────────────
   const hc = d.hairColor;
   const hatOn = cold && (d.hair === 'pigtails' || d.hair === 'beanie');
+  // ── the parka hood: an orange dome over the head that falls to the shoulders, a dark lining, a tufted fur
+  // trim around the face and two drawstrings — so it reads as a hood at a glance, never as a halo
+  const hoodUp = cold && s.hoodUp;
+  const hoodOuter = `M${-R * 1.22},${headY + R * 0.95} Q${-R * 1.42},${headY - R * 0.2} ${-R * 0.9},${headY - R * 1.05} Q0,${headY - R * 1.6} ${R * 0.9},${headY - R * 1.05} Q${R * 1.42},${headY - R * 0.2} ${R * 1.22},${headY + R * 0.95} Q0,${headY + R * 1.25} ${-R * 1.22},${headY + R * 0.95} Z`;
+  const ox = fx * 0.6; // the face opening follows the head turn
+  const oy = headY + R * 0.12;
+  const orx = R * 0.86;
+  const ory = R * 0.92;
+  const opening = `M${ox - orx},${oy} A${orx},${ory} 0 1 0 ${ox + orx},${oy} A${orx},${ory} 0 1 0 ${ox - orx},${oy} Z`;
   const hairBack = (() => {
-    if (cold && s.hoodUp) return <ellipse cx={0} cy={headY - R * 0.05} rx={R * 1.28} ry={R * 1.25} fill={top} stroke={ink} strokeWidth={sw} />;
+    if (hoodUp) return <path d={hoodOuter} fill={top} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />;
     switch (d.hair) {
       case 'pigtails':
         return (
@@ -210,8 +219,44 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
         return null;
     }
   })();
+  const hoodFront = hoodUp && (
+    <g>
+      {/* the hood frame around the face (outer dome minus the face opening) */}
+      <path d={`${hoodOuter} ${opening}`} fill={top} fillRule="evenodd" stroke={ink} strokeWidth={sw} strokeLinejoin="round" />
+      {/* dark lining just inside the opening */}
+      <ellipse cx={ox} cy={oy} rx={orx} ry={ory} fill="none" stroke={topAcc} strokeWidth={R * 0.1} opacity={0.9} />
+      {/* centre seam over the crown + a quilt line */}
+      <path d={`M${ox * 0.4},${oy - ory - R * 0.02} Q${ox * 0.2},${headY - R * 1.2} 0,${headY - R * 1.3}`} stroke={topAcc} strokeWidth={sw} fill="none" />
+      <path d={`M${-R * 1.25},${headY + R * 0.2} Q${-R * 1.1},${headY - R * 0.5} ${-R * 0.75},${headY - R * 0.98}`} stroke={topAcc} strokeWidth={sw * 0.8} fill="none" />
+      <path d={`M${R * 1.25},${headY + R * 0.2} Q${R * 1.1},${headY - R * 0.5} ${R * 0.75},${headY - R * 0.98}`} stroke={topAcc} strokeWidth={sw * 0.8} fill="none" />
+      {/* fur trim: one soft cream band with a fluffy, uneven edge (reads as fur, not beads) */}
+      <ellipse cx={ox} cy={oy} rx={orx} ry={ory} fill="none" stroke={ink} strokeWidth={R * 0.24 + sw * 2} />
+      {Array.from({length: 30}, (_, i) => {
+        const a = (i / 30) * Math.PI * 2;
+        const r = R * (0.12 + 0.03 * Math.sin(i * 3.1));
+        return <circle key={`fo${i}`} cx={ox + Math.cos(a) * (orx + R * 0.06)} cy={oy + Math.sin(a) * (ory + R * 0.06)} r={r + sw * 0.8} fill={ink} />;
+      })}
+      <ellipse cx={ox} cy={oy} rx={orx} ry={ory} fill="none" stroke="#EFE3CC" strokeWidth={R * 0.24} />
+      {Array.from({length: 30}, (_, i) => {
+        const a = (i / 30) * Math.PI * 2;
+        const r = R * (0.12 + 0.03 * Math.sin(i * 3.1));
+        return <circle key={`fi${i}`} cx={ox + Math.cos(a) * (orx + R * 0.06)} cy={oy + Math.sin(a) * (ory + R * 0.06)} r={r} fill="#EFE3CC" />;
+      })}
+      {Array.from({length: 22}, (_, i) => {
+        const a = (i / 22) * Math.PI * 2 + 0.1;
+        return <path key={`fs${i}`} d={`M${ox + Math.cos(a) * (orx - R * 0.06)},${oy + Math.sin(a) * (ory - R * 0.06)} l${Math.cos(a) * R * 0.12},${Math.sin(a) * R * 0.12}`} stroke="#C9B795" strokeWidth={sw * 0.7} strokeLinecap="round" />;
+      })}
+      {/* drawstrings with toggles */}
+      {[-1, 1].map((k) => (
+        <g key={`ds${k}`}>
+          <path d={`M${ox + k * R * 0.3},${oy + ory * 0.95} Q${ox + k * R * 0.36},${oy + ory + R * 0.35} ${ox + k * R * 0.28},${oy + ory + R * 0.62}`} stroke="#F3E8D4" strokeWidth={sw * 0.9} fill="none" strokeLinecap="round" />
+          <rect x={ox + k * R * 0.28 - R * 0.06} y={oy + ory + R * 0.58} width={R * 0.12} height={R * 0.16} rx={R * 0.04} fill="#3A3442" stroke={ink} strokeWidth={sw * 0.5} />
+        </g>
+      ))}
+    </g>
+  );
   const hairFront = (() => {
-    if (cold && s.hoodUp) return null;
+    if (hoodUp) return null;
     if (hatOn || d.hair === 'beanie') {
       const hat = d.hat ?? '#C2464F';
       return (
@@ -266,8 +311,11 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
   // back view: draw the back of the head instead of a face
   const backHead = back && (
     <g>
-      {cold && s.hoodUp ? (
-        <ellipse cx={0} cy={headY - R * 0.05} rx={R * 1.15} ry={R * 1.12} fill={top} stroke={ink} strokeWidth={sw} />
+      {hoodUp ? (
+        <g>
+          <path d={hoodOuter} fill={top} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />
+          <path d={`M0,${headY - R * 1.3} Q${R * 0.08},${headY} 0,${headY + R * 1.1}`} stroke={topAcc} strokeWidth={sw} fill="none" />
+        </g>
       ) : (
         <path d={`M${-R * 0.99},${headY + R * 0.2} Q${-R * 1.02},${headY - R * 1.08} 0,${headY - R * 1.06} Q${R * 1.02},${headY - R * 1.08} ${R * 0.99},${headY + R * 0.2} Q0,${headY + R * 0.55} ${-R * 0.99},${headY + R * 0.2} Z`} fill={d.hair === 'bald' ? d.skin : hc} stroke={ink} strokeWidth={sw * 0.9} />
       )}
@@ -317,8 +365,8 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
         {/* head */}
         <g transform={`rotate(${p.tilt + (side ? 0 : 0)},0,${shY})`}>
           {!back && hairBack}
-          {!back && <circle cx={-R * 0.98 + fx * 0.3} cy={headY + R * 0.1} r={R * 0.16} fill={d.skin} stroke={ink} strokeWidth={sw * 0.8} />}
-          {!back && <circle cx={R * 0.98 + fx * 0.3} cy={headY + R * 0.1} r={R * 0.16} fill={d.skin} stroke={ink} strokeWidth={sw * 0.8} />}
+          {!back && !hoodUp && <circle cx={-R * 0.98 + fx * 0.3} cy={headY + R * 0.1} r={R * 0.16} fill={d.skin} stroke={ink} strokeWidth={sw * 0.8} />}
+          {!back && !hoodUp && <circle cx={R * 0.98 + fx * 0.3} cy={headY + R * 0.1} r={R * 0.16} fill={d.skin} stroke={ink} strokeWidth={sw * 0.8} />}
           <circle cx={0} cy={headY} r={R} fill={d.skin} stroke={ink} strokeWidth={sw} />
           {back ? (
             backHead
@@ -336,16 +384,12 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
                 ))}
               {d.glasses && <path d={`M${fx - eyeSep * 0.45},${eyeY} L${fx + eyeSep * 0.45},${eyeY}`} stroke={ink} strokeWidth={sw * 0.7} />}
               <path d={`M${fx * 1.1 - R * 0.06},${headY + R * 0.28} q${R * 0.06},${R * 0.08} ${R * 0.12},0`} stroke={d.skinShade} strokeWidth={sw} fill="none" strokeLinecap="round" />
-              {d.mustache && <path d={`M${fx - R * 0.3},${mouthY - R * 0.08} Q${fx},${mouthY - R * 0.22} ${fx + R * 0.3},${mouthY - R * 0.08} Q${fx},${mouthY - R * 0.02} ${fx - R * 0.3},${mouthY - R * 0.08} Z`} fill={d.mustache} stroke={ink} strokeWidth={sw * 0.5} />}
-              {d.beard && <path d={`M${-R * 0.8},${headY + R * 0.3} Q${fx},${headY + R * 1.3} ${R * 0.8},${headY + R * 0.3} Q${fx},${headY + R * 0.85} ${-R * 0.8},${headY + R * 0.3} Z`} fill={hc} opacity={0.9} />}
-              {mouth}
-              {cold && s.hoodUp && (
-                <g>
-                  <ellipse cx={0} cy={headY - R * 0.02} rx={R * 1.1} ry={R * 1.1} fill="none" stroke={ink} strokeWidth={R * 0.3 + sw * 2} />
-                  <ellipse cx={0} cy={headY - R * 0.02} rx={R * 1.1} ry={R * 1.1} fill="none" stroke="#F1E6D2" strokeWidth={R * 0.3} />
-                  <ellipse cx={0} cy={headY - R * 0.02} rx={R * 1.17} ry={R * 1.17} fill="none" stroke="#D9CBB2" strokeWidth={R * 0.06} />
-                </g>
+              {d.beard && <Beard style={d.beard} R={R} headY={headY} mouthY={mouthY} fx={fx} hair={hc} skin={d.skin} ink={ink} sw={sw} />}
+              {(d.mustache || d.beard === 'full' || d.beard === 'goatee') && (
+                <path d={`M${fx - R * 0.32},${mouthY - R * 0.06} Q${fx - R * 0.16},${mouthY - R * 0.24} ${fx},${mouthY - R * 0.14} Q${fx + R * 0.16},${mouthY - R * 0.24} ${fx + R * 0.32},${mouthY - R * 0.06} Q${fx + R * 0.16},${mouthY - R * 0.1} ${fx},${mouthY - R * 0.06} Q${fx - R * 0.16},${mouthY - R * 0.1} ${fx - R * 0.32},${mouthY - R * 0.06} Z`} fill={d.mustache ?? hc} stroke={ink} strokeWidth={sw * 0.5} strokeLinejoin="round" />
               )}
+              {mouth}
+              {hoodFront}
               {s.breath > 0 &&
                 [0, 1, 2].map((k) => {
                   const ph = ((s.frame + k * 22) % 66) / 66;
@@ -365,6 +409,54 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
         {hand(RA.hx, RA.hy, 'rh')}
         {s.hold && <g transform={`translate(${RA.hx},${RA.hy})`}><HeldProp kind={s.hold} R={R} frame={s.frame} /></g>}
       </g>
+    </g>
+  );
+};
+
+/**
+ * Facial hair that can't be mistaken for a mouth: it follows the jaw, has a tufted edge and hair texture,
+ * and leaves a skin-tone patch around the lips so the real mouth always draws on top.
+ */
+const Beard: React.FC<{style: 'full' | 'goatee' | 'chinstrap'; R: number; headY: number; mouthY: number; fx: number; hair: string; skin: string; ink: string; sw: number}> = ({style, R, headY, mouthY, fx, hair, skin, ink, sw}) => {
+  const tufts = (x0: number, x1: number, y: number, n: number, depth: number) =>
+    Array.from({length: n}, (_, i) => {
+      const xa = x0 + ((x1 - x0) * i) / n;
+      const xb = x0 + ((x1 - x0) * (i + 0.5)) / n;
+      const xc = x0 + ((x1 - x0) * (i + 1)) / n;
+      const curve = Math.sin(((i + 0.5) / n) * Math.PI);
+      return `L${xb},${y + curve * depth + depth * 0.35} L${xc},${y + Math.sin(((i + 1) / n) * Math.PI) * depth}`;
+    }).join(' ');
+  if (style === 'chinstrap') {
+    return <path d={`M${-R * 0.97},${headY + R * 0.05} Q${-R * 0.9},${headY + R * 0.95} ${fx},${headY + R * 1.04} Q${R * 0.9},${headY + R * 0.95} ${R * 0.97},${headY + R * 0.05}`} stroke={hair} strokeWidth={R * 0.17} fill="none" strokeLinecap="round" />;
+  }
+  if (style === 'goatee') {
+    const x0 = fx - R * 0.24;
+    const x1 = fx + R * 0.24;
+    return (
+      <g>
+        <path d={`M${x0},${mouthY + R * 0.08} Q${fx},${mouthY + R * 0.02} ${x1},${mouthY + R * 0.08} L${x1 - R * 0.04},${mouthY + R * 0.36} ${tufts(x1 - R * 0.04, x0 + R * 0.04, mouthY + R * 0.36, 4, R * 0.1)} Z`} fill={hair} stroke={ink} strokeWidth={sw * 0.6} strokeLinejoin="round" />
+        <path d={`M${fx - R * 0.08},${mouthY + R * 0.16} l${R * 0.02},${R * 0.14} M${fx + R * 0.08},${mouthY + R * 0.16} l-${R * 0.02},${R * 0.14}`} stroke="#FFFFFF" strokeOpacity={0.25} strokeWidth={sw * 0.6} />
+      </g>
+    );
+  }
+  // full beard: ear to ear along the jaw, tufted bottom, lip patch
+  const left = -R * 0.98;
+  const right = R * 0.98;
+  return (
+    <g>
+      <path
+        d={`M${left},${headY + R * 0.02} Q${left + R * 0.05},${headY + R * 0.5} ${left + R * 0.3},${headY + R * 0.82} ${tufts(left + R * 0.3, right - R * 0.3, headY + R * 0.95, 7, R * 0.22)} Q${right - R * 0.05},${headY + R * 0.5} ${right},${headY + R * 0.02} Q${right - R * 0.15},${headY + R * 0.6} ${fx + R * 0.4},${mouthY - R * 0.1} Q${fx},${mouthY - R * 0.2} ${fx - R * 0.4},${mouthY - R * 0.1} Q${left + R * 0.15},${headY + R * 0.6} ${left},${headY + R * 0.02} Z`}
+        fill={hair}
+        stroke={ink}
+        strokeWidth={sw * 0.7}
+        strokeLinejoin="round"
+      />
+      {/* hair strands */}
+      {[-0.55, -0.3, 0.3, 0.55].map((k) => (
+        <path key={k} d={`M${fx + k * R},${mouthY + R * 0.08} q${k * R * 0.08},${R * 0.2} 0,${R * 0.36}`} stroke="#FFFFFF" strokeOpacity={0.22} strokeWidth={sw * 0.7} fill="none" strokeLinecap="round" />
+      ))}
+      {/* skin around the lips so the mouth reads as the mouth */}
+      <ellipse cx={fx} cy={mouthY + R * 0.06} rx={R * 0.3} ry={R * 0.17} fill={skin} />
     </g>
   );
 };

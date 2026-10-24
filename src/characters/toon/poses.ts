@@ -40,6 +40,7 @@ export const POSES = {
   lookUp: P({tilt: -18, lArm: [-10, -8], rArm: [12, 8]}),
   crouch: P({crouch: 0.55, lArm: [30, 40], rArm: [40, 40], lean: 10}),
   kneel: P({lLeg: [8, -96], rLeg: [82, -84], rArm: [50, 40], lArm: [20, 30], lean: 4}),
+  kneelHug: P({lLeg: [8, -96], rLeg: [82, -84], lArm: [62, 96], rArm: [72, 96], lean: 10}),
   sit: P({lLeg: [86, 0], rLeg: [90, 0], lArm: [20, 30], rArm: [30, 30], lean: -4}),
   sitChair: P({lLeg: [82, -82], rLeg: [86, -86], lArm: [20, 40], rArm: [30, 40]}),
   sitHug: P({lLeg: [128, -112], rLeg: [134, -116], lArm: [70, 60], rArm: [80, 60], lean: 6}),

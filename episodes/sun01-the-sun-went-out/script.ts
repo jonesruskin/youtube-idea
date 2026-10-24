@@ -76,6 +76,7 @@ const shots: Shot[] = [
     lines: [N('Its last light is still racing toward you.')],
   }),
   sh('light-race-earth', sc('space', {v: 'raceEarth'}), {
+    science: {text: "Sunlight takes about 8 minutes 20 seconds to cross the 150 million km to Earth, so we would not notice anything for 8:20.", source: "NASA Science, ‘Sun: Facts’ (science.nasa.gov/sun)"},
     action: 'Ride along the light front. Earth grows from a dot.',
     lines: [N('It will reach Earth in eight minutes and twenty seconds.')],
   }),
@@ -187,6 +188,7 @@ const shots: Shot[] = [
     lines: [N('But eclipses last minutes. And the Moon has gone dark too.')],
   }),
   sh('borrowed', sc('sky', {v: 'moonClose'}), {
+    science: {text: "The Moon makes no light of its own; moonlight is reflected sunlight.", source: "NASA Science, ‘Moon’ (science.nasa.gov/moon)"},
     callout: {text: 'BORROWED', at: 'l0+1.0'},
     action: 'Closer: the dead Moon, a faint grey ghost against the stars.',
     lines: [N('Its light was only ever borrowed from the Sun.')],
@@ -215,6 +217,7 @@ const shots: Shot[] = [
     {at: 0.4, who: IT, pose: 'reach', expr: 'smile'},
     {at: 'l0+1.6', who: IT, loop: 'bounce', dur: 0.9, expr: 'laugh'},
   ], {telescope: 'setup'}), {
+    cue: 'curious',
     beats: ['laugh'],
     action: 'The roof. Mr. Ito sets up a brass telescope with the joy of a child at Christmas.',
     lines: [N('Mr. Ito taught astronomy for forty years. He has never been this excited.')],
@@ -236,6 +239,8 @@ const shots: Shot[] = [
     lines: [I('The light it shows us left the Sun minutes ago.')],
   }),
   sh('venus-out', sc('sky', {v: 'venusOut'}), {
+    science: {text: "Venus near greatest elongation: sunlight needs ~361 s to reach it and ~345 s to come back to us, versus 499 s Sun→Earth, so it fades ~3.5 minutes after the Sun.", source: "Calculation from 1 AU = 149.6 million km, c = 299,792 km/s, Venus orbit 0.72 AU (NASA JPL planetary fact sheets)"},
+    cue: 'reveal',
     sfx: 'decloak',
     beats: ['wow'],
     dev: 'Venus goes dark late',
@@ -247,6 +252,7 @@ const shots: Shot[] = [
     lines: [I('If something blocked the Sun close to us, everything would go dark at once.')],
   }),
   sh('at-the-sun', stage('roof', 'night', push(3.2, 3.6, 1150, 540), [c(IT, 1150, 900, {pose: 'pointUp', outfit: 'home', facing: 'front', expr: 'surprised'})]), {
+    cue: 'sting',
     twist: 1,
     beats: ['loop'],
     callout: {text: 'AT THE SUN', at: 'l0+0.4'},
@@ -255,6 +261,8 @@ const shots: Shot[] = [
     lines: [I('This happened at the Sun.', 0.3)],
   }),
   sh('jupiter-predict', sc('diagram', {v: 'jupiter'}), {
+    science: {text: "Jupiter is 5.2 AU from the Sun; light needs ~43 minutes to reach it and ~37 more to reach us when it is 4.5 AU away: about 72 minutes after the Sun.", source: "NASA Jupiter fact sheet (nssdc.gsfc.nasa.gov)"},
+    cue: 'curious',
     callout: {text: '72 MIN', at: 'l0+1.6'},
     action: 'Diagram: Jupiter, far out. A long light path. A clock.',
     lines: [I('Jupiter is much further out. It should go dark in seventy-two minutes.')],
@@ -271,6 +279,7 @@ const shots: Shot[] = [
     lines: [N('So you sit down, and you wait.')],
   }),
   sh('jupiter-out', sc('sky', {v: 'jupiterOut'}), {
+    cue: 'reveal',
     sfx: 'decloak',
     dev: 'Jupiter goes dark on schedule',
     action: 'Jupiter, centred in the telescope crosshairs, winks out.',
@@ -323,7 +332,7 @@ const shots: Shot[] = [
   ]), {
     chapter: 'Day 1',
     hud: {day: 1, temp: 9},
-    cue: 'race',
+    cue: 'work',
     transition: 'whip',
     dev: 'the race for supplies',
     action: 'Day 1. The whole street runs the same way: toward the supermarket.',
@@ -447,6 +456,7 @@ const shots: Shot[] = [
     lines: [I('The Moon pulls the sea. So does the Sun.')],
   }),
   sh('a-third', sc('diagram', {v: 'tide', step: 1}), {
+    science: {text: "The Sun’s tide-raising force is about 46% of the Moon’s; at spring tide the two add up.", source: "NOAA Ocean Service, ‘Tides and Water Levels’ tutorial"},
     callout: {text: '−⅓', at: 'l0+1.6'},
     action: 'The Sun’s bulge is removed: the tide shrinks by a third.',
     lines: [I('Without the Sun, this week’s big tides would be a third smaller.')],
@@ -465,6 +475,7 @@ const shots: Shot[] = [
     lines: [I('We have not flown away. We are still going round.')],
   }),
   sh('still-there', stage('apartment', 'warm', push(2.4, 3.0, 1120, 540), [c(IT, 1120, 930, {pose: 'pointUp', outfit: 'cold', expr: 'awe'})]), {
+    cue: 'reveal',
     twist: 2,
     beats: ['loop'],
     letterbox: true,
@@ -478,12 +489,14 @@ const shots: Shot[] = [
     lines: [I('Something is in front of it.', 0.5)],
   }),
   sh('glimpse', sc('space', {v: 'shellGlimpse'}), {
+    cue: 'shellSting',
     min: 2.4,
     sfx: 'impact',
     beats: ['wow'],
     action: 'A glimpse: the edge of something vast and dark, a curved wall of plates, catching the faintest red light.',
   }),
   sh('ito-radios', stage('apartment', 'warm', push(1.5, 1.7, 1100, 620), [c(IT, 1100, 930, {pose: 'holdBoth', hold: 'radio', outfit: 'cold', facing: 'front', expr: 'determined'})], [{at: 'l0', who: IT, loop: 'talk', dur: 2.4}]), {
+    cue: 'work',
     dev: 'the world learns the Sun is covered',
     action: 'Ito on a ham radio, calling observatories around the world.',
     lines: [N('Ito radios every observatory he knows. By night, the whole world has heard.')],
@@ -508,6 +521,7 @@ const shots: Shot[] = [
     lines: [I('Look! Up there!')],
   }),
   sh('aurora', sc('sky', {v: 'aurora'}), {
+    science: {text: "Coronal mass ejections take roughly 1 to 4 days to reach Earth, so particles already on their way would still arrive after the light was gone.", source: "NOAA Space Weather Prediction Center, ‘Coronal Mass Ejections’"},
     letterbox: true,
     beats: ['wow'],
     dev: 'the final solar storm arrives',
@@ -544,6 +558,7 @@ const shots: Shot[] = [
     lines: [N('Day five. The sea starts to freeze.')],
   }),
   sh('ice-blanket', sc('diagram', {v: 'ocean', step: 0}), {
+    science: {text: "Ice floats and insulates the water below it, so oceans freeze from the top and stay liquid underneath for a very long time.", source: "National Snow and Ice Data Center, ‘All About Sea Ice’"},
     callout: {text: 'A LID', at: 'l0+1.2'},
     action: 'Cut-away of the ocean: a skin of ice forms on top.',
     lines: [N('But only on top. The ice is a lid.')],
@@ -561,6 +576,7 @@ const shots: Shot[] = [
 
   // ══ DAY 7 · the grid ═══════════════════════════════════════════════════════════════════════
   sh('day7-globe', sc('globe', {v: 'lights', day: 7}), {
+    science: {text: "Estimates for a sunless Earth: around −18 °C average after a week, around −73 °C after a year.", source: "Live Science, ‘What would happen if the sun disappeared?’"},
     chapter: 'Day 7',
     hud: {day: 7, temp: -18},
     cue: 'tension',
@@ -593,6 +609,7 @@ const shots: Shot[] = [
     lines: [N('Next door, someone is burning their furniture. Indoors.')],
   }),
   sh('invisible', stage('stairs', 'smoke', push(2.6, 3.0, 900, 600), [c(Y, 900, 940, {...COLD, pose: 'coverMouth', facing: 'front', expr: 'scared'})]), {
+    science: {text: "Burning fuel indoors produces carbon monoxide, which is colourless and odourless; it is a leading cause of winter poisonings.", source: "US CDC, ‘Carbon Monoxide Poisoning’"},
     callout: {text: 'INVISIBLE', at: 'l0+1.4'},
     action: 'You cover your mouth.',
     lines: [N('The smoke you can see. The carbon monoxide, you cannot.')],
@@ -664,14 +681,16 @@ const shots: Shot[] = [
     {at: 0.5, who: B, pose: 'stand', wag: 1},
     {at: 0.7, who: Y, to: 1360, dur: 0.8},
     {at: 1.5, who: Y, pose: 'kneel', expr: 'relieved'},
-    {at: 2.0, who: Y, pose: 'hug', expr: 'laugh'},
+    {at: 2.0, who: Y, pose: 'kneelHug', expr: 'laugh'},
   ]), {
+    cue: 'warm',
     beats: ['heart'],
     dev: 'Biscuit found',
     action: 'Biscuit is curled against the warm grate, frost on his whiskers. He sees you. His tail explodes.',
     lines: [N('The metro. Warm air, rising from the tunnels.')],
   }),
   sh('ground-heat', sc('diagram', {v: 'ground', step: 0}), {
+    science: {text: "A few metres underground the temperature stays close to the yearly average (about 10–16 °C in many places), whatever the weather.", source: "US Department of Energy, ‘Geothermal Heat Pumps’"},
     callout: {text: '+10°C', at: 'l0+1'},
     beats: ['wow'],
     action: 'Cut-away of the ground: frozen surface, then the metro tunnels, then warm rock below.',
@@ -704,6 +723,7 @@ const shots: Shot[] = [
     {at: 0, who: 'extra:21', to: 860, dur: 3.4},
     {at: 0, who: 'extra:22', to: 700, dur: 3.4},
   ], {piggyback: 'you'}), {
+    cue: 'warm',
     dev: 'the city moves underground',
     action: 'Down the metro stairs: you carrying Mira on your back, Ito, and behind them a line of torches.',
     lines: [N('By morning, half the city has followed him underground.')],
@@ -735,6 +755,7 @@ const shots: Shot[] = [
     c('extra:37', 1200, 900, {outfit: 'cold', facing: 'back'}),
     c('extra:38', 1500, 900, {outfit: 'cold', facing: 'back'}),
   ], [], {sunrise: 'l0+0.8'}), {
+    cue: 'warm',
     action: 'Seven a.m. The big lamps in the station roof warm up from orange to gold.',
     lines: [N('Every morning at seven, they switch on the big lamps.')],
   }),
@@ -776,10 +797,12 @@ const shots: Shot[] = [
     c(MI, 900, 900, {outfit: 'cold', pose: 'sitHug', facing: 'right', expr: 'worried'}),
     c(Y, 1100, 900, {outfit: 'cold', pose: 'sitChair', facing: 'left'}),
   ], [{at: 'l0+0.8', who: Y, expr: 'smile', pose: 'think'}]), {
+    cue: 'tunnel',
     action: 'In the tent at night. Mira, small voice.',
     lines: [M('Are we going to run out of air?')],
   }),
   sh('oxygen', sc('diagram', {v: 'oxygen'}), {
+    science: {text: "The atmosphere holds about 1.2 million billion tonnes of oxygen; even with no photosynthesis, breathing and burning would take thousands of years to use a meaningful share.", source: "Keeling & Manning, ‘Studies of Recent Changes in Atmospheric O2 Content’, Treatise on Geochemistry (2014)"},
     callout: {text: 'THOUSANDS OF YEARS', at: 'l0+1.6'},
     action: 'Diagram: Earth wrapped in its blue atmosphere. A gauge marked OXYGEN barely moves.',
     lines: [N('No. Even with no plants making more, the air we have would last thousands of years.')],
@@ -811,6 +834,7 @@ const shots: Shot[] = [
     lines: [N('He aims at the spot where the Sun should be.')],
   }),
   sh('its-warm', sc('thermal', {v: 'disc'}), {
+    science: {text: "Anything that absorbs starlight must give off waste heat as infrared; this is how astronomers search for Dyson spheres.", source: "Freeman Dyson, ‘Search for Artificial Stellar Sources of Infrared Radiation’, Science (1960)"},
     dev: 'something warm where the Sun should be',
     action: 'The camera screen, false colour. Black sky, and in the middle, a faint warm disc.',
     lines: [I("It's warm.", 0.5)],
@@ -836,6 +860,7 @@ const shots: Shot[] = [
     lines: [N('A shell. Built around a star.', 0.8)],
   }),
   sh('who-built', stage('metro', 'tent', push(2.0, 2.4, 1000, 620), [c(MI, 900, 900, {outfit: 'cold', facing: 'right', expr: 'scared'}), c(Y, 1100, 900, {outfit: 'cold', facing: 'left', expr: 'worried'})]), {
+    cue: 'mystery',
     beats: ['loop'],
     action: 'Back below, Mira looks up at you.',
     lines: [M('Who built it?', 0.8)],
@@ -908,6 +933,7 @@ const shots: Shot[] = [
     lines: [R('Submarine crews report the life around deep sea vents is completely unaffected.')],
   }),
   sh('vents', sc('diagram', {v: 'vents', step: 0}), {
+    science: {text: "Life around deep-sea hydrothermal vents runs on chemical energy from inside the Earth (chemosynthesis), not sunlight.", source: "NOAA Ocean Exploration, ‘Hydrothermal Vents’"},
     beats: ['wow'],
     action: 'The sea floor: a black smoker, tube worms, crabs, ghostly shrimp. Thriving.',
     lines: [N('Down there, life runs on heat from inside the Earth.')],
@@ -944,6 +970,7 @@ const shots: Shot[] = [
     lines: [I('It is not blocking the Sun.')],
   }),
   sh('taking-it', stage('surface', 'deep', push(2.8, 3.3, 1000, 560), [c(IT, 1000, 940, {...COLD, hold: 'thermal', pose: 'hold', facing: 'front', expr: 'scared'})]), {
+    cue: 'shellSting',
     twist: 4,
     letterbox: true,
     callout: {text: 'TAKING IT', at: 'l0+0.3'},
@@ -953,6 +980,7 @@ const shots: Shot[] = [
     lines: [I('It is taking it.', 0.8)],
   }),
   sh('beam-space', sc('space', {v: 'beam'}), {
+    cue: 'shell',
     beats: ['wow'],
     action: 'The shell from far away, a needle of energy leaving it toward a faint, distant star.',
     lines: [N('All of the Sun’s light, sent somewhere else.', 0.6)],
@@ -991,6 +1019,7 @@ const shots: Shot[] = [
     lines: [M('One whole lap around the Sun. Happy birthday, Earth.')],
   }),
   sh('door-opens', sc('space', {v: 'flicker'}), {
+    cue: 'flash',
     min: 2.6,
     sfx: 'riser',
     dev: 'the shell opens',
@@ -1015,6 +1044,7 @@ const shots: Shot[] = [
     lines: [N('Eight minutes later, the Sun comes back. For one second.', 0.6)],
   }),
   sh('mira-saw', stage('surface', 'milky', push(3.0, 3.4, 940, 560), [c(MI, 940, 940, {...COLD, facing: 'front', expr: 'awe'})], [{at: 1.2, who: MI, expr: 'sad'}], {afterglow: true}), {
+    cue: 'afterglow',
     min: 2.8,
     beats: ['heart'],
     action: 'Mira, eyes shining. She saw it. A real one.',
@@ -1024,6 +1054,7 @@ const shots: Shot[] = [
     c(Y, 760, 900, {outfit: 'cold', facing: 'right'}),
     c(MI, 1160, 900, {outfit: 'cold', facing: 'left'}),
   ]), {
+    cue: 'signal',
     sfx: 'chime',
     dev: 'a signal from the Sun',
     action: 'Below, every radio in the station hisses at once. A rhythm of pulses.',
@@ -1048,6 +1079,7 @@ const shots: Shot[] = [
     lines: [N('And it stopped at three.', 1.0)],
   }),
   sh('thats-us', stage('metro', 'radios', push(2.8, 3.4, 1100, 600), [c(MI, 1160, 900, {outfit: 'cold', facing: 'front', expr: 'scared'})]), {
+    cue: 'shellSting',
     twist: 5,
     letterbox: true,
     beats: ['loop'],
@@ -1067,7 +1099,7 @@ export const sun01: Episode = {
   file: 'FILE 001',
   title: 'The Sun Went Out',
   youtubeTitle: "The Sun Went Out. Here's Your Day 1 to Day 365",
-  thumbnailText: 'NO SUN',
+  thumbnailText: 'WHO BUILT THIS?',
   commentPrompt: 'Something just counted the planets and stopped at Earth. What would you say back?',
   logline:
     "At 6:44 a.m. something closed around the Sun. Eight minutes later the sky goes black. You, your little sister Mira, your dog Biscuit and Mr. Ito, the old astronomer upstairs, have one year to survive the freeze and work out what happened. Every clue is real physics. The ending isn't.",
