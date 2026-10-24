@@ -100,6 +100,14 @@ const frameFaces = (keys: CamKey[], cast: CastEntry[]): CamKey[] =>
     return [k[0], k[1], k[2], fy + H * 0.12, k[4]] as CamKey;
   });
 
+// ── world scale ─────────────────────────────────────────────────────────────────────────────────
+/**
+ * Metres → pixels. The hero is 1.75 m and 300 px tall at depth 1, and casts stand at depth 1.2 in most sets,
+ * so 1 m ≈ 206 px on the cast's plane. Every prop a person can stand next to is sized with this.
+ */
+export const PX_PER_M = HERO_PX / 1.75;
+export const M = (m: number, depth = 1.2) => m * PX_PER_M * depth;
+
 // ── shared drawing helpers for sets ────────────────────────────────────────────────────────────
 export const INK = '#0B1026';
 /** Multiply grade (keeps flat colours rich in the dark). */

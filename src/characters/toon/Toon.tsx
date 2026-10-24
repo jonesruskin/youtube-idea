@@ -187,11 +187,12 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
   // ── the parka hood: an orange dome over the head that falls to the shoulders, a dark lining, a tufted fur
   // trim around the face and two drawstrings — so it reads as a hood at a glance, never as a halo
   const hoodUp = cold && s.hoodUp;
-  const hoodOuter = `M${-R * 1.22},${headY + R * 0.95} Q${-R * 1.42},${headY - R * 0.2} ${-R * 0.9},${headY - R * 1.05} Q0,${headY - R * 1.6} ${R * 0.9},${headY - R * 1.05} Q${R * 1.42},${headY - R * 0.2} ${R * 1.22},${headY + R * 0.95} Q0,${headY + R * 1.25} ${-R * 1.22},${headY + R * 0.95} Z`;
+  // sized to the head: the dome sits just outside the skull line, the fur frames the face
+  const hoodOuter = `M${-R * 1.06},${headY + R * 0.92} Q${-R * 1.22},${headY - R * 0.15} ${-R * 0.8},${headY - R * 0.95} Q0,${headY - R * 1.38} ${R * 0.8},${headY - R * 0.95} Q${R * 1.22},${headY - R * 0.15} ${R * 1.06},${headY + R * 0.92} Q0,${headY + R * 1.14} ${-R * 1.06},${headY + R * 0.92} Z`;
   const ox = fx * 0.6; // the face opening follows the head turn
   const oy = headY + R * 0.12;
-  const orx = R * 0.86;
-  const ory = R * 0.92;
+  const orx = R * 0.8;
+  const ory = R * 0.86;
   const opening = `M${ox - orx},${oy} A${orx},${ory} 0 1 0 ${ox + orx},${oy} A${orx},${ory} 0 1 0 ${ox - orx},${oy} Z`;
   const hairBack = (() => {
     if (hoodUp) return <path d={hoodOuter} fill={top} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />;
@@ -226,21 +227,21 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
       {/* dark lining just inside the opening */}
       <ellipse cx={ox} cy={oy} rx={orx} ry={ory} fill="none" stroke={topAcc} strokeWidth={R * 0.1} opacity={0.9} />
       {/* centre seam over the crown + a quilt line */}
-      <path d={`M${ox * 0.4},${oy - ory - R * 0.02} Q${ox * 0.2},${headY - R * 1.2} 0,${headY - R * 1.3}`} stroke={topAcc} strokeWidth={sw} fill="none" />
-      <path d={`M${-R * 1.25},${headY + R * 0.2} Q${-R * 1.1},${headY - R * 0.5} ${-R * 0.75},${headY - R * 0.98}`} stroke={topAcc} strokeWidth={sw * 0.8} fill="none" />
-      <path d={`M${R * 1.25},${headY + R * 0.2} Q${R * 1.1},${headY - R * 0.5} ${R * 0.75},${headY - R * 0.98}`} stroke={topAcc} strokeWidth={sw * 0.8} fill="none" />
+      <path d={`M${ox * 0.4},${oy - ory - R * 0.02} Q${ox * 0.2},${headY - R * 1.1} 0,${headY - R * 1.16}`} stroke={topAcc} strokeWidth={sw} fill="none" />
+      <path d={`M${-R * 1.1},${headY + R * 0.2} Q${-R * 0.98},${headY - R * 0.45} ${-R * 0.68},${headY - R * 0.9}`} stroke={topAcc} strokeWidth={sw * 0.8} fill="none" />
+      <path d={`M${R * 1.1},${headY + R * 0.2} Q${R * 0.98},${headY - R * 0.45} ${R * 0.68},${headY - R * 0.9}`} stroke={topAcc} strokeWidth={sw * 0.8} fill="none" />
       {/* fur trim: one soft cream band with a fluffy, uneven edge (reads as fur, not beads) */}
-      <ellipse cx={ox} cy={oy} rx={orx} ry={ory} fill="none" stroke={ink} strokeWidth={R * 0.24 + sw * 2} />
+      <ellipse cx={ox} cy={oy} rx={orx} ry={ory} fill="none" stroke={ink} strokeWidth={R * 0.2 + sw * 2} />
       {Array.from({length: 30}, (_, i) => {
         const a = (i / 30) * Math.PI * 2;
-        const r = R * (0.12 + 0.03 * Math.sin(i * 3.1));
-        return <circle key={`fo${i}`} cx={ox + Math.cos(a) * (orx + R * 0.06)} cy={oy + Math.sin(a) * (ory + R * 0.06)} r={r + sw * 0.8} fill={ink} />;
+        const r = R * (0.1 + 0.025 * Math.sin(i * 3.1));
+        return <circle key={`fo${i}`} cx={ox + Math.cos(a) * (orx + R * 0.04)} cy={oy + Math.sin(a) * (ory + R * 0.04)} r={r + sw * 0.8} fill={ink} />;
       })}
-      <ellipse cx={ox} cy={oy} rx={orx} ry={ory} fill="none" stroke="#EFE3CC" strokeWidth={R * 0.24} />
+      <ellipse cx={ox} cy={oy} rx={orx} ry={ory} fill="none" stroke="#EFE3CC" strokeWidth={R * 0.2} />
       {Array.from({length: 30}, (_, i) => {
         const a = (i / 30) * Math.PI * 2;
-        const r = R * (0.12 + 0.03 * Math.sin(i * 3.1));
-        return <circle key={`fi${i}`} cx={ox + Math.cos(a) * (orx + R * 0.06)} cy={oy + Math.sin(a) * (ory + R * 0.06)} r={r} fill="#EFE3CC" />;
+        const r = R * (0.1 + 0.025 * Math.sin(i * 3.1));
+        return <circle key={`fi${i}`} cx={ox + Math.cos(a) * (orx + R * 0.04)} cy={oy + Math.sin(a) * (ory + R * 0.04)} r={r} fill="#EFE3CC" />;
       })}
       {Array.from({length: 22}, (_, i) => {
         const a = (i / 22) * Math.PI * 2 + 0.1;
@@ -313,8 +314,12 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
     <g>
       {hoodUp ? (
         <g>
-          <path d={hoodOuter} fill={top} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />
-          <path d={`M0,${headY - R * 1.3} Q${R * 0.08},${headY} 0,${headY + R * 1.1}`} stroke={topAcc} strokeWidth={sw} fill="none" />
+          {/* from behind: the fur ruff peeks out at the cheeks, the dome hugs the skull and tucks into the collar */}
+          {[-1, 1].map((k) => (
+            <ellipse key={k} cx={k * R * 0.98} cy={headY + R * 0.18} rx={R * 0.16} ry={R * 0.42} fill="#EADFC8" stroke={ink} strokeWidth={sw * 0.7} />
+          ))}
+          <path d={`M${-R * 0.94},${headY + R * 0.78} Q${-R * 1.1},${headY - R * 0.2} ${-R * 0.7},${headY - R * 0.9} Q0,${headY - R * 1.28} ${R * 0.7},${headY - R * 0.9} Q${R * 1.1},${headY - R * 0.2} ${R * 0.94},${headY + R * 0.78} Q${R * 0.5},${headY + R * 1.06} 0,${headY + R * 1.06} Q${-R * 0.5},${headY + R * 1.06} ${-R * 0.94},${headY + R * 0.78} Z`} fill={top} stroke={ink} strokeWidth={sw} strokeLinejoin="round" />
+          <path d={`M0,${headY - R * 1.08} Q${R * 0.06},${headY} 0,${headY + R * 1.0}`} stroke={topAcc} strokeWidth={sw * 0.9} fill="none" />
         </g>
       ) : (
         <path d={`M${-R * 0.99},${headY + R * 0.2} Q${-R * 1.02},${headY - R * 1.08} 0,${headY - R * 1.06} Q${R * 1.02},${headY - R * 1.08} ${R * 0.99},${headY + R * 0.2} Q0,${headY + R * 0.55} ${-R * 0.99},${headY + R * 0.2} Z`} fill={d.hair === 'bald' ? d.skin : hc} stroke={ink} strokeWidth={sw * 0.9} />
@@ -390,10 +395,17 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
               )}
               {mouth}
               {hoodFront}
+              {s.breath > 0 && (
+                <defs>
+                  <filter id={`br${id}`} x="-100%" y="-100%" width="300%" height="300%">
+                    <feGaussianBlur stdDeviation={R * 0.07} />
+                  </filter>
+                </defs>
+              )}
               {s.breath > 0 &&
                 [0, 1, 2].map((k) => {
                   const ph = ((s.frame + k * 22) % 66) / 66;
-                  return <circle key={k} cx={fx + R * 0.3 + ph * R * 1.1} cy={mouthY - ph * R * 0.5} r={R * (0.1 + ph * 0.32)} fill="#EAF4FF" opacity={(1 - ph) * 0.7 * s.breath} />;
+                  return <circle key={k} cx={fx + R * 0.3 + ph * R * 1.1} cy={mouthY - ph * R * 0.5} r={R * (0.1 + ph * 0.32)} fill="#EAF4FF" opacity={(1 - ph) * 0.55 * s.breath} filter={`url(#br${id})`} />;
                 })}
             </g>
           )}

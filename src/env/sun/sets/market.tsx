@@ -1,36 +1,42 @@
 import React, {useMemo} from 'react';
 import {rand} from '../../../fx/sky';
-import {Glow, Grade, INK, registerSet, Vignette} from '../stage';
+import {Glow, Grade, INK, M, registerSet, Vignette} from '../stage';
 
 /**
  * The supermarket on Day 1: fluorescent strips still on, shelves half-stripped, signs, a trolley.
- * floor y = 940. v: grab · heater
+ * floor y = 940. v: grab · heater. Shelving units are real gondolas (1.9 m, shelves every 0.4 m, packs 15–30 cm),
+ * a trolley handle sits at 1.05 m and the heater box is 0.6 × 0.4 m.
  */
 const PRODUCTS = ['#C2464F', '#E9C46A', '#3E7CB1', '#3C8D6E', '#F4EFE6', '#E07A5F', '#8E6BBF', '#F2994A'];
 
-const Shelf: React.FC<{x: number; w: number; base: number; seed: number; stripped: number; label: string; col: string}> = ({x, w, base, seed, stripped, label, col}) => {
+/** A gondola shelving unit to real size: 1.9 m tall, shelves at 0.15/0.55/0.95/1.35 m, the aisle sign above it. */
+export const Shelf: React.FC<{x: number; w: number; base: number; seed: number; stripped: number; label: string; col: string; sc?: number}> = ({x, w, base, seed, stripped, label, col, sc = M(1)}) => {
+  const pitch = sc * 0.2;
   const items = useMemo(() => {
     const r = rand(seed);
-    return Array.from({length: 4}, (_, row) => Array.from({length: Math.floor(w / 46)}, () => ({there: r() > stripped, col: PRODUCTS[Math.floor(r() * PRODUCTS.length)], h: 40 + r() * 34, w: 30 + r() * 12, tipped: r() > 0.85})));
-  }, [seed, w, stripped]);
+    return Array.from({length: 4}, (_, row) => Array.from({length: Math.floor((w - sc * 0.1) / pitch)}, () => ({there: r() > stripped, col: PRODUCTS[Math.floor(r() * PRODUCTS.length)], h: sc * (0.15 + r() * 0.15), w: sc * (0.11 + r() * 0.05), tipped: r() > 0.85})));
+  }, [seed, w, stripped, sc, pitch]);
+  const lw = Math.max(2, sc * 0.02);
   return (
     <g>
-      <rect x={x} y={base - 560} width={w} height={560} fill="#D9DDE2" stroke={INK} strokeWidth={5} />
-      <rect x={x - 10} y={base - 640} width={w + 20} height={70} fill={col} stroke={INK} strokeWidth={5} />
-      <text x={x + w / 2} y={base - 592} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={34} fill="#FFFFFF" letterSpacing={4}>
+      <rect x={x} y={base - sc * 1.9} width={w} height={sc * 1.9} fill="#D9DDE2" stroke={INK} strokeWidth={lw * 1.4} />
+      <rect x={x - sc * 0.04} y={base - sc * 0.15} width={w + sc * 0.08} height={sc * 0.15} fill="#AEB4BC" stroke={INK} strokeWidth={lw} />
+      <path d={`M${x + w / 2},${base - sc * 1.9} L${x + w / 2},${base - sc * 2.15}`} stroke={INK} strokeWidth={lw} />
+      <rect x={x + w * 0.1} y={base - sc * 2.45} width={w * 0.8} height={sc * 0.3} rx={sc * 0.04} fill={col} stroke={INK} strokeWidth={lw * 1.2} />
+      <text x={x + w / 2} y={base - sc * 2.24} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={sc * 0.16} fill="#FFFFFF" letterSpacing={sc * 0.015}>
         {label}
       </text>
       {items.map((row, ri) => {
-        const sy = base - 440 + ri * 120;
+        const sy = base - sc * (1.35 - ri * 0.4);
         return (
           <g key={ri}>
             {row.map((it, k) =>
               it.there ? (
-                <rect key={k} x={x + 14 + k * 46} y={sy - it.h} width={it.w} height={it.h} rx={4} fill={it.col} stroke={INK} strokeWidth={2.5} transform={it.tipped ? `rotate(-80,${x + 14 + k * 46},${sy})` : undefined} />
+                <rect key={k} x={x + sc * 0.06 + k * pitch} y={sy - it.h} width={it.w} height={it.h} rx={sc * 0.02} fill={it.col} stroke={INK} strokeWidth={lw * 0.8} transform={it.tipped ? `rotate(-80,${x + sc * 0.06 + k * pitch},${sy})` : undefined} />
               ) : null,
             )}
-            <rect x={x} y={sy} width={w} height={14} fill="#AEB4BC" stroke={INK} strokeWidth={3} />
-            <rect x={x + 30} y={sy + 2} width={50} height={14} fill="#F2C94C" />
+            <rect x={x} y={sy} width={w} height={sc * 0.05} fill="#AEB4BC" stroke={INK} strokeWidth={lw * 0.8} />
+            <rect x={x + sc * 0.12} y={sy + sc * 0.01} width={sc * 0.18} height={sc * 0.05} fill="#F2C94C" />
           </g>
         );
       })}
@@ -45,9 +51,10 @@ registerSet('market', {
       node: (
         <g>
           <rect x={-900} y={-300} width={3800} height={1400} fill="#E8E4DA" />
+          <rect x={-900} y={830} width={3800} height={600} fill="#D2CCBF" />
           {/* far aisles */}
           {Array.from({length: 9}, (_, i) => (
-            <Shelf key={i} x={-700 + i * 420} w={340} base={820} seed={i + 40} stripped={0.6} label={['WATER', 'TINS', 'BREAD', 'RICE', 'PASTA', 'BATTERIES', 'CANDLES', 'PET', 'SOUP'][i]} col={['#3E7CB1', '#C2464F', '#E9C46A', '#3C8D6E', '#E07A5F', '#6D597A', '#F2994A', '#3E7CB1', '#C2464F'][i]} />
+            <Shelf key={i} x={-700 + i * 420} w={340} base={830} sc={M(0.55)} seed={i + 40} stripped={0.6} label={['WATER', 'TINS', 'BREAD', 'RICE', 'PASTA', 'BATTERIES', 'CANDLES', 'PET', 'SOUP'][i]} col={['#3E7CB1', '#C2464F', '#E9C46A', '#3C8D6E', '#E07A5F', '#6D597A', '#F2994A', '#3E7CB1', '#C2464F'][i]} />
           ))}
           <rect x={-900} y={-300} width={3800} height={1400} fill="#FFFFFF" opacity={0.25} />
         </g>
@@ -78,7 +85,7 @@ registerSet('market', {
           <rect x={620} y={950} width={40} height={30} rx={4} fill="#E9C46A" stroke={INK} strokeWidth={3} transform="rotate(20,640,965)" />
           <circle cx={1300} cy={975} r={18} fill="#C2464F" stroke={INK} strokeWidth={3} />
           {c.v === 'heater' && (
-            <g transform="translate(1000,880)">
+            <g transform="translate(1000,790) scale(0.6)">
               <rect x={-110} y={-90} width={220} height={130} rx={10} fill="#F4EFE6" stroke={INK} strokeWidth={5} transform={`rotate(${Math.sin(c.frame * 0.5) * 6})`} />
               <text x={0} y={-12} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={30} fill="#C2464F" transform={`rotate(${Math.sin(c.frame * 0.5) * 6})`}>
                 HEATER
@@ -103,7 +110,7 @@ registerSet('market', {
                 ))}
                 <rect x={60} y={-250} width={50} height={60} rx={4} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
                 <rect x={130} y={-240} width={60} height={50} rx={4} fill="#3E7CB1" stroke={INK} strokeWidth={3} />
-                <path d="M0,-200 L-40,-240" stroke="#8A8F9C" strokeWidth={8} />
+                <path d="M0,-200 L-34,-216" stroke="#8A8F9C" strokeWidth={8} />
                 <path d="M30,-60 L20,-20 M230,-60 L240,-20" stroke="#8A8F9C" strokeWidth={6} />
                 <circle cx={20} cy={-10} r={12} fill="#2A2A2A" />
                 <circle cx={240} cy={-10} r={12} fill="#2A2A2A" />

@@ -3,7 +3,7 @@ import {AbsoluteFill, Easing, interpolate} from 'remotion';
 import {Frost, Aurora} from '../../fx/cinema/atmos';
 import {Stars} from '../../fx/sky';
 import {fonts} from '../../theme';
-import {Glow, Grade, INK, registerSet, useSetCtx, Vignette} from './stage';
+import {Glow, Grade, INK, M, registerSet, useSetCtx, Vignette} from './stage';
 
 /**
  * Inserts: the objects the narration names (phone, watch, thermometer, pipe, radio, the frost sun, paw prints),
@@ -259,6 +259,40 @@ const DaySky: React.FC<{top: string; bottom: string}> = ({top, bottom}) => (
   </g>
 );
 
+/** A yellow school bus to real size (metres × sc): 11 m long, 3.2 m tall, bonnet at the front, folding door. Faces right; x = its front. */
+export const SchoolBus: React.FC<{x: number; base: number; sc: number}> = ({x, base, sc}) => {
+  const lw = Math.max(2, sc * 0.022) / sc;
+  return (
+    <g transform={`translate(${x},${base}) scale(${sc})`} strokeLinejoin="round">
+      <ellipse cx={-5.5} cy={0} rx={6} ry={0.12} fill="#000" opacity={0.3} />
+      <path d="M-11,-0.5 L-11,-3.0 Q-11,-3.2 -10.8,-3.2 L-1.8,-3.2 Q-1.5,-3.2 -1.45,-2.9 L-1.3,-1.75 L-0.25,-1.6 Q0,-1.55 0,-1.3 L0,-0.5 Z" fill="#F2C94C" stroke={INK} strokeWidth={lw} />
+      <path d="M-1.42,-2.85 L-1.32,-1.85 L-0.9,-1.8 L-1.0,-2.8 Z" fill="#BFE3FF" stroke={INK} strokeWidth={lw * 0.8} />
+      {/* folding door */}
+      <rect x={-2.35} y={-2.75} width={0.8} height={2.2} fill="#BFE3FF" stroke={INK} strokeWidth={lw} />
+      <path d="M-1.95,-2.75 L-1.95,-0.55 M-2.35,-1.65 L-1.55,-1.65" stroke={INK} strokeWidth={lw * 0.8} />
+      {Array.from({length: 8}, (_, i) => (
+        <rect key={i} x={-3.4 - i * 0.98} y={-2.75} width={0.85} height={0.75} rx={0.08} fill="#BFE3FF" stroke={INK} strokeWidth={lw * 0.8} />
+      ))}
+      <rect x={-11} y={-1.75} width={9.45} height={0.1} fill={INK} />
+      <rect x={-11} y={-1.25} width={11} height={0.1} fill={INK} />
+      <rect x={-11} y={-0.75} width={11} height={0.1} fill={INK} opacity={0.6} />
+      <text x={-6.4} y={-1.36} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={0.3} fill={INK} letterSpacing={0.05}>
+        SCHOOL BUS
+      </text>
+      <rect x={-0.1} y={-1.0} width={0.25} height={0.3} rx={0.05} fill="#2A2E3A" />
+      <ellipse cx={-0.05} cy={-1.35} rx={0.07} ry={0.12} fill="#FFF6D6" stroke={INK} strokeWidth={lw * 0.6} />
+      <rect x={-11.05} y={-2.9} width={0.12} height={0.35} fill="#C2464F" />
+      {[-1.0, -8.2].map((wx) => (
+        <g key={wx}>
+          <path d={`M${wx - 0.62},-0.5 A0.62,0.62 0 0 1 ${wx + 0.62},-0.5 Z`} fill="#141824" />
+          <circle cx={wx} cy={-0.5} r={0.5} fill="#1E2230" stroke={INK} strokeWidth={lw} />
+          <circle cx={wx} cy={-0.5} r={0.22} fill="#8A8F9C" />
+        </g>
+      ))}
+    </g>
+  );
+};
+
 registerSet('montage', {
   layers: (c) => {
     const f = c.frame;
@@ -327,8 +361,8 @@ registerSet('montage', {
           ),
         },
       ];
-    // bus
-    const busX = interpolate(c.t, [c.at('l0+1.3', 1.5), c.at('l0+1.3', 1.5) + 1.6], [1200, 2900], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.in(Easing.quad)});
+    // bus: the kid (depth 1.4) runs along the near pavement; the bus waits on the road just behind him, at full size
+    const busX = interpolate(c.t, [c.at('l0+1.3', 1.5), c.at('l0+1.3', 1.5) + 2.0], [1420, 3900], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.in(Easing.quad)});
     return [
       {depth: 0.2, node: <DaySky top="#6FC0F0" bottom="#E8F4FA" />},
       {
@@ -345,27 +379,21 @@ registerSet('montage', {
         depth: 1,
         node: (
           <g>
-            <rect x={-800} y={900} width={3600} height={60} fill="#B8B0A4" stroke={INK} strokeWidth={4} />
-            <rect x={-800} y={960} width={3600} height={500} fill="#5A5E6A" />
-            {/* bus stop sign */}
-            <path d="M380,900 L380,560" stroke="#2A3142" strokeWidth={12} />
-            <circle cx={380} cy={540} r={50} fill="#3C8D6E" stroke={INK} strokeWidth={5} />
-            <rect x={356} y={518} width={48} height={40} rx={6} fill="#FFFFFF" />
-            {/* the yellow school bus pulling away */}
-            <g transform={`translate(${busX},1000)`}>
-              <rect x={-420} y={-360} width={840} height={320} rx={40} fill="#F2C94C" stroke={INK} strokeWidth={6} />
-              {Array.from({length: 5}, (_, i) => (
-                <rect key={i} x={-380 + i * 150} y={-320} width={120} height={110} rx={10} fill="#BFE3FF" stroke={INK} strokeWidth={4} />
-              ))}
-              <rect x={-410} y={-180} width={820} height={14} fill={INK} />
-              <rect x={-420} y={-320} width={60} height={250} fill="#E2B43C" stroke={INK} strokeWidth={4} />
-              {[-260, 260].map((x) => (
-                <g key={x}>
-                  <circle cx={x} cy={-40} r={56} fill="#1E2230" stroke={INK} strokeWidth={5} />
-                  <circle cx={x} cy={-40} r={22} fill="#8A8F9C" />
-                </g>
-              ))}
-            </g>
+            <rect x={-800} y={820} width={3600} height={40} fill="#B8B0A4" stroke={INK} strokeWidth={4} />
+            <rect x={-800} y={860} width={3600} height={92} fill="#5A5E6A" />
+            <rect x={-800} y={950} width={3600} height={12} fill="#D8D2C6" stroke={INK} strokeWidth={3} />
+            <rect x={-800} y={962} width={3600} height={500} fill="#B8B0A4" />
+            {Array.from({length: 30}, (_, i) => (
+              <path key={i} d={`M${-800 + i * 140},962 L${-900 + i * 170},1460`} stroke="#A49C90" strokeWidth={3} />
+            ))}
+            {/* the yellow school bus (11 m × 3.2 m), pulling away */}
+            <SchoolBus x={busX} base={935} sc={M(1, 1.33)} />
+            {/* bus stop sign: a 2.4 m pole on the kerb */}
+            <path d={`M380,956 L380,${956 - M(2.4, 1.4)}`} stroke="#2A3142" strokeWidth={12} />
+            <circle cx={380} cy={956 - M(2.4, 1.4)} r={M(0.25, 1.4)} fill="#3C8D6E" stroke={INK} strokeWidth={5} />
+            <text x={380} y={956 - M(2.4, 1.4) + 14} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={40} fill="#FFFFFF">
+              BUS
+            </text>
           </g>
         ),
       },

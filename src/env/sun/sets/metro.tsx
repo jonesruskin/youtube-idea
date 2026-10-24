@@ -1,13 +1,49 @@
 import React from 'react';
-import {Carriage, Flame, StringLights, Tent} from '../../sun01/parts';
-import {Glow, Grade, INK, registerSet, Vignette, type SetCtx} from '../stage';
+import {Flame, StringLights, Tent} from '../../sun01/parts';
+import {Glow, Grade, INK, M, registerSet, Vignette, type SetCtx} from '../stage';
 
 /**
  * The metro station that becomes a town (Day 8 → 365). A vaulted tiled hall, platform at floor y = 900,
  * tracks below the platform edge in front.
  *  v: stairs · city · farm · sunrise · school · tent · workshop · dark · radios
  * Lamp state: `sunrise` (time the big lamps warm up), `flicker` (time the power dies), `dark`.
+ * Real sizes (1 m = M(1) on the cast's plane): carriages stand 3 m above the platform on the far track, tents
+ * 1.3 m, crates 0.6 m, the stove 0.6 m with a 3 m flue, workbench 0.9 m, carriage windows 0.9–2.0 m.
  */
+
+/** A metro carriage turned into a home, to real size (metres × sc): 3 m tall above the platform, 1 × 0.85 m
+ * windows with curtains, double doors, a chimney pipe through the roof. Runs `len` metres from x. */
+export const TrainCar: React.FC<{x: number; base: number; sc: number; len: number; lit: number; color: string; pipe?: number}> = ({x, base, sc, len, lit, color, pipe}) => {
+  const lw = Math.max(1.5, sc * 0.022) / sc;
+  const bays = Math.floor(len / 2.2);
+  return (
+    <g transform={`translate(${x},${base}) scale(${sc})`}>
+      <rect x={0} y={-0.12} width={len} height={0.12} fill="#14121A" />
+      <rect x={0} y={-3.0} width={len} height={2.88} rx={0.25} fill={color} stroke={INK} strokeWidth={lw} />
+      <rect x={0} y={-3.0} width={len} height={0.28} rx={0.14} fill="#00000022" />
+      <rect x={0} y={-0.7} width={len} height={0.1} fill="#C8742E" opacity={0.85} />
+      {Array.from({length: bays}, (_, i) => {
+        const bx = 0.4 + i * 2.2;
+        const door = i % 3 === 1;
+        return door ? (
+          <g key={i}>
+            <rect x={bx} y={-2.05} width={1.3} height={1.93} fill="#6E7A8E" stroke={INK} strokeWidth={lw * 0.8} />
+            <path d={`M${bx + 0.65},-2.05 L${bx + 0.65},-0.12`} stroke={INK} strokeWidth={lw * 0.8} />
+            <rect x={bx + 0.12} y={-1.85} width={0.4} height={0.75} rx={0.05} fill={lit > 0 ? '#FFD08A' : '#2A2433'} opacity={lit > 0 ? 0.5 + lit * 0.4 : 1} />
+            <rect x={bx + 0.78} y={-1.85} width={0.4} height={0.75} rx={0.05} fill={lit > 0 ? '#FFD08A' : '#2A2433'} opacity={lit > 0 ? 0.5 + lit * 0.4 : 1} />
+          </g>
+        ) : (
+          <g key={i}>
+            <rect x={bx} y={-2.0} width={1.6} height={0.85} rx={0.12} fill={lit > 0 ? '#FFD08A' : '#2A2433'} opacity={lit > 0 ? 0.5 + lit * 0.5 : 1} stroke={INK} strokeWidth={lw * 0.8} />
+            <path d={`M${bx + 0.06},-1.96 q0.3,0.38 0,0.78`} stroke={['#C2464F', '#3C8D6E', '#D9A441', '#5E8FC9'][i % 4]} strokeWidth={0.14} fill="none" opacity={0.85} />
+            <path d={`M${bx + 1.54},-1.96 q-0.3,0.38 0,0.78`} stroke={['#C2464F', '#3C8D6E', '#D9A441', '#5E8FC9'][(i + 1) % 4]} strokeWidth={0.14} fill="none" opacity={0.85} />
+          </g>
+        );
+      })}
+      {pipe !== undefined && <path d={`M${pipe},-3.0 L${pipe},-3.7 L${pipe + 0.3},-3.7`} stroke="#5A5E6A" strokeWidth={0.14} fill="none" />}
+    </g>
+  );
+};
 const TILE = '#D8CFC0';
 const TILE_SH = '#BDB3A2';
 
@@ -69,28 +105,30 @@ const Platform: React.FC = () => (
 
 const Town: React.FC<{c: SetCtx; lit: number}> = ({c, lit}) => (
   <g>
-    <Carriage x={-500} y={890} w={900} lit={lit} color="#8C9AAE" />
-    <Carriage x={1500} y={890} w={900} lit={lit} color="#9A8A7A" />
-    <Tent x={520} y={900} s={1.2} color="#C2464F" lit={lit} />
-    <Tent x={1280} y={900} s={1.1} color="#3C8D6E" lit={lit} />
-    <Tent x={1880} y={900} s={0.9} color="#E9C46A" lit={lit} />
+    {/* carriages parked on the far track, a few metres behind the cast (k = 0.8) */}
+    <TrainCar x={-2600} base={860} sc={M(0.8)} len={18} lit={lit} color="#8C9AAE" pipe={16.4} />
+    <TrainCar x={1560} base={860} sc={M(0.8)} len={18} lit={lit} color="#9A8A7A" pipe={1.2} />
+    {/* tents: 1.3 m tall, 2.1 m wide */}
+    <Tent x={520} y={898} s={2.0} color="#C2464F" lit={lit} />
+    <Tent x={1280} y={898} s={1.9} color="#3C8D6E" lit={lit} />
+    <Tent x={1880} y={898} s={1.8} color="#E9C46A" lit={lit} />
     {/* laundry line */}
     <path d="M400,560 Q760,640 1100,560" stroke="#2A2230" strokeWidth={3} fill="none" />
     {['#F4EFE6', '#3E7CB1', '#E07A5F', '#F2C94C'].map((col, k) => (
-      <rect key={k} x={480 + k * 150} y={580 + Math.sin(k) * 10} width={60} height={80 + (k % 2) * 30} fill={col} stroke={INK} strokeWidth={3} transform={`rotate(${Math.sin(c.frame * 0.03 + k) * 3},${510 + k * 150},590)`} />
+      <rect key={k} x={470 + k * 150} y={580 + Math.sin(k) * 10} width={80} height={100 + (k % 2) * 40} fill={col} stroke={INK} strokeWidth={3} transform={`rotate(${Math.sin(c.frame * 0.03 + k) * 3},${510 + k * 150},590)`} />
     ))}
     <StringLights x1={-200} y1={300} x2={900} y2={330} sag={50} on={lit} frame={c.frame} n={16} />
     <StringLights x1={1000} y1={330} x2={2100} y2={300} sag={50} on={lit} frame={c.frame} n={16} />
     {/* a stove with a chimney pipe, a bucket, crates */}
     <g transform="translate(1100,900)">
-      <rect x={-50} y={-90} width={100} height={90} rx={8} fill="#3A3442" stroke={INK} strokeWidth={4} />
-      <path d="M20,-90 L20,-360" stroke="#5A5E6A" strokeWidth={18} />
-      <rect x={-30} y={-60} width={60} height={34} rx={4} fill="#FF8A3A" opacity={0.5 + 0.3 * lit} />
+      <rect x={-M(0.3)} y={-M(0.6)} width={M(0.6)} height={M(0.6)} rx={8} fill="#3A3442" stroke={INK} strokeWidth={4} />
+      <path d={`M${M(0.1)},${-M(0.6)} L${M(0.1)},${-M(3.0)}`} stroke="#5A5E6A" strokeWidth={22} />
+      <rect x={-M(0.2)} y={-M(0.42)} width={M(0.4)} height={M(0.2)} rx={4} fill="#FF8A3A" opacity={0.5 + 0.3 * lit} />
     </g>
-    {[200, 1700].map((x) => (
+    {[180, 1690].map((x) => (
       <g key={x}>
-        <rect x={x} y={830} width={90} height={70} fill="#A86E42" stroke={INK} strokeWidth={4} />
-        <path d={`M${x},865 L${x + 90},865`} stroke="#7A4E30" strokeWidth={4} />
+        <rect x={x} y={900 - M(0.42)} width={M(0.6)} height={M(0.42)} fill="#A86E42" stroke={INK} strokeWidth={4} />
+        <path d={`M${x},${900 - M(0.21)} L${x + M(0.6)},${900 - M(0.21)}`} stroke="#7A4E30" strokeWidth={4} />
       </g>
     ))}
   </g>
@@ -118,12 +156,16 @@ const School: React.FC<{c: SetCtx}> = ({c}) => (
   <g>
     {/* inside a parked carriage: windows, grab poles, a chalkboard full of suns */}
     <rect x={-900} y={-300} width={3800} height={1300} fill="#C8CEC4" />
-    {Array.from({length: 6}, (_, i) => (
-      <g key={i}>
-        <rect x={-700 + i * 520} y={120} width={360} height={260} rx={30} fill="#141A30" stroke={INK} strokeWidth={5} />
-        <path d={`M${-700 + i * 520 + 20},140 L${-700 + i * 520 + 340},360`} stroke="#2A3352" strokeWidth={30} opacity={0.6} />
+    {/* the carriage ceiling (2.2 m) with its strip light */}
+    <path d={`M-900,-300 L2900,-300 L2900,${900 - M(2.2)} Q960,${900 - M(2.45)} -900,${900 - M(2.2)} Z`} fill="#AEB6AA" />
+    <rect x={-900} y={900 - M(2.2) - 14} width={3800} height={12} fill="#FFF6DA" opacity={0.9} />
+    {[-560, -40, 900, 1420, 1940].map((x) => (
+      <g key={x}>
+        <rect x={x} y={900 - M(1.95)} width={360} height={M(1.05)} rx={26} fill="#141A30" stroke={INK} strokeWidth={5} />
+        <path d={`M${x + 20},${900 - M(1.85)} L${x + 340},${900 - M(1.0)}`} stroke="#2A3352" strokeWidth={30} opacity={0.6} />
       </g>
     ))}
+    <g transform="translate(580,725) scale(0.66) translate(-580,-640)">
     <rect x={200} y={180} width={760} height={460} rx={10} fill="#2F4A3A" stroke="#7A4E30" strokeWidth={18} />
     {[
       [330, 300, 50],
@@ -139,6 +181,7 @@ const School: React.FC<{c: SetCtx}> = ({c}) => (
         ))}
       </g>
     ))}
+    </g>
     {[1100, 1500].map((x) => (
       <path key={x} d={`M${x},-300 L${x},900`} stroke="#B8BEC6" strokeWidth={14} />
     ))}
@@ -164,14 +207,14 @@ const Workshop: React.FC<{c: SetCtx}> = ({c}) => (
         {i % 3 === 2 && <path d={`M${x},300 L${x},460`} stroke="#E9C46A" strokeWidth={14} />}
       </g>
     ))}
-    <rect x={420} y={760} width={1100} height={40} fill="#7A4E30" stroke={INK} strokeWidth={5} />
-    <path d="M460,800 L460,900 M1480,800 L1480,900" stroke={INK} strokeWidth={14} />
+    <rect x={420} y={715} width={1100} height={36} fill="#7A4E30" stroke={INK} strokeWidth={5} />
+    <path d="M460,751 L460,900 M1480,751 L1480,900" stroke={INK} strokeWidth={14} />
     {/* parts on the bench */}
-    <rect x={560} y={730} width={90} height={30} rx={4} fill="#3E7CB1" stroke={INK} strokeWidth={3} />
-    <circle cx={1300} cy={740} r={20} fill="#C9CED6" stroke={INK} strokeWidth={3} />
-    <path d="M1360,760 l40,-20 l30,10" stroke="#C2464F" strokeWidth={4} fill="none" />
-    <path d="M1460,760 L1400,520 L1260,540" stroke="#5A5E6A" strokeWidth={10} fill="none" />
-    <ellipse cx={1240} cy={560} rx={70} ry={22} fill="#5A5E6A" stroke={INK} strokeWidth={4} />
+    <rect x={560} y={689} width={90} height={26} rx={4} fill="#3E7CB1" stroke={INK} strokeWidth={3} />
+    <circle cx={1300} cy={699} r={16} fill="#C9CED6" stroke={INK} strokeWidth={3} />
+    <path d="M1360,715 l40,-20 l30,10" stroke="#C2464F" strokeWidth={4} fill="none" />
+    <path d="M1460,715 L1400,500 L1260,520" stroke="#5A5E6A" strokeWidth={10} fill="none" />
+    <ellipse cx={1240} cy={540} rx={60} ry={20} fill="#5A5E6A" stroke={INK} strokeWidth={4} />
     <rect x={-900} y={900} width={3800} height={600} fill="#4A4552" />
   </g>
 );
@@ -212,7 +255,7 @@ registerSet('metro', {
     const sunriseAt = c.p.sunrise !== undefined ? c.at(c.p.sunrise, 0) : -1;
     const flickerAt = c.p.flicker !== undefined ? c.at(c.p.flicker, 0) : -1;
     if (v === 'farm') return <Glow x={960} y={500} r={1000} color="#FF5FD2" opacity={0.3} />;
-    if (v === 'workshop') return <Glow x={1240} y={640} r={420} color="#FFF1C8" opacity={0.45} />;
+    if (v === 'workshop') return <Glow x={1240} y={620} r={420} color="#FFF1C8" opacity={0.45} />;
     if (v === 'school') return <Glow x={600} y={300} r={800} color="#FFE9C0" opacity={0.3} />;
     if (v === 'dark' || (flickerAt >= 0 && c.t > flickerAt + 0.9))
       return (

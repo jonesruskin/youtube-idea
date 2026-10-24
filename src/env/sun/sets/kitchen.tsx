@@ -1,11 +1,12 @@
 import React from 'react';
 import {CityBlocks, NightSky} from '../../sun01/parts';
-import {Glow, Grade, INK, registerSet, Vignette, type SetCtx} from '../stage';
+import {Glow, Grade, INK, M, registerSet, Vignette, type SetCtx} from '../stage';
 import {Stars} from '../../../fx/sky';
 
 /**
  * The family kitchen, 6:51 a.m. on a summer morning, and the same room one second later.
- * Layout (floor y = 930): counter + window left (x 80–800), table right (x 900–1420, top y 800), fridge (x 1520–1760).
+ * Layout (floor y = 930, 1 m = M(1) ≈ 206 px): worktop 0.9 m (x −300–680), window sill 1.4 m, wall cabinets
+ * 1.45–2.2 m, table 0.74 m (x 900–1420), fridge-freezer 1.85 m × 0.8 m (x 1560–1725).
  */
 const WALL = '#F3D7AE';
 const WALL_SH = '#E2BE8E';
@@ -79,16 +80,19 @@ const Room: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
     <g>
       {/* wall + tiles */}
       <rect x={-300} y={-200} width={2520} height={1130} fill={WALL} />
-      <rect x={-300} y={560} width={980} height={140} fill={TILE} />
-      {Array.from({length: 18}, (_, i) => (
-        <path key={i} d={`M${-300 + i * 56},560 L${-300 + i * 56},700`} stroke={WALL_SH} strokeWidth={2} />
-      ))}
-      <path d="M-300,630 L680,630" stroke={WALL_SH} strokeWidth={2} />
       {Array.from({length: 46}, (_, i) => (
-        <rect key={i} x={-300 + i * 56} y={-200} width={22} height={760} fill={WALL_SH} opacity={0.22} />
+        <rect key={i} x={-300 + i * 56} y={-200} width={22} height={1130} fill={WALL_SH} opacity={0.22} />
+      ))}
+      <rect x={-300} y={631} width={980} height={114} fill={TILE} />
+      {Array.from({length: 33}, (_, i) => (
+        <path key={i} d={`M${-300 + i * 30},631 L${-300 + i * 30},745`} stroke={WALL_SH} strokeWidth={2} />
+      ))}
+      {[661, 691, 721].map((y) => (
+        <path key={y} d={`M-300,${y} L680,${y}`} stroke={WALL_SH} strokeWidth={2} />
       ))}
       <rect x={-300} y={-200} width={2520} height={60} fill={WALL_SH} opacity={0.6} />
       {/* open shelf with jars */}
+      <g transform="translate(830,600) scale(0.62) translate(-800,-420)">
       <rect x={800} y={420} width={220} height={14} rx={4} fill="#A86E42" stroke={INK} strokeWidth={3.5} />
       {[
         [830, 64, '#E3A15A'],
@@ -102,10 +106,11 @@ const Room: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
           <rect x={(x as number) - 20} y={420 - (h as number) - 8} width={40} height={10} rx={3} fill="#5E8C7A" stroke={INK} strokeWidth={2.5} />
         </g>
       ))}
+      </g>
       {/* utensil rail */}
-      <path d="M-120,500 L240,500" stroke="#8A8F9C" strokeWidth={6} />
-      {[-90, -40, 10, 60, 110, 160, 210].map((x, i) => (
-        <g key={x} transform={`translate(${x},500) rotate(${Math.sin(c.frame * 0.02 + i) * 2})`}>
+      <path d="M-240,646 L160,646" stroke="#8A8F9C" strokeWidth={6} />
+      {[-210, -160, -110, -60, -10, 40, 90].map((x, i) => (
+        <g key={x} transform={`translate(${x},646) scale(0.8) rotate(${Math.sin(c.frame * 0.02 + i) * 2})`}>
           <path d="M0,0 L0,40" stroke={INK} strokeWidth={4} />
           {i % 3 === 0 && <ellipse cx={0} cy={52} rx={12} ry={16} fill="#B8BEC6" stroke={INK} strokeWidth={3} />}
           {i % 3 === 1 && <path d="M-10,40 L-10,66 M0,40 L0,66 M10,40 L10,66" stroke={INK} strokeWidth={3} />}
@@ -113,7 +118,7 @@ const Room: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
         </g>
       ))}
       {/* calendar */}
-      <g transform="translate(1440,220) rotate(2)">
+      <g transform="translate(1440,430) scale(0.7) rotate(2)">
         <rect x={-50} y={-70} width={100} height={130} fill="#FFFDF6" stroke={INK} strokeWidth={3.5} />
         <rect x={-50} y={-70} width={100} height={36} fill="#D9443A" stroke={INK} strokeWidth={3.5} />
         {Array.from({length: 20}, (_, k) => (
@@ -121,17 +126,20 @@ const Room: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
         ))}
       </g>
       {/* upper cabinets */}
-      {[-200, 40, 800].map((x) => (
+      {[-280, -40].map((x) => (
         <g key={x}>
-          <rect x={x} y={60} width={220} height={190} rx={8} fill={CAB} stroke={INK} strokeWidth={4} />
-          <path d={`M${x + 110},60 L${x + 110},250`} stroke={INK} strokeWidth={3} />
-          <circle cx={x + 96} cy={220} r={5} fill="#E8C27A" />
-          <circle cx={x + 124} cy={220} r={5} fill="#E8C27A" />
+          <rect x={x} y={478} width={220} height={153} rx={6} fill={CAB} stroke={INK} strokeWidth={4} />
+          <path d={`M${x + 110},478 L${x + 110},631`} stroke={INK} strokeWidth={3} />
+          <circle cx={x + 98} cy={612} r={5} fill="#E8C27A" />
+          <circle cx={x + 122} cy={612} r={5} fill="#E8C27A" />
         </g>
       ))}
-      <Window c={c} dark={dark} />
+      {/* the window: sill at 1.4 m, so you look out of it and Mira looks up at it */}
+      <g transform="translate(0,100)">
+        <Window c={c} dark={dark} />
+      </g>
       {/* wall clock: 6:51 */}
-      <g transform="translate(1110,180)">
+      <g transform="translate(1100,380) scale(0.66)">
         <circle r={62} fill="#F8F1E4" stroke={INK} strokeWidth={5} />
         {Array.from({length: 12}, (_, i) => (
           <path key={i} d={`M0,-50 L0,-42`} stroke={INK} strokeWidth={3} transform={`rotate(${i * 30})`} />
@@ -141,19 +149,19 @@ const Room: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
         <circle r={5} fill="#D9443A" />
       </g>
       {/* hanging lamp */}
-      <path d="M1180,-200 L1180,330" stroke={INK} strokeWidth={3} />
-      <path d="M1110,390 Q1180,300 1250,390 Z" fill="#D9443A" stroke={INK} strokeWidth={4} />
+      <path d="M1180,-200 L1180,470" stroke={INK} strokeWidth={3} />
+      <path d="M1130,515 Q1180,450 1230,515 Z" fill="#D9443A" stroke={INK} strokeWidth={4} />
       {/* Mira's drawings on the fridge */}
-      <rect x={1520} y={300} width={240} height={630} rx={18} fill="#EDEFF1" stroke={INK} strokeWidth={5} />
-      <path d="M1520,480 L1760,480" stroke={INK} strokeWidth={4} />
-      <rect x={1532} y={420} width={10} height={50} rx={4} fill="#B8BEC6" />
-      <rect x={1532} y={500} width={10} height={80} rx={4} fill="#B8BEC6" />
+      <rect x={1560} y={930 - M(1.85)} width={M(0.8)} height={M(1.85)} rx={12} fill="#EDEFF1" stroke={INK} strokeWidth={5} />
+      <path d={`M1560,${930 - M(1.25)} L${1560 + M(0.8)},${930 - M(1.25)}`} stroke={INK} strokeWidth={4} />
+      <rect x={1572} y={930 - M(1.25) - 50} width={10} height={40} rx={4} fill="#B8BEC6" />
+      <rect x={1572} y={930 - M(1.25) + 14} width={10} height={70} rx={4} fill="#B8BEC6" />
       {[
-        [1590, 340, -6],
-        [1680, 540, 5],
-        [1600, 620, -3],
+        [1625, 610, -6],
+        [1690, 700, 5],
+        [1630, 790, -3],
       ].map(([x, y, r], i) => (
-        <g key={i} transform={`translate(${x},${y}) rotate(${r})`}>
+        <g key={i} transform={`translate(${x},${y}) scale(0.72) rotate(${r})`}>
           <rect x={-40} y={-34} width={80} height={68} fill="#FFFDF6" stroke={INK} strokeWidth={2.5} />
           <circle cx={0} cy={-2} r={14} fill="#FFC93C" stroke="#E59A1F" strokeWidth={3} />
           {Array.from({length: 8}, (_, k) => (
@@ -163,28 +171,29 @@ const Room: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
         </g>
       ))}
       {/* counter */}
-      <rect x={-300} y={700} width={980} height={40} fill="#E9E1D2" stroke={INK} strokeWidth={4} />
-      <rect x={-300} y={740} width={980} height={190} fill={CAB} stroke={INK} strokeWidth={4} />
+      <rect x={-300} y={741} width={980} height={18} fill="#E9E1D2" stroke={INK} strokeWidth={4} />
+      <rect x={-300} y={759} width={980} height={171} fill={CAB} stroke={INK} strokeWidth={4} />
       {[-180, 40, 260, 480].map((x) => (
         <g key={x}>
-          <rect x={x} y={760} width={190} height={150} rx={6} fill={CAB_D} stroke={INK} strokeWidth={3} />
-          <rect x={x + 80} y={772} width={30} height={8} rx={4} fill="#E8C27A" />
+          <rect x={x} y={772} width={190} height={130} rx={6} fill={CAB_D} stroke={INK} strokeWidth={3} />
+          <rect x={x + 80} y={782} width={30} height={8} rx={4} fill="#E8C27A" />
         </g>
       ))}
+      <rect x={-300} y={906} width={980} height={24} fill="#2E3A36" />
       {/* kettle + toaster on the counter */}
-      <g transform="translate(120,700)">
+      <g transform="translate(120,741) scale(0.72)">
         <path d="M-40,0 L-34,-70 Q0,-92 34,-70 L40,0 Z" fill="#D9443A" stroke={INK} strokeWidth={4} />
         <path d="M34,-56 Q64,-50 54,-20" stroke={INK} strokeWidth={5} fill="none" />
         <rect x={-10} y={-96} width={20} height={10} rx={4} fill={INK} />
         {!dark && <circle cx={-20} cy={-100 - ((c.frame * 1.2) % 40)} r={8 + ((c.frame * 0.3) % 10)} fill="#FFFFFF" opacity={0.4 * (1 - ((c.frame * 1.2) % 40) / 40)} />}
       </g>
-      <g transform="translate(340,700)">
+      <g transform="translate(340,741) scale(0.72)">
         <rect x={-56} y={-62} width={112} height={62} rx={10} fill="#8E5E3A" stroke={INK} strokeWidth={4} />
         <circle cx={-24} cy={-31} r={18} fill="#3A2A22" stroke={INK} strokeWidth={3} />
         <rect x={6} y={-48} width={38} height={14} rx={3} fill="#FFD08A" stroke={INK} strokeWidth={2.5} />
         <path d="M30,-62 L60,-110" stroke={INK} strokeWidth={4} />
       </g>
-      <g transform="translate(560,700)">
+      <g transform="translate(560,741) scale(0.72)">
         <rect x={-60} y={-60} width={120} height={60} rx={14} fill="#C9CED6" stroke={INK} strokeWidth={4} />
         <path d="M-34,-60 L-34,-70 M34,-60 L34,-70" stroke={INK} strokeWidth={6} />
       </g>
@@ -214,9 +223,10 @@ const Table: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
     <g>
       {/* table: in front of Mira (she sits behind it) and above Biscuit (he lurks underneath) */}
       <g>
-        <rect x={900} y={790} width={520} height={26} rx={6} fill="#C98E5E" stroke={INK} strokeWidth={4} />
-        <path d="M930,816 L930,930 M1390,816 L1390,930" stroke={INK} strokeWidth={14} />
-        <path d="M930,816 L930,930 M1390,816 L1390,930" stroke="#A86E42" strokeWidth={8} />
+        <rect x={900} y={778} width={520} height={24} rx={6} fill="#C98E5E" stroke={INK} strokeWidth={4} />
+        <path d="M930,802 L930,930 M1390,802 L1390,930" stroke={INK} strokeWidth={14} />
+        <path d="M930,802 L930,930 M1390,802 L1390,930" stroke="#A86E42" strokeWidth={8} />
+        <g transform="translate(0,-12)">
         {/* breakfast */}
         <ellipse cx={1010} cy={788} rx={56} ry={12} fill="#F4EFE6" stroke={INK} strokeWidth={3.5} />
         {toastOnPlate && (
@@ -240,6 +250,7 @@ const Table: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
           <path d="M-60,-6 L56,-10 L64,4 L-54,8 Z" fill="#FFFDF6" stroke={INK} strokeWidth={2.5} />
           <ellipse cx={0} cy={-1} rx={18} ry={4} fill="#FFC93C" />
         </g>
+        </g>
       </g>
     </g>
   );
@@ -258,7 +269,7 @@ registerSet('kitchen', {
     const dark = c.v === 'dark' && !(c.p.snap && c.t < 0.1);
     return dark ? (
       <g>
-        <Glow x={520} y={380} r={520} color="#6FA8FF" opacity={0.28} />
+        <Glow x={520} y={480} r={520} color="#6FA8FF" opacity={0.28} />
       </g>
     ) : (
       <g>

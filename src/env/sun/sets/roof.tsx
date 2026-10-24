@@ -9,12 +9,14 @@ import {Drifts, Sky} from './outdoor';
  * roof   — the flat roof of your building: water tank, vents, aerials, Ito's brass telescope; the city below,
  *          a huge sky above (the subject of every roof shot). floor y = 900. v: night | cold | aurora
  * harbor — the old harbour on Day 5: boats locked in new ice, cranes, a dark lighthouse. floor y = 940.
+ * Real sizes: telescope mount 1.15 m on its tripod (1.2 m tube), deckchair seat 0.35 m, bollards 0.55 m,
+ * fishing boats 8 m with 2.6 m wheelhouses, harbour cranes ~17 m, lighthouse ~17 m.
  */
 const Telescope: React.FC<{x: number; base: number; up?: number}> = ({x, base, up = 0}) => (
   <g transform={`translate(${x},${base})`}>
     {/* tripod */}
-    <path d="M0,-150 L-70,0 M0,-150 L70,0 M0,-150 L0,0" stroke="#3A3442" strokeWidth={9} strokeLinecap="round" />
-    <path d="M0,-150 L-70,0 M0,-150 L70,0 M0,-150 L0,0" stroke={INK} strokeWidth={3} opacity={0.5} />
+    <path d="M0,-150 L-90,85 M0,-150 L90,85 M0,-150 L0,85" stroke="#3A3442" strokeWidth={9} strokeLinecap="round" />
+    <path d="M0,-150 L-90,85 M0,-150 L90,85 M0,-150 L0,85" stroke={INK} strokeWidth={3} opacity={0.5} />
     <circle cx={0} cy={-152} r={14} fill="#3A3442" stroke={INK} strokeWidth={4} />
     <g transform={`rotate(${-38 - up * 20},0,-152)`}>
       <rect x={-120} y={-178} width={250} height={52} rx={10} fill="#C9963A" stroke={INK} strokeWidth={5} />
@@ -60,7 +62,7 @@ const RoofDeck: React.FC<{c: SetCtx; snow: number}> = ({c, snow}) => (
         <path key={i} d={`M${-800 + i * 130},900 L${-1000 + i * 160},1500`} stroke="#3A3442" strokeWidth={3} />
       ))}
     {/* string of lights Ito put up years ago, and a deckchair */}
-    <g transform="translate(560,900)">
+    <g transform="translate(560,900) scale(1.4)">
       <path d="M-50,0 L-20,-70 L50,-70 M-40,-40 L40,-40 L60,0" stroke="#C2464F" strokeWidth={8} fill="none" />
       <path d="M-20,-70 L-40,-150" stroke="#C2464F" strokeWidth={8} />
       <path d="M-24,-70 L-44,-148 L20,-140 L40,-66 Z" fill="#F2C94C" opacity={0.85} />
@@ -108,7 +110,7 @@ registerSet('roof', {
         node: (
           <g>
             <RoofDeck c={c} snow={snow} />
-            <Telescope x={1310} base={900} up={c.p.telescope === 'setup' ? Math.min(1, c.t / 2) : 0.6} />
+            <Telescope x={1310} base={815} up={c.p.telescope === 'setup' ? Math.min(1, c.t / 2) : 0.6} />
           </g>
         ),
       },
@@ -155,12 +157,12 @@ registerSet('harbor', {
             {/* far shore: cranes and a dark lighthouse */}
             <rect x={-900} y={700} width={3800} height={200} fill="#151B33" />
             {[200, 520, 1500].map((x) => (
-              <g key={x} transform={`translate(${x},700)`}>
-                <path d="M0,0 L0,-300 L240,-300 M0,-260 L200,-300 M40,-300 L40,-340" stroke="#232B4C" strokeWidth={14} fill="none" />
+              <g key={x} transform={`translate(${x},700) scale(1.8)`}>
+                <path d="M0,0 L0,-300 L240,-300 M0,-260 L200,-300 M40,-300 L40,-340" stroke="#232B4C" strokeWidth={9} fill="none" />
                 <path d="M120,-300 L120,-200" stroke="#232B4C" strokeWidth={4} />
               </g>
             ))}
-            <g transform="translate(1900,700)">
+            <g transform="translate(1900,700) scale(1.6)">
               <path d="M-40,0 L-26,-260 L26,-260 L40,0 Z" fill="#2A3352" stroke={INK} strokeWidth={4} />
               <rect x={-34} y={-300} width={68} height={40} fill="#1A2040" stroke={INK} strokeWidth={4} />
               <path d="M-44,-300 L0,-340 L44,-300 Z" fill="#2A3352" />
@@ -177,9 +179,9 @@ registerSet('harbor', {
             {Array.from({length: 40}, (_, i) => (
               <path key={i} d={`M${-900 + rr() * 3800},${770 + rr() * 300} l${80 + rr() * 200},${(rr() - 0.5) * 40}`} stroke="#C9D8EC" strokeWidth={3} opacity={0.8} />
             ))}
-            <Boat x={-100} y={800} col="#C2464F" s={0.8} tilt={-3} />
-            <Boat x={1250} y={790} col="#3E7CB1" s={0.7} tilt={4} />
-            <Boat x={2050} y={810} col="#E9C46A" s={0.8} tilt={-2} />
+            <Boat x={-160} y={830} col="#C2464F" s={1.9} tilt={-3} />
+            <Boat x={1280} y={815} col="#3E7CB1" s={1.6} tilt={4} />
+            <Boat x={2150} y={840} col="#E9C46A" s={1.9} tilt={-2} />
           </g>
         ),
       },
@@ -201,7 +203,7 @@ registerSet('harbor', {
             )}
             {/* bollards + mooring rope on the quay edge */}
             {[320, 1500].map((x) => (
-              <g key={x} transform={`translate(${x},940)`}>
+              <g key={x} transform={`translate(${x},940) scale(1.8)`}>
                 <path d="M-26,0 L-26,-60 Q0,-76 26,-60 L26,0 Z" fill="#2A3142" stroke={INK} strokeWidth={4} />
                 <ellipse cx={0} cy={-62} rx={30} ry={10} fill="#EEF4FB" />
                 <path d="M26,-30 Q200,40 400,10" stroke="#C9963A" strokeWidth={8} fill="none" />

@@ -143,7 +143,7 @@ const shots: Shot[] = [
     action: 'Mid-snatch, the sunlight snaps off. Everyone freezes in the blue dark. Biscuit still has the toast.',
     lines: [N('One.', 0.9)],
   }),
-  sh('stars-at-breakfast', stage('kitchen', 'dark', push(1.35, 1.5, 520, 470), [c(MI, 520, 930, {facing: 'back'}), c(Y, 760, 930, {facing: 'back'})], [{at: 0.2, who: MI, to: 560, dur: 0.8}], {windowStars: true}), {
+  sh('stars-at-breakfast', stage('kitchen', 'dark', push(1.3, 1.45, 560, 590), [c(MI, 520, 930, {facing: 'back'}), c(Y, 760, 930, {facing: 'back'})], [{at: 0.2, who: MI, to: 560, dur: 0.8, facing: 'back'}], {windowStars: true}), {
     letterbox: true,
     beats: ['wow'],
     action: 'Through the kitchen window: stars over a city at breakfast time. Streetlights flicker on.',
@@ -152,7 +152,7 @@ const shots: Shot[] = [
   sh('title', sc('title'), {min: 3.2, cue: 'title', letterbox: true, action: 'Title: THE SUN WENT OUT.'}),
 
   // ══ HOUR ONE ═══════════════════════════════════════════════════════════════════════════════
-  sh('street-phones', stage('street', 'night', push(1.0, 1.15, 960, 600), [
+  sh('street-phones', stage('street', 'night', move([1.0, 960, 250], [1.12, 960, 600]), [
     c('extra:3', 380, 960, {pose: 'pointUp', facing: 'right', expr: 'scared'}),
     c('extra:7', 560, 960, {pose: 'hold', hold: 'phoneLit', expr: 'worried'}),
     c(Y, 860, 960, {pose: 'lookUp', expr: 'worried'}),

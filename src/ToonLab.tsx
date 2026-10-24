@@ -4,6 +4,12 @@ import {Actors, type Act, type CastEntry} from './characters/toon/acting';
 import {ShotProvider} from './engine/shot-context';
 import {PhotoGlobe} from './fx/PhotoGlobe';
 import type {TimedShot} from './engine/timeline';
+import {M} from './env/sun/stage';
+import {BusShelter, Car, Lamp} from './env/sun/sets/outdoor';
+import {TrainCar} from './env/sun/sets/metro';
+import {Shelf} from './env/sun/sets/market';
+import {SchoolBus} from './env/sun/inserts';
+import {Tent} from './env/sun01/parts';
 
 /** Rig test bench: model sheet, walk/run cycles, gesture and expression ranges. Not part of any episode. */
 const SCENES: Record<string, {cast: CastEntry[]; acts: Act[]; bg: string}> = {
@@ -132,5 +138,55 @@ export const EarthLab: React.FC<{v: number}> = ({v}) => {
         <PhotoGlobe key={i} size={440} {...p} />
       ))}
     </AbsoluteFill>
+  );
+};
+
+/**
+ * Scale check: the cast beside every prop they share a frame with, all on one plane (depth 0.6 → 1 m = M(1, 0.6)),
+ * over a 1 m grid. Every prop should sit within ±10% of its real height relative to the 1.75 m hero.
+ */
+export const ScaleLab: React.FC = () => {
+  const D = 0.6;
+  const m = M(1, D);
+  const shot = {id: 'lab', scene: 'lab', index: 0, start: 0, end: 10, duration: 10, timedLines: [], lines: []} as unknown as TimedShot;
+  const rows = [500, 1040];
+  const cast = (x: number, y: number): CastEntry[] => [
+    {who: 'you', x, y, depth: D},
+    {who: 'mira', x: x + 70, y, depth: D},
+    {who: 'ito', x: x + 140, y, depth: D, hold: 'cane'},
+    {who: 'biscuit', x: x + 210, y, depth: D},
+  ];
+  const label = (x: number, y: number, t: string) => (
+    <text x={x} y={y + 30} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontSize={18} fill="#C9D3E6">
+      {t}
+    </text>
+  );
+  return (
+    <ShotProvider shot={shot} fps={30}>
+      <AbsoluteFill style={{background: '#2A3348'}}>
+        <svg viewBox="0 0 1920 1080" width={1920} height={1080}>
+          {rows.map((y) =>
+            Array.from({length: 5}, (_, k) => <line key={`${y}-${k}`} x1={0} x2={1920} y1={y - k * m} y2={y - k * m} stroke={k ? '#ffffff22' : '#ffffff66'} strokeWidth={2} />),
+          )}
+          {/* row 1: car 1.5 m, lamp 4.5 m, shelter 2.4 m, tent 1.3 m, shelf 1.9 m */}
+          <Car x={520} base={rows[0]} sc={m} col="#C2464F" snow={0} />
+          {label(520, rows[0], 'car 4.4 × 1.5 m')}
+          <Lamp x={860} base={rows[0]} sc={m} on frame={0} />
+          {label(890, rows[0], 'lamp 4.5 m')}
+          <BusShelter x={1130} base={rows[0]} sc={m} />
+          {label(1130, rows[0], 'shelter 2.4 m')}
+          <Tent x={1420} y={rows[0]} s={(1.3 * m) / 120} color="#3C8D6E" lit={1} />
+          {label(1420, rows[0], 'tent 1.3 m')}
+          <Shelf x={1580} w={m * 2.4} base={rows[0]} sc={m} seed={3} stripped={0.3} label="RICE" col="#3C8D6E" />
+          {label(1580 + m * 1.2, rows[0], 'shelf 1.9 m')}
+          {/* row 2: school bus 3.2 m, metro carriage 3.0 m */}
+          <SchoolBus x={1240} base={rows[1]} sc={m} />
+          {label(680, rows[1], 'school bus 11 × 3.2 m')}
+          <TrainCar x={1300} base={rows[1]} sc={m} len={5.6} lit={1} color="#8C9AAE" />
+          {label(1590, rows[1], 'carriage 3.0 m')}
+          <Actors cast={[...cast(40, rows[0]), ...cast(40, rows[1]), {who: 'you', x: 1870, y: rows[1], depth: D}]} acts={[]} />
+        </svg>
+      </AbsoluteFill>
+    </ShotProvider>
   );
 };
