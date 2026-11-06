@@ -1,48 +1,44 @@
-# The Sun Went Out. Here's Your Day 1 to Day 365
+# The Sun Went Out. Day 1 to Day 365
 
 **Thumbnail text:** WHO BUILT THIS?
 **Thumbnails for Test & Compare:** sun01-thumbnail.png, sun01-thumbnail-b.png, sun01-thumbnail-c.png (upload all of them; YouTube serves each to a share of viewers and keeps the one with the best watch time)
-**End screen:** the last 15 s (from 8:25) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 8:29 to the end.
-**Runtime:** 8:40
-**Manual mid-roll positions:** 4:45, 6:59 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
+**End screen:** the last 15 s (from 9:16) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 9:20 to the end.
+**Runtime:** 9:31
+**Manual mid-roll positions:** 4:19, 6:44 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
 
 ## Description (paste as-is)
 
 ```
-At 6:44 a.m. something closed around the Sun. Eight minutes later the sky goes black. You, your little sister Mira, your dog Biscuit and Mr. Ito, the old astronomer upstairs, have one year to survive the freeze and work out what happened. Every clue is real physics. The ending isn't.
+On a summer morning the Sun goes out. Eight-year-old Mira, her brother Kai and Mr. Ito, the retired astronomer upstairs, survive a year in the dark and work out, clue by clue, what happened. Every clue is real physics. The man saving them is the reason it happened.
 
-Something just counted the planets and stopped at Earth. What would you say back? Tell us below 👇
+Something knocked back. What would you say? Tell us below 👇
 
-0:00 Minute zero
-0:46 Hour one
-2:14 Day 1
-2:53 Day 2
-3:40 Day 3
-4:02 Day 5
-4:15 Day 7
-4:45 Day 8
-5:21 Day 30
-6:08 Day 40
-6:44 Day 100
-6:59 Day 180
-7:22 Day 300
-7:42 Day 365
+0:00 The last morning
+1:03 Hour one
+2:22 Day 1
+2:38 Day 2
+3:19 Day 3
+3:38 Day 7
+4:19 Day 8
+4:49 Day 30
+5:37 Day 40
+6:30 Day 100
+6:47 Day 180
+7:03 Day 300
+7:37 Day 365
 
 THE REAL SCIENCE IN THIS STORY
-(1) Sunlight takes about 8 minutes 20 seconds to cross the 150 million km to Earth, so we would not notice anything for 8:20. — Source: NASA Science, ‘Sun: Facts’ (science.nasa.gov/sun)
-(2) The Moon makes no light of its own; moonlight is reflected sunlight. — Source: NASA Science, ‘Moon’ (science.nasa.gov/moon)
-(3) Venus near greatest elongation: sunlight needs ~361 s to reach it and ~345 s to come back to us, versus 499 s Sun→Earth, so it fades ~3.5 minutes after the Sun. — Source: Calculation from 1 AU = 149.6 million km, c = 299,792 km/s, Venus orbit 0.72 AU (NASA JPL planetary fact sheets)
-(4) Jupiter is 5.2 AU from the Sun; light needs ~43 minutes to reach it and ~37 more to reach us when it is 4.5 AU away: about 72 minutes after the Sun. — Source: NASA Jupiter fact sheet (nssdc.gsfc.nasa.gov)
-(5) The Sun’s tide-raising force is about 46% of the Moon’s; at spring tide the two add up. — Source: NOAA Ocean Service, ‘Tides and Water Levels’ tutorial
-(6) Coronal mass ejections take roughly 1 to 4 days to reach Earth, so particles already on their way would still arrive after the light was gone. — Source: NOAA Space Weather Prediction Center, ‘Coronal Mass Ejections’
-(7) Ice floats and insulates the water below it, so oceans freeze from the top and stay liquid underneath for a very long time. — Source: National Snow and Ice Data Center, ‘All About Sea Ice’
-(8) Estimates for a sunless Earth: around −18 °C average after a week, around −73 °C after a year. — Source: Live Science, ‘What would happen if the sun disappeared?’
-(9) Burning fuel indoors produces carbon monoxide, which is colourless and odourless; it is a leading cause of winter poisonings. — Source: US CDC, ‘Carbon Monoxide Poisoning’
-(10) A few metres underground the temperature stays close to the yearly average (about 10–16 °C in many places), whatever the weather. — Source: US Department of Energy, ‘Geothermal Heat Pumps’
-(11) The atmosphere holds about 1.2 million billion tonnes of oxygen; even with no photosynthesis, breathing and burning would take thousands of years to use a meaningful share. — Source: Keeling & Manning, ‘Studies of Recent Changes in Atmospheric O2 Content’, Treatise on Geochemistry (2014)
-(12) Anything that absorbs starlight must give off waste heat as infrared; this is how astronomers search for Dyson spheres. — Source: Freeman Dyson, ‘Search for Artificial Stellar Sources of Infrared Radiation’, Science (1960)
-(13) Satellites have measured the Sun's total brightness continuously since 1978. It naturally varies by about 0.1% over the 11-year solar cycle, so a screen that blocked a hundred-thousandth of its light would be lost in the noise. — Source: NASA, ‘Solar Irradiance Datasets’ (scdi.smce.nasa.gov/solar_data_access.html); G. Kopp, Living Reviews in Solar Physics (2025)
-(14) Life around deep-sea hydrothermal vents runs on chemical energy from inside the Earth (chemosynthesis), not sunlight. — Source: NOAA Ocean Exploration, ‘Hydrothermal Vents’
+(1) Venus near greatest elongation: sunlight needs ~361 s to reach it and ~345 s to come back to us, versus 499 s Sun→Earth, so it fades ~3.5 minutes after the Sun. — Source: Calculation from 1 AU = 149.6 million km, c = 299,792 km/s, Venus orbit 0.72 AU (NASA JPL planetary fact sheets)
+(2) Jupiter is 5.2 AU from the Sun; light needs ~43 minutes to reach it and ~37 more to reach us when it is 4.5 AU away: about 72 minutes after the Sun. — Source: NASA Jupiter fact sheet (nssdc.gsfc.nasa.gov)
+(3) The Sun’s tide-raising force is about 46% of the Moon’s; at spring tide the two add up. — Source: NOAA Ocean Service, ‘Tides and Water Levels’ tutorial
+(4) Ice floats and insulates the water below it, so oceans freeze from the top and stay liquid underneath for a very long time. — Source: National Snow and Ice Data Center, ‘All About Sea Ice’
+(5) Coronal mass ejections take roughly 1 to 4 days to reach Earth, so particles already on their way would still arrive after the light was gone. — Source: NOAA Space Weather Prediction Center, ‘Coronal Mass Ejections’
+(6) Estimates for a sunless Earth: around −18 °C average after a week, around −73 °C after a year. — Source: Live Science, ‘What would happen if the sun disappeared?’
+(7) Burning fuel indoors produces carbon monoxide, which is colourless and odourless; it is a leading cause of winter poisonings. — Source: US CDC, ‘Carbon Monoxide Poisoning’
+(8) A few metres underground the temperature stays close to the yearly average (about 10–16 °C in many places), whatever the weather. — Source: US Department of Energy, ‘Geothermal Heat Pumps’
+(9) Anything that absorbs starlight must give off waste heat as infrared; this is how astronomers search for Dyson spheres. — Source: Freeman Dyson, ‘Search for Artificial Stellar Sources of Infrared Radiation’, Science (1960)
+(10) Satellites have measured the Sun's total brightness continuously since 1978. It naturally varies by about 0.1% over the 11-year solar cycle, so a screen that blocked a hundred-thousandth of its light would be lost in the noise. — Source: NASA, ‘Solar Irradiance Datasets’ (scdi.smce.nasa.gov/solar_data_access.html); G. Kopp, Living Reviews in Solar Physics (2025)
+(11) Radio waves travel at the speed of light, so a signal to a star 22 light-years away and an answer back take 44 years. — Source: Definition of the light-year (IAU); c = 299,792 km/s
 
 THE BLINK FILES — one family, one year, the end of the world as physics would really play it. Part 2 continues from Day 365. Subscribe so you don't miss the reply.
 
@@ -51,9 +47,9 @@ This is a work of fiction: nothing is building a shell around the Sun (as far as
 ```
 
 ## Tags
-what if the sun disappeared, what if the sun went out, day 1 to day 365, survival, what if, space, science, animation, dyson sphere, the sun, earth without the sun, the blink files
+what if the sun disappeared, what if the sun went out, day 1 to day 365, survival, what if, space, science, animation, dyson sphere, the sun, earth without the sun, plot twist, the blink files
 
 ## Pinned comment
-It counted to three and stopped. What do we say back? Best answer gets read out in Part 2. 👇
+When did you realise who the man in the observatory was? 👀
 
-Also: did anyone spot what’s in Mr. Ito’s 1919 eclipse photo? 👀
+And: something knocked back. What would you say? Best answer gets read out in the next File. 👇
