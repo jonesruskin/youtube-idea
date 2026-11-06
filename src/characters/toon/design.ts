@@ -34,7 +34,7 @@ export type ToonDesign = {
   watch?: boolean;
 };
 
-export const CAST: Record<'you' | 'mira' | 'ito', ToonDesign> = {
+export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'mum', ToonDesign> = {
   you: {
     id: 'you',
     height: 1,
@@ -50,6 +50,7 @@ export const CAST: Record<'you' | 'mira' | 'ito', ToonDesign> = {
     },
     rim: '#FFB547',
     watch: true,
+    speaker: 'KAI',
   },
   mira: {
     id: 'mira',
@@ -87,6 +88,41 @@ export const CAST: Record<'you' | 'mira' | 'ito', ToonDesign> = {
     rim: '#9FD8FF',
     speaker: 'ITO',
   },
+  // Mr. Ito in 1982, age 30: the same round glasses and the same brown wool (the cardigan he still wears), black
+  // hair, taller and unstooped. Never named on screen until the reveal.
+  itoYoung: {
+    id: 'itoYoung',
+    height: 1.0,
+    head: 0.19,
+    build: 0.92,
+    skin: '#E8C4A2',
+    skinShade: '#C9A07E',
+    hair: 'short',
+    hairColor: '#17120F',
+    glasses: true,
+    outfits: {
+      home: ['#8A6A4A', '#6E5236', '#3A3F52', '#2A2A2A'], // brown jumper
+      cold: ['#8A6A4A', '#6E5236', '#3A3F52', '#2A2A2A'],
+    },
+    rim: '#FFD08A',
+  },
+  // Grace Okafor, Mira and Kai's mum: a nurse, scrubs under a navy coat
+  mum: {
+    id: 'mum',
+    height: 0.97,
+    head: 0.19,
+    build: 1.0,
+    skin: '#9A6440',
+    skinShade: '#7A4C2E',
+    hair: 'bun',
+    hairColor: '#17120F',
+    outfits: {
+      home: ['#3FA69A', '#2E867C', '#3FA69A', '#F4EFE6'], // scrubs
+      cold: ['#2E3A5C', '#22304F', '#3FA69A', '#2A2A2A'], // navy coat over scrubs
+    },
+    rim: '#FFB547',
+    speaker: 'MUM',
+  },
 };
 
 const SKINS: [string, string][] = [
@@ -109,7 +145,9 @@ export const extra = (seed: number): ToonDesign => {
     const x = Math.sin(seed * 9301.7 + n * 49297.3) * 233280;
     return x - Math.floor(x);
   };
-  const kid = r(1) < 0.16;
+  // seeds 300–399 are small children (4–6): clearly younger and shorter than Mira (8, height 0.6)
+  const small = seed >= 300 && seed < 400;
+  const kid = small || r(1) < 0.16;
   const elder = !kid && r(2) < 0.18;
   const [skin, skinShade] = SKINS[Math.floor(r(3) * SKINS.length)];
   const pick = HAIRS[(seed * 5 + Math.floor(r(4) * HAIRS.length)) % HAIRS.length];
@@ -119,8 +157,8 @@ export const extra = (seed: number): ToonDesign => {
   const top2 = TOPS[(seed * 3 + 5) % TOPS.length];
   return {
     id: `extra-${seed}`,
-    height: kid ? 0.55 + r(6) * 0.1 : 0.88 + r(6) * 0.22,
-    head: kid ? 0.26 : 0.19 + r(7) * 0.025,
+    height: small ? 0.42 + r(6) * 0.06 : kid ? 0.55 + r(6) * 0.1 : 0.88 + r(6) * 0.22,
+    head: small ? 0.3 : kid ? 0.26 : 0.19 + r(7) * 0.025,
     build: kid ? 0.85 : 0.82 + r(8) * 0.45,
     skin,
     skinShade,

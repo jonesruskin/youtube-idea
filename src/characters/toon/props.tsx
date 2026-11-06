@@ -20,7 +20,11 @@ export type PropKind =
   | 'toast'
   | 'radio'
   | 'match'
-  | 'drawing';
+  | 'drawing'
+  | 'bag'
+  | 'photo'
+  | 'tideTable'
+  | 'ear';
 
 /** Props drawn at the hand position (origin = hand centre). R = the holder's head radius. */
 export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({kind, R, frame}) => {
@@ -153,6 +157,48 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
           {Array.from({length: 8}, (_, k) => (
             <path key={k} d={`M0,${-R * 0.3} L0,${-R * 0.4}`} stroke="#8A8F9C" strokeWidth={sw * 0.8} transform={`rotate(${k * 45})`} />
           ))}
+        </g>
+      );
+    case 'bag':
+      // Mr. Ito's canvas bag, packed and ready
+      return (
+        <g>
+          <path d={`M${-R * 0.1},0 Q${R * 0.05},${R * 0.5} ${R * 0.2},${R * 0.55}`} stroke="#6E5236" strokeWidth={sw * 1.2} fill="none" />
+          <rect x={-R * 0.45} y={R * 0.5} width={R * 1.0} height={R * 0.8} rx={R * 0.1} fill="#B8A07A" stroke={ink} strokeWidth={sw} />
+          <rect x={-R * 0.45} y={R * 0.5} width={R * 1.0} height={R * 0.25} rx={R * 0.08} fill="#9A845E" stroke={ink} strokeWidth={sw * 0.7} />
+        </g>
+      );
+    case 'photo':
+      // the 1919 eclipse print: black Moon, pale corona, three straight lines right through it
+      return (
+        <g transform={`translate(${R * 0.2},${-R * 0.7})`}>
+          <rect x={-R * 0.6} y={-R * 0.45} width={R * 1.2} height={R * 0.9} fill="#F4EFE6" stroke={ink} strokeWidth={sw} />
+          <rect x={-R * 0.5} y={-R * 0.36} width={R * 1.0} height={R * 0.72} fill="#3A3836" />
+          <circle r={R * 0.22} fill="#E8E2D4" opacity={0.4} />
+          {[18, 74, 142].map((a) => (
+            <path key={a} d={`M${Math.cos((a * Math.PI) / 180) * -R * 0.34},${Math.sin((a * Math.PI) / 180) * -R * 0.34} L${Math.cos((a * Math.PI) / 180) * R * 0.34},${Math.sin((a * Math.PI) / 180) * R * 0.34}`} stroke="#F4EFE6" strokeWidth={sw * 0.4} opacity={0.8} />
+          ))}
+          <circle r={R * 0.11} fill="#0A0A0C" />
+        </g>
+      );
+    case 'tideTable':
+      return (
+        <g transform={`translate(${R * 0.1},${-R * 0.5})`}>
+          <rect x={-R * 0.4} y={-R * 0.5} width={R * 0.8} height={R * 1.0} fill="#FFFDF6" stroke={ink} strokeWidth={sw} transform="rotate(-8)" />
+          {Array.from({length: 5}, (_, k) => (
+            <path key={k} d={`M${-R * 0.28},${-R * 0.3 + k * R * 0.17} L${R * 0.26},${-R * 0.34 + k * R * 0.17}`} stroke="#5B6C8F" strokeWidth={sw * 0.5} transform="rotate(-8)" />
+          ))}
+        </g>
+      );
+    case 'ear':
+      // "an ear": a home-made receiver with a little dish and a dial
+      return (
+        <g>
+          <rect x={-R * 0.45} y={-R * 0.4} width={R * 0.9} height={R * 0.55} rx={R * 0.08} fill="#5A5E6A" stroke={ink} strokeWidth={sw} />
+          <circle cx={-R * 0.2} cy={-R * 0.13} r={R * 0.13} fill="#9FE8FF" opacity={0.8} />
+          <rect x={R * 0.05} y={-R * 0.3} width={R * 0.28} height={R * 0.08} fill="#7FE8FF" />
+          <path d={`M${R * 0.3},${-R * 0.4} L${R * 0.55},${-R * 1.0}`} stroke={ink} strokeWidth={sw} />
+          <path d={`M${R * 0.25},${-R * 1.25} Q${R * 0.55},${-R * 0.75} ${R * 0.95},${-R * 1.05} Q${R * 0.65},${-R * 1.3} ${R * 0.25},${-R * 1.25} Z`} fill="#C9CED6" stroke={ink} strokeWidth={sw} />
         </g>
       );
     default:

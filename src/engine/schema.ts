@@ -21,7 +21,11 @@ export type Speaker =
   | 'NARRATOR'
   | 'MIRA'
   | 'ITO'
-  | 'RADIO';
+  | 'RADIO'
+  | 'KAI'
+  | 'MUM'
+  | 'MUM_RADIO'
+  | 'MAN';
 
 export type Line = {
   speaker: Speaker;
@@ -81,13 +85,17 @@ export type Shot = {
   /** One bold kinetic word/number on screen (the genre's emphasis device). Used sparingly. */
   callout?: {text: string; at?: number | string; pos?: 'center' | 'top' | 'low' | 'left' | 'right'; color?: string};
   /** Corner tag that marks a jump in time: Day N and the outside temperature. */
-  hud?: {day: number; temp: number};
+  hud?: {day: number; temp: number} | {place: string; time: string};
+  /** A shot in another timeline (e.g. '1982'): never Day-tagged, never narrated before the reveal, ignored by the year bar. */
+  thread?: string;
   /** Plot development delivered by this shot (the linter enforces one at least every 30 s). */
   dev?: string;
   /** Marks one of the episode's reveals (1..n). */
   twist?: number;
   /** Picture treatment for the whole shot: 'flashforward' drains the colour and adds film grain. */
   look?: 'flashforward';
+  /** The first shot allowed to show what the episode is hiding (e.g. 'shell'): the linter blocks anything earlier. */
+  reveal?: string;
 };
 
 export type Episode = {

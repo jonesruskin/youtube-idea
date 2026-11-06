@@ -40,6 +40,19 @@ const RealEarth: React.FC<{x: number; y: number; d: number; center: [number, num
 );
 
 const SealedSun: React.FC<{x: number; y: number; r: number; frame: number}> = ({x, y, r, frame}) => <Shell cx={x} cy={y} r={r} turn={1} spin={frame * 0.004} seam={0.5} frame={frame} />;
+/** Before the reveal the family doesn't know what is there: the Sun is drawn as a dark disc with a dashed rim
+ * and a question mark. After it (`shell` prop on the shot), the sealed shell. */
+const HiddenSun: React.FC<{x: number; y: number; r: number}> = ({x, y, r}) => (
+  <g>
+    <circle cx={x} cy={y} r={r * 1.5} fill="#FFB13B" opacity={0.06} />
+    <circle cx={x} cy={y} r={r} fill="#0A0C18" stroke="#FFB13B" strokeWidth={4} strokeDasharray="12 10" opacity={0.9} />
+    <text x={x} y={y + r * 0.32} textAnchor="middle" fontFamily="'Unbounded', sans-serif" fontWeight={900} fontSize={r * 0.95} fill="#FFB13B" opacity={0.85}>
+      ?
+    </text>
+  </g>
+);
+const SunMark: React.FC<{shell: boolean; x: number; y: number; r: number; frame: number}> = ({shell, ...p}) => (shell ? <SealedSun {...p} /> : <HiddenSun x={p.x} y={p.y} r={p.r} />);
+
 const Planet: React.FC<{x: number; y: number; r: number; col: string; lit?: number; ring?: boolean}> = ({x, y, r, col, lit = 1, ring}) => (
   <g>
     {lit > 0 && <circle cx={x} cy={y} r={r * 2.2} fill={col} opacity={0.12 * lit} />}
@@ -101,7 +114,7 @@ export const DiagramScene: React.FC = () => {
     const u = clamp(p * 1.2);
     return (
       <Board frame={f} z={interpolate(p, [0, 1], [1, 1.05])}>
-        <SealedSun x={S[0]} y={S[1]} r={120} frame={f} />
+        <SunMark shell={!!c.p.shell} x={S[0]} y={S[1]} r={120} frame={f} />
         <path d={`M${S[0]},${S[1]} L${V[0]},${V[1]} L${E[0]},${E[1]}`} stroke="#FFE9A8" strokeWidth={4} strokeDasharray="14 14" opacity={0.6} fill="none" />
         <Planet x={V[0]} y={V[1]} r={44} col="#F2D49A" lit={1} />
         <Earth x={E[0]} y={E[1]} r={70} />
@@ -130,7 +143,7 @@ export const DiagramScene: React.FC = () => {
     const u = clamp(p);
     return (
       <Board frame={f} z={interpolate(p, [0, 1], [1.05, 1])}>
-        <SealedSun x={S[0]} y={S[1]} r={90} frame={f} />
+        <SunMark shell={!!c.p.shell} x={S[0]} y={S[1]} r={90} frame={f} />
         <path d={`M${S[0]},${S[1]} L${J[0]},${J[1]} L${E[0]},${E[1]}`} stroke="#FFE9A8" strokeWidth={4} strokeDasharray="14 14" opacity={0.5} fill="none" />
         <Planet x={J[0]} y={J[1]} r={90} col="#D9B48A" />
         {[-40, 0, 30].map((y) => (
@@ -196,7 +209,7 @@ export const DiagramScene: React.FC = () => {
     const bulge = (1 + 0.46 * sunPart) * (1 + 0.05 * Math.sin(f * 0.12));
     return (
       <Board frame={f} overlay={<RealEarth x={960} y={540} d={460} center={[0, 90]} />}>
-        <SealedSun x={160} y={540} r={90} frame={f} />
+        <SunMark shell={!!c.p.shell} x={160} y={540} r={90} frame={f} />
         <g transform="translate(960,540)">
           <ellipse rx={230 + 110 * bulge} ry={250} fill="#4A9BEA" opacity={0.75} stroke="#9FD8FF" strokeWidth={4} />
           <ellipse rx={230 + 50} ry={240} fill="#4A9BEA" opacity={0.5} />
@@ -245,7 +258,7 @@ export const DiagramScene: React.FC = () => {
     const a = t * 0.9;
     return (
       <Board frame={f} z={interpolate(p, [0, 1], [1, 1.08])}>
-        <SealedSun x={960} y={540} r={110} frame={f} />
+        <SunMark shell={!!c.p.shell} x={960} y={540} r={110} frame={f} />
         <circle cx={960} cy={540} r={380} fill="none" stroke="#6FB8FF" strokeOpacity={0.35} strokeWidth={4} strokeDasharray="12 12" />
         <path d={`M960,540 L${960 + Math.cos(a) * 380},${540 + Math.sin(a) * 380}`} stroke="#6FB8FF" strokeWidth={3} strokeDasharray="4 10" opacity={0.6} />
         <Earth x={960 + Math.cos(a) * 380} y={540 + Math.sin(a) * 380} r={44} />
@@ -449,7 +462,7 @@ export const DiagramScene: React.FC = () => {
         ))}
         <ellipse cx={960} cy={cy} rx={760} ry={760 * ryf} fill="#6FB8FF" opacity={0.04} />
         {orbits.filter((o) => !o.front).map(planet)}
-        <SealedSun x={960} y={cy} r={60} frame={f} />
+        <SunMark shell={!!c.p.shell} x={960} y={cy} r={60} frame={f} />
         {orbits.filter((o) => o.front).map(planet)}
         <path d={`M960,${cy - 60} L960,${cy - 60 - len}`} stroke="#FFB13B" strokeWidth={8} />
         <path d={`M960,${cy - 60} L960,${cy - 60 - len}`} stroke="#FFB13B" strokeWidth={30} opacity={0.2} />
@@ -532,7 +545,7 @@ export const DiagramScene: React.FC = () => {
     const lit = step === 1 ? 3 : Math.min(3, Math.floor(t / 0.9) + 1);
     return (
       <Board frame={f} z={step === 1 ? interpolate(p, [0, 1], [1.4, 1.9]) : 1} cx={step === 1 ? 1220 : 960} cy={540}>
-        <SealedSun x={160} y={540} r={80} frame={f} />
+        <SunMark shell={!!c.p.shell} x={160} y={540} r={80} frame={f} />
         {xs.map((x, i) => (
           <g key={x}>
             {i < lit && <circle cx={x} cy={540} r={110} fill={cols[i]} opacity={0.18 + (i === lit - 1 ? 0.15 * Math.sin(f * 0.4) : 0)} />}
@@ -542,6 +555,37 @@ export const DiagramScene: React.FC = () => {
           </g>
         ))}
         {step === 1 && <circle cx={1220} cy={540} r={100 + 10 * Math.sin(f * 0.2)} fill="none" stroke="#7FE8FF" strokeWidth={6} />}
+      </Board>
+    );
+  }
+  if (v === 'knock') {
+    // Earth (left) and the star (right), 22 light-years apart. A knock leaves in 1982, arrives in 2004; the answer
+    // leaves at once and arrives in 2026. The year counter runs with the pulse.
+    const E: [number, number] = [260, 560];
+    const S: [number, number] = [1660, 560];
+    const out = clamp((t - 0.3) / 1.6);
+    const back = clamp((t - 2.1) / 1.6);
+    const year = Math.round(back > 0 ? 2004 + 22 * back : 1982 + 22 * out);
+    const px = back > 0 ? S[0] + (E[0] - S[0]) * back : E[0] + (S[0] - E[0]) * out;
+    return (
+      <Board frame={f}>
+        <Earth x={E[0]} y={E[1]} r={70} />
+        <circle cx={S[0]} cy={S[1]} r={14} fill="#FFFFFF" />
+        <circle cx={S[0]} cy={S[1]} r={46} fill="#BFD8FF" opacity={0.2} />
+        <path d={`M${E[0] + 90},${E[1]} L${S[0] - 40},${S[1]}`} stroke="#FFFFFF" strokeOpacity={0.2} strokeWidth={4} strokeDasharray="16 14" />
+        <text x={(E[0] + S[0]) / 2} y={470} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={700} fontSize={44} fill="#C9D3E6">
+          22 light-years
+        </text>
+        {(out > 0 && out < 1) || (back > 0 && back < 1) ? (
+          <g>
+            {[0, 1, 2].map((k) => (
+              <circle key={k} cx={px + (back > 0 ? 1 : -1) * k * 40} cy={E[1]} r={14} fill={back > 0 ? '#7FE8FF' : '#FF8A5A'} opacity={1 - k * 0.25} />
+            ))}
+          </g>
+        ) : null}
+        <text x={960} y={800} textAnchor="middle" fontFamily="'Unbounded', sans-serif" fontWeight={900} fontSize={120} fill="#FFF6E0" stroke="#0B1026" strokeWidth={12} paintOrder="stroke">
+          {year}
+        </text>
       </Board>
     );
   }

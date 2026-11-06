@@ -22,6 +22,13 @@ VOICES = {
     "RADIO": {"voice": "am_michael", "speed": 0.9, "fx": "radio"},
     # Mr. Ito: British English voice, slowed and pitched down a touch for age.
     "ITO": {"voice": "bm_george", "speed": 0.88, "fx": "elder", "lang": "b"},
+    # Kai, 16: a light young male voice nudged up a little so he reads as a teenager, not a man
+    "KAI": {"voice": "am_liam", "speed": 1.0, "fx": "teen"},
+    # Mum (Grace Okafor), heard first over the radio, then in person
+    "MUM": {"voice": "af_sarah", "speed": 0.92, "fx": None},
+    "MUM_RADIO": {"voice": "af_sarah", "speed": 0.92, "fx": "radio"},
+    # a passer-by shouting in the street
+    "MAN": {"voice": "am_fenrir", "speed": 1.05, "fx": None},
 }
 
 # Pronunciation fixes (Kokoro inline phonemes); the script and captions keep normal spelling.
@@ -39,6 +46,8 @@ def ffmpeg_fx(audio, fx):
         sf.write(src, audio, SR)
         if fx == "child":
             af = "rubberband=pitch=1.2:tempo=1.0:formant=shifted,highpass=f=120"
+        elif fx == "teen":
+            af = "rubberband=pitch=1.06:tempo=1.0:formant=preserved,highpass=f=90"
         elif fx == "elder":
             af = "rubberband=pitch=0.94:tempo=1.0:formant=preserved,highpass=f=70"
         else:

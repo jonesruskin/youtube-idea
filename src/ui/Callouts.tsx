@@ -45,8 +45,10 @@ export const Callout: React.FC = () => {
 
 export const DayTag: React.FC<{prevDay?: number}> = ({prevDay = 0}) => {
   const {shot, t} = useShot();
-  const h = shot.hud;
-  if (!h) return null;
+  const hh = shot.hud;
+  if (!hh) return null;
+  if ('place' in hh) return <PlaceTag place={hh.place} time={hh.time} t={t} dur={shot.duration} />;
+  const h = hh;
   const inK = interpolate(t, [0.05, 0.45], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic)});
   const outK = interpolate(t, [Math.min(3.6, shot.duration - 0.3), Math.min(3.9, shot.duration)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   // the temperature ticks down to its value
@@ -70,6 +72,27 @@ export const DayTag: React.FC<{prevDay?: number}> = ({prevDay = 0}) => {
           <rect x={12 + BAR - 2} y={90} width={3} height={22} fill="#FFF6E0" opacity={0.7} />
           <text x={12 + BAR + 12} y={110} fontFamily={fonts.mono} fontWeight={600} fontSize={26} fill="#FFF6E0" stroke="#0B1026" strokeWidth={5} paintOrder="stroke" opacity={0.85}>
             365
+          </text>
+        </g>
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+/** "SYDNEY · 3:51 PM": where and when, for the world's last ordinary minute. */
+const PlaceTag: React.FC<{place: string; time: string; t: number; dur: number}> = ({place, time, t, dur}) => {
+  const inK = interpolate(t, [0.05, 0.4], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic)});
+  const outK = interpolate(t, [dur - 0.25, dur], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%">
+        <g transform={`translate(${-60 + 150 * inK},150)`} opacity={inK * outK}>
+          <rect x={-20} y={-66} width={10} height={130} fill="#FFB25A" />
+          <text x={10} y={-6} fontFamily={fonts.display} fontWeight={900} fontSize={72} fill="#FFF6E0" stroke="#0B1026" strokeWidth={10} paintOrder="stroke" letterSpacing={3}>
+            {place}
+          </text>
+          <text x={14} y={56} fontFamily={fonts.mono} fontWeight={600} fontSize={48} fill="#FFD08A" stroke="#0B1026" strokeWidth={8} paintOrder="stroke">
+            {time}
           </text>
         </g>
       </svg>

@@ -164,7 +164,7 @@ export const Episode: React.FC<EpisodeProps> = ({episodeId, voice, hasScore}) =>
   let story = 0;
   const prevDays = tl.shots.map((s) => {
     const prev = story;
-    if (s.hud && s.look !== 'flashforward') story = s.hud.day;
+    if (s.hud && 'day' in s.hud && s.look !== 'flashforward' && !s.thread) story = s.hud.day;
     return prev;
   });
   return (

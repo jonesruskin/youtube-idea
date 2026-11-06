@@ -12,6 +12,7 @@ import './sets/roof';
 import './sets/home';
 import './sets/market';
 import './sets/metro';
+import './sets/observatory';
 
 /** Development stand-in for scenes not built yet: shows the stage direction so the cut can be timed. */
 const Pending: React.FC = () => {

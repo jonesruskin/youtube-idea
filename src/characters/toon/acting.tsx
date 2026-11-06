@@ -17,7 +17,7 @@ import {Toon, type SeatKind, type ToonState} from './Toon';
  * sliding), and every character breathes, blinks and lip-syncs to its own lines automatically. Listeners turn
  * their eyes (and, facing front, their head) to whoever is speaking, and the speaker glances at the nearest listener.
  */
-export type Who = 'you' | 'mira' | 'ito' | 'biscuit' | `extra:${number}`;
+export type Who = 'you' | 'mira' | 'ito' | 'itoYoung' | 'mum' | 'biscuit' | `extra:${number}`;
 export type Facing = 'right' | 'left' | 'front' | 'back';
 export type CastEntry = {
   who: Who;
@@ -46,6 +46,8 @@ export type CastEntry = {
   seatLift?: number;
   /** Ride on another cast member's back (piggyback): position follows the carrier every frame. */
   carriedBy?: Who;
+  /** Lip-sync this cast member to a script speaker (for voiced extras, e.g. 'MAN'). */
+  speaker?: string;
 };
 export type LoopKind = 'wave' | 'nod' | 'shake' | 'shiver' | 'bounce' | 'clap' | 'talk' | 'jump' | 'tremble' | 'pant' | 'scratch' | 'stir';
 export type Act = {
@@ -81,7 +83,7 @@ const easeBack = (k: number) => {
 export const designOf = (who: Who): ToonDesign | null => {
   if (who === 'biscuit') return null;
   if (who.startsWith('extra:')) return extra(Number(who.slice(6)));
-  return CAST[who as 'you' | 'mira' | 'ito'];
+  return CAST[who as keyof typeof CAST];
 };
 
 type LineInfo = {startInShot: number; end: number; start: number; speaker: string; text: string; chars?: number[]};
@@ -180,7 +182,7 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
   let speakerIdx = -1;
   let attn = 0;
   for (const l of lines) {
-    const idx = list.findIndex((c) => c.who !== 'biscuit' && designOf(c.who)?.speaker === l.speaker);
+    const idx = list.findIndex((c) => c.who !== 'biscuit' && (c.speaker ?? designOf(c.who)?.speaker) === l.speaker);
     if (idx < 0) continue;
     const w = clamp01((t - l.startInShot) / 0.3) * clamp01(1 - (t - (l.startInShot + (l.end - l.start))) / 0.4);
     if (w > attn) {
@@ -246,7 +248,8 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
         }
         const d = designOf(c.who)!;
         // lip-sync from this character's own lines
-        const line = d.speaker ? lines.find((l) => l.speaker === d.speaker && t >= l.startInShot && t <= l.startInShot + (l.end - l.start)) : undefined;
+        const spk = c.speaker ?? d.speaker;
+        const line = spk ? lines.find((l) => l.speaker === spk && t >= l.startInShot && t <= l.startInShot + (l.end - l.start)) : undefined;
         const vis = line ? visemeAt(line.text, t - line.startInShot, line.end - line.start, line.chars) : null;
         let pose = r.pose;
         let bob = 0;

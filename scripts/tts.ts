@@ -39,6 +39,10 @@ const SETTINGS: Record<Speaker, {stability: number; similarity_boost: number; st
   MIRA: {stability: 0.4, similarity_boost: 0.8, style: 0.5},
   ITO: {stability: 0.5, similarity_boost: 0.8, style: 0.4},
   RADIO: {stability: 0.7, similarity_boost: 0.8, style: 0.1},
+  KAI: {stability: 0.42, similarity_boost: 0.8, style: 0.45},
+  MUM: {stability: 0.5, similarity_boost: 0.8, style: 0.35},
+  MUM_RADIO: {stability: 0.5, similarity_boost: 0.8, style: 0.35},
+  MAN: {stability: 0.3, similarity_boost: 0.75, style: 0.6},
 };
 
 const voiceFor = (s: Speaker) => {

@@ -98,7 +98,7 @@ if (episode.style === 'cinema') {
   // costume continuity: tees before Day 1, coats from Day 1
   let day = 0;
   for (const s of tl.shots) {
-    if (s.hud) day = s.hud.day;
+    if (s.hud && 'day' in s.hud) day = s.hud.day;
     for (const c of ((s.props as any)?.cast ?? []) as any[]) {
       if (!['you', 'mira', 'ito'].includes(c.who)) continue;
       const outfit = c.outfit ?? 'home';

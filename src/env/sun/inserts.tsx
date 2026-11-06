@@ -269,6 +269,198 @@ export const CloseupScene: React.FC = () => {
     );
   }
 
+  // ── the 1982 thread ─────────────────────────────────────────────────────────────────────────
+  if (v === 'morse') {
+    // a young hand on a Morse key in lamplight: tap … tap-tap … tap-tap-tap (times in c.p.taps, seconds)
+    const taps = (c.p.taps as number[]) ?? [0.5, 1.4, 1.62, 2.5, 2.72, 2.94];
+    const down = taps.some((tt) => t >= tt && t < tt + 0.11);
+    return wrap(
+      '#100E16',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#16131E" />
+        <rect x={0} y={640} width={W} height={440} fill="#5A3822" />
+        {Array.from({length: 8}, (_, k) => (
+          <path key={k} d={`M0,${660 + k * 52} L${W},${640 + k * 56}`} stroke="#4A2E1C" strokeWidth={4} />
+        ))}
+        {/* the key */}
+        <rect x={720} y={700} width={520} height={60} rx={10} fill="#2A2E3A" stroke={INK} strokeWidth={6} />
+        <g transform={`rotate(${down ? 3 : 0},780,700)`}>
+          <path d="M780,690 L1180,640" stroke="#C9CED6" strokeWidth={22} strokeLinecap="round" />
+          <circle cx={1190} cy={636} r={42} fill="#1A1820" stroke={INK} strokeWidth={6} />
+        </g>
+        {/* the hand and the brown wool cuff */}
+        <g transform={`translate(${down ? 0 : 0},${down ? 14 : 0})`}>
+          <path d="M1700,420 Q1450,470 1300,560 L1350,640 Q1500,600 1800,560 Z" fill="#8A6A4A" stroke={INK} strokeWidth={8} />
+          <path d="M1330,560 Q1240,580 1200,610 Q1180,640 1210,650 Q1260,640 1290,630 L1380,640 Z" fill="#E8C4A2" stroke={INK} strokeWidth={6} />
+        </g>
+        {down && <circle cx={1500} cy={260} r={40} fill="#FF5A3A" opacity={0.9} />}
+        <circle cx={1500} cy={260} r={40} fill="none" stroke="#5A2A22" strokeWidth={6} />
+        <Glow x={1300} y={420} r={700} color="#FFD08A" opacity={0.35} />
+      </g>,
+    );
+  }
+
+  if (v === 'plate') {
+    // an old eclipse plate on a light table, under a magnifier; a red pen circles one line that is far too straight
+    const ring = clamp((t - (c.at(c.p.circle, 1.0) ?? 1.0)) / 0.8);
+    return wrap(
+      '#0E0D14',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#FFF6DA" />
+        <rect x={360} y={120} width={1200} height={840} fill="#2C2A28" stroke={INK} strokeWidth={8} />
+        <defs>
+          <radialGradient id="corona1919">
+            <stop offset="0.18" stopColor="#F4EFE6" stopOpacity={0.85} />
+            <stop offset="0.5" stopColor="#C9C3B8" stopOpacity={0.3} />
+            <stop offset="1" stopColor="#2C2A28" stopOpacity={0} />
+          </radialGradient>
+        </defs>
+        <circle cx={960} cy={540} r={330} fill="url(#corona1919)" />
+        {[18, 74, 142].map((a, i) => (
+          <path key={a} d={`M${960 - Math.cos((a * Math.PI) / 180) * 380},${540 - Math.sin((a * Math.PI) / 180) * 380} L${960 + Math.cos((a * Math.PI) / 180) * 380},${540 + Math.sin((a * Math.PI) / 180) * 380}`} stroke="#F4EFE6" strokeWidth={2.5} opacity={i === 0 ? 0.85 : 0.5} />
+        ))}
+        <circle cx={960} cy={540} r={70} fill="#050506" />
+        <text x={400} y={930} fontFamily={fonts.mono} fontSize={28} fill="#C9C3B8">
+          SOBRAL · 29 MAY 1919 · PLATE 4
+        </text>
+        {ring > 0 && <ellipse cx={1260} cy={636} rx={150} ry={64} fill="none" stroke="#E0302A" strokeWidth={10} strokeLinecap="round" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - ring} transform="rotate(18,1260,636)" />}
+        {/* magnifier */}
+        <g transform={`translate(${1150 + Math.sin(f * 0.03) * 30},${600 + Math.cos(f * 0.025) * 20})`}>
+          <circle r={190} fill="#FFFFFF" opacity={0.08} stroke="#3A3442" strokeWidth={22} />
+          <path d="M134,134 L300,300" stroke="#3A3442" strokeWidth={36} strokeLinecap="round" />
+        </g>
+      </g>,
+    );
+  }
+
+  if (v === 'chart') {
+    // three plates' lines, extended across a star chart, meet at one faint star; he writes "22" and taps it 3×
+    const draw = clamp((t - 0.3) / 1.6);
+    const write = clamp((t - 2.0) / 0.6);
+    const star: [number, number] = [1240, 360];
+    const from: [number, number][] = [[200, 900], [520, 1040], [1900, 980]];
+    return wrap(
+      '#0E0D14',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#E9DFC8" />
+        {Array.from({length: 160}, (_, k) => {
+          const x = (k * 263.7) % W;
+          const y = (k * 181.3) % H;
+          return <circle key={k} cx={x} cy={y} r={2 + ((k * 7) % 5)} fill="#2E3A5C" opacity={0.75} />;
+        })}
+        {Array.from({length: 9}, (_, k) => (
+          <path key={k} d={`M0,${k * 140} Q960,${k * 140 - 60} ${W},${k * 140}`} stroke="#B8AC96" strokeWidth={2} fill="none" />
+        ))}
+        {from.map(([x, y], i) => (
+          <path key={i} d={`M${x},${y} L${x + (star[0] - x) * draw},${y + (star[1] - y) * draw}`} stroke="#E0302A" strokeWidth={6} strokeLinecap="round" />
+        ))}
+        <circle cx={star[0]} cy={star[1]} r={9} fill="#2E3A5C" />
+        {draw >= 1 && <circle cx={star[0]} cy={star[1]} r={34} fill="none" stroke="#E0302A" strokeWidth={6} />}
+        {write > 0 && (
+          <text x={star[0] + 60} y={star[1] - 30} fontFamily="'Caveat', 'Comic Sans MS', cursive" fontWeight={700} fontSize={110} fill="#E0302A" opacity={write}>
+            22
+          </text>
+        )}
+      </g>,
+    );
+  }
+
+  if (v === 'letter') {
+    return wrap(
+      '#0E0D14',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#3A2E24" />
+        <g transform="rotate(-3,960,540)">
+          <rect x={520} y={60} width={880} height={1000} fill="#FBF6EA" stroke={INK} strokeWidth={6} />
+          <text x={600} y={170} fontFamily={fonts.mono} fontSize={30} fill="#2A2A2A">
+            NATIONAL ASTRONOMY COUNCIL
+          </text>
+          <text x={600} y={260} fontFamily={fonts.mono} fontSize={26} fill="#2A2A2A">
+            Dear Dr. Ito,
+          </text>
+          {['We have reviewed your proposal concerning', '"artificial structures" in the solar corona.', '', 'The Council cannot support further', 'observations, nor any transmission.', '', 'We would gently suggest a rest.'].map((l, k) => (
+            <text key={k} x={600} y={330 + k * 48} fontFamily={fonts.mono} fontSize={26} fill="#2A2A2A">
+              {l}
+            </text>
+          ))}
+        </g>
+        {/* his thumb covers the name until the reveal */}
+        {!c.p.showName && <ellipse cx={760} cy={258} rx={90} ry={46} fill="#E8C4A2" stroke={INK} strokeWidth={5} />}
+        {!c.p.showName && <path d="M680,300 Q640,420 560,520 L460,520 L560,300 Z" fill="#8A6A4A" stroke={INK} strokeWidth={5} />}
+        <Glow x={960} y={400} r={700} color="#FFD08A" opacity={0.3} />
+      </g>,
+    );
+  }
+
+  if (v === 'photo1919') {
+    // the same print, in Mr. Ito's hand, in the station, 44 years later
+    return wrap(
+      '#0B0E1C',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#1A1E2E" />
+        <g transform={`rotate(${-2 + Math.sin(f * 0.02)},960,540)`}>
+          <rect x={460} y={150} width={1000} height={760} fill="#F4EFE6" stroke={INK} strokeWidth={8} />
+          <rect x={510} y={200} width={900} height={620} fill="#2C2A28" />
+          <defs>
+            <radialGradient id="corona1919b">
+              <stop offset="0.2" stopColor="#F4EFE6" stopOpacity={0.85} />
+              <stop offset="1" stopColor="#2C2A28" stopOpacity={0} />
+            </radialGradient>
+          </defs>
+          <circle cx={960} cy={510} r={260} fill="url(#corona1919b)" />
+          {[18, 74, 142].map((a) => (
+            <path key={a} d={`M${960 - Math.cos((a * Math.PI) / 180) * 300},${510 - Math.sin((a * Math.PI) / 180) * 300} L${960 + Math.cos((a * Math.PI) / 180) * 300},${510 + Math.sin((a * Math.PI) / 180) * 300}`} stroke="#F4EFE6" strokeWidth={2.5} opacity={0.8} />
+          ))}
+          <circle cx={960} cy={510} r={56} fill="#050506" />
+          <text x={960} y={880} textAnchor="middle" fontFamily="'Caveat', 'Comic Sans MS', cursive" fontSize={44} fill="#5A4632">
+            Sobral, 1919
+          </text>
+        </g>
+        <path d="M200,1080 Q360,860 520,880 L560,960 Q420,1000 380,1080 Z" fill="#E8C4A2" stroke={INK} strokeWidth={6} />
+        <path d="M0,1080 L0,900 Q120,880 240,1000 L300,1080 Z" fill="#3E5C4A" stroke={INK} strokeWidth={6} />
+        <Glow x={960} y={500} r={700} color="#FFD08A" opacity={0.25} />
+      </g>,
+    );
+  }
+
+  if (v === 'gauge') {
+    // the harbour tide gauge in torchlight: the water sits exactly on the predicted mark
+    const lap = Math.sin(f * 0.12) * 6;
+    const level = 560 + lap;
+    return wrap(
+      '#05070F',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#06091A" />
+        <rect x={0} y={0} width={W} height={H} fill="url(#gaugeBeam)" />
+        <defs>
+          <radialGradient id="gaugeBeam" cx="0.5" cy="0.45" r="0.5">
+            <stop offset="0" stopColor="#FFF4D6" stopOpacity={0.35} />
+            <stop offset="1" stopColor="#FFF4D6" stopOpacity={0} />
+          </radialGradient>
+        </defs>
+        {/* the stone quay wall */}
+        {Array.from({length: 7}, (_, r) =>
+          Array.from({length: 9}, (_, k) => <rect key={`${r}-${k}`} x={k * 240 - (r % 2) * 120} y={r * 160} width={232} height={152} fill="#3A3D4A" stroke="#2A2D38" strokeWidth={6} />),
+        )}
+        {/* the painted gauge board, metres */}
+        <rect x={820} y={60} width={280} height={1000} fill="#F4EFE6" stroke={INK} strokeWidth={8} />
+        {Array.from({length: 11}, (_, k) => (
+          <g key={k}>
+            <rect x={820} y={60 + k * 100} width={k % 2 ? 140 : 280} height={14} fill="#C2464F" />
+            <text x={1120} y={78 + k * 100} fontFamily={fonts.mono} fontWeight={700} fontSize={44} fill="#F4EFE6">
+              {(6 - k * 0.4).toFixed(1)}
+            </text>
+          </g>
+        ))}
+        {/* the mark Mr. Ito predicted, pencilled on his table, and the water right on it */}
+        <path d={`M760,${560} L1100,${560}`} stroke="#FFD27A" strokeWidth={6} strokeDasharray="20 12" />
+        <rect x={0} y={level} width={W} height={H - level} fill="#1E4A6E" opacity={0.85} />
+        <path d={`M0,${level} q60,-10 120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0`} stroke="#9FD8FF" strokeWidth={6} fill="none" />
+        <Frost amount={0.25} w={W} h={H} seed={9} />
+      </g>,
+    );
+  }
+
   if (v === 'pawprints') {
     const sweep = interpolate(p, [0, 1], [-30, 15]);
     return (
@@ -353,14 +545,28 @@ export const SchoolBus: React.FC<{x: number; base: number; sc: number}> = ({x, b
   );
 };
 
+const NightSky: React.FC<{frame: number}> = ({frame}) => (
+  <g>
+    <rect x={-800} y={-600} width={3600} height={2200} fill="#03050F" />
+    <Stars frame={frame} count={700} w={3400} h={1400} seed={77} maxR={2.4} y0={-500} />
+  </g>
+);
+
+/**
+ * The world's last ordinary minute: Sydney, Tamil Nadu, Manila. `dark` (seconds or "l0+…") snaps the Sun off in
+ * the same instant as the kitchen; after that the sky is stars and the colour drains out.
+ */
 registerSet('montage', {
   layers: (c) => {
     const f = c.frame;
+    const night = c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0);
     if (c.v === 'beach')
       return [
         {
           depth: 0.2,
-          node: (
+          node: night ? (
+            <NightSky frame={f} />
+          ) : (
             <g>
               <DaySky top="#4FB3E8" bottom="#BFE8F8" />
               <circle cx={1500} cy={200} r={90} fill="#FFF6C8" />
@@ -397,7 +603,7 @@ registerSet('montage', {
       ];
     if (c.v === 'field')
       return [
-        {depth: 0.2, node: <DaySky top="#7EC8F0" bottom="#F8E8B8" />},
+        {depth: 0.2, node: night ? <NightSky frame={f} /> : <DaySky top="#7EC8F0" bottom="#F8E8B8" />},
         {
           depth: 0.5,
           node: (
@@ -422,9 +628,9 @@ registerSet('montage', {
         },
       ];
     // bus: the kid (depth 1.4) runs along the near pavement; the bus waits on the road just behind him, at full size
-    const busX = interpolate(c.t, [c.at('l0+1.3', 1.5), c.at('l0+1.3', 1.5) + 2.0], [1420, 3900], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.in(Easing.quad)});
+    const busX = c.p.noBus ? 9999 : interpolate(c.t, [c.at('l0+1.3', 1.5), c.at('l0+1.3', 1.5) + 2.0], [1420, 3900], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.in(Easing.quad)});
     return [
-      {depth: 0.2, node: <DaySky top="#6FC0F0" bottom="#E8F4FA" />},
+      {depth: 0.2, node: night ? <NightSky frame={f} /> : <DaySky top="#6FC0F0" bottom="#E8F4FA" />},
       {
         depth: 0.5,
         node: (
@@ -459,11 +665,14 @@ registerSet('montage', {
       },
     ];
   },
-  light: () => <Glow x={1500} y={200} r={1100} color="#FFF3C8" opacity={0.35} />,
-  grade: () => (
-    <g>
-      <Grade color="#FFF0D0" amount={0.08} />
-      <Vignette amount={0.35} />
-    </g>
-  ),
+  light: (c) => (c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0) ? null : <Glow x={1500} y={200} r={1100} color="#FFF3C8" opacity={0.35} />),
+  grade: (c) => {
+    const night = c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0);
+    return (
+      <g>
+        <Grade color={night ? '#0E1650' : '#FFF0D0'} amount={night ? 0.72 : 0.08} />
+        <Vignette amount={night ? 0.7 : 0.35} />
+      </g>
+    );
+  },
 });

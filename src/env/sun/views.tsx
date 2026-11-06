@@ -159,7 +159,7 @@ export const ThermalScene: React.FC = () => {
   const c = useSetCtx();
   const p = c.t / c.dur;
   const appear = clamp((c.t - 0.4) / 1.2);
-  const z = interpolate(p, [0, 1], [1, 1.1], {easing: ease});
+  const z = c.v === 'star' ? interpolate(p, [0, 1], [1.4, 2.1], {easing: ease}) : interpolate(p, [0, 1], [1, 1.1], {easing: ease});
   const r = rand(Math.floor(c.frame / 2));
   return (
     <AbsoluteFill style={{background: '#06070C'}}>
@@ -186,13 +186,19 @@ export const ThermalScene: React.FC = () => {
           {Array.from({length: 260}, (_, i) => (
             <rect key={i} x={330 + r() * 1260} y={160 + r() * 760} width={4} height={4} fill="#3A1A5A" opacity={0.6} />
           ))}
-          <g transform={`translate(960,540) scale(${z}) translate(-960,-540)`}>
+          <g transform={c.v === 'star' ? `translate(960,540) scale(${z}) translate(${-interpolate(p, [0, 1], [1100, 1420])},${-interpolate(p, [0, 1], [450, 250])})` : `translate(960,540) scale(${z}) translate(-960,-540)`}>
             <circle cx={960} cy={540} r={150} fill="url(#warm)" opacity={0.75 * appear} />
             <circle cx={960} cy={540} r={90} fill="#FFB13B" opacity={0.25 * appear} />
             {/* a faint ring where the real Sun would be: the warm disc is twice as wide (the shell sits at 2 solar radii) */}
             <circle cx={960} cy={540} r={75} fill="none" stroke="#9FE8FF" strokeWidth={3} strokeDasharray="8 7" opacity={0.75 * appear} />
-            {c.v === 'beam' && <path d="M1060,470 L1700,40" stroke="#FFB13B" strokeWidth={5} opacity={0.75 * clamp((c.t - 0.8) / 1)} />}
-            {c.v === 'beam' && <path d="M1060,470 L1700,40" stroke="#E0442A" strokeWidth={18} opacity={0.3 * clamp((c.t - 0.8) / 1)} />}
+            {(c.v === 'beam' || c.v === 'star') && <path d={`M1060,470 L${c.v === 'star' ? '1450,230' : '1700,40'}`} stroke="#FFB13B" strokeWidth={5} opacity={0.75 * (c.v === 'star' ? 1 : clamp((c.t - 0.8) / 1))} />}
+            {(c.v === 'beam' || c.v === 'star') && <path d={`M1060,470 L${c.v === 'star' ? '1450,230' : '1700,40'}`} stroke="#E0442A" strokeWidth={18} opacity={0.3 * (c.v === 'star' ? 1 : clamp((c.t - 0.8) / 1))} />}
+            {c.v === 'star' && (
+              <g>
+                <circle cx={1450} cy={230} r={7} fill="#FFFFFF" />
+                <circle cx={1450} cy={230} r={34 + 6 * Math.sin(c.frame * 0.2)} fill="none" stroke="#9FE8FF" strokeWidth={3} strokeDasharray="8 7" opacity={clamp((c.t - 0.6) / 0.6)} />
+              </g>
+            )}
           </g>
           {/* UI: crosshair, scale bar, readout */}
           <path d="M960,480 L960,510 M960,570 L960,600 M900,540 L930,540 M990,540 L1020,540" stroke="#FFFFFF" strokeWidth={3} />

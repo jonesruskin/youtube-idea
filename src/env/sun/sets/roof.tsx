@@ -12,7 +12,7 @@ import {Drifts, Sky} from './outdoor';
  * Real sizes: telescope mount 1.15 m on its tripod (1.2 m tube), deckchair seat 0.35 m, bollards 0.55 m,
  * fishing boats 8 m with 2.6 m wheelhouses, harbour cranes ~17 m, lighthouse ~17 m.
  */
-const Telescope: React.FC<{x: number; base: number; up?: number}> = ({x, base, up = 0}) => (
+export const Telescope: React.FC<{x: number; base: number; up?: number}> = ({x, base, up = 0}) => (
   <g transform={`translate(${x},${base})`}>
     {/* tripod */}
     <path d="M0,-150 L-90,85 M0,-150 L90,85 M0,-150 L0,85" stroke="#3A3442" strokeWidth={9} strokeLinecap="round" />
@@ -83,16 +83,26 @@ const Parapet: React.FC<{snow: number}> = ({snow}) => (
 
 registerSet('roof', {
   layers: (c) => {
-    const snow = c.v === 'night' ? 0 : 1;
+    // 'dawn' is a summer morning before any of it: Mr. Ito alone on the roof, watching the Sun come up
+    const dawn = c.v === 'dawn';
+    const snow = c.v === 'night' || dawn ? 0 : 1;
     const aur = c.v === 'aurora' ? 1 : 0;
     const timelapse = c.p.timelapse ? c.t * 0.05 : 0;
     return [
       {
         depth: 0.06,
         node: (
-          <g transform={`rotate(${timelapse * 40},960,1600)`}>
-            <Sky frame={c.frame} top="#01020A" mid="#081032" bottom="#1E2A58" stars={1.8} seed={33} />
-          </g>
+          dawn ? (
+            <g>
+              <Sky frame={c.frame} top="#4A6CB0" mid="#F2B07A" bottom="#FFE2A8" stars={0} seed={33} />
+              <circle cx={1240} cy={760 - c.t * 14} r={260} fill="#FFE9A8" opacity={0.4} />
+              <circle cx={1240} cy={760 - c.t * 14} r={96} fill="#FFF6D6" />
+            </g>
+          ) : (
+            <g transform={`rotate(${timelapse * 40},960,1600)`}>
+              <Sky frame={c.frame} top="#01020A" mid="#081032" bottom="#1E2A58" stars={1.8} seed={33} />
+            </g>
+          )
         ),
       },
       ...(aur ? [{depth: 0.12, node: <Aurora frame={c.frame} y={520} intensity={1.15} seed={4} />}] : []),
@@ -100,11 +110,11 @@ registerSet('roof', {
         depth: 0.3,
         node: (
           <g>
-            <CityBlocks seed={52} base={980} color={snow ? '#1B2240' : '#141A33'} frame={c.frame} lights={c.v === 'night' ? 0.7 : 0.25} minH={140} maxH={420} snow={snow} />
+            <CityBlocks seed={52} base={980} color={dawn ? '#6A5A7A' : snow ? '#1B2240' : '#141A33'} frame={c.frame} lights={dawn ? 0.05 : c.v === 'night' ? 0.7 : 0.25} minH={140} maxH={420} snow={snow} />
           </g>
         ),
       },
-      {depth: 0.55, node: <CityBlocks seed={61} base={1020} color={snow ? '#232B4C' : '#1C2240'} frame={c.frame} lights={c.v === 'night' ? 0.6 : 0.2} minH={80} maxH={260} snow={snow} />},
+      {depth: 0.55, node: <CityBlocks seed={61} base={1020} color={dawn ? '#4E4060' : snow ? '#232B4C' : '#1C2240'} frame={c.frame} lights={dawn ? 0 : c.v === 'night' ? 0.6 : 0.2} minH={80} maxH={260} snow={snow} />},
       {
         depth: 1,
         node: (
@@ -126,7 +136,7 @@ registerSet('roof', {
   ),
   grade: (c) => (
     <g>
-      <Grade color={c.v === 'aurora' ? '#1E5A5A' : '#2A3A8A'} amount={0.3} />
+      <Grade color={c.v === 'dawn' ? '#FFE0B0' : c.v === 'aurora' ? '#1E5A5A' : '#2A3A8A'} amount={c.v === 'dawn' ? 0.12 : 0.3} />
       <Vignette amount={0.55} />
     </g>
   ),
