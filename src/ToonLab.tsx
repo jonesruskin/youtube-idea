@@ -85,6 +85,35 @@ const SCENES: Record<string, {cast: CastEntry[]; acts: Act[]; bg: string}> = {
     ],
     acts: [],
   },
+  ground: {
+    bg: '#2A3348',
+    cast: [
+      ...(['you', 'mira', 'ito'] as const).flatMap((who, row) =>
+        (['stand', 'sit', 'sitHug', 'sitChair', 'sitChair', 'kneel', 'crouch'] as const).map((pose, k) => ({
+          who,
+          x: 140 + k * 250,
+          y: 330 + row * 300,
+          depth: 1.0,
+          pose,
+          facing: 'right' as const,
+          outfit: 'cold' as const,
+          seat: k === 4 ? ('crate' as const) : undefined,
+        })),
+      ),
+      {who: 'mira', x: 1880, y: 330, depth: 1.0, pose: 'sitChair', facing: 'left', seat: 'stool', seatLift: 110},
+
+    ],
+    acts: [],
+  },
+  piggy: {
+    bg: '#2A3348',
+    cast: [
+      {who: 'you', x: 700, y: 950, depth: 2.2, facing: 'right', outfit: 'cold', pose: 'carry'},
+      {who: 'mira', x: 700, y: 950, depth: 2.2, outfit: 'cold', carriedBy: 'you'},
+      {who: 'ito', x: 1400, y: 950, depth: 2.2, facing: 'left', outfit: 'cold'},
+    ],
+    acts: [{at: 0, who: 'you', to: 900, dur: 3}],
+  },
   gestures: {
     bg: '#33405A',
     cast: [
@@ -115,7 +144,7 @@ export const ToonLab: React.FC<{scene: string}> = ({scene}) => {
     <ShotProvider shot={shot} fps={30}>
       <AbsoluteFill style={{background: sc.bg}}>
         <svg viewBox="0 0 1920 1080" width={1920} height={1080}>
-          {[420, 680, 900, 950, 960, 400, 560, 1080].map((y) => (
+          {[330, 630, 930, 420, 680, 900, 950, 960, 400, 560, 1080].map((y) => (
             <line key={y} x1={0} x2={1920} y1={y} y2={y} stroke="#ffffff14" strokeWidth={2} />
           ))}
           <Actors cast={sc.cast} acts={sc.acts} />

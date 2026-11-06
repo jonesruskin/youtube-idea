@@ -8,7 +8,7 @@ import {CAST, extra, HERO_PX, type Outfit, type ToonDesign} from './design';
 import {blendFace, type Expr, FACES} from './face';
 import {blendPose, gait, POSES, type PoseName, STRIDE} from './poses';
 import type {PropKind} from './props';
-import {Toon, type ToonState} from './Toon';
+import {Toon, type SeatKind, type ToonState} from './Toon';
 
 /**
  * The acting system. A shot lists its CAST (who stands where, at what depth) and ACTS (timed directions:
@@ -40,6 +40,12 @@ export type CastEntry = {
   watchGlow?: number;
   /** Dog only. */
   wag?: number;
+  /** What a chair-sitting pose sits on (default 'chair'); `seatLift` raises the sitter (px at depth 1) on a tall
+   * stool so their feet rest on its footrest. Floor poses need none. */
+  seat?: SeatKind;
+  seatLift?: number;
+  /** Ride on another cast member's back (piggyback): position follows the carrier every frame. */
+  carriedBy?: Who;
 };
 export type LoopKind = 'wave' | 'nod' | 'shake' | 'shiver' | 'bounce' | 'clap' | 'talk' | 'jump' | 'tremble' | 'pant' | 'scratch' | 'stir';
 export type Act = {
@@ -152,6 +158,24 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
   const lines = shot.timedLines as unknown as LineInfo[];
   const list = cast.filter((c) => !only || only.includes(c.who)).sort((a, b) => a.y * a.depth - b.y * b.depth || a.depth - b.depth);
   const resolved = list.map((c, i) => actorAt(c, acts, t, frame, lines, i));
+  // piggyback riders follow their carrier: on the back, hips at the carrier's waist
+  list.forEach((c, i) => {
+    if (!c.carriedBy) return;
+    const j = list.findIndex((o) => o.who === c.carriedBy);
+    if (j < 0) return;
+    const carrier = resolved[j];
+    const cd = designOf(list[j].who);
+    const H = HERO_PX * (cd?.height ?? 1) * list[j].depth;
+    const dir = carrier.facing === 'left' ? -1 : 1;
+    // the rider's hips sit at the carrier's lower back (62% of his height), a little behind him, so her head
+    // shows over his shoulder; her knees (pose 'carried') wrap forward round his waist
+    const rd = designOf(c.who)!;
+    const Hr = HERO_PX * rd.height * c.depth;
+    const thighR = ((Hr - 1.9 * Hr * rd.head) * 0.52) / 2;
+    const hipAbove = thighR * (Math.cos((78 * Math.PI) / 180) + Math.cos((20 * Math.PI) / 180));
+    const bob = carrier.moving ? Math.abs(Math.sin(carrier.moving.phase)) * H * 0.012 : 0;
+    resolved[i] = {...resolved[i], x: carrier.x - dir * H * 0.21, y: carrier.y - H * 0.67 + hipAbove - bob, facing: carrier.facing, moving: null, pose: POSES.carried, poseName: 'carried'};
+  });
   // attention: who is talking right now (eased in over 0.3 s, out over 0.4 s after the line ends)
   let speakerIdx = -1;
   let attn = 0;
@@ -187,9 +211,19 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
     const dir = Math.sign(dx) * (r.facing === 'left' ? -1 : 1);
     return {look: [r.look[0] + (dir * 0.75 - r.look[0]) * k, r.look[1] + (-0.08 - r.look[1]) * k], turn: r.turn + (r.facing === 'front' ? dir * 0.3 * k : 0)};
   };
+  // draw order: back to front by ground line; a piggyback rider goes just behind their carrier
+  const order = list.map((c, i) => i).sort((a, b) => {
+    const key = (i: number) => {
+      const c = list[i];
+      const j = c.carriedBy ? list.findIndex((o) => o.who === c.carriedBy) : -1;
+      return j >= 0 ? list[j].y * list[j].depth - 0.01 : c.y * c.depth;
+    };
+    return key(a) - key(b);
+  });
   return (
     <g>
-      {list.map((c, i) => {
+      {order.map((i) => {
+        const c = list[i];
         const r = resolved[i];
         if (c.who === 'biscuit') {
           const running = r.moving?.kind === 'run';
@@ -270,7 +304,15 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
           rim: c.rim ?? true,
           opacity: r.opacity,
           watchGlow: r.watchGlow,
+          noShadow: !!c.carriedBy,
         };
+        const chairSit = r.poseName === 'sitChair';
+        if (chairSit && c.seat !== 'none') {
+          const lift = c.seatLift ?? 0;
+          st.seat = c.seat ?? 'chair';
+          st.seatLift = lift;
+          st.y -= lift * c.depth;
+        }
         return <Toon key={`${c.who}${i}`} d={d} s={st} />;
       })}
     </g>

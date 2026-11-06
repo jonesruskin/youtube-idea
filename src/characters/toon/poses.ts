@@ -44,6 +44,8 @@ export const POSES = {
   sit: P({lLeg: [86, 0], rLeg: [90, 0], lArm: [20, 30], rArm: [30, 30], lean: -4}),
   sitChair: P({lLeg: [82, -82], rLeg: [86, -86], lArm: [20, 40], rArm: [30, 40]}),
   sitHug: P({lLeg: [128, -112], rLeg: [134, -116], lArm: [70, 60], rArm: [80, 60], lean: 6}),
+  /** Riding piggyback: knees forward around the carrier's waist, arms over his shoulders. */
+  carried: P({lLeg: [78, -58], rLeg: [84, -62], lArm: [118, 20], rArm: [126, 24], lean: 8}),
   shiver: P({lArm: [30, 130], rArm: [40, 130], crouch: 0.1}),
   push: P({lArm: [80, -10], rArm: [90, -10], lean: 14, lLeg: [-20, 0], rLeg: [20, 0]}),
   cane: P({rArm: [30, 20], lean: 6}),

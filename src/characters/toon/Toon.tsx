@@ -29,7 +29,14 @@ export type ToonState = {
   rim: boolean;
   opacity: number;
   watchGlow: number;
+  /** A seat drawn under the hips for chair-sitting poses, and how far the seat lifts the character off the floor
+   * (local px at scale 1; a kid on a tall stool has her feet on its footrest, not in the air). */
+  seat?: SeatKind;
+  seatLift?: number;
+  /** No ground shadow (a piggyback rider is off the ground). */
+  noShadow?: boolean;
 };
+export type SeatKind = 'chair' | 'stool' | 'crate' | 'bench' | 'none';
 
 const rad = (d: number) => (d * Math.PI) / 180;
 const seg = (x: number, y: number, len: number, deg: number): [number, number] => [x + Math.sin(rad(deg)) * len, y + Math.cos(rad(deg)) * len];
@@ -61,7 +68,8 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
   const lL = legC(p.lLeg);
   const rL = legC(p.rLeg);
   const vert = (l: Limb) => thigh * Math.cos(rad(l[0])) + shin * Math.cos(rad(l[0] + l[1]));
-  const hipY = -Math.max(vert(lL), vert(rL), legLen * 0.18) + (d.elder ? 2 : 0) + s.bob * (R / 60);
+  // the hips never go below the seat of the trousers: sitting on the floor puts the bottom ON the floor
+  const hipY = -Math.max(vert(lL), vert(rL), R * 0.28) + (d.elder ? 2 : 0) + s.bob * (R / 60);
   const shY = hipY - torsoH * (cold ? 0.98 : 1);
   const headY = shY - R * 0.78;
   const hipX = side ? bw * 0.08 : bw * 0.24;
@@ -337,7 +345,15 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
           </filter>
         </defs>
       )}
-      <ellipse cx={0} cy={2} rx={R * 0.9} ry={R * 0.16} fill="#000" opacity={0.22 * Math.min(1, 1 - p.crouch * 0.2)} />
+      {(() => {
+        const lift = s.seatLift ?? 0;
+        return (
+          <g>
+            {!s.noShadow && <ellipse cx={0} cy={2 + lift} rx={R * (s.seat && s.seat !== 'none' ? 1.3 : 0.9)} ry={R * 0.16} fill="#000" opacity={0.22 * Math.min(1, 1 - p.crouch * 0.2)} />}
+            {s.seat && s.seat !== 'none' && <Seat kind={s.seat} top={hipY + R * 0.26} floor={lift} w={bw} R={R} sw={sw} side={side} ink={ink} />}
+          </g>
+        );
+      })()}
       <g filter={rimF} transform={`rotate(${p.lean},0,${hipY})`}>
         {/* far arm (behind the body) */}
         <Stroke dd={LA.d} w={armW} color={top} />
@@ -469,6 +485,54 @@ const Beard: React.FC<{style: 'full' | 'goatee' | 'chinstrap'; R: number; headY:
       ))}
       {/* skin around the lips so the mouth reads as the mouth */}
       <ellipse cx={fx} cy={mouthY + R * 0.06} rx={R * 0.3} ry={R * 0.17} fill={skin} />
+    </g>
+  );
+};
+
+/** The seat under a sitting character, in the character's local space (x=0 at the hips, y=0 at the feet, `floor`
+ * px further down when the seat lifts them). Facing right, the back of a chair is on the left. */
+const Seat: React.FC<{kind: SeatKind; top: number; floor: number; w: number; R: number; sw: number; side: boolean; ink: string}> = ({kind, top, floor, w, R, sw, side, ink}) => {
+  const x0 = side ? -w * 1.05 : -w * 1.1;
+  const x1 = side ? w * 0.55 : w * 1.1;
+  const leg = Math.max(sw * 1.6, R * 0.09);
+  const wood = '#8A5A36';
+  const woodD = '#6E4428';
+  if (kind === 'crate')
+    return (
+      <g>
+        <rect x={x0} y={top} width={x1 - x0} height={floor - top} rx={R * 0.04} fill={wood} stroke={ink} strokeWidth={sw * 0.8} />
+        {[0.33, 0.66].map((k) => (
+          <path key={k} d={`M${x0},${top + (floor - top) * k} L${x1},${top + (floor - top) * k}`} stroke={woodD} strokeWidth={sw * 0.7} />
+        ))}
+        <path d={`M${x0},${top} L${x1},${floor} M${x1},${top} L${x0},${floor}`} stroke={woodD} strokeWidth={sw * 0.5} opacity={0.6} />
+      </g>
+    );
+  if (kind === 'stool')
+    return (
+      <g>
+        <path d={`M${x0 + R * 0.15},${top} L${x0 + R * 0.05},${floor} M${x1 - R * 0.15},${top} L${x1 - R * 0.05},${floor}`} stroke={ink} strokeWidth={leg + sw * 1.2} />
+        <path d={`M${x0 + R * 0.15},${top} L${x0 + R * 0.05},${floor} M${x1 - R * 0.15},${top} L${x1 - R * 0.05},${floor}`} stroke="#C98E5E" strokeWidth={leg} />
+        {floor > R * 0.3 && <path d={`M${x0 + R * 0.08},${0} L${x1 - R * 0.08},${0}`} stroke={ink} strokeWidth={sw * 1.6} />}
+        <rect x={x0} y={top - R * 0.06} width={x1 - x0} height={R * 0.18} rx={R * 0.08} fill="#E3A15A" stroke={ink} strokeWidth={sw * 0.8} />
+      </g>
+    );
+  if (kind === 'bench')
+    return (
+      <g>
+        <rect x={x0 - R * 0.6} y={top - R * 0.05} width={x1 - x0 + R * 1.2} height={R * 0.2} rx={R * 0.05} fill={wood} stroke={ink} strokeWidth={sw * 0.8} />
+        <path d={`M${x0 - R * 0.4},${top + R * 0.15} L${x0 - R * 0.4},${floor} M${x1 + R * 0.4},${top + R * 0.15} L${x1 + R * 0.4},${floor}`} stroke={ink} strokeWidth={leg + sw} />
+      </g>
+    );
+  // chair: seat, four legs (two visible), and a backrest behind the sitter
+  const back = side ? x0 : x0;
+  return (
+    <g>
+      <path d={`M${back + R * 0.05},${top} L${back + R * 0.05},${top - R * 1.5}`} stroke={ink} strokeWidth={leg + sw * 1.4} strokeLinecap="round" />
+      <path d={`M${back + R * 0.05},${top} L${back + R * 0.05},${top - R * 1.5}`} stroke={woodD} strokeWidth={leg} strokeLinecap="round" />
+      {!side && <rect x={x0} y={top - R * 1.4} width={x1 - x0} height={R * 0.5} rx={R * 0.1} fill={wood} stroke={ink} strokeWidth={sw * 0.8} />}
+      <path d={`M${x0 + R * 0.1},${top} L${x0 + R * 0.1},${floor} M${x1 - R * 0.1},${top} L${x1 - R * 0.1},${floor}`} stroke={ink} strokeWidth={leg + sw * 1.2} />
+      <path d={`M${x0 + R * 0.1},${top} L${x0 + R * 0.1},${floor} M${x1 - R * 0.1},${top} L${x1 - R * 0.1},${floor}`} stroke={woodD} strokeWidth={leg} />
+      <rect x={x0} y={top - R * 0.05} width={x1 - x0} height={R * 0.18} rx={R * 0.05} fill={wood} stroke={ink} strokeWidth={sw * 0.8} />
     </g>
   );
 };
