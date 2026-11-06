@@ -1,4 +1,4 @@
-# 10 · File 001 logic audit — "The Sun Went Out" (v2.1)
+# 10 · File 001 logic audit — "The Sun Went Out" (v3)
 
 Every question a sharp viewer could type into the comments, answered before we publish. If a claim
 in the script can't be defended here, it gets cut or fixed. Script: `episodes/sun01-the-sun-went-out/script.ts`.
@@ -10,6 +10,17 @@ every element of it turned and opened at once. The Sun's **mass** is still there
 **light** is caught by the shell and beamed away, so Earth freezes. The shell has to shed a small fraction of
 that power as waste heat, which is why a thermal camera can see it. The family deduces each of these facts from
 real evidence, in order.
+
+## v3 story logic: the knock (the episode's twist)
+| Question a viewer will ask | Answer |
+|---|---|
+| Why does the shell close *now*? | In 1982 young Haruki Ito found three straight lines in eclipse plates (1919 onward), worked out that the swarm's rings share one axis pointing at a star **22 light-years** away, and sent it a radio knock (1, 2, 3). Radio travels at light speed: 22 years there, 22 back. 1982 + 44 = **2026**. The shell closed when the answer arrived. |
+| Why was Ito ready at 6:52? | He knew the year, not the day. N: "a bag he'd packed the night before"; he watched every sunrise for 44 years to check it was still there. |
+| Why does the count only come on Day 365? | It doesn't. It has been knocking back since Day 0, on the frequency Ito used in 1982. Nobody's radio was listening there. Ito spent the year building a receiver ("Something to listen with") and points it at the Sun on Day 365. Then he tells the world and everyone retunes. |
+| Is it counting planets? | That is the family's first (natural) reading: 1, 2, 3 then silence, so Mercury, Venus, Earth. It is actually Ito's own rhythm (1 / 2-2 / 3-3-3) echoed back. The audio and the Morse close-ups match on purpose. |
+| Where does the beam go? | To that same star, out of the planets' plane. Ito recognises it on Day 300 and whispers "Twenty-two". |
+| Is the timeline consistent for Ito? | 30 in 1982, so 74 in 2026, so he is still a retired astronomer and still has the brass telescope (shown in both timelines). |
+| What about the earlier logic (Venus, tides, the slats)? | Unchanged and still audited below. The 8:20 race and the one-second Sun were cut in v3: the family could not see the first, and the second was unclear. |
 
 ## The shell: how something that size can close in one second (v2.1)
 The obvious objection: *the Sun is enormous; nobody could build a shell around it in a morning.* Correct, and
@@ -88,7 +99,7 @@ Notes:
 - **Aurora.** Coronal mass ejections take 1–4 days to arrive. A storm launched about 1 day before the shell closed arrives on Day 3, which matches "left the Sun four days ago" (Day 3 + 1 day before). Earth's magnetic field is unaffected, so an aurora is possible. The city is at about 55° N and the storm is strong, so a visible overhead aurora is plausible (as at 55° N in May 2024).
 - **The Moon goes dark.** It has no light of its own. A waning crescent in the morning sky becomes a black sliver against the stars (rendered as a faint earthshine-free silhouette).
 - **The fire.** On Day 7 the neighbour behind door 3B (same landing) burns furniture indoors: smoke you can see, carbon monoxide you can't (the real winter killer). Everyone evacuates.
-- **The one-second Sun.** One band of the shell turns back open for 1 s; the light arrives about 8 minutes later, hence "Eight minutes later". The narrator cuts from the space shot to the surface, matching the delay.
+- **The one-second Sun** was cut in v3 (it was unexplained on screen).
 - **Phones.** The networks jam from load in the first minute (it happens at every mass event). The grid stays up until Day 7, so phones still charge.
 - **Lighting.** After 06:52 it is always night. On-screen light sources are only torches, candles, streetlights (until Day 7), the aurora, station lamps, the radio dial, the thermal screen and the one-second flash. No unmotivated daylight.
 

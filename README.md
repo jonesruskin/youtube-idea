@@ -4,18 +4,22 @@
 
 A YouTube channel of animated space-science survival stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev): the narration is voiced locally with Kokoro-82M (Apache-2.0), and the score is synthesised from scratch.
 
-**Launch episode: File 001, "The Sun Went Out. Here's Your Day 1 to Day 365" (v2.1)** is in `renders/`:
-- `sun01.mp4`: about 8:40, 1080p web copy with soft English subtitles. The upload master `sun01-hq.mp4` is git-ignored.
-- **The story:** at 6:44 a shell around the Sun closes. It wasn't built that morning: it had been there for a century, furled edge-on like an open blind, and someone closed it. You, your sister Mira, Biscuit the dog and Mr. Ito, the astronomer upstairs, survive the freeze and solve it in six reveals, each proven from real evidence: light delay, tides, a thermal camera, the blind, an energy beam, a signal. It ends on a cliffhanger into Part 2.
-- **Built to the genre's numbers:**
-  - 140 shots at about 3.6 s each
-  - a development every 30 s or less, two mid-video re-hooks, and 14 laughs
-  - true whip pans, a Day tag with a year bar, and characters who look at whoever is talking
-  - every prop drawn to real-world scale (see `ScaleLab`)
-  - Foley, a real NASA Earth, and voices by Kokoro (Mr. Ito on a British voice)
-  - an original synthesised score with a recurring "shell" motif
-- `sun01.srt` (captions), `sun01-described.srt` (with stage directions), three thumbnails for YouTube's Test & Compare (`sun01-thumbnail.png`, `-b`, `-c`), and `sun01-metadata.md` (title, description with chapters and 14 science sources, tags, mid-roll times, end-screen layout, pinned comment)
-- Format, cast and review gates: [`docs/09-series-bible.md`](docs/09-series-bible.md). Logic audit, shell physics and the Episode 2 answer: [`docs/10-sun01-logic-audit.md`](docs/10-sun01-logic-audit.md). Script: `episodes/sun01-the-sun-went-out/script.ts`.
+**Launch episode: File 001, "The Sun Went Out. Day 1 to Day 365" (v3)** is in `renders/`:
+- `sun01.mp4`: about 9:30, 1080p web copy with soft English subtitles. The upload master `sun01-hq.mp4` is git-ignored.
+- **The story:** grown-up Mira tells the year she was eight and the Sun went out. With her brother Kai, their dog Biscuit and Mr. Ito, the retired astronomer upstairs, she works it out clue by clue: light delay, tides, a thermal camera, a shell that was always there, a beam to one star. Intercut, unnarrated, a young astronomer works through one night in a mountain observatory. The twist: it is 1982, he is Mr. Ito, and the shell's "count" is his own knock coming back.
+- **Craft:**
+  - 162 shots at about 3.5 s each, a development every ≤30 s, and seven turns
+  - a first-person narrator and named characters with their own voices (Kai and Mum added)
+  - a silent second timeline, lint-gated against early reveals
+  - real-world scale, and nobody floating (auto seats, grounded poses, attached piggybacks)
+- Also in `renders/`:
+  - `sun01.srt` (captions) and `sun01-described.srt`
+  - three thumbnails for YouTube's Test & Compare: `sun01-thumbnail.png` WHO BUILT THIS?, `-b` HE KNEW and `-c` 1982
+  - `sun01-metadata.md` (title, description with chapters and sources, tags, mid-rolls, end screen, pinned comment)
+- **Docs:**
+  - screenplay, clue map and cause→effect links: [`docs/11-sun01-v3-screenplay.md`](docs/11-sun01-v3-screenplay.md)
+  - series bible (12 standalone Files, narrators, casts, ElevenLabs voice and music casting): [`docs/09-series-bible.md`](docs/09-series-bible.md)
+  - physics: [`docs/10-sun01-logic-audit.md`](docs/10-sun01-logic-audit.md)
 
 **Earlier pilot, "What If Everything You Touched Lost Its Gravity?"** (the Zero-G episode, held for a later slot):
 - `ep01.mp4`: ~9:10, 1080p (web-size copy). No voiceover yet; it has an original score and SFX.
