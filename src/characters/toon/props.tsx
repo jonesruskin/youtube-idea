@@ -24,7 +24,8 @@ export type PropKind =
   | 'bag'
   | 'photo'
   | 'tideTable'
-  | 'ear';
+  | 'ear'
+  | 'tubeCase';
 
 /** Props drawn at the hand position (origin = hand centre). R = the holder's head radius. */
 export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({kind, R, frame}) => {
@@ -199,6 +200,15 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
           <rect x={R * 0.05} y={-R * 0.3} width={R * 0.28} height={R * 0.08} fill="#7FE8FF" />
           <path d={`M${R * 0.3},${-R * 0.4} L${R * 0.55},${-R * 1.0}`} stroke={ink} strokeWidth={sw} />
           <path d={`M${R * 0.25},${-R * 1.25} Q${R * 0.55},${-R * 0.75} ${R * 0.95},${-R * 1.05} Q${R * 0.65},${-R * 1.3} ${R * 0.25},${-R * 1.25} Z`} fill="#C9CED6" stroke={ink} strokeWidth={sw} />
+        </g>
+      );
+    case 'tubeCase':
+      // the telescope's long leather case, carried in both arms
+      return (
+        <g transform={`rotate(-12)`}>
+          <rect x={-R * 2.2} y={-R * 0.32} width={R * 3.4} height={R * 0.64} rx={R * 0.3} fill="#7A4E30" stroke={ink} strokeWidth={sw} />
+          <rect x={-R * 2.2} y={-R * 0.32} width={R * 0.5} height={R * 0.64} rx={R * 0.2} fill="#5A3822" stroke={ink} strokeWidth={sw * 0.8} />
+          <path d={`M${-R * 1.4},${-R * 0.32} Q${-R * 0.4},${-R * 1.0} ${R * 0.6},${-R * 0.32}`} stroke="#5A3822" strokeWidth={sw} fill="none" />
         </g>
       );
     default:

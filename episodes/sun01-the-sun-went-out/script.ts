@@ -181,7 +181,7 @@ const shots: Shot[] = [
     action: 'Close on Ito, calm in the torchlight.',
     lines: [N('Mr. Ito, from upstairs.')],
   }),
-  sh('packed', stage('apartment', 'door', push(2.8, 3.0, 1560, 780), [c(IT, 1590, 930, {facing: 'left', hold: 'torch', pose: 'torch', holdL: 'bag', outfit: 'home'})], [{at: 0.3, who: IT, look: [-0.4, 0.4]}, {at: 'l0+1.2', who: IT, loop: 'nod', dur: 0.8}]), {
+  sh('packed', stage('apartment', 'door', push(2.4, 2.7, 1560, 800, 1540, 840), [c(IT, 1590, 930, {facing: 'left', hold: 'bag', pose: 'stand', holdL: 'torch', outfit: 'home'})], [{at: 0.3, who: IT, look: [-0.4, 0.4]}, {at: 'l0+1.2', who: IT, loop: 'nod', dur: 0.8}]), {
     action: 'Close on the canvas bag in his hand.',
     lines: [N("He had a torch, a radio, and a bag he'd packed the night before.")],
   }),
@@ -239,7 +239,7 @@ const shots: Shot[] = [
     lines: [I('Roof. Bring the telescope.')],
   }),
   sh('six-floors', stage('stairs', 'evac', move([1.2, 500, 600], [1.2, 1100, 620]), [
-    c(Y, 200, 940, {pose: 'carry', facing: 'right', expr: 'sleepy'}),
+    c(Y, 200, 940, {pose: 'carry', hold: 'tubeCase', facing: 'right', expr: 'sleepy'}),
     c(MI, 60, 940, {facing: 'right'}),
   ], [{at: 0, who: Y, to: 1300, dur: 3.2}, {at: 0, who: MI, to: 1150, dur: 3.2}]), {
     beats: ['laugh'],
@@ -415,7 +415,7 @@ const shots: Shot[] = [
     action: 'Two grown men in a tug-of-war over the last electric heater.',
     lines: [N('Two grown men fought over the last heater.')],
   }),
-  sh('theyll-learn', stage('market', 'grab', push(2.4, 2.6, 1200, 640), [c(IT, 1200, 940, {outfit: 'cold', facing: 'left', holdL: 'bag', expr: 'neutral'})]), {
+  sh('theyll-learn', stage('market', 'grab', push(2.4, 2.6, 1200, 640), [c(IT, 1200, 940, {outfit: 'cold', facing: 'left', holdL: 'bag', expr: 'neutral'})], [{at: 'l0+0.3', who: IT, loop: 'shake', dur: 0.8}, {at: 'l0+1.4', who: IT, look: [0.6, 0.4]}]), {
     beats: ['laugh'],
     action: 'Ito watches the fight, deadpan.',
     lines: [I("Heaters need electricity. They'll learn.")],
@@ -465,7 +465,7 @@ const shots: Shot[] = [
     cue: 'wonder',
     transition: 'fade',
     action: 'The harbour. Torchlight on boats and black water.',
-    lines: [N('So Kai and I went to the harbour.')],
+    lines: [N('So, Kai and I walked down to the harbour.')],
   }),
   sh('gauge', sc('closeup', {v: 'gauge'}), {
     action: 'The torch finds the painted tide gauge. The water sits exactly on Ito’s pencilled mark.',
@@ -886,7 +886,7 @@ const shots: Shot[] = [
   }),
   sh('you-knew', stage('metro', 'workshop', push(2.8, 3.0, 860, 680), [c(MI, 860, 900, {outfit: 'cold', facing: 'right', expr: 'surprised'}), c(IT, 1000, 900, {outfit: 'cold', facing: 'left'})]), {
     action: 'Mira, sharp.',
-    lines: [M('You knew about the lines?')],
+    lines: [M("You've seen those lines before?")],
   }),
   sh('nobody-listened', stage('metro', 'workshop', push(2.8, 3.1, 1000, 600), [c(IT, 1000, 900, {outfit: 'cold', facing: 'left', expr: 'sad', look: [-0.6, 0.7]})], [{at: 0.2, who: IT, loop: 'shake', dur: 0.9}, {at: 'l0+1.6', who: IT, look: [-0.9, 0.9]}]), {
     beats: ['loop'],
@@ -986,7 +986,7 @@ const shots: Shot[] = [
   }),
   sh('ear', stage('metro', 'workshop', push(2.8, 3.0, 1000, 600), [c(IT, 1000, 900, {outfit: 'cold', facing: 'front', pose: 'holdBoth', hold: 'ear', expr: 'neutral'})]), {
     action: 'Ito, holding it up.',
-    lines: [I('An ear.', 0.4)],
+    lines: [I('Something to listen with.', 0.4)],
   }),
 
   // ══ DAY 300 · the thread ═══════════════════════════════════════════════════════════════════
@@ -1188,7 +1188,7 @@ const shots: Shot[] = [
   }),
 
   // ══ CODA ═══════════════════════════════════════════════════════════════════════════════════
-  sh('world-listen-beach', stage('montage', 'beach', hold(1.1, 1000, 640), [c('extra:56', 1000, 990, {facing: 'front', outfit: 'cold', hold: 'radio', pose: 'holdBoth', expr: 'focused'}, 1.0)], [], {dark: 0, boardX: 4000}), {
+  sh('world-listen-beach', stage('montage', 'beach', hold(1.1, 1000, 640), [c('extra:56', 1000, 1060, {facing: 'front', outfit: 'cold', hold: 'radio', pose: 'holdBoth', expr: 'focused'}, 1.0)], [], {dark: 0, boardX: 4000}), {
     hud: {place: 'SYDNEY', time: 'DAY 365'},
     cue: 'afterglow',
     transition: 'fade',

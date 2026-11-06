@@ -32,7 +32,7 @@ VOICES = {
 }
 
 # Pronunciation fixes (Kokoro inline phonemes); the script and captions keep normal spelling.
-PRONOUNCE = {"Mira": "[Mira](/mˈɪɹə/)", "Ito": "[Ito](/ˈiːtoʊ/)"}
+PRONOUNCE = {"Mira": "[Mira](/mˈɪɹə/)", "Ito": "[Ito](/ˈiːtoʊ/)", "Kai": "[Kai](/kˈaɪ/)"}
 
 def spoken(text):
     for word, sub in PRONOUNCE.items():

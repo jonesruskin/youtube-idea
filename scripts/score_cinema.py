@@ -550,7 +550,33 @@ def render(tl):
     for r in regions:
         c, s, e = r["cue"], r["start"], r["end"]
         L = e - s
-        if c == "open":
+        if c == "y1982":
+            # 1982: a lonely music box playing the theme slowly, tape hiss, a cold room tone. The same tune Mr. Ito
+            # hums in the present (the audio clue), in a different instrument.
+            mix.add("fx", s, (filt(sos_bp(2000, 9000), rng.standard_normal(int((L + 1) * SR)).astype(np.float32)) * 0.012)[:, None].repeat(2, 1), 1.0)
+            mix.add("music", s, strings(["D3", "A3"], L, a=1.5, r=1.5, bright=1200, voices=(-4, 4)), 0.35)
+            t, i = s + 0.4, 0
+            while t < e - 0.3:
+                b, ln, n = THEME_MINOR[i % len(THEME_MINOR)]
+                mix.add("music", t, bell(n[:-1] + str(int(n[-1]) + 1), 2.2, 0.32, ratio=4.0), 0.55)
+                t += max(0.42, ln * 0.62)
+                i += 1
+        elif c == "dawn1982":
+            # the reveal: the music box again, then the sunrise swells into the full theme in D major
+            dawn = shots["obs-dawn"]
+            sun = dawn["start"] + 0.8 + 1.0
+            t, i = s + 0.3, 0
+            while t < sun - 0.3:
+                b, ln, n = THEME_MINOR[i % len(THEME_MINOR)]
+                mix.add("music", t, bell(n[:-1] + str(int(n[-1]) + 1), 2.2, 0.32, ratio=4.0), 0.55)
+                t += max(0.42, ln * 0.62)
+                i += 1
+            mix.add("hits", sun - 2.4, riser(2.4, 0.8), 0.8)
+            mix.add("hall", sun, organ(["D2", "A2", "D3", "F#3", "A3", "D4"], e - sun, a=0.6, r=2.0), 1.1)
+            mix.add("hall", sun, choir(["D4", "F#4", "A4", "D5"], e - sun, "ah", a=0.8, r=2.0), 0.9)
+            mix.add("music", sun + 0.4, strings(["D3", "A3", "F#4", "A4"], e - sun - 0.4, a=1.5, r=2.0, bright=3200), 0.8)
+            melody(mix, sun + 0.6, e, THEME_MAJOR, 64, "piano", 0.6)
+        elif c == "open" and "shell-closes" in shots:
             # the Sun roaring; plates clanking into place; the last lock is a braam
             roar = filt(sos_lp(900), brown(int((L + 1) * SR)))
             mix.add("fx", s, pan((roar * 0.5).astype(np.float32), 0), 1.0)
@@ -743,6 +769,22 @@ def render(tl):
         mix.add("fx", shots["bark"]["start"] + 0.35, bark(1.0, far=True), 1.0)
     if "biscuit-bolts" in shots:
         mix.add("fx", shots["biscuit-bolts"]["start"] + 0.12, slam(1.0), 1.0)
+    # Morse key: a click and a short 700 Hz tone on every tap of every Morse close-up
+    for sh in tl["shots"]:
+        p = sh.get("props") or {}
+        if sh["scene"] == "closeup" and p.get("v") == "morse":
+            for tt in p.get("taps") or [0.6, 1.5, 1.72, 2.6, 2.82, 3.04]:
+                mix.add("fx", sh["start"] + tt, tick(False, 1.2), 0.9)
+                mix.add("fx", sh["start"] + tt, beep(700, 0.1, 0.8), 0.6)
+        # Ito's three knuckle taps (acting loop 'tap'): three small knocks across the loop
+        for a in (p.get("acts") or []):
+            if a.get("loop") == "tap" and isinstance(a.get("at"), (int, float)):
+                d = a.get("dur", 1.2)
+                for k in range(3):
+                    mix.add("fx", sh["start"] + a["at"] + d * (k + 0.5) / 3, knock(0.45), 0.6)
+    if "obs-phone" in shots:
+        ph = shots["obs-phone"]
+        mix.add("fx", ph["start"] + 0.4, static(1.6, 0.6), 0.5)
     if "this-year" in shots:
         ty = shots["this-year"]
         span = max(1.2, (ty["end"] - ty["start"]) * 0.55)
