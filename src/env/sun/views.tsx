@@ -233,7 +233,7 @@ export const ThermalScene: React.FC = () => {
   );
 };
 
-/** Title card: the lattice Sun and the episode title. */
+/** Title card: an empty patch of sky where the Sun was, and the episode title. */
 export const TitleScene: React.FC = () => {
   const c = useSetCtx();
   const a = clamp(c.t / 0.8);
@@ -243,8 +243,9 @@ export const TitleScene: React.FC = () => {
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%">
         <Stars frame={c.frame} count={500} w={W} h={H} seed={88} maxR={2} />
         <g transform={`translate(960,470) scale(${s}) translate(-960,-470)`}>
-          <circle cx={960} cy={420} r={330} fill="none" stroke="#FF7A2A" strokeWidth={26} opacity={0.12} filter="blur(14px)" />
-          <Shell cx={960} cy={420} r={300} turn={1} spin={c.frame * 0.004} seam={0.55} frame={c.frame} />
+          {/* where the Sun was: nothing, just the ghost of its glow fading from the sky (no answers yet) */}
+          <circle cx={960} cy={420} r={330} fill="#FF9E3A" opacity={0.1 * (1 - clamp(c.t / c.dur))} filter="blur(30px)" />
+          <circle cx={960} cy={420} r={150} fill="none" stroke="#FFB13B" strokeWidth={3} strokeDasharray="10 12" opacity={0.35} />
           <text x={960} y={860} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={120} fill="#F4EFE6" letterSpacing={8} opacity={a}>
             THE SUN WENT OUT
           </text>
@@ -278,7 +279,7 @@ export const EndScene: React.FC = () => {
           return <circle key={i} cx={960} cy={cy} r={rr} fill="none" stroke="#7FE8FF" strokeWidth={4} opacity={0.35 * (1 - (rr - r * 1.08) / (480 * (r / 260)))} />;
         })}
         <text x={960} y={900 - 420 * k} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={84 - 18 * k} fill="#F4EFE6" letterSpacing={6} opacity={title}>
-          PART 2 · THE REPLY
+          NEXT FILE · THE REPLY
         </text>
         <text x={960} y={556} textAnchor="middle" fontFamily={fonts.ui} fontWeight={700} fontSize={34} fill="#9FE8FF" letterSpacing={3} opacity={slots}>
           WHAT WOULD YOU SAY BACK? TELL US BELOW ↓

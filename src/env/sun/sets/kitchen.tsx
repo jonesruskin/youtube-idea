@@ -206,11 +206,6 @@ const Room: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
       {/* rug under the table */}
       <ellipse cx={1160} cy={955} rx={360} ry={38} fill="#3E7CB1" opacity={0.85} />
       <ellipse cx={1160} cy={955} rx={320} ry={28} fill="none" stroke="#F2C94C" strokeWidth={5} strokeDasharray="14 10" />
-      {/* Mira's tall stool */}
-      <g transform="translate(1180,850)">
-        <rect x={-46} y={-10} width={92} height={16} rx={6} fill="#E3A15A" stroke={INK} strokeWidth={4} />
-        <path d="M-34,6 L-44,80 M34,6 L44,80 M-38,48 L38,48" stroke={INK} strokeWidth={6} />
-      </g>
     </g>
   );
 };

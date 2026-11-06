@@ -99,12 +99,33 @@ if (episode.style === 'cinema') {
   let day = 0;
   for (const s of tl.shots) {
     if (s.hud && 'day' in s.hud) day = s.hud.day;
+    if (s.thread) continue; // other timelines (1982, a memory) dress for their own day
     for (const c of ((s.props as any)?.cast ?? []) as any[]) {
       if (!['you', 'mira', 'ito'].includes(c.who)) continue;
       const outfit = c.outfit ?? 'home';
       if (day === 0 && outfit !== 'home') errors.push(`Continuity: ${c.who} wears "${outfit}" before Day 1 in "${s.id}".`);
       if (day >= 1 && outfit === 'home') errors.push(`Continuity: ${c.who} is still in summer clothes on Day ${day} in "${s.id}".`);
     }
+  }
+  // chronology: nothing may show what the episode is hiding before the shot marked `reveal`
+  const revealAt = tl.shots.findIndex((s) => s.reveal);
+  if (revealAt >= 0) {
+    const SHELL_SPACE = ['close', 'race', 'shellGlimpse', 'shellReveal', 'shellOrbit', 'beam', 'flicker', 'signal'];
+    tl.shots.slice(0, revealAt).forEach((s) => {
+      const p = (s.props ?? {}) as any;
+      const leaks = (s.scene === 'space' && SHELL_SPACE.includes(p.v)) || (s.scene === 'diagram' && p.shell) || s.scene === 'end';
+      if (leaks) errors.push(`Chronology: "${s.id}" shows the ${tl.shots[revealAt].reveal} before it is discovered in "${tl.shots[revealAt].id}".`);
+    });
+  }
+  // the narrator is a person telling her own story: first person, never "you" as the hero (the end card may ask the viewer)
+  for (const s of tl.shots) {
+    if (s.scene === 'end') continue;
+    for (const l of s.lines ?? []) if (l.speaker === 'NARRATOR' && /\byou(r|'re|'ll)?\b/i.test(l.text)) errors.push(`Narration: "${s.id}" addresses "you"; the narrator tells her own story.`);
+  }
+  // the other timeline is never narrated or Day-tagged (the viewer must not be told it is the past)
+  for (const s of tl.shots.filter((x) => x.thread === '1982')) {
+    if ((s.lines ?? []).length) errors.push(`1982: "${s.id}" has spoken lines; that thread stays silent until the reveal.`);
+    if (s.hud) errors.push(`1982: "${s.id}" carries a time tag.`);
   }
   // scale: everyone on the same floor line shares one depth (heights come from the chart, never per shot)
   for (const s of tl.shots) {

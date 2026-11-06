@@ -136,7 +136,7 @@ const Room: React.FC<{c: SetCtx}> = ({c}) => {
 
 /** The hill, the dome and the dish. `dawn` 0→1 brightens the sky and raises the Sun behind the ridge. */
 const Hill: React.FC<{c: SetCtx; dawn: number}> = ({c, dawn}) => {
-  const aim = (c.p.aim as number) ?? 1;
+  const aim = c.p.turn ? Math.min(1, Math.max(0, (c.t - 0.3) / 2.2)) : ((c.p.aim as number) ?? 1);
   const ang = -62 + 30 * (1 - aim); // dish elevation toward the star
   const sunY = 900 - 260 * dawn;
   const sky = (a: string, b: string) => {

@@ -71,7 +71,7 @@ export type Shot = {
   beats?: Beat[];
   /** How we arrive in this shot. Default: cut. Cinema transitions: pullback (out of an extreme close-up), zoomThrough (into a window),
    *  iris (out of the watch face), frost (frost grows over the frame, then thaws), fog (breath fogs the lens). */
-  transition?: 'cut' | 'fade' | 'whip' | 'flash' | 'pullback' | 'zoomThrough' | 'iris' | 'frost' | 'fog';
+  transition?: 'cut' | 'fade' | 'whip' | 'flash' | 'pullback' | 'zoomThrough' | 'iris' | 'frost' | 'fog' | 'match';
   /** Score cue from this shot onward (cinema episodes; scripts/score_cinema.py). */
   cue?: string;
   /** Slide 2.39:1 letterbox bars in for this shot (reserved for the biggest moments). */

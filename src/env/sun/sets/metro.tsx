@@ -186,9 +186,7 @@ const School: React.FC<{c: SetCtx}> = ({c}) => (
       <path key={x} d={`M${x},-300 L${x},900`} stroke="#B8BEC6" strokeWidth={14} />
     ))}
     <rect x={-900} y={900} width={3800} height={600} fill="#6E6A66" />
-    {[1220, 1390, 1560].map((x) => (
-      <rect key={x} x={x - 50} y={840} width={100} height={60} rx={8} fill="#C2464F" stroke={INK} strokeWidth={4} />
-    ))}
+
   </g>
 );
 

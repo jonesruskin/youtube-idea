@@ -49,7 +49,7 @@ export type CastEntry = {
   /** Lip-sync this cast member to a script speaker (for voiced extras, e.g. 'MAN'). */
   speaker?: string;
 };
-export type LoopKind = 'wave' | 'nod' | 'shake' | 'shiver' | 'bounce' | 'clap' | 'talk' | 'jump' | 'tremble' | 'pant' | 'scratch' | 'stir';
+export type LoopKind = 'wave' | 'nod' | 'shake' | 'shiver' | 'bounce' | 'clap' | 'talk' | 'jump' | 'tremble' | 'pant' | 'scratch' | 'stir' | 'tap';
 export type Act = {
   /** Seconds into the shot, or "l<i>" (= start of the shot's i-th line), optionally "+0.4"/"-0.2". */
   at: number | string;
@@ -282,6 +282,11 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
           if (l.kind === 'scratch') pose = {...pose, rArm: [150, 120 + w * 12]};
           if (l.kind === 'stir') pose = {...pose, rArm: [60 + w * 10, 60 - w * 10]};
           if (l.kind === 'talk') pose = {...pose, rArm: [30 + w * 12, 60 + w * 20]};
+          // three quick knuckle taps (Ito's habit): the forearm dips three times across the loop
+          if (l.kind === 'tap') {
+            const tp = Math.max(0, Math.sin(Math.min(1, l.k) * Math.PI * 3)) ** 3;
+            pose = {...pose, rArm: [72 - tp * 14, 70 + tp * 30]};
+          }
         }
         // blink every ~3.5 s
         const bp = (frame + i * 41 + 25) % 104;

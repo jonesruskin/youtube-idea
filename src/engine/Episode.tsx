@@ -86,6 +86,17 @@ const Enter: React.FC<{kind: Shot['transition']; children: React.ReactNode}> = (
       </AbsoluteFill>
     );
   }
+  if (kind === 'match') {
+    // match cut: the new shot dissolves in over the held face of the last one, with a white breath between
+    const a = interpolate(f, [0, 20], [0, 1], {extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic)});
+    const w = interpolate(f, [0, 6, 20], [0.0, 0.35, 0], {extrapolateRight: 'clamp'});
+    return (
+      <AbsoluteFill>
+        <AbsoluteFill style={{opacity: a}}>{children}</AbsoluteFill>
+        <AbsoluteFill style={{background: '#FFF6E6', opacity: w}} />
+      </AbsoluteFill>
+    );
+  }
   if (kind === 'fade') {
     return <AbsoluteFill style={{opacity: interpolate(f, [0, 14], [0, 1], {extrapolateRight: 'clamp'})}}>{children}</AbsoluteFill>;
   }
@@ -172,8 +183,9 @@ export const Episode: React.FC<EpisodeProps> = ({episodeId, voice, hasScore}) =>
       {tl.shots.map((s, i) => {
         const len = Math.max(1, toFrames(s.duration, ep.fps));
         const whipOut = tl.shots[i + 1]?.transition === 'whip';
+        const matchOut = tl.shots[i + 1]?.transition === 'match';
         return (
-          <Sequence key={s.id} from={toFrames(s.start, ep.fps)} durationInFrames={len + (whipOut ? WHIP : 0)} name={`${s.index} ${s.id}`}>
+          <Sequence key={s.id} from={toFrames(s.start, ep.fps)} durationInFrames={len + (whipOut ? WHIP : matchOut ? 20 : 0)} name={`${s.index} ${s.id}`}>
             <ShotView shot={s} fps={ep.fps} prevDay={prevDays[i]} exitAt={whipOut ? len : null} />
           </Sequence>
         );
