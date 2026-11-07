@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
 import {Frost, Aurora} from '../../fx/cinema/atmos';
+import {DRAWING, ReplyPicture} from './reply';
 import {Stars} from '../../fx/sky';
 import {fonts} from '../../theme';
 import {Glow, Grade, INK, M, registerSet, useSetCtx, Vignette} from './stage';
@@ -358,7 +359,7 @@ export const CloseupScene: React.FC = () => {
         {draw >= 1 && <circle cx={star[0]} cy={star[1]} r={34} fill="none" stroke="#E0302A" strokeWidth={6} />}
         {write > 0 && (
           <text x={star[0] + 60} y={star[1] - 30} fontFamily="'Caveat', 'Comic Sans MS', cursive" fontWeight={700} fontSize={110} fill="#E0302A" opacity={write}>
-            22
+            21
           </text>
         )}
       </g>,
@@ -481,7 +482,7 @@ export const CloseupScene: React.FC = () => {
 
   if (v === 'fishIce') {
     // under the new ice skin, in Mira's torch beam: a fish glides past, unbothered; her mitten points from above
-    const fx = interpolate(t, [0, Math.max(2.4, c.dur)], [-200, 2100]);
+    const fx = -200 + 2300 * clamp(t / Math.max(2.4, c.dur));
     return wrap(
       '#03060F',
       <g>
@@ -569,6 +570,106 @@ export const CloseupScene: React.FC = () => {
           {[0, 1, 2].map((k) => <path key={k} d={`M${1100 + k * 40},${560} q6,20 0,36`} stroke={INK} strokeWidth={4} fill="none" opacity={0.6} />)}
         </g>
         {down && <path d="M1060,600 l-30,-30 M1080,592 l-10,-44 M1110,594 l14,-40" stroke="#FFFFFF" strokeWidth={5} opacity={0.8} />}
+      </g>,
+    );
+  }
+
+  if (v === 'pulses') {
+    // the receiver's screen: pulses arriving, and a counter that will not stop
+    const n0 = Number(c.p.from ?? 3);
+    const n1 = Number(c.p.to ?? 1679);
+    const n = Math.floor(n0 + (n1 - n0) * clamp(t / Math.max(1, c.dur - 0.4)));
+    return wrap(
+      '#03060A',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#06120C" />
+        {Array.from({length: 14}, (_, k) => <path key={k} d={`M0,${k * 80} L${W},${k * 80}`} stroke="#0E2A1C" strokeWidth={2} />)}
+        <path
+          d={`M0,600 ${Array.from({length: 120}, (_, i) => {
+            const x = i * 16;
+            const on = ((i * 7 + Math.floor(f * 1.5)) % 5) < 2;
+            return `L${x},600 L${x},${on ? 380 : 600} L${x + 8},${on ? 380 : 600} L${x + 8},600`;
+          }).join(' ')}`}
+          stroke="#5BFF8A"
+          strokeWidth={5}
+          fill="none"
+        />
+        <text x={960} y={860} textAnchor="middle" fontFamily={fonts.mono} fontWeight={700} fontSize={110} fill="#5BFF8A">
+          {n.toLocaleString('en-US')}
+        </text>
+      </g>,
+    );
+  }
+
+  if (v === 'decode') {
+    // 1,679 pulses → the only grid they fit (23 × 73) → a picture, filling row by row
+    const k = clamp((t - 1.4) / Math.max(1, c.dur - 1.8));
+    return wrap(
+      '#05060D',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#070A18" />
+        <text x={430} y={430} textAnchor="middle" fontFamily={fonts.mono} fontWeight={700} fontSize={84} fill="#EAF0FF" opacity={clamp(t / 0.4)}>
+          1,679
+        </text>
+        <text x={430} y={530} textAnchor="middle" fontFamily={fonts.mono} fontWeight={700} fontSize={60} fill="#FFD08A" opacity={clamp((t - 0.6) / 0.4)}>
+          = 23 × 73
+        </text>
+        <text x={430} y={610} textAnchor="middle" fontFamily={fonts.ui} fontWeight={600} fontSize={30} fill="#9FB2DA" opacity={clamp((t - 0.9) / 0.4)}>
+          two primes: only one way to lay it out
+        </text>
+        <g transform="translate(1340,540)">
+          <ReplyPicture cell={13} reveal={k} frame={f} />
+        </g>
+      </g>,
+    );
+  }
+
+  if (v === 'reply') {
+    // the whole picture, then a slow push down onto the empty square at the bottom
+    const push = c.p.focus ? clamp((t - 0.6) / 2.2) : 0;
+    const zoom = 1 + push * 1.6;
+    const ty = -push * 300;
+    return wrap(
+      '#05060D',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#070A18" />
+        <g transform={`translate(960,${540 + ty * zoom}) scale(${zoom})`}>
+          <ReplyPicture cell={13} reveal={1} frame={f} focus={c.p.focus ? 1 : 0} dim={push} />
+        </g>
+      </g>,
+    );
+  }
+
+  if (v === 'drawingGrid') {
+    // Mira's crayon sun becomes 23 × 23 dots, and goes
+    const k = clamp((t - 0.5) / 1.6);
+    const send = clamp((t - 2.4) / 1.2);
+    const cell = 30;
+    return wrap(
+      '#0A0E1C',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#141A30" />
+        {/* the crayon drawing itself, fading as the dots take over */}
+        <g transform="translate(560,540) rotate(-3)" opacity={1 - k * 0.85}>
+          <rect x={-330} y={-330} width={660} height={660} fill="#FFFDF6" stroke={INK} strokeWidth={6} />
+          <circle cx={0} cy={-90} r={120} fill="#FFC93C" stroke="#E0A21C" strokeWidth={8} />
+          {Array.from({length: 12}, (_, i) => {
+            const a = (i / 12) * Math.PI * 2;
+            return <path key={i} d={`M${Math.cos(a) * 150},${-90 + Math.sin(a) * 150} L${Math.cos(a) * 210},${-90 + Math.sin(a) * 210}`} stroke="#FFC93C" strokeWidth={14} strokeLinecap="round" />;
+          })}
+          <circle cx={-40} cy={-110} r={10} fill="#5A3822" />
+          <circle cx={40} cy={-110} r={10} fill="#5A3822" />
+          <path d="M-50,-60 Q0,-20 50,-60" stroke="#5A3822" strokeWidth={8} fill="none" />
+          <path d="M-20,200 L0,150 L20,200 M0,150 L0,110 M-30,130 L30,130 M0,110 m-18,-18 a18,18 0 1,0 36,0 a18,18 0 1,0 -36,0" stroke="#3E7CB1" strokeWidth={8} fill="none" />
+          <text x={180} y={290} fontFamily="'Caveat', 'Comic Sans MS', cursive" fontWeight={700} fontSize={44} fill="#C2464F">Mira, 8</text>
+        </g>
+        <g transform={`translate(${1360 + send * 900},${540 - send * 600}) scale(${1 - send * 0.7})`} opacity={k}>
+          {DRAWING.map((row, y) =>
+            row.map((v2, x) => (
+              <rect key={`${x}-${y}`} x={(x - 11.5) * cell + 2} y={(y - 11.5) * cell + 2} width={cell - 4} height={cell - 4} fill={v2 === 1 ? '#FFC93C' : v2 === 2 ? '#7FD8FF' : '#2A3152'} opacity={v2 ? 1 : 0.25} />
+            )),
+          )}
+        </g>
       </g>,
     );
   }
@@ -697,7 +798,8 @@ const RadioPulse: React.FC<{x: number; y: number; t: number}> = ({x, y, t}) => (
 registerSet('montage', {
   layers: (c) => {
     const f = c.frame;
-    const night = c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0);
+    const back = c.p.sunAt !== undefined && c.t >= c.at(c.p.sunAt, 0);
+    const night = c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0) && !back;
     if (c.v === 'beach')
       return [
         {
@@ -816,18 +918,18 @@ registerSet('montage', {
     ];
   },
   light: (c) =>
-    c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0) ? null : (
+    c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0) && !(c.p.sunAt !== undefined && c.t >= c.at(c.p.sunAt, 0)) ? null : (
       <Glow x={1500} y={200} r={1100} color="#FFF3C8" opacity={0.35} />
     ),
   post: (c) =>
-    c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0) ? (
+    c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0) && !(c.p.sunAt !== undefined && c.t >= c.at(c.p.sunAt, 0)) ? (
       <g>
         {c.p.frozen && <Snowfall frame={c.frame} />}
         {c.p.pulse && <RadioPulse x={c.p.pulse[0]} y={c.p.pulse[1]} t={c.t} />}
       </g>
     ) : null,
   grade: (c) => {
-    const night = c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0);
+    const night = c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0) && !(c.p.sunAt !== undefined && c.t >= c.at(c.p.sunAt, 0));
     return (
       <g>
         <Grade color={night ? '#0E1650' : '#FFF0D0'} amount={night ? 0.72 : 0.08} />

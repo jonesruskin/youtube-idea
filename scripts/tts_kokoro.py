@@ -29,6 +29,9 @@ VOICES = {
     "MUM_RADIO": {"voice": "af_sarah", "speed": 0.92, "fx": "radio"},
     # a passer-by shouting in the street
     "MAN": {"voice": "am_fenrir", "speed": 1.05, "fx": None},
+    # television: a newsreader and a scientist at a press conference, through a TV speaker
+    "ANCHOR": {"voice": "bf_emma", "speed": 0.95, "fx": "tv", "lang": "b"},
+    "SCIENTIST": {"voice": "am_adam", "speed": 0.95, "fx": "tv"},
 }
 
 # Pronunciation fixes (Kokoro inline phonemes); the script and captions keep normal spelling.
@@ -48,6 +51,8 @@ def ffmpeg_fx(audio, fx):
             af = "rubberband=pitch=1.2:tempo=1.0:formant=shifted,highpass=f=120"
         elif fx == "teen":
             af = "rubberband=pitch=1.06:tempo=1.0:formant=preserved,highpass=f=90"
+        elif fx == "tv":
+            af = "highpass=f=140,lowpass=f=6500,acompressor=threshold=0.15:ratio=4:attack=3:release=80"
         elif fx == "elder":
             af = "rubberband=pitch=0.94:tempo=1.0:formant=preserved,highpass=f=70"
         else:

@@ -143,7 +143,7 @@ export const SunThumbnailB: React.FC = () => (
   </AbsoluteFill>
 );
 
-/** Thumbnail C: a small observatory on a mountain at night, one window lit, the dish aimed at one star. "1982". */
+/** Thumbnail C: a small observatory on a mountain at night, one window lit, the dish aimed at one star. "1983". */
 export const SunThumbnailC: React.FC = () => (
   <AbsoluteFill style={{background: '#000'}}>
     <svg viewBox="0 0 1920 1080" width="100%" height="100%">
@@ -168,7 +168,7 @@ export const SunThumbnailC: React.FC = () => (
         </g>
       </g>
       <circle cx={560} cy={790} r={140} fill="#FFD58A" opacity={0.18} />
-      <BigWords words={[{t: '1982', size: 260, col: '#FFD27A'}]} x={80} y={120} anchor="start" tilt={-3} />
+      <BigWords words={[{t: '1983', size: 260, col: '#FFD27A'}]} x={80} y={120} anchor="start" tilt={-3} />
     </svg>
   </AbsoluteFill>
 );

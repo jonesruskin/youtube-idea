@@ -43,6 +43,33 @@ export const Callout: React.FC = () => {
   );
 };
 
+/** The countdown: big mm:ss running down across the shot (the 16:40 wait for the light). */
+export const Countdown: React.FC = () => {
+  const {shot, t} = useShot();
+  const tm = shot.timer;
+  if (!tm) return null;
+  const k = Math.max(0, Math.min(1, t / Math.max(0.1, shot.duration)));
+  const v = Math.max(0, Math.round(tm.from + (tm.to - tm.from) * k));
+  const txt = `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')}`;
+  const appear = Math.min(1, t * 4);
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%">
+        <g transform="translate(960,190)" opacity={appear}>
+          {tm.label && (
+            <text y={-92} textAnchor="middle" fontFamily={fonts.display} fontWeight={800} fontSize={34} letterSpacing={6} fill="#FFF6E0" stroke="#0B1026" strokeWidth={6} paintOrder="stroke">
+              {tm.label}
+            </text>
+          )}
+          <text textAnchor="middle" dominantBaseline="central" fontFamily={fonts.display} fontWeight={900} fontSize={150} letterSpacing={6} fill="#FFF6E0" stroke="#0B1026" strokeWidth={16} paintOrder="stroke">
+            {txt}
+          </text>
+        </g>
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
 export const DayTag: React.FC<{prevDay?: number}> = ({prevDay = 0}) => {
   const {shot, t} = useShot();
   const hh = shot.hud;

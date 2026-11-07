@@ -4,7 +4,7 @@ import {Glow, Grade, INK, M, registerSet, Vignette, type SetCtx} from '../stage'
 import {Telescope} from './roof';
 
 /**
- * The observatory, 1982: the second timeline. A small dome on a mountain, one young astronomer, always at night
+ * The observatory, 1983: the second timeline. A small dome on a mountain, one young astronomer, always at night
  * (so it reads as "now", like the present's endless night) until the reveal, when he walks outside and the Sun
  * rises. Fair-play clues for a second viewing: the CRT, the rotary phone, the reel-to-reel, the calendar, the
  * same brass telescope Mr. Ito owns, the 1919 print on the wall.
@@ -84,7 +84,7 @@ const Room: React.FC<{c: SetCtx}> = ({c}) => {
         <rect x={-70} y={-90} width={140} height={180} fill="#FFFDF6" stroke={INK} strokeWidth={3} />
         <rect x={-70} y={-90} width={140} height={44} fill="#3E7CB1" />
         <text x={0} y={-58} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={700} fontSize={22} fill="#FFFDF6">
-          OCT 1982
+          OCT 1983
         </text>
         {Array.from({length: 28}, (_, k) => (
           <rect key={k} x={-60 + (k % 7) * 18} y={-36 + Math.floor(k / 7) * 26} width={12} height={12} fill="#C9CED6" />

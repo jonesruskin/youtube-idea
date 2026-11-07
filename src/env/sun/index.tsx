@@ -6,6 +6,7 @@ import {GlobeScene, Space} from './space';
 import {CityScene, EndScene, SkyScene, ThermalScene, TitleScene} from './views';
 import {DiagramScene} from './diagram';
 import {CloseupScene} from './inserts';
+import {NewsScene} from './news';
 import './sets/kitchen';
 import './sets/outdoor';
 import './sets/roof';
@@ -13,6 +14,7 @@ import './sets/home';
 import './sets/market';
 import './sets/metro';
 import './sets/observatory';
+import './sets/hospital';
 
 /** Development stand-in for scenes not built yet: shows the stage direction so the cut can be timed. */
 const Pending: React.FC = () => {
@@ -34,6 +36,7 @@ export const SUN_SCENES: Record<string, React.FC> = {
   diagram: DiagramScene,
   thermal: ThermalScene,
   closeup: CloseupScene,
+  news: NewsScene,
   title: TitleScene,
   end: EndScene,
 };

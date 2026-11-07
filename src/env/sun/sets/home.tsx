@@ -115,6 +115,37 @@ const LivingRoom: React.FC<{c: SetCtx}> = ({c}) => {
         <path d="M1910,520 Q1890,580 1920,640 L1950,640 Q1960,580 1935,520 Z" fill="#4F86C6" stroke={INK} strokeWidth={4} />
       </g>
       <Bookcase x={1150} base={930} />
+      {/* the TV on its stand (Day 0–7, while there is power): news glow, or switched off */}
+      {c.p.tv && (
+        <g transform="translate(960,930)">
+          <rect x={-130} y={-M(0.55)} width={260} height={M(0.55)} fill="#5A3822" stroke={INK} strokeWidth={5} />
+          <rect x={-150} y={-M(0.55) - 170} width={300} height={176} rx={12} fill="#1A1C24" stroke={INK} strokeWidth={6} />
+          {c.p.tv === 'news' ? (
+            <g>
+              <rect x={-136} y={-M(0.55) - 158} width={272} height={150} rx={6} fill="#24345E" />
+              <rect x={-136} y={-M(0.55) - 40} width={272} height={26} fill="#C2464F" />
+              <rect x={-120} y={-M(0.55) - 34} width={120 + ((c.frame * 3) % 120)} height={12} fill="#FFF6E0" opacity={0.85} />
+              <circle cx={-60} cy={-M(0.55) - 100} r={34} fill="#05060D" stroke="#FF9E3A" strokeWidth={6} opacity={0.9} />
+              <rect x={10} y={-M(0.55) - 130} width={110} height={10} fill="#C9D6F0" />
+              <rect x={10} y={-M(0.55) - 110} width={90} height={10} fill="#C9D6F0" />
+              <rect x={10} y={-M(0.55) - 90} width={100} height={10} fill="#C9D6F0" />
+            </g>
+          ) : (
+            <rect x={-136} y={-M(0.55) - 158} width={272} height={150} rx={6} fill="#0A0B10" />
+          )}
+        </g>
+      )}
+      {/* Mr. Ito's ham radio on a side table: how Mum talks to them every night */}
+      {c.p.ham && (
+        <g transform="translate(1380,930)">
+          <rect x={-110} y={-M(0.75)} width={220} height={20} fill="#7A4E30" stroke={INK} strokeWidth={4} />
+          <path d={`M-96,${-M(0.75) + 20} L-96,0 M96,${-M(0.75) + 20} L96,0`} stroke={INK} strokeWidth={10} />
+          <rect x={-90} y={-M(0.75) - 70} width={150} height={70} rx={8} fill="#3A3F48" stroke={INK} strokeWidth={4} />
+          <circle cx={-50} cy={-M(0.75) - 35} r={18} fill="#1A1C24" stroke="#8A8F9C" strokeWidth={3} />
+          <rect x={-20} y={-M(0.75) - 56} width={70} height={18} fill={c.p.hamOn ? '#FFB25A' : '#4A4552'} />
+          <path d={`M50,${-M(0.75) - 70} L80,${-M(0.75) - 170}`} stroke="#8A8F9C" strokeWidth={5} />
+        </g>
+      )}
       {/* floor */}
       <rect x={-600} y={930} width={3100} height={500} fill={FLOOR} />
       {Array.from({length: 22}, (_, i) => (

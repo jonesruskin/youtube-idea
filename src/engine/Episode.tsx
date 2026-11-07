@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, Audio, Easing, interpolate, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {SCENES} from '../scenes';
 import {Finish} from '../ui/Finish';
-import {Callout, DayTag} from '../ui/Callouts';
+import {Callout, Countdown, DayTag} from '../ui/Callouts';
 import {Frost} from '../fx/cinema/atmos';
 import type {Episode as EpisodeData, Shot} from './schema';
 import {ShotProvider} from './shot-context';
@@ -180,6 +180,7 @@ const ShotView: React.FC<{shot: TimedShot; fps: number; prevDay: number; exitAt:
       {shot.look === 'memory' && <MemoryFilm />}
       <DayTag prevDay={prevDay} />
       <Callout />
+      <Countdown />
     </ShotProvider>
     </Exit>
   );

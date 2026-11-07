@@ -179,11 +179,12 @@ const Space: React.FC = () => {
   const H = 1080;
   const starfield = <Stars frame={frame} count={700} w={W} h={H} seed={51} maxR={2.2} />;
 
-  if (v === 'close') {
+  if (v === 'close' || v === 'open') {
     // The Sun inside its open blind: a fine lattice of edge-on slats at twice its radius, glinting like
     // dandelion seeds. Then every slat turns face-on, a wave rolling down from the north; the light strobes
     // through the closing gaps and goes out. Nothing travels: each slat only rotates in place.
-    const turn = clamp((t - 0.9) / Math.max(1.4, dur - 1.7));
+    const turnRaw = clamp((t - (v === 'open' ? 0.4 : 0.9)) / Math.max(1.4, dur - 1.7));
+    const turn = v === 'open' ? 1 - turnRaw : turnRaw;
     const leak = 1 - Math.pow(turn, 1.4);
     const z = interpolate(progress, [0, 1], [1.1, 0.97], {easing: ease});
     const strobe = turn > 0.05 && turn < 0.95 ? 0.5 + 0.5 * Math.sin(frame * 1.7) * Math.sin(frame * 0.63) : 0;
@@ -391,7 +392,11 @@ const GlobeScene: React.FC = () => {
           })}
       </svg>
       <div style={{position: 'absolute', left: 960 - 400 * z, top: 560 - 400 * z, filter: 'drop-shadow(0 0 30px rgba(80,120,220,0.45))'}}>
-        <PhotoGlobe size={800 * z} center={[10 + c.frame * 0.06, 42]} sun={null} lights={lights} ice={ice} />
+        {v === 'sunreturn' ? (
+          <PhotoGlobe size={800 * z} center={[(c.p.lon as number) ?? 10, 30]} sun={[((c.p.lon as number) ?? 10) + 70, 18]} dim={1 - Math.max(0, Math.min(1, (c.t - ((c.p.sunAt as number) ?? 1)) / 0.7))} lights={0.3} ice={ice} />
+        ) : (
+          <PhotoGlobe size={800 * z} center={[10 + c.frame * 0.06, 42]} sun={null} lights={lights} ice={ice} />
+        )}
       </div>
     </AbsoluteFill>
   );

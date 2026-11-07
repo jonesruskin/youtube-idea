@@ -555,7 +555,9 @@ registerSet('surface', {
     const flashAt = c.at(c.p.flash, 999);
     const fl = c.v === 'flash' ? Math.max(0, 1 - Math.abs(c.t - flashAt - 0.5) / 0.5) : 0;
     const gold = Math.min(1, fl * 1.6);
-    const milky = c.v === 'milky' || c.v === 'flash';
+    const milky = c.v === 'milky' || c.v === 'flash' || c.v === 'sunrise';
+    // 'sunrise': the night sky until `sunAt`, then the Sun is simply there, low in the east, and the sky fills with day
+    const sr = c.v === 'sunrise' ? Math.max(0, Math.min(1, (c.t - c.at(c.p.sunAt, 999)) / 1.1)) : 0;
     return [
       {
         depth: 0.08,
@@ -572,6 +574,20 @@ registerSet('surface', {
             {c.v === 'deep' && <MilkyWay frame={c.frame} opacity={0.8} angle={-40} cx={1300} cy={200} />}
             <ellipse cx={960} cy={860} rx={1800} ry={260} fill="#3A4C8A" opacity={0.35} />
             {gold > 0 && <rect x={-800} y={-700} width={3520} height={2000} fill="#FFC56B" opacity={gold} />}
+            {sr > 0 && (
+              <g>
+                <defs>
+                  <linearGradient id="surfDawn" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#5C86C8" />
+                    <stop offset="0.55" stopColor="#F4B878" />
+                    <stop offset="1" stopColor="#FFE6B0" />
+                  </linearGradient>
+                </defs>
+                <rect x={-800} y={-700} width={3520} height={2000} fill="url(#surfDawn)" opacity={sr} />
+                <circle cx={1480} cy={720} r={420} fill="#FFE9A8" opacity={0.35 * sr} />
+                <circle cx={1480} cy={720} r={110} fill="#FFFBEA" opacity={sr} />
+              </g>
+            )}
             {gold > 0 && <circle cx={1500} cy={140} r={90} fill="#FFFBE8" opacity={gold} />}
           </g>
         ),
@@ -587,6 +603,20 @@ registerSet('surface', {
             {/* a half-buried bus shelter (2.4 m tall, 3.2 m wide) and a statue on its plinth, a little further back */}
             <BusShelter x={300} base={928} sc={M(0.85)} />
             <Statue x={1660} base={912} sc={M(0.62)} />
+            {/* Day 365: Mr. Ito's transmitter — a dish on a tripod aimed at the hidden Sun, a box, a key */}
+            {c.p.transmitter !== undefined && (
+              <g transform={`translate(${c.p.transmitter},940)`}>
+                <path d={`M0,${-M(1.0)} L${-M(0.4)},0 M0,${-M(1.0)} L${M(0.4)},0`} stroke="#2A2E3A" strokeWidth={9} />
+                <g transform={`translate(0,${-M(1.05)}) rotate(-30)`}>
+                  <path d={`M${-M(0.55)},-10 Q0,${M(0.35)} ${M(0.55)},-10 Q0,${M(0.12)} ${-M(0.55)},-10 Z`} fill="#DCE2EA" stroke={INK} strokeWidth={5} />
+                  <path d={`M0,${M(0.15)} L0,${-M(0.4)}`} stroke={INK} strokeWidth={5} />
+                  <circle cx={0} cy={-M(0.42)} r={9} fill="#3A3442" />
+                </g>
+                <rect x={M(0.5)} y={-M(0.45)} width={M(0.5)} height={M(0.45)} rx={8} fill="#3A3F48" stroke={INK} strokeWidth={4} />
+                <rect x={M(0.58)} y={-M(0.38)} width={M(0.2)} height={M(0.08)} fill={c.p.txOn ? '#FF5A3A' : '#4A4552'} />
+                <path d={`M${M(0.5)},${-M(0.2)} Q${M(0.2)},${-M(0.1)} 0,${-M(0.6)}`} stroke={INK} strokeWidth={4} fill="none" />
+              </g>
+            )}
             {/* Day 300: the camera has grown a long lens on a surveying tripod, aimed high at the hidden Sun */}
             {c.p.lens !== undefined && (
               <g transform={`translate(${c.p.lens},940)`}>
@@ -608,7 +638,14 @@ registerSet('surface', {
   light: (c) => {
     const flashAt = c.at(c.p.flash, 999);
     const fl = c.v === 'flash' ? Math.max(0, 1 - Math.abs(c.t - flashAt - 0.5) / 0.5) : 0;
-    return <g>{fl > 0 && <rect x={-400} y={-400} width={2800} height={1900} fill="#FFD27A" opacity={fl * 0.45} style={{mixBlendMode: 'screen'}} />}</g>;
+    const sr = c.v === 'sunrise' ? Math.max(0, Math.min(1, (c.t - c.at(c.p.sunAt, 999)) / 1.1)) : 0;
+    return (
+      <g>
+        {fl > 0 && <rect x={-400} y={-400} width={2800} height={1900} fill="#FFD27A" opacity={fl * 0.45} style={{mixBlendMode: 'screen'}} />}
+        {sr > 0 && <rect x={-400} y={-400} width={2800} height={1900} fill="#FFC27A" opacity={sr * 0.28} style={{mixBlendMode: 'screen'}} />}
+        {sr > 0 && <Glow x={1480} y={720} r={1200} color="#FFE2A0" opacity={0.4 * sr} />}
+      </g>
+    );
   },
   grade: (c) => {
     const flashAt = c.at(c.p.flash, 999);
@@ -616,7 +653,7 @@ registerSet('surface', {
     const after = c.p.afterglow ? Math.max(0, 0.35 - c.t * 0.12) : 0;
     return (
       <g>
-        <Grade color="#2A3A8A" amount={0.22 * (1 - fl)} />
+        <Grade color="#2A3A8A" amount={0.22 * (1 - fl) * (c.v === 'sunrise' ? 1 - Math.max(0, Math.min(1, (c.t - c.at(c.p.sunAt, 999)) / 1.1)) : 1)} />
         {after > 0 && <rect x={-200} y={-200} width={2320} height={1480} fill="#FFC56B" opacity={after} style={{mixBlendMode: 'screen'}} />}
         <Vignette amount={0.7} />
       </g>

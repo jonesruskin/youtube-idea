@@ -101,6 +101,8 @@ const FILL: Record<string, (v: string, dark: boolean) => [number, string]> = {
   surface: () => [0.24, '#D8E6FF'],
   roof: (v) => [v === 'dawn' ? 0 : 0.18, '#D8E4FF'],
   harbor: () => [0.22, '#D8E6FF'],
+  hospital: (v) => [v === 'dark' ? 0.2 : 0, '#FFD3A0'],
+  river: () => [0.24, '#FFD8A8'],
   montage: (_v, dark) => [dark ? 0.22 : 0, '#D8E4FF'],
 };
 const FaceFill: React.FC<{set: string; v: string; dark: boolean; cast: CastEntry[]; acts: Act[]}> = ({set, v, dark, cast, acts}) => {

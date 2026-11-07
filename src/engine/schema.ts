@@ -25,7 +25,8 @@ export type Speaker =
   | 'KAI'
   | 'MUM'
   | 'MUM_RADIO'
-  | 'MAN';
+  | 'MAN'
+  | 'SCIENTIST';
 
 export type Line = {
   speaker: Speaker;
@@ -85,6 +86,8 @@ export type Shot = {
   /** Sound effect at the start of the shot. */
   sfx?: Sfx;
   /** One bold kinetic word/number on screen (the genre's emphasis device). Used sparingly. */
+  /** A countdown clock on screen: mm:ss running from `from` to `to` seconds across the shot. */
+  timer?: {from: number; to: number; label?: string};
   callout?: {text: string; at?: number | string; pos?: 'center' | 'top' | 'low' | 'left' | 'right'; color?: string};
   /** Corner tag that marks a jump in time: Day N and the outside temperature. */
   hud?: {day: number; temp: number} | {place: string; time: string};

@@ -26,7 +26,10 @@ export type PropKind =
   | 'tideTable'
   | 'ear'
   | 'tubeCase'
-  | 'receiver';
+  | 'receiver'
+  | 'list'
+  | 'dish'
+  | 'mic';
 
 /** Props drawn at the hand position (origin = hand centre). R = the holder's head radius. */
 export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({kind, R, frame}) => {
@@ -130,6 +133,32 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
       return <rect x={-R * 0.04} y={-R * 0.22} width={R * 0.08} height={R * 0.22} fill="#F4EFE6" stroke={ink} strokeWidth={sw * 0.5} />;
     case 'blanket':
       return <path d={`M${-R * 0.6},${-R * 0.3} L${R * 0.6},${-R * 0.4} L${R * 0.7},${R * 0.6} L${-R * 0.5},${R * 0.7} Z`} fill="#4FA3A5" stroke={ink} strokeWidth={sw} />;
+    case 'list':
+      // a shopping list on a torn sheet
+      return (
+        <g transform="rotate(-8)">
+          <rect x={-R * 0.22} y={-R * 0.62} width={R * 0.44} height={R * 0.6} fill="#FFFDF6" stroke={ink} strokeWidth={sw * 0.6} />
+          {[0, 1, 2, 3].map((k) => <path key={k} d={`M${-R * 0.15},${-R * (0.5 - k * 0.12)} l${R * (0.24 - (k % 2) * 0.06)},0`} stroke="#3E7CB1" strokeWidth={sw * 0.45} />)}
+        </g>
+      );
+    case 'dish':
+      // Mr. Ito's transmitter dish, carried in both arms
+      return (
+        <g>
+          <path d={`M${-R * 0.9},${-R * 0.1} Q0,${R * 0.75} ${R * 0.9},${-R * 0.1} Q0,${R * 0.25} ${-R * 0.9},${-R * 0.1} Z`} fill="#DCE2EA" stroke={ink} strokeWidth={sw} />
+          <path d={`M0,${R * 0.3} L0,${-R * 0.55}`} stroke={ink} strokeWidth={sw * 0.8} />
+          <circle cx={0} cy={-R * 0.58} r={R * 0.07} fill="#3A3442" />
+        </g>
+      );
+    case 'mic':
+      // the ham radio's hand microphone, cord curling away
+      return (
+        <g>
+          <path d={`M0,${R * 0.1} q${R * 0.3},${R * 0.4} ${R * 0.05},${R * 0.9}`} stroke={ink} strokeWidth={sw * 0.7} fill="none" strokeDasharray={`${sw} ${sw * 0.7}`} />
+          <rect x={-R * 0.12} y={-R * 0.34} width={R * 0.24} height={R * 0.42} rx={R * 0.1} fill="#2A2E3A" stroke={ink} strokeWidth={sw * 0.6} />
+          <rect x={-R * 0.08} y={-R * 0.3} width={R * 0.16} height={R * 0.12} rx={R * 0.04} fill="#8A8F9C" />
+        </g>
+      );
     case 'receiver':
       // a 1980s handset held to the ear, its curly cord dropping away
       return (

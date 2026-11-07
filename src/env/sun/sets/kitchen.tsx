@@ -296,8 +296,11 @@ registerSet('kitchen', {
   },
   light: (c) => {
     const k = c.v === 'dark' ? snapK(c) : 0;
+    const lamp = c.p.lampOn !== undefined && c.t >= c.at(c.p.lampOn, 0) ? 1 : 0;
     return (
       <g>
+        {lamp > 0 && <Glow x={1180} y={760} r={640} color="#FFE2A0" opacity={0.45} />}
+        {lamp > 0 && <Glow x={1180} y={525} r={70} color="#FFF4D0" opacity={0.9} />}
         {k > 0 && <Glow x={520} y={480} r={520} color="#6FA8FF" opacity={0.28 * k} />}
         {k < 1 && <Glow x={700} y={600} r={700} color="#FFE6A8" opacity={0.35 * (1 - k)} />}
         {k < 1 && <Glow x={1180} y={420} r={300} color="#FFD9A0" opacity={0.25 * (1 - k)} />}
@@ -306,10 +309,11 @@ registerSet('kitchen', {
   },
   grade: (c) => {
     const k = c.v === 'dark' ? snapK(c) : 0;
+    const lamp = c.p.lampOn !== undefined && c.t >= c.at(c.p.lampOn, 0) ? 1 : 0;
     return (
       <g>
         <Grade color="#FFF4E0" amount={0.06 * (1 - k)} />
-        <Grade color="#14205E" amount={0.72 * k} />
+        <Grade color="#14205E" amount={0.72 * k * (1 - 0.4 * lamp)} />
         <Vignette amount={0.35 + 0.35 * k} />
       </g>
     );

@@ -584,13 +584,13 @@ export const DiagramScene: React.FC = () => {
     );
   }
   if (v === 'knock') {
-    // Earth (left) and the star (right), 22 light-years apart. A knock leaves in 1982, arrives in 2004; the answer
+    // Earth (left) and HD 219134 (right), 21 light-years apart. A knock leaves in 1983, arrives in 2004; the answer
     // leaves at once and arrives in 2026. The year counter runs with the pulse.
     const E: [number, number] = [260, 560];
     const S: [number, number] = [1660, 560];
     const out = clamp((t - 0.3) / 1.6);
     const back = clamp((t - 2.1) / 1.6);
-    const year = Math.round(back > 0 ? 2004 + 22 * back : 1982 + 22 * out);
+    const year = Math.round(back > 0 ? 2004.6 + 21.4 * back : 1983.3 + 21.3 * out);
     const px = back > 0 ? S[0] + (E[0] - S[0]) * back : E[0] + (S[0] - E[0]) * out;
     return (
       <Board frame={f}>
@@ -599,7 +599,7 @@ export const DiagramScene: React.FC = () => {
         <circle cx={S[0]} cy={S[1]} r={46} fill="#BFD8FF" opacity={0.2} />
         <path d={`M${E[0] + 90},${E[1]} L${S[0] - 40},${S[1]}`} stroke="#FFFFFF" strokeOpacity={0.2} strokeWidth={4} strokeDasharray="16 14" />
         <text x={(E[0] + S[0]) / 2} y={470} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={700} fontSize={44} fill="#C9D3E6">
-          22 light-years
+          21 light-years
         </text>
         {(out > 0 && out < 1) || (back > 0 && back < 1) ? (
           <g>
