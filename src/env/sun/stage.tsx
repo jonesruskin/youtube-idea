@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
-import {Actors, designOf, resolveAt, type Act, type CastEntry} from '../../characters/toon/acting';
+import {Actors, actorAt, designOf, resolveAt, type Act, type CastEntry} from '../../characters/toon/acting';
 import {HERO_PX} from '../../characters/toon/design';
 import {useShot} from '../../engine/shot-context';
 import {Cine, Plane, ScreenPlane, type CamKey} from '../../fx/cinema/camera';
@@ -75,9 +75,49 @@ export const Stage: React.FC = () => {
               </Plane>
             ))}
           <ScreenPlane>{def.grade?.(c)}</ScreenPlane>
+          <FaceFill set={props.set} v={c.v} dark={!!props.dark} cast={(props.cast as CastEntry[]) ?? []} acts={(props.acts as Act[]) ?? []} />
         </Cine>
       </svg>
     </AbsoluteFill>
+  );
+};
+
+/**
+ * Night fill: a soft key on every face, drawn AFTER the multiply grade, so characters stay readable on a phone
+ * in the dark sets (the grade crushed faces to near-black). Cool moonlight outdoors, warm where a candle or
+ * lantern motivates it. Amounts are per set/variant; day sets get none.
+ */
+const FILL: Record<string, (v: string, dark: boolean) => [number, string]> = {
+  kitchen: (v) => [v === 'dark' ? 0.26 : 0, '#CFE0FF'],
+  apartment: (v) => [['seal', 'candle', 'balcony'].includes(v) ? 0.2 : 0, '#FFD9AE'],
+  stairs: () => [0.24, '#D8E4FF'],
+  metro: (v) => [v === 'dark' ? 0.32 : 0, '#FFD3A0'],
+  observatory: (v) => [v === 'room' ? 0.16 : 0, '#FFE2B8'],
+  street: (v) => [v === 'night' ? 0.14 : 0, '#D8E4FF'],
+  snowstreet: () => [0.2, '#D8E6FF'],
+  surface: () => [0.24, '#D8E6FF'],
+  roof: (v) => [v === 'dawn' ? 0 : 0.18, '#D8E4FF'],
+  harbor: () => [0.22, '#D8E6FF'],
+  montage: (_v, dark) => [dark ? 0.22 : 0, '#D8E4FF'],
+};
+const FaceFill: React.FC<{set: string; v: string; dark: boolean; cast: CastEntry[]; acts: Act[]}> = ({set, v, dark, cast, acts}) => {
+  const {t, frame, shot} = useShot();
+  const [amt, color] = FILL[set]?.(v, dark) ?? [0, '#fff'];
+  if (amt <= 0) return null;
+  const lines = shot.timedLines as any[];
+  return (
+    <Plane depth={1}>
+      {cast
+        .filter((c) => c.who !== 'biscuit' && !c.carriedBy && (c.opacity ?? 1) > 0.2)
+        .map((c, i) => {
+          const r = actorAt(c, acts, t, frame, lines, i);
+          const d = designOf(c.who)!;
+          const H = HERO_PX * d.height * c.depth;
+          const R = H * d.head;
+          const fy = r.y - H * (1 - d.head) + (r.poseName.startsWith('sit') || r.poseName === 'crouch' || r.poseName.startsWith('kneel') ? H * 0.28 : 0);
+          return <Glow key={`ff${i}`} x={r.x} y={fy} r={R * 1.7} rx={R * 1.5} color={color} opacity={amt * 0.9 * r.opacity} />;
+        })}
+    </Plane>
   );
 };
 
@@ -129,8 +169,11 @@ export const Glow: React.FC<{x: number; y: number; r: number; color: string; opa
     </g>
   );
 };
-/** Vignette for the screen plane. */
-export const Vignette: React.FC<{amount?: number}> = ({amount = 0.55}) => (
+/** Vignette for the screen plane. Halved in v3.1: it stacks with the global film finish, and at full strength
+ * it crushed the frame edges on phones. `full` keeps the old weight for the few dread beats that want it. */
+export const Vignette: React.FC<{amount?: number; full?: boolean}> = ({amount: a0 = 0.55, full}) => {
+  const amount = full ? a0 : a0 * 0.5;
+  return (
   <g>
     <defs>
       <radialGradient id="vig" cx="0.5" cy="0.5" r="0.75">
@@ -140,7 +183,8 @@ export const Vignette: React.FC<{amount?: number}> = ({amount = 0.55}) => (
     </defs>
     <rect x={-100} y={-100} width={2120} height={1280} fill="url(#vig)" />
   </g>
-);
+  );
+};
 /** A torch cone from (x,y) toward angle (deg, 0 = right), screen-blended. */
 export const TorchBeam: React.FC<{x: number; y: number; angle: number; len?: number; spread?: number; opacity?: number}> = ({x, y, angle, len = 900, spread = 22, opacity = 0.5}) => {
   const a = (angle * Math.PI) / 180;

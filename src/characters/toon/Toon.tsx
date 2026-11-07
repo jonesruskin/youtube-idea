@@ -32,6 +32,8 @@ export type ToonState = {
   /** A seat drawn under the hips for chair-sitting poses, and how far the seat lifts the character off the floor
    * (local px at scale 1; a kid on a tall stool has her feet on its footrest, not in the air). */
   seat?: SeatKind;
+  /** Draw only the seat (and its shadow): the empty chair left behind when its sitter stands up. */
+  seatOnly?: boolean;
   seatLift?: number;
   /** No ground shadow (a piggyback rider is off the ground). */
   noShadow?: boolean;
@@ -336,6 +338,16 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
     </g>
   );
 
+  if (s.seatOnly) {
+    // the empty seat its sitter left: same geometry as when they sat on it
+    const lift = s.seatLift ?? 0;
+    return (
+      <g transform={`translate(${s.x},${s.y}) scale(${flip * s.scale},${s.scale})`} opacity={s.opacity}>
+        <ellipse cx={0} cy={2 + lift} rx={R * 1.1} ry={R * 0.14} fill="#000" opacity={0.18} />
+        {s.seat && s.seat !== 'none' && <Seat kind={s.seat} top={hipY + R * 0.26} floor={lift} w={bw} R={R} sw={sw} side={side} ink={ink} />}
+      </g>
+    );
+  }
   return (
     <g transform={`translate(${s.x},${s.y}) scale(${flip * s.scale},${s.scale})`} opacity={s.opacity}>
       {s.rim && (

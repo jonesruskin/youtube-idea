@@ -121,6 +121,42 @@ const FlashForwardGrain: React.FC = () => {
   );
 };
 
+/** A remembered morning: warm, slightly faded home-movie colour with a gentle gate weave, so it reads as the past. */
+const MemoryWeave: React.FC<{children: React.ReactNode}> = ({children}) => {
+  const f = useCurrentFrame();
+  const dx = Math.sin(f * 0.9) * 1.2 + Math.sin(f * 2.3) * 0.6;
+  const dy = Math.sin(f * 1.3) * 1.0;
+  return (
+    <AbsoluteFill style={{filter: 'sepia(0.32) saturate(0.88) contrast(1.04) brightness(1.05)', transform: `translate(${dx}px,${dy}px) scale(1.01)`}}>
+      {children}
+    </AbsoluteFill>
+  );
+};
+
+/** Light film grain, a soft warm halation and rounded dark corners over a memory. */
+const MemoryFilm: React.FC = () => {
+  const f = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%">
+        <defs>
+          <filter id="memgrain">
+            <feTurbulence type="fractalNoise" baseFrequency={0.85} numOctaves={2} seed={f % 19} />
+            <feColorMatrix values="0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.75  0 0 0 0.28 0" />
+          </filter>
+          <radialGradient id="memvig" cx="50%" cy="50%" r="70%">
+            <stop offset="62%" stopColor="#2A1608" stopOpacity={0} />
+            <stop offset="100%" stopColor="#2A1608" stopOpacity={0.55} />
+          </radialGradient>
+        </defs>
+        <rect width={1920} height={1080} filter="url(#memgrain)" opacity={0.22} />
+        <rect width={1920} height={1080} fill="#FFB060" opacity={0.06 + 0.02 * Math.sin(f * 0.4)} />
+        <rect width={1920} height={1080} fill="url(#memvig)" />
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
 const ShotView: React.FC<{shot: TimedShot; fps: number; prevDay: number; exitAt: number | null}> = ({shot, fps, prevDay, exitAt}) => {
   const Scene = SCENES[shot.scene];
   if (!Scene) throw new Error(`Unknown scene "${shot.scene}" in shot "${shot.id}"`);
@@ -132,11 +168,16 @@ const ShotView: React.FC<{shot: TimedShot; fps: number; prevDay: number; exitAt:
           <AbsoluteFill style={{filter: 'saturate(0.18) contrast(1.25) brightness(1.08) sepia(0.25)'}}>
             <Scene />
           </AbsoluteFill>
+        ) : shot.look === 'memory' ? (
+          <MemoryWeave>
+            <Scene />
+          </MemoryWeave>
         ) : (
           <Scene />
         )}
       </Enter>
       {shot.look === 'flashforward' && <FlashForwardGrain />}
+      {shot.look === 'memory' && <MemoryFilm />}
       <DayTag prevDay={prevDay} />
       <Callout />
     </ShotProvider>
@@ -153,10 +194,12 @@ const Letterbox: React.FC<{shots: TimedShot[]; fps: number}> = ({shots, fps}) =>
   const s = shots[i];
   const RAMP = 0.6;
   let v = 0;
-  if (s.letterbox) {
-    const inFrom = shots[i - 1]?.letterbox ? 1 : interpolate(t, [s.start, s.start + RAMP], [0, 1], {extrapolateRight: 'clamp'});
+  // bars belong to whole sequences: an isolated letterboxed shot gets none (bars popping in and out of a
+  // 3-second shot read as a glitch), a run cuts in hard on its first frame and eases out only at its end
+  const inRun = s.letterbox && (shots[i - 1]?.letterbox || shots[i + 1]?.letterbox);
+  if (inRun) {
     const outTo = shots[i + 1]?.letterbox ? 1 : interpolate(t, [s.end - RAMP, s.end], [1, 0], {extrapolateLeft: 'clamp'});
-    v = Math.min(inFrom, outTo);
+    v = outTo;
   }
   if (v <= 0) return null;
   const h = 138 * Easing.inOut(Easing.cubic)(v);

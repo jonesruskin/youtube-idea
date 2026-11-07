@@ -176,7 +176,7 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
     const thighR = ((Hr - 1.9 * Hr * rd.head) * 0.52) / 2;
     const hipAbove = thighR * (Math.cos((78 * Math.PI) / 180) + Math.cos((20 * Math.PI) / 180));
     const bob = carrier.moving ? Math.abs(Math.sin(carrier.moving.phase)) * H * 0.012 : 0;
-    resolved[i] = {...resolved[i], x: carrier.x - dir * H * 0.21, y: carrier.y - H * 0.67 + hipAbove - bob, facing: carrier.facing, moving: null, pose: POSES.carried, poseName: 'carried'};
+    resolved[i] = {...resolved[i], x: carrier.x - dir * H * 0.25, y: carrier.y - H * 0.71 + hipAbove - bob, facing: carrier.facing, moving: null, pose: POSES.carried, poseName: 'carried'};
   });
   // attention: who is talking right now (eased in over 0.3 s, out over 0.4 s after the line ends)
   let speakerIdx = -1;
@@ -315,13 +315,35 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
           noShadow: !!c.carriedBy,
         };
         const chairSit = r.poseName === 'sitChair';
+        const lift = c.seatLift ?? 0;
         if (chairSit && c.seat !== 'none') {
-          const lift = c.seatLift ?? 0;
           st.seat = c.seat ?? 'chair';
           st.seatLift = lift;
           st.y -= lift * c.depth;
         }
-        return <Toon key={`${c.who}${i}`} d={d} s={st} />;
+        // a chair belongs to the set, not the sitter: once anyone sits in this shot, their seat stays where it
+        // is for the whole shot (before they sit down, and after they stand up)
+        let empty: React.ReactNode = null;
+        const sitAt = c.pose === 'sitChair' ? 0 : (() => {
+          const a = acts.find((x) => x.who === c.who && x.pose === 'sitChair');
+          return a ? resolveAt(a.at, lines) + (a.dur ?? 0.35) : null;
+        })();
+        if (!chairSit && sitAt !== null && c.seat !== 'none') {
+          const s0 = actorAt(c, acts, sitAt + 0.01, frame, lines, i);
+          empty = (
+            <Toon
+              key={`seat${c.who}${i}`}
+              d={d}
+              s={{...st, x: s0.x, y: s0.y - lift * c.depth, facing: s0.facing, pose: POSES.sitChair, bob: 0, seat: c.seat ?? 'chair', seatLift: lift, seatOnly: true, opacity: 1}}
+            />
+          );
+        }
+        return (
+          <React.Fragment key={`${c.who}${i}`}>
+            {empty}
+            <Toon d={d} s={st} />
+          </React.Fragment>
+        );
       })}
     </g>
   );

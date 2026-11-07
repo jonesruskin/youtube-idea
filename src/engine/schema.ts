@@ -93,7 +93,7 @@ export type Shot = {
   /** Marks one of the episode's reveals (1..n). */
   twist?: number;
   /** Picture treatment for the whole shot: 'flashforward' drains the colour and adds film grain. */
-  look?: 'flashforward';
+  look?: 'flashforward' | 'memory';
   /** The first shot allowed to show what the episode is hiding (e.g. 'shell'): the linter blocks anything earlier. */
   reveal?: string;
 };
