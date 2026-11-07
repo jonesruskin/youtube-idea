@@ -94,7 +94,7 @@ const FILL: Record<string, (v: string, dark: boolean) => [number, string]> = {
   kitchen: (v) => [v === 'dark' ? 0.26 : 0, '#CFE0FF'],
   apartment: (v) => [['seal', 'candle', 'balcony'].includes(v) ? 0.2 : 0, '#FFD9AE'],
   stairs: (v) => [v === 'climb' ? 0.08 : 0.24, '#D8E4FF'],
-  metro: (v) => [v === 'dark' ? 0.32 : 0, '#FFD3A0'],
+  metro: (v) => [v === 'dark' ? 0.22 : 0, '#FFB46A'],
   observatory: (v) => [v === 'room' ? 0.16 : 0, '#FFE2B8'],
   street: (v) => [v === 'night' ? 0.14 : 0, '#D8E4FF'],
   snowstreet: () => [0.2, '#D8E6FF'],
