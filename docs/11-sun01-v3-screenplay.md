@@ -77,9 +77,9 @@ Each scene enters for a reason the viewer already heard and leaves with the reas
 **4 · Hour one: the roof (twist 1).** *(cause: Ito wants to see one thing)*
 - Ito: "Venus first." On the eyepiece, Venus is still shining. Mira: "Why is that one still on?"
 - Diagram (the Sun as a dark "?"). Ito: "Venus shines with the Sun's light. That light takes the long way round to reach us."
-- Ito: "If something happened at the Sun, Venus goes dark in three and a half minutes."
+- Ito: "If something happened at the Sun, Venus goes dark at four minutes past seven." (v3.1: Venus sits beside the dark Sun, so its light arrives ~12 min late; they reach the roof by ~7:00.)
 - They wait. Biscuit yawns. Mira on Kai's lap.
-- Venus winks out (callout 3:27).
+- Kai checks his watch (callout 7:03). Venus winks out (callout 7:04).
 - Ito, quiet: "Then it happened at the Sun." **TWIST 1.**
 - Ito: "And Jupiter will go out at four minutes past eight." N: "At four minutes past eight, it did."
 - Ito taps the telescope three times, humming. N: "He always tapped it three times. I never asked why."
@@ -216,3 +216,26 @@ Each scene enters for a reason the viewer already heard and leaves with the reas
 - **Logline in one breath:** the Sun vanished, a girl and her brother survive a year, and the old man saving them is the reason. ✔
 - **First 30 s:** who is talking (adult Mira), where (a kitchen), when (the last sunny morning), and what's wrong (the Sun goes out). ✔
 - **Ending:** this episode's mystery (what happened, and why) is fully resolved. The open question (who answered, and what do they want) is the series spine. ✔
+
+
+## v3.1 frame-audit changes (summary)
+A 3-frames-per-shot audit of the v3 render found 39 problems. Fixes, by kind:
+- **Staging:**
+  - Mira's face no longer sits behind the table.
+  - Both kids are at the door.
+  - The street crowd looks up.
+  - A real stair climb.
+  - The whole floor evacuates.
+  - Mira is present on Day 300 and watching the three taps, so "I didn't ask" and "I never asked" are her own memories.
+- **Payoffs shown, not just said:**
+  - the drawing, the fish under the ice, the held hand
+  - the predicted tide mark, the lamp bank, the lettuce menu, the fat Biscuit
+  - the camera parts, the long lens
+  - the receiver at young Ito's ear, the plates and lines on his wall, the three rail taps at dawn
+- **Logic:**
+  - Venus at 7:04 (see audit).
+  - The radio announcer introduces Mum's message.
+  - On Day 365 the world is frozen (the surfer's sea, the farmer's field, the bus stop).
+- **Clarity:** labels on every diagram body, VENUS labelled in the sky, the 7:03 to 7:04 clock.
+- **Ending:** a memory look (warm film, gate weave) and one shot that dissolves through 44 years of sunrises: young, middle-aged, then old Ito tapping the telescope 1-2-3. It is tagged "EVERY MORNING · 1982–2026", so it can't be misread as the Sun coming back.
+- **Hook:** the blackout lands at 0:26.7 (was 0:29.7) and is now an event: the dark sweeps across the room from the window.
