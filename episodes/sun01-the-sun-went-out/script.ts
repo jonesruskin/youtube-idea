@@ -241,7 +241,7 @@ const shots: Shot[] = [
     c(B, 1060, 930, {pose: 'sit', hold: 'toast'}),
   ], [
     {at: 0.2, who: Y, to: 850, dur: 0.5},
-    {at: 0.95, who: Y, pose: 'reach', look: [-0.4, -0.5]},
+    {at: 0.95, who: Y, pose: 'point', keep: true, look: [-0.5, 0.2]},
     {at: 1.6, who: MI, look: [1, -1], expr: 'surprised'},
     {at: 2.0, who: Y, look: [0.6, -1], expr: 'surprised'},
   ], {lampOn: 1.3, ...AFTER_DRAW, items: [CHALK, MUG]}), {

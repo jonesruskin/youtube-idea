@@ -149,8 +149,8 @@ const Room: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
         <circle r={5} fill="#D9443A" />
       </g>
       {/* the light switch by the door */}
-      <rect x={744} y={630} width={34} height={52} rx={5} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
-      <rect x={755} y={642} width={12} height={22} rx={3} fill="#C9CED6" stroke={INK} strokeWidth={2} />
+      <rect x={690} y={690} width={34} height={52} rx={5} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
+      <rect x={701} y={702} width={12} height={22} rx={3} fill="#C9CED6" stroke={INK} strokeWidth={2} />
       {/* hanging lamp */}
       <path d="M1180,-200 L1180,470" stroke={INK} strokeWidth={3} />
       <path d="M1130,515 Q1180,450 1230,515 Z" fill="#D9443A" stroke={INK} strokeWidth={4} />
@@ -302,8 +302,6 @@ registerSet('kitchen', {
     const lamp = c.p.lampOn !== undefined && c.t >= c.at(c.p.lampOn, 0) ? 1 : 0;
     return (
       <g>
-        {lamp > 0 && <Glow x={1180} y={760} r={640} color="#FFE2A0" opacity={0.45} />}
-        {lamp > 0 && <Glow x={1180} y={525} r={70} color="#FFF4D0" opacity={0.9} />}
         {k > 0 && <Glow x={520} y={480} r={520} color="#6FA8FF" opacity={0.28 * k} />}
         {k < 1 && <Glow x={700} y={600} r={700} color="#FFE6A8" opacity={0.35 * (1 - k)} />}
         {k < 1 && <Glow x={1180} y={420} r={300} color="#FFD9A0" opacity={0.25 * (1 - k)} />}
@@ -316,8 +314,20 @@ registerSet('kitchen', {
     return (
       <g>
         <Grade color="#FFF4E0" amount={0.06 * (1 - k)} />
-        <Grade color="#14205E" amount={0.72 * k * (1 - 0.4 * lamp)} />
+        <Grade color="#14205E" amount={0.72 * k * (1 - 0.55 * lamp)} />
         <Vignette amount={0.35 + 0.35 * k} />
+      </g>
+    );
+  },
+  // the lamp is drawn after the grade, so when Kai flicks the switch it reads as real, warm, ordinary light
+  post: (c) => {
+    const lamp = c.p.lampOn !== undefined && c.t >= c.at(c.p.lampOn, 0) ? 1 : 0;
+    if (!lamp) return null;
+    return (
+      <g>
+        <path d="M1132,515 L900,930 L1460,930 L1228,515 Z" fill="#FFE6A8" opacity={0.16} />
+        <Glow x={1180} y={760} r={560} color="#FFE2A0" opacity={0.32} />
+        <Glow x={1180} y={520} r={90} color="#FFF4D0" opacity={0.95} />
       </g>
     );
   },
