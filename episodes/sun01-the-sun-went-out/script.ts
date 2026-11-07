@@ -250,7 +250,7 @@ const shots: Shot[] = [
     action: 'Kai flicks the light switch. The kitchen lamp comes on, warm and ordinary. The window stays full of stars.',
     lines: [N("The lights still worked. The Sun didn't.")],
   }),
-  sh('knock', stage('apartment', 'door', push(1.3, 1.45, 1250, 620), [c(MI, 860, 930, {facing: 'right', expr: 'scared'}), c(Y, 1000, 930, {facing: 'right', expr: 'worried'})], [{at: 0.5, who: Y, look: [1, 0], expr: 'surprised'}], {doorOpen: false, knock: true}), {
+  sh('knock', stage('apartment', 'door', push(1.3, 1.45, 1250, 620), [c(MI, 860, 930, {facing: 'right', expr: 'scared'}), c(Y, 1000, 930, {facing: 'right', expr: 'worried'})], [{at: 0.5, who: Y, look: [1, 0], expr: 'surprised'}], {frosty: false, doorOpen: false, knock: true}), {
     action: 'Three hard knocks rattle the front door.',
     lines: [N('Then someone knocked. Three times.')],
   }),
@@ -258,22 +258,22 @@ const shots: Shot[] = [
     c(MI, 860, 930, {facing: 'right', expr: 'scared'}),
     c(Y, 1000, 930, {facing: 'right', expr: 'surprised'}),
     c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'hold', holdL: 'bag', outfit: 'home', expr: 'determined'}),
-  ], [{at: 'l0+0.4', who: MI, look: [1, -0.3]}], {doorOpen: true}), {
+  ], [{at: 'l0+0.4', who: MI, look: [1, -0.3]}], {frosty: false, doorOpen: true}), {
     dev: 'Mr. Ito arrives, already prepared',
     action: 'The door opens on Mr. Ito from upstairs: fully dressed, shoes on, a torch in one hand and a packed canvas bag in the other.',
     lines: [I('Good morning. Shoes on, please. Both of you.')],
   }),
-  sh('from-upstairs', stage('apartment', 'door', push(2.3, 2.5, 1560, 600), [c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'hold', holdL: 'bag', outfit: 'home', expr: 'neutral'})], [{at: 'l0+0.8', who: IT, look: [-0.6, 0.2]}], {doorOpen: true}), {
+  sh('from-upstairs', stage('apartment', 'door', push(2.3, 2.5, 1560, 600), [c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'hold', holdL: 'bag', outfit: 'home', expr: 'neutral'})], [{at: 'l0+0.8', who: IT, look: [-0.6, 0.2]}], {frosty: false, doorOpen: true}), {
     action: 'Close on Ito, calm in the torchlight.',
     lines: [N('Mr. Ito, from upstairs. He was seventy-three, and he was never in a hurry.')],
   }),
-  sh('packed', stage('apartment', 'door', push(2.4, 2.7, 1560, 800, 1540, 840), [c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'hold', holdL: 'bag', outfit: 'home'})], [{at: 0.3, who: IT, look: [-0.4, 0.4]}], {doorOpen: true}), {
+  sh('packed', stage('apartment', 'door', push(2.4, 2.7, 1560, 800, 1540, 840), [c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'hold', holdL: 'bag', outfit: 'home'})], [{at: 0.3, who: IT, look: [-0.4, 0.4]}], {frosty: false, doorOpen: true}), {
     action: 'Close on the canvas bag in his hand: worn straps, a luggage tag, packed tight.',
     lines: [N("His bag was already packed. It had been packed for years.")],
   }),
   sh('and-the-dog', stage('apartment', 'door', push(2.4, 2.7, 1500, 560), [c(IT, 1590, 930, {facing: 'left', outfit: 'home', pose: 'hold', hold: 'torchOff', expr: 'smile', holdL: 'bag'}), c(B, 1300, 930, {hold: 'toast'})], [
     {at: 'l0+0.4', who: B, pose: 'beg', wag: 1},
-  ], {doorOpen: true}), {
+  ], {frosty: false, doorOpen: true}), {
     beats: ['laugh'],
     action: 'Ito nods past them at Biscuit, who still has the toast in his mouth.',
     lines: [I('And bring the dog. He has your toast.', 0, 'point')],
@@ -477,7 +477,7 @@ const shots: Shot[] = [
     action: 'Ito’s battery radio on the kitchen table.',
     lines: [R('Phone networks are down across the city. Please stay indoors.')],
   }),
-  sh('kai-shops', stage('apartment', '', push(2.0, 2.2, 1100, 620), [c(Y, 1000, 930, {facing: 'right', expr: 'worried'}), c(IT, 1250, 930, {facing: 'left', holdL: 'bag'})], [{at: 'l0+0.5', who: IT, look: [-1, 0]}]), {
+  sh('kai-shops', stage('apartment', '', push(2.0, 2.2, 1100, 620), [c(Y, 1000, 930, {facing: 'right', expr: 'worried'}), c(IT, 1250, 930, {facing: 'left', holdL: 'bag'})], [{at: 'l0+0.5', who: IT, look: [-1, 0]}], {frosty: false}), {
     action: 'Kai, already pulling on his shoes.',
     lines: [K("Everyone's going to the shops.")],
   }),
@@ -485,7 +485,7 @@ const shots: Shot[] = [
     {at: 0.1, who: IT, take: 'bag', prop: 'list'},
     {at: 'l0+0.4', who: IT, give: Y, prop: 'list'},
     {at: 'l0+1.4', who: Y, look: [0.3, 0.6], expr: 'focused'},
-  ]), {
+  ], {frosty: false}), {
     min: 3.4,
     lead: 0.8,
     action: 'Ito takes a folded list out of his bag and hands it to Kai.',
@@ -575,7 +575,7 @@ const shots: Shot[] = [
     {at: 0.1, who: Y, take: 'desk', prop: 'mic'},
     {at: 0.75, who: Y, pose: 'think'},
     {at: 'l0+0.6', who: MI, to: 1130, dur: 0.5},
-  ], {ham: true, hamOn: true, items: [{...MIC_DESK, until: 0.5}]}), {
+  ], {frosty: false, ham: true, hamOn: true, items: [{...MIC_DESK, until: 0.5}]}), {
     lead: 0.7,
     action: 'Their flat, that evening. Mr. Ito’s ham radio crackles on the desk. Kai grabs the mic.',
     lines: [K('Mum! Are you okay?')],
@@ -593,7 +593,7 @@ const shots: Shot[] = [
     action: 'Wide: every bed full, cots lining the corridor, people under blankets as far as the doors.',
     lines: [MUM('The whole city is coming here. They need every nurse.')],
   }),
-  sh('apt-when', stage('apartment', '', push(2.2, 2.4, 1170, 640), [c(MI, 1130, 930, {facing: 'right', expr: 'sad'}), c(Y, 1230, 930, {facing: 'right', hold: 'mic', expr: 'worried'})], [{at: 'l0+1.2', who: Y, look: [-0.8, 0.2]}], {ham: true, hamOn: true}), {
+  sh('apt-when', stage('apartment', '', push(2.2, 2.4, 1170, 640), [c(MI, 1130, 930, {facing: 'right', expr: 'sad'}), c(Y, 1230, 930, {facing: 'right', hold: 'mic', expr: 'worried'})], [{at: 'l0+1.2', who: Y, look: [-0.8, 0.2]}], {frosty: false, ham: true, hamOn: true}), {
     action: 'Mira leans in to the mic in Kai’s hand.',
     lines: [M('When are you coming home?')],
   }),
@@ -609,7 +609,7 @@ const shots: Shot[] = [
   ], [
     {at: 'l0+0.3', who: Y, put: 'desk', prop: 'mic'},
     {at: 'l0+1.4', who: IT, look: [-1, 0.3]},
-  ], {ham: true, items: [{...MIC_DESK, from: 'l0+0.7'}]}), {
+  ], {frosty: false, ham: true, items: [{...MIC_DESK, from: 'l0+0.7'}]}), {
     dev: 'the nightly calls',
     action: 'Kai hangs the mic back on the radio. Ito, by the window, watching them.',
     lines: [N('She called every night at seven. We never missed one.')],
@@ -617,7 +617,7 @@ const shots: Shot[] = [
   sh('is-it-dead', stage('apartment', '', push(2.4, 2.6, 940, 640), [
     c(MI, 820, 930, {pose: 'sit', facing: 'right', expr: 'sleepy'}),
     c(Y, 960, 930, {pose: 'sit', facing: 'right', expr: 'worried'}),
-  ], [{at: 'l0', who: Y, look: [1, -0.3]}], {ham: true, items: [MIC_DESK]}), {
+  ], [{at: 'l0', who: Y, look: [1, -0.3]}], {frosty: false, ham: true, items: [MIC_DESK]}), {
     timeJump: true,
     action: 'Later. Kai and Mira on the rug. Kai finally asks it.',
     lines: [K('Is the Sun… dead?', 0.3)],
@@ -636,7 +636,7 @@ const shots: Shot[] = [
     {at: 0.1, who: IT, take: 'bag', prop: 'tideTable'},
     {at: 0.8, who: Y, pose: 'stand'},
     {at: 'l0+0.3', who: IT, give: Y, prop: 'tideTable'},
-  ], {ham: true, items: [MIC_DESK]}), {
+  ], {frosty: false, ham: true, items: [MIC_DESK]}), {
     dev: 'Ito sends them to check the tide',
     min: 3.2,
     lead: 0.9,
