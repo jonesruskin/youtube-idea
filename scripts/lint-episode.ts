@@ -43,7 +43,7 @@ mids.forEach((m, i) => {
 });
 for (const s of tl.shots.filter((x) => x.midroll)) {
   const last = s.lines?.[s.lines.length - 1]?.text ?? '';
-  if (!/\?|not|yet|n't|never|\.\.\./i.test(last)) warnings.push(`Mid-roll after "${s.id}" does not end on an open loop.`);
+  if (!s.beats?.includes('loop') && !/\?|not|yet|n't|never|\.\.\./i.test(last)) warnings.push(`Mid-roll after "${s.id}" does not end on an open loop.`);
 }
 
 // 6. Every science beat must cite a source (it goes in the description, not on screen).
@@ -126,6 +126,62 @@ if (episode.style === 'cinema') {
   for (const s of tl.shots.filter((x) => x.thread === '1982')) {
     if ((s.lines ?? []).length) errors.push(`1982: "${s.id}" has spoken lines; that thread stays silent until the reveal.`);
     if (s.hud) errors.push(`1982: "${s.id}" carries a time tag.`);
+  }
+  // costume continuity inside a scene: the same people in the same place on the same day wear the same thing
+  {
+    let day2 = 0;
+    let runKey = '';
+    let worn = new Map<string, string>();
+    for (const s of tl.shots) {
+      if (s.hud && 'day' in s.hud) day2 = s.hud.day;
+      const p = (s.props ?? {}) as any;
+      if (s.thread || s.scene !== 'stage') continue;
+      const key = `${day2}:${p.set}`;
+      if (key !== runKey) {
+        runKey = key;
+        worn = new Map();
+      }
+      for (const c of (p.cast ?? []) as any[]) {
+        if (!['you', 'mira', 'ito', 'mum'].includes(c.who)) continue;
+        const o = c.outfit ?? 'home';
+        if (worn.has(c.who) && worn.get(c.who) !== o) errors.push(`Continuity: ${c.who} changes from "${worn.get(c.who)}" to "${o}" mid-scene in "${s.id}".`);
+        worn.set(c.who, o);
+      }
+    }
+  }
+  // perspective: when the narrator says "I"/"we" about a scene, she must be in that scene (she only tells what she saw)
+  {
+    const isScene = (x: (typeof tl.shots)[number]) => !x.thread && ['stage', 'closeup', 'sky', 'thermal'].includes(x.scene);
+    tl.shots.forEach((s, i) => {
+      if (s.thread || s.scene !== 'stage') return;
+      const first = (s.lines ?? []).some((l) => l.speaker === 'NARRATOR' && /\b(I|me|my|we|us|our)\b/.test(l.text));
+      if (!first) return;
+      const set = (s.props as any)?.set;
+      let a = i;
+      let b = i;
+      while (a > 0 && isScene(tl.shots[a - 1]) && ((tl.shots[a - 1].props as any)?.set ?? set) === set) a--;
+      while (b < tl.shots.length - 1 && isScene(tl.shots[b + 1]) && ((tl.shots[b + 1].props as any)?.set ?? set) === set) b++;
+      const present = tl.shots.slice(a, b + 1).some((x) => (((x.props as any)?.cast ?? []) as any[]).some((c) => c.who === 'mira'));
+      if (!present) errors.push(`Perspective: "${s.id}" is narrated in the first person but Mira is not in the scene.`);
+    });
+  }
+  // letterbox belongs to sequences: an isolated letterboxed shot is ignored by the renderer
+  tl.shots.forEach((s, i) => {
+    if (s.letterbox && !tl.shots[i - 1]?.letterbox && !tl.shots[i + 1]?.letterbox) warnings.push(`Letterbox on isolated shot "${s.id}" is ignored (bars only run across sequences).`);
+  });
+  // captions: a lower-third callout must not sit on a face (seated/close shots put faces low in frame)
+  for (const s of tl.shots) {
+    const p = (s.props ?? {}) as any;
+    if (s.scene !== 'stage' || !s.callout || s.callout.pos === 'top') continue;
+    const cam = (p.cam ?? [[0, 1, 960, 540]]) as number[][];
+    const k = cam[cam.length - 1];
+    for (const c of (p.cast ?? []) as any[]) {
+      if (c.who === 'biscuit' || (c.opacity ?? 1) < 0.5) continue;
+      const faceY = c.y - 300 * 0.85 * c.depth * (String(c.pose ?? '').startsWith('sit') || c.pose === 'crouch' ? 0.55 : 1);
+      const sy = (faceY - k[3]) * k[1] + 540;
+      const sx = (c.x - k[2]) * k[1] + 960;
+      if (sy > 760 && sy < 1080 && Math.abs(sx - 960) < 520) warnings.push(`Caption in "${s.id}" may cover ${c.who}'s face; use pos 'top'.`);
+    }
   }
   // scale: everyone on the same floor line shares one depth (heights come from the chart, never per shot)
   for (const s of tl.shots) {

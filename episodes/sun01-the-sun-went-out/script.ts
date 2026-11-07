@@ -160,7 +160,6 @@ const shots: Shot[] = [
     action: 'Manila: the boy at the empty bus stop, in the dark.',
   }),
   sh('stars-at-breakfast', stage('kitchen', 'dark', push(1.3, 1.45, 560, 590), [c(MI, 520, 930, {facing: 'back'}), c(Y, 760, 930, {facing: 'back'})], [{at: 0.2, who: MI, to: 560, dur: 0.8, facing: 'back'}], {windowStars: true}), {
-    letterbox: true,
     beats: ['wow'],
     action: 'Through the kitchen window: stars over the city at breakfast time.',
     lines: [M('Is it night again?', 0.3)],
@@ -200,7 +199,6 @@ const shots: Shot[] = [
   sh('title', sc('title'), {
     min: 3.6,
     cue: 'title',
-    letterbox: true,
     beats: ['loop'],
     action: 'Title: THE SUN WENT OUT.',
     lines: [N('It took me a year to understand why.', 0.8)],
@@ -327,7 +325,7 @@ const shots: Shot[] = [
     action: 'Jupiter, centred in the telescope crosshairs, winks out.',
     lines: [N('At four minutes past eight, it did.', 0.4)],
   }),
-  sh('three-taps', stage('roof', 'night', push(2.6, 2.9, 1240, 640), [c(IT, 1150, 900, {pose: 'reach', outfit: 'home', facing: 'right', expr: 'neutral'})], [{at: 0.2, who: IT, loop: 'tap', dur: 1.2}]), {
+  sh('three-taps', stage('roof', 'night', push(2.3, 2.55, 1150, 660), [c(MI, 930, 900, {outfit: 'home', facing: 'right', look: [1, -0.6], expr: 'focused'}), c(IT, 1150, 900, {pose: 'reach', outfit: 'home', facing: 'right', expr: 'neutral'})], [{at: 0.2, who: IT, loop: 'tap', dur: 1.2}]), {
     action: 'Ito taps the telescope three times, humming under his breath.',
     lines: [N('He always tapped it three times. I never asked why.')],
   }),
@@ -530,7 +528,6 @@ const shots: Shot[] = [
   }),
   sh('aurora', sc('sky', {v: 'aurora'}), {
     science: {text: "Coronal mass ejections take roughly 1 to 4 days to reach Earth, so particles already on their way would still arrive after the light was gone.", source: "NOAA Space Weather Prediction Center, ‘Coronal Mass Ejections’"},
-    letterbox: true,
     beats: ['wow'],
     dev: 'the Sun’s last storm arrives',
     action: 'The whole sky ignites: green and violet curtains over the frozen city.',
@@ -654,7 +651,6 @@ const shots: Shot[] = [
   }),
   sh('mira-shouts', stage('snowstreet', 'door', dutch(2.4, 2.9, 900, 560, 7), [c(MI, 900, 960, {...COLD, facing: 'right', expr: 'scared', pose: 'reach'})], [{at: 0, who: MI, loop: 'shiver', dur: 3}], {wind: 1}), {
     midroll: true,
-    letterbox: true,
     beats: ['loop'],
     action: 'Mira screams his name into the storm. Nothing comes back.',
     lines: [M('BISCUIT!', 1.0)],
@@ -1090,7 +1086,6 @@ const shots: Shot[] = [
     hud: {day: 365, temp: -73},
     cue: 'finale',
     transition: 'fade',
-    letterbox: true,
     beats: ['wow'],
     action: 'Day 365. All of them on the surface, tiny under the brightest Milky Way anyone has ever seen.',
     lines: [N('On Day 365, we all went up to the surface together.')],
@@ -1134,7 +1129,6 @@ const shots: Shot[] = [
   sh('thats-us', stage('surface', 'milky', push(2.8, 3.4, 940, 600), [c(MI, 940, 940, {...COLD, facing: 'front', expr: 'scared'})]), {
     cue: 'shellSting',
     twist: 6,
-    letterbox: true,
     beats: ['loop'],
     sfx: 'impact',
     action: 'Mira, very quietly.',
