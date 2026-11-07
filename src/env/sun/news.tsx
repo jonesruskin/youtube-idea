@@ -258,7 +258,9 @@ export const NewsScene: React.FC = () => {
   const v = c.v;
   const p = c.p as any;
   const lines = shot.timedLines as any[];
-  const line = lines.find((l) => ['ANCHOR', 'SCIENTIST'].includes(l.speaker) && c.t >= l.startInShot && c.t <= l.startInShot + (l.end - l.start));
+  // each presenter only moves their lips to their own voice: the anchor's words over the podium are voice-over
+  const speaking = v === 'press' ? 'SCIENTIST' : 'ANCHOR';
+  const line = lines.find((l) => l.speaker === speaking && c.t >= l.startInShot && c.t <= l.startInShot + (l.end - l.start));
   const mouth = line ? visemeAt(line.text, c.t - line.startInShot, line.end - line.start, line.chars).open : 0;
   const z = interpolate(c.t / c.dur, [0, 1], [1, 1.04]);
   const person = (seed: number, x: number, y: number, s: number, talk: number) => (

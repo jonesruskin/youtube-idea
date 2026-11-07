@@ -61,7 +61,8 @@ if (!cinema) {
   if (existsSync(voiceDir)) h.update(readdirSync(voiceDir).sort().join(','));
   h.update(`${crf}:${composition.durationInFrames}:${composition.fps}:${process.env.CHUNK_FRAMES ?? 1800}:${process.env.FRAMES ?? ''}`);
   const stamp = h.digest('hex');
-  if (existsSync(dir) && (!existsSync(stampFile) || readFileSync(stampFile, 'utf8') !== stamp)) {
+  // KEEP_CHUNKS=1: a fix that only touches later scenes keeps the chunks already verified (use with care)
+  if (!process.env.KEEP_CHUNKS && existsSync(dir) && (!existsSync(stampFile) || readFileSync(stampFile, 'utf8') !== stamp)) {
     console.log('chunks are stale → wiping out/chunks');
     rmSync(dir, {recursive: true, force: true});
   }
