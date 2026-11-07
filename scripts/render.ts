@@ -32,7 +32,7 @@ const thumb = await selectComposition({serveUrl, id: `${id}-thumbnail`, browserE
 await renderStill({serveUrl, composition: thumb, output: join(ROOT, 'renders', `${id}-thumbnail.png`), browserExecutable});
 
 const composition = await selectComposition({serveUrl, id, inputProps: {episodeId: id}, browserExecutable});
-const raw = join(ROOT, 'renders', cinema ? `${id}-raw.mp4` : `${id}.mp4`);
+const raw = join(ROOT, 'renders', cinema ? `${id}-raw.mov` : `${id}.mp4`);
 const common = {serveUrl, composition, inputProps: composition.props, browserExecutable, concurrency: Number(process.env.CONCURRENCY ?? 4), imageFormat: 'jpeg' as const, jpegQuality: 92};
 const progress = (label: string) => {
   let last = -1;
@@ -95,7 +95,7 @@ if (!cinema) {
   }
   const list = join(dir, 'list.txt');
   writeFileSync(list, files.map((f) => `file '${f}'`).join('\n') + '\n');
-  run(`ffmpeg -v error -y -f concat -safe 0 -i "${list}" -i "${wav}" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 320k -t ${end / composition.fps} "${raw}"`);
+  run(`ffmpeg -v error -y -f concat -safe 0 -i "${list}" -i "${wav}" -map 0:v -map 1:a -c:v copy -c:a pcm_s24le -t ${end / composition.fps} "${raw}"`);
   const frames = parseInt(execSync(`ffprobe -v error -count_packets -select_streams v:0 -show_entries stream=nb_read_packets -of csv=p=0 "${raw}"`).toString());
   if (frames !== end) throw new Error(`joined video has ${frames} frames, expected ${end}`);
   console.log(`joined ${n} chunks → ${frames} frames ✔`);
@@ -103,12 +103,14 @@ if (!cinema) {
 }
 
 if (cinema) {
-  // Master: two-pass EBU R128 loudness normalisation, then embed the captions as a soft subtitle track.
+  // Master: flat gain to −14 LUFS, then an 4×-oversampled limiter at −2 dBFS that only catches transient peaks
+  // (true peak lands ≈ −1.5 dBTP after AAC). Unlike loudnorm's dynamic fallback, this keeps the film's dynamics.
   const r = (p: string) => join(ROOT, 'renders', p);
-  const probe = execSync(`ffmpeg -hide_banner -i "${raw}" -af loudnorm=I=-14:TP=-1.0:LRA=11:print_format=json -f null - 2>&1`, {cwd: ROOT}).toString();
-  const m = JSON.parse(probe.slice(probe.lastIndexOf('{'), probe.lastIndexOf('}') + 1));
-  const ln = `loudnorm=I=-14:TP=-1.0:LRA=11:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=true`;
-  run(`ffmpeg -v error -y -i "${raw}" -i "${r(`${id}.srt`)}" -map 0:v -map 0:a -map 1:0 -c:v copy -af "${ln},aresample=48000" -c:a aac -b:a 256k -c:s mov_text -metadata:s:s:0 language=eng -movflags +faststart "${r(`${id}-hq.mp4`)}"`);
+  const meas = execSync(`ffmpeg -hide_banner -i "${raw}" -map 0:a -af ebur128 -f null - 2>&1`, {cwd: ROOT}).toString();
+  const inI = Number([...meas.matchAll(/I:\s+(-?[\d.]+) LUFS/g)].pop()![1]);
+  const gain = (-14 - inI + 0.6).toFixed(2); // +0.6 dB compensates what the limiter shaves off
+  const chain = `aresample=192000,volume=${gain}dB,alimiter=limit=0.794:attack=0.5:release=40:level=disabled,aresample=48000`;
+  run(`ffmpeg -v error -y -i "${raw}" -i "${r(`${id}.srt`)}" -map 0:v -map 0:a -map 1:0 -c:v copy -af "${chain}" -c:a aac -b:a 256k -c:s mov_text -metadata:s:s:0 language=eng -movflags +faststart "${r(`${id}-hq.mp4`)}"`);
   unlinkSync(raw);
   // Web copy for the repo (GitHub's 100 MB file limit): re-encode only if needed.
   const hq = r(`${id}-hq.mp4`);

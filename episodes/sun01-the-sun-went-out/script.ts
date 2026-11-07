@@ -1144,7 +1144,7 @@ const shots: Shot[] = [
     transition: 'match',
     letterbox: true,
     twist: 7,
-    callout: {text: 'MR. ITO · 1982', at: 'l0+0.4', pos: 'top'},
+    callout: {text: 'THE SAME MAN', at: 'l0+0.4', pos: 'top'},
     dev: 'the man in the observatory was Mr. Ito',
     action: 'Match cut: the same face, forty-four years older, in starlight, tapping his cane three times.',
     lines: [N('The man in the observatory was Mr. Ito. Forty-four years ago.', 0.4)],

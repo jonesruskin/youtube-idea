@@ -87,6 +87,8 @@ const PlaceTag: React.FC<{place: string; time: string; t: number; dur: number}> 
     <AbsoluteFill style={{pointerEvents: 'none'}}>
       <svg viewBox="0 0 1920 1080" width="100%" height="100%">
         <g transform={`translate(${-60 + 150 * inK},150)`} opacity={inK * outK}>
+          {/* soft backing card: keeps the tag clean over busy sets (a curtain rod read as a strikethrough) */}
+          <rect x={-10} y={-78} width={Math.max(place.length * 58, time.length * 30) + 60} height={152} rx={10} fill="#0B1026" opacity={0.42} />
           <rect x={-20} y={-66} width={10} height={130} fill="#FFB25A" />
           <text x={10} y={-6} fontFamily={fonts.display} fontWeight={900} fontSize={72} fill="#FFF6E0" stroke="#0B1026" strokeWidth={10} paintOrder="stroke" letterSpacing={3}>
             {place}
