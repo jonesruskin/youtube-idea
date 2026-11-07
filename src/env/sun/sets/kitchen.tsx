@@ -148,6 +148,9 @@ const Room: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
         <path d="M0,0 L0,-28" stroke={INK} strokeWidth={6} strokeLinecap="round" transform="rotate(205)" />
         <circle r={5} fill="#D9443A" />
       </g>
+      {/* the light switch by the door */}
+      <rect x={410} y={600} width={34} height={52} rx={5} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
+      <rect x={421} y={612} width={12} height={22} rx={3} fill="#C9CED6" stroke={INK} strokeWidth={2} />
       {/* hanging lamp */}
       <path d="M1180,-200 L1180,470" stroke={INK} strokeWidth={3} />
       <path d="M1130,515 Q1180,450 1230,515 Z" fill="#D9443A" stroke={INK} strokeWidth={4} />

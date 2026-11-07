@@ -117,10 +117,10 @@ const LivingRoom: React.FC<{c: SetCtx}> = ({c}) => {
       <Bookcase x={1150} base={930} />
       {/* the TV on its stand (Day 0–7, while there is power): news glow, or switched off */}
       {c.p.tv && (
-        <g transform="translate(960,930)">
+        <g transform="translate(960,930)" data-tv={c.p.tvOff !== undefined && c.t >= c.at(c.p.tvOff, 0) ? 'off' : c.p.tv}>
           <rect x={-130} y={-M(0.55)} width={260} height={M(0.55)} fill="#5A3822" stroke={INK} strokeWidth={5} />
           <rect x={-150} y={-M(0.55) - 170} width={300} height={176} rx={12} fill="#1A1C24" stroke={INK} strokeWidth={6} />
-          {c.p.tv === 'news' ? (
+          {c.p.tv === 'news' && !(c.p.tvOff !== undefined && c.t >= c.at(c.p.tvOff, 0)) ? (
             <g>
               <rect x={-136} y={-M(0.55) - 158} width={272} height={150} rx={6} fill="#24345E" />
               <rect x={-136} y={-M(0.55) - 40} width={272} height={26} fill="#C2464F" />

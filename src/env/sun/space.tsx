@@ -379,7 +379,7 @@ const GlobeScene: React.FC = () => {
   const v = c.v;
   const day = (c.p.day as number) ?? 0;
   const ice = day >= 7 ? 62 : 78;
-  const lights = v === 'lights' ? 1 : 0.9;
+  const lights = v === 'lights' ? 1 : v === 'gridDown' ? Math.max(0.03, 1 - Math.max(0, c.t - 0.6) / 2.4) : 0.9;
   const z = interpolate(c.t / c.dur, [0, 1], [1, 1.08]);
   return (
     <AbsoluteFill style={{background: '#000'}}>

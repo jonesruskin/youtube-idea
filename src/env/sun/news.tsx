@@ -271,8 +271,8 @@ export const NewsScene: React.FC = () => {
     const panels = (p.panels ?? []) as {place: string; time: string; kind: Kind}[];
     return (
       <AbsoluteFill>
-        <Broadcast headline={p.headline} ticker={p.ticker} frame={c.frame}>
-          <g transform={`translate(960,470) scale(${z}) translate(-960,-470)`}>
+        <Broadcast headline={p.headline} ticker={p.ticker} frame={c.frame} live={!p.plain}>
+          <g transform={`translate(960,${p.plain ? 540 : 470}) scale(${z}) translate(-960,-${p.plain ? 500 : 470})`}>
             {panels.slice(0, 4).map((pn, i) => {
               const x = 40 + (i % 2) * 930;
               const y = 120 + Math.floor(i / 2) * 380;
