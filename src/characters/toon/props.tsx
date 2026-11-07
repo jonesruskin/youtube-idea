@@ -29,7 +29,8 @@ export type PropKind =
   | 'receiver'
   | 'list'
   | 'dish'
-  | 'mic';
+  | 'mic'
+  | 'sunDrawing';
 
 /** Props drawn at the hand position (origin = hand centre). R = the holder's head radius. */
 export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({kind, R, frame}) => {
@@ -197,6 +198,19 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
           {Array.from({length: 8}, (_, k) => (
             <path key={k} d={`M0,${-R * 0.3} L0,${-R * 0.4}`} stroke="#8A8F9C" strokeWidth={sw * 0.8} transform={`rotate(${k * 45})`} />
           ))}
+        </g>
+      );
+    case 'sunDrawing':
+      // Mira's drawing from the last morning: a yellow sun with rays, and a small girl standing under it
+      return (
+        <g transform={`translate(${-R * 0.2},${-R * 1.1})`}>
+          <rect x={-R * 0.7} y={-R * 0.5} width={R * 1.4} height={R * 1.0} fill="#FFFDF6" stroke={ink} strokeWidth={sw} />
+          <circle cx={0} cy={-R * 0.12} r={R * 0.2} fill="#FFC93C" stroke="#E08A1E" strokeWidth={sw * 0.7} />
+          {Array.from({length: 8}, (_, k) => (
+            <path key={k} d={`M0,${-R * 0.27} L0,${-R * 0.37}`} stroke="#F2A12E" strokeWidth={sw * 0.9} strokeLinecap="round" transform={`translate(0,${-R * 0.12}) rotate(${k * 45})`} />
+          ))}
+          <circle cx={0} cy={R * 0.24} r={R * 0.05} fill="#7A4E30" />
+          <path d={`M0,${R * 0.29} L0,${R * 0.4} M${-R * 0.06},${R * 0.48} L0,${R * 0.4} L${R * 0.06},${R * 0.48} M${-R * 0.07},${R * 0.33} L${R * 0.07},${R * 0.33}`} stroke="#C2464F" strokeWidth={sw * 0.8} strokeLinecap="round" />
         </g>
       );
     case 'bag':

@@ -171,6 +171,7 @@ const tone = (t0: number, len: number, f0: number, f1: number, amp: number, shap
   }
 };
 const SFX: Record<Sfx, (t: number) => void> = {
+  static: (t) => addNoise(t, 1.4, 0.3, (x) => (x < 0.1 ? x * 10 : 1 - x), 0.6, 0.9),
   whoosh: (t) => addNoise(t - 0.2, 1.2, 0.5, (x) => Math.sin(Math.PI * x) ** 2, 0.02, 0.3),
   impact: (t) => {
     tone(t, 1.2, 90, 32, 0.5, (x) => Math.exp(-x * 5));

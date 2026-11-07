@@ -627,8 +627,16 @@ export const CloseupScene: React.FC = () => {
   if (v === 'reply') {
     // the whole picture, then a slow push down onto the empty square at the bottom
     const push = c.p.focus ? clamp((t - 0.6) / 2.2) : 0;
-    const zoom = 1 + push * 1.6;
-    const ty = -push * 300;
+    let zoom = 1 + push * 1.6;
+    let ty = -push * 300;
+    // `part: [row0, row1]` frames one band of the picture (so each part can be read while it is described)
+    if (Array.isArray(c.p.part)) {
+      const [r0, r1] = c.p.part as [number, number];
+      const zFull = Math.min(860 / ((r1 - r0 + 1) * 13), 3.4);
+      const k = clamp(t / Math.max(1, c.dur));
+      zoom = zFull * (0.9 + 0.1 * k);
+      ty = -(((r0 + r1 + 1) / 2) * 13 - (73 * 13) / 2);
+    }
     return wrap(
       '#05060D',
       <g>
@@ -643,7 +651,7 @@ export const CloseupScene: React.FC = () => {
   if (v === 'drawingGrid') {
     // Mira's crayon sun becomes 23 × 23 dots, and goes
     const k = clamp((t - 0.5) / 1.6);
-    const send = clamp((t - 2.4) / 1.2);
+    const send = c.p.stay ? 0 : clamp((t - 2.4) / 1.2);
     const cell = 30;
     return wrap(
       '#0A0E1C',

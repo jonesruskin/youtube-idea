@@ -233,26 +233,17 @@ const Workshop: React.FC<{c: SetCtx}> = ({c}) => (
         {i % 3 === 2 && <path d={`M${x},300 L${x},460`} stroke="#E9C46A" strokeWidth={14} />}
       </g>
     ))}
-    {/* Ito's framed print of the 1919 eclipse: the Moon, the corona, and three faint lines far too straight —
-        each one crosses the whole corona and comes out the other side (an orbital ring of the shell, edge-on) */}
-    <g transform="translate(1530,300) rotate(1.5)">
-      <rect x={-78} y={-62} width={156} height={124} fill="#5A3822" stroke={INK} strokeWidth={4} />
-      <rect x={-66} y={-50} width={132} height={100} fill="#3A3836" />
-      <circle cx={0} cy={0} r={34} fill="#D8D2C4" opacity={0.18} />
-      <circle cx={0} cy={0} r={24} fill="#E8E2D4" opacity={0.35} />
-      {[18, 74, 142].flatMap((a) =>
-        [a, a + 180].map((b) => (
-          <path key={b} d={`M${Math.cos((b * Math.PI) / 180) * 18},${Math.sin((b * Math.PI) / 180) * 18} L${Math.cos((b * Math.PI) / 180) * 62},${Math.sin((b * Math.PI) / 180) * 62}`} stroke="#F4EFE6" strokeWidth={1.6} opacity={0.75} />
-        )),
-      )}
-      <circle cx={0} cy={0} r={16} fill="#0A0A0C" />
-      <rect x={-24} y={66} width={48} height={18} fill="#E9DCC6" stroke={INK} strokeWidth={2} />
-      <text x={0} y={80} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={700} fontSize={13} fill={INK}>
-        1919
-      </text>
-    </g>
     <rect x={420} y={715} width={1100} height={36} fill="#7A4E30" stroke={INK} strokeWidth={5} />
     <path d="M460,751 L460,900 M1480,751 L1480,900" stroke={INK} strokeWidth={14} />
+    {/* Mr. Ito's ham radio, moved down from the flat: how Mum calls every night at seven */}
+    {c.p.ham && (
+      <g transform="translate(820,715)">
+        <rect x={-90} y={-70} width={180} height={70} rx={8} fill="#3A3F48" stroke={INK} strokeWidth={4} />
+        <circle cx={-50} cy={-35} r={20} fill="#1A1C24" stroke="#8A8F9C" strokeWidth={3} />
+        <rect x={-14} y={-52} width={84} height={20} fill={c.p.hamOn ? '#FFB25A' : '#4A4552'} />
+        <path d="M70,-70 L110,-200" stroke="#8A8F9C" strokeWidth={5} />
+      </g>
+    )}
     {/* parts on the bench */}
     <rect x={560} y={689} width={90} height={26} rx={4} fill="#3E7CB1" stroke={INK} strokeWidth={3} />
     <circle cx={1300} cy={699} r={16} fill="#C9CED6" stroke={INK} strokeWidth={3} />
@@ -320,6 +311,13 @@ registerSet('metro', {
     const sunriseAt = c.p.sunrise !== undefined ? c.at(c.p.sunrise, 0) : -1;
     const flickerAt = c.p.flicker !== undefined ? c.at(c.p.flicker, 0) : -1;
     if (v === 'farm') return <Glow x={960} y={500} r={1000} color="#FF5FD2" opacity={0.3} />;
+    if (v === 'workshop' && c.p.dark)
+      return (
+        <g>
+          <Flame x={1180} y={700} s={0.8} frame={c.frame} glow={1.3} />
+          {c.p.hamOn && <Glow x={840} y={660} r={90} color="#FFB25A" opacity={0.35} />}
+        </g>
+      );
     if (v === 'workshop')
       return (
         <g>
@@ -348,7 +346,7 @@ registerSet('metro', {
     const v = c.v;
     const flickerAt = c.p.flicker !== undefined ? c.at(c.p.flicker, 0) : -1;
     const sunriseAt = c.p.sunrise !== undefined ? c.at(c.p.sunrise, 0) : -1;
-    const dead = v === 'dark' || (flickerAt >= 0 && c.t > flickerAt + 0.9);
+    const dead = v === 'dark' || (v === 'workshop' && !!c.p.dark) || (flickerAt >= 0 && c.t > flickerAt + 0.9);
     const pre = sunriseAt >= 0 ? 0.55 * (1 - Math.min(1, Math.max(0, (c.t - sunriseAt) / 1.4))) : 0;
     return (
       <g>

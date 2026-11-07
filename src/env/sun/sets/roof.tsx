@@ -120,7 +120,7 @@ registerSet('roof', {
         node: (
           <g>
             <RoofDeck c={c} snow={snow} />
-            <Telescope x={1310} base={815} up={c.p.telescope === 'setup' ? Math.min(1, c.t / 2) : 0.6} />
+            {c.p.telescope !== 'none' && <Telescope x={1310} base={815} up={c.p.telescope === 'setup' ? Math.min(1, Math.max(0, c.t - c.at(c.p.setupAt, 0)) / 2) : 0.6} />}
           </g>
         ),
       },

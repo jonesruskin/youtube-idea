@@ -149,8 +149,8 @@ const Room: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
         <circle r={5} fill="#D9443A" />
       </g>
       {/* the light switch by the door */}
-      <rect x={410} y={600} width={34} height={52} rx={5} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
-      <rect x={421} y={612} width={12} height={22} rx={3} fill="#C9CED6" stroke={INK} strokeWidth={2} />
+      <rect x={744} y={630} width={34} height={52} rx={5} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
+      <rect x={755} y={642} width={12} height={22} rx={3} fill="#C9CED6" stroke={INK} strokeWidth={2} />
       {/* hanging lamp */}
       <path d="M1180,-200 L1180,470" stroke={INK} strokeWidth={3} />
       <path d="M1130,515 Q1180,450 1230,515 Z" fill="#D9443A" stroke={INK} strokeWidth={4} />
@@ -243,11 +243,11 @@ const Table: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
           <circle cx={12} cy={-30} r={13} fill="#F2994A" stroke={INK} strokeWidth={3} />
           <path d="M-2,-40 Q20,-62 34,-44" stroke="#F2C94C" strokeWidth={10} fill="none" strokeLinecap="round" />
         </g>
-        {/* the drawing */}
-        <g transform="translate(1150,788) rotate(-4)">
+        {/* the drawing (until Mira picks it up) */}
+        {!(c.p.drawingUntil !== undefined && c.t >= c.at(c.p.drawingUntil, 0)) && <g transform="translate(1150,788) rotate(-4)">
           <path d="M-60,-6 L56,-10 L64,4 L-54,8 Z" fill="#FFFDF6" stroke={INK} strokeWidth={2.5} />
           <ellipse cx={0} cy={-1} rx={18} ry={4} fill="#FFC93C" />
-        </g>
+        </g>}
         </g>
       </g>
     </g>

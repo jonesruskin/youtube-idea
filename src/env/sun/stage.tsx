@@ -3,6 +3,7 @@ import {AbsoluteFill, Easing, interpolate} from 'remotion';
 import {Actors, actorAt, designOf, resolveAt, type Act, type CastEntry} from '../../characters/toon/acting';
 import {HERO_PX} from '../../characters/toon/design';
 import {useShot} from '../../engine/shot-context';
+import {HeldProp, type PropKind} from '../../characters/toon/props';
 import {Cine, Plane, ScreenPlane, type CamKey} from '../../fx/cinema/camera';
 
 /**
@@ -66,6 +67,7 @@ export const Stage: React.FC = () => {
               </Plane>
             ))}
           <Plane depth={1}>
+            <Items items={(props.items as Item[]) ?? []} c={c} />
             <Actors cast={(props.cast as CastEntry[]) ?? []} acts={(props.acts as Act[]) ?? []} />
           </Plane>
           {def.light && <Plane depth={1}>{def.light(c)}</Plane>}
@@ -105,6 +107,26 @@ const FILL: Record<string, (v: string, dark: boolean) => [number, string]> = {
   river: () => [0.24, '#FFD8A8'],
   montage: (_v, dark) => [dark ? 0.22 : 0, '#D8E4FF'],
 };
+/**
+ * Things that sit in the set rather than in a hand: whatever someone puts down stays where it was put (from the
+ * moment the hand lets go), and whatever someone picks up is visibly there until the hand reaches it. Nothing a
+ * person carries may appear or vanish without one of these (the linter pairs every put/take with an item).
+ */
+export type Item = {prop: PropKind; x: number; y: number; from?: number | string; until?: number | string; r?: number; rot?: number};
+const Items: React.FC<{items: Item[]; c: SetCtx}> = ({items, c}) => (
+  <g>
+    {items.map((it, i) => {
+      if (it.from !== undefined && c.t < c.at(it.from, 0)) return null;
+      if (it.until !== undefined && c.t >= c.at(it.until, 0)) return null;
+      return (
+        <g key={i} transform={`translate(${it.x},${it.y}) rotate(${it.rot ?? 0})`}>
+          <HeldProp kind={it.prop} R={it.r ?? 64} frame={c.frame} />
+        </g>
+      );
+    })}
+  </g>
+);
+
 const FaceFill: React.FC<{set: string; v: string; dark: boolean; cast: CastEntry[]; acts: Act[]}> = ({set, v, dark, cast, acts}) => {
   const {t, frame, shot} = useShot();
   const [amt, color] = FILL[set]?.(v, dark) ?? [0, '#fff'];

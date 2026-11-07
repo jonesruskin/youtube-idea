@@ -240,6 +240,42 @@ if (episode.style === 'cinema') {
       prev = {key, end: endState(s), id: s.id};
     }
   }
+  // ── v4 placed things: a prop put down stays in the set; a prop picked up was there before the hand arrived ──
+  {
+    const resolve = (at: any, s: any) => {
+      if (at === undefined) return undefined;
+      if (typeof at === 'number') return at;
+      const m = /^l(\d+)([+-][\d.]+)?$/.exec(String(at));
+      const l = m ? (s.timedLines ?? [])[Number(m[1])] : null;
+      return (l ? l.startInShot : 0) + (m && m[2] ? Number(m[2]) : 0);
+    };
+    const PLACES = ['floor', 'table', 'desk'];
+    let day5 = 0;
+    let prev: {key: string; id: string; items: {prop: string; x: number}[]} | null = null;
+    for (const s of tl.shots as any[]) {
+      if (s.hud && 'day' in s.hud) day5 = s.hud.day;
+      if (s.scene !== 'stage') continue;
+      const p = s.props ?? {};
+      const items = ((p.items ?? []) as any[]).map((it) => ({...it, f: resolve(it.from, s), u: resolve(it.until, s)}));
+      for (const a of (p.acts ?? []) as any[]) {
+        const place = a.put ?? a.take;
+        if (!PLACES.includes(place)) continue;
+        const hand = (resolve(a.at, s) ?? 0) + (a.dur ?? 0.8) * 0.5;
+        // the kitchen draws Mira's drawing on the table itself, until `drawingUntil`
+        const setOwned = a.take && a.prop === 'sunDrawing' && p.drawingUntil !== undefined && Math.abs((resolve(p.drawingUntil, s) ?? -9) - hand) < 0.35;
+        const ok = setOwned || items.some((it) => it.prop === a.prop && (a.put ? it.f !== undefined && Math.abs(it.f - hand) < 0.35 : it.u !== undefined && Math.abs(it.u - hand) < 0.35));
+        if (!ok) errors.push(`Props: "${s.id}" ${a.put ? 'puts' : 'takes'} ${a.prop} ${a.put ? 'on' : 'from'} the ${place} at ${a.at} with no item ${a.put ? 'appearing' : 'disappearing'} there (add items: {prop, x, y, ${a.put ? 'from' : 'until'}: hand time}).`);
+      }
+      const key = `${s.thread ?? ''}:${day5}:${p.set}:${p.v}`; // a place: the same set and variant
+      const atStart = items.filter((it) => it.f === undefined || it.f <= 0.05);
+      const atEnd = items.filter((it) => it.u === undefined || it.u >= s.duration - 0.05);
+      if (prev && prev.key === key && !s.timeJump) {
+        for (const it of prev.items) if (!atStart.some((x) => x.prop === it.prop && Math.abs(x.x - it.x) < 80)) errors.push(`Props: the ${it.prop} left in "${prev.id}" is missing from "${s.id}".`);
+        for (const it of atStart) if (!prev.items.some((x) => x.prop === it.prop && Math.abs(x.x - it.x) < 80)) errors.push(`Props: a ${it.prop} appears in "${s.id}" that was not there in "${prev.id}".`);
+      }
+      prev = {key, id: s.id, items: atEnd};
+    }
+  }
   // ── v4 acting gates: no talk loops; gestures are rare and scripted ─────────────────────────────
   {
     const per = new Map<string, {lines: number; g: number}>();

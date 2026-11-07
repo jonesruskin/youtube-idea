@@ -46,7 +46,7 @@ export type Mood =
   | 'triumph'
   | 'silence';
 
-export type Sfx = 'whoosh' | 'impact' | 'riser' | 'chime' | 'decloak' | 'thunder' | 'powercut' | 'stamp' | 'float' | 'crash' | 'sneeze' | 'cheer' | 'horn' | 'siren';
+export type Sfx = 'static' | 'whoosh' | 'impact' | 'riser' | 'chime' | 'decloak' | 'thunder' | 'powercut' | 'stamp' | 'float' | 'crash' | 'sneeze' | 'cheer' | 'horn' | 'siren';
 
 /** Retention beats the linter tracks: something to laugh at, wonder at, feel, or wonder about. */
 export type Beat = 'laugh' | 'wow' | 'heart' | 'loop';
@@ -62,6 +62,8 @@ export type Shot = {
   lead?: number;
   /** Seconds to hold after the last line ends. */
   tail?: number;
+  /** Time has passed since the previous shot in the same place (props and positions may differ across this cut). */
+  timeJump?: boolean;
   /** Minimum shot length in seconds (for wordless visual beats). */
   min?: number;
   /** Chapter title — starts a YouTube chapter at this shot. */
