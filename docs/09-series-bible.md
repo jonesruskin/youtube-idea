@@ -1,11 +1,12 @@
-# 09 · Series bible: THE BLINK FILES (v3)
+# 09 · Series bible: THE BLINK FILES (v4)
 
 > **One impossible year, seen by a different person each time. Every clue is real physics. Every episode has its own twist.**
 
 ## The format in one paragraph
 On a summer morning the Sun goes out. **Every File is one person's complete story of that year**, told by them, from
 their corner of the planet, with its own mystery solved and its own twist landed inside the episode. Underneath runs a
-quiet spine: the shell around the Sun, the knock Mr. Ito sent in 1982, and *who answered*. Each File moves the spine
+quiet spine: the shell around the Sun (a telephone left by the builders at HD 219134, 21 light-years away), the knock
+Mr. Ito sent in 1983, their answer in 2026, and Mira's drawing, now on its way to them. Each File moves the spine
 forward by exactly one clue. A regular viewer gets the extra layer; someone who starts at File 7 over lunch still gets a
 full meal. (An anthology with a mythology: "monster of the week" plus a slow arc.)
 
@@ -30,17 +31,17 @@ Heights are fractions of the 1.75 m reference hero (1.0). Every new design is ad
 
 | # | Title | Narrator (who / when / why they know) | Principal cast | The File's twist | Spine clue it adds |
 |---|---|---|---|---|---|
-| 1 | **The Sun Went Out** | **Mira Okafor**, ~30, recording years later; she lived it | Mira (8, 0.6), **Kai Okafor** (16, 1.0), **Mr. Haruki Ito** (74, 0.93; 30 in 1982, 1.0), **Grace Okafor** (Mum, 41, nurse, 0.97), Biscuit | The young astronomer in the "other" thread is Ito in 1982. He knocked first; the count is his knock coming back. | The shell has been knocking since Day 0 on Ito's frequency. |
-| 2 | **The Reply** | **Tomás Reyes**, the 6:51 Manila bus boy, now 19 | Tomás, his gran **Lola Pilar** (78, 0.85), radio engineer **Dr. Amara Bello** (45, 0.98), Ito (cameo) | The world votes on a reply; the message actually sent is the one a child scratched into the antenna. | The answer has a second layer, an image. |
+| 1 | **The Sun Went Out** | **Mira Okafor**, ~30, recording years later; she lived it | Mira (8, 0.6), **Kai Okafor** (16, 1.0), **Mr. Haruki Ito** (73, 0.93; 30 in 1983, 1.0), **Grace Okafor** (Mum, 41, nurse at St Anne's across the river, 0.97), Biscuit | The young astronomer in the "other" thread is Ito in 1983. He dialled; the 1,679-pulse picture is the answer, and the empty square at its bottom is our turn. Mira sends her sun drawing; 16:40 later the Sun comes back at 6:52. | The shell carried a century of Earth's broadcasts to HD 219134, and Mira's drawing arrives there in 2047. |
+| 2 | **The Reply** | **Tomás Reyes**, the 6:51 Manila bus boy, now 19 | Tomás, his gran **Lola Pilar** (78, retired radio operator, 0.85), radio engineer **Dr. Amara Bello** (45, 0.98), Ito (cameo) | While the world argues over a reply, Lola Pilar's shortwave logs the shell's 1,679 pulses a second time, a minute after the first, and they are not identical: one square has been filled in. | When the slats opened, the shell sent one more short message toward Earth. Nobody has decoded it. |
 | 3 | **The Rice Farmer** | **Lakshmi Iyer**, the farmer's daughter (12 then, 0.7) | **Arjun Iyer** (the 6:51 farmer, 48, 1.0), grandmother **Paati** (80, 0.82), neighbour **Selvam** (35) | Their village never froze: the "hot spring" Paati guards is a geothermal vent her grandfather hid from the government. | The beam never wavers, even during an earthquake: it isn't on a planet. |
 | 4 | **The Surfer** | **Leilani Brooks**, the 6:51 Sydney surfer (24, 0.98) | Leilani, her brother **Josh** (17), ship's captain **Mags Moana** (52) | The first ship to cross the frozen ocean is sailing *under* the ice, and the ocean is warmer than it should be. | Tides now show a tiny monthly wobble: the Sun is being nudged. |
-| 5 | **Venus Went Dark First** | **Dr. Edith Marlow**, astronomer on the 1919 Sobral expedition, in her diary | Edith, her assistant **Joaquim** (22), and, in a 1982 frame, young Ito reading her diary | Edith saw the lines in 1919, reported them, and was told by the expedition committee to crop them out. Ito learned about them from her diary. | The lines were noticed by someone else first, a hundred years ago. |
+| 5 | **Venus Went Dark First** | **Dr. Edith Marlow**, astronomer on the 1919 Sobral expedition, in her diary | Edith, her assistant **Joaquim** (22), and, in a 1983 frame, young Ito reading her diary | Edith saw the lines in 1919, reported them, and was told by the expedition committee to crop them out. Ito learned about them from her diary. | The lines were noticed by someone else first, a hundred years ago. |
 | 6 | **The Sun Is Moving** | **Kai Okafor**, now 30, an engineer | Kai, Mira (22), Ito (88, in a wheelchair), Kai's partner **Noor** (31) | The beam's recoil is steering the Sun; the beam isn't stealing light, it is *towing* the solar system somewhere. | Where the Sun is being taken. |
-| 7 | **The Station** | **Wren Halvorsen**, 15, born underground on Day 212 of the dark | Wren, her mother **Ingrid** (an engineer from Day 100), Biscuit (old, 0.33) | Wren has never seen the Sun; she proves the station's "sunrise" lamps are being dimmed on purpose, to ration hope. | The station's radios hear the shell's knock change rhythm. |
+| 7 | **The Station** | **Wren Halvorsen**, 15, born underground on Day 212 of the dark | Wren, her mother **Ingrid** (an engineer from Day 100), Biscuit (old, 0.33) | Wren has never seen the Sun; she proves the station's "sunrise" lamps are being dimmed on purpose, to ration hope. | The station's radios catch the edge of the beam: something is being sent *out*, not in. |
 | 8 | **The Last Pilot** | **Captain Rafael Duarte**, 61, flew the last flight over the dark Atlantic | Rafael, co-pilot **Hana Sato** (29), a stowaway kid **Milo** (9) | The "aurora" they flew through on Day 3 was not an aurora. | The shell's slats can move one at a time, on purpose. |
-| 9 | **The Woman Who Said No** | **Dr. Amara Bello** (from File 2) | Amara, the Council chair **Victor Hale** (66), a younger Ito (via archive) | Hale signed Ito's 1982 rejection letter, and has kept every copy of Ito's proposal since. | Someone on Earth has known for decades. |
+| 9 | **The Woman Who Said No** | **Dr. Amara Bello** (from File 2) | Amara, the Council chair **Victor Hale** (66), a younger Ito (via archive) | Hale signed Ito's 1983 rejection letter, and has kept every copy of Ito's proposal since. | Someone on Earth has known for decades. |
 | 10 | **The Garden** | **Paati** (from File 3), 81 | Paati, Lakshmi, the village | The seeds Paati saved can grow under the beam's spill light. Earth is not the first planet this has happened to. | Another "shelled" star exists, visible in old sky surveys. |
-| 11 | **Biscuit** | **Mira**, again, but about the dog | Mira (12), Biscuit, Kai, Ito | A dog's year, told by Mira; the twist is a tear-jerker (Biscuit's last day is the day the knock changes). | The rhythm changes: one, two, three, *four*. |
+| 11 | **Biscuit** | **Mira**, again, but about the dog | Mira (12), Biscuit, Kai, Ito | A dog's year, told by Mira; the twist is a tear-jerker (Biscuit's last day, years later, is the day the shell knocks again). | The new knock: one, two, three, *four*. |
 | 12 | **Who Answered** | **Mr. Haruki Ito**, finally telling it himself | Ito (90), Mira (24), Kai (32), Tomás, Lakshmi, Leilani | The answer was never meant for Earth; it was meant for whoever *found* the shell. | The spine resolves (Season 1 finale). |
 
 ### Character voice sheets (File 1 cast)
@@ -49,7 +50,7 @@ Heights are fractions of the 1.75 m reference hero (1.0). Every new design is ad
 | **Mira Okafor (8)** | blunt, funny, asks what the viewer is thinking; brave later | "Is it night again?" · "They're on my list." · "With the lights coming back on." |
 | **Kai Okafor (16)** | dry, protective, hides fear in jokes; cracks once | "Who draws at six in the morning?" · "Free fridge. Finally, some good news." · "How does this end, Mira?" |
 | **Mr. Haruki Ito (74)** | precise, kind, formal, dry; always true, never the whole truth | "Eclipses are polite. They leave after seven minutes." · "Nobody did." · "I'm sorry, Mira." |
-| **Grace Okafor (Mum)** | warm, tired, steady | "Kai, Mira, it's Mum. Stay with Mr. Ito." · "You kept them alive." |
+| **Grace Okafor (Mum)** | warm, tired, steady | "Soon. I'll call every night at seven. Stay with Mr. Ito." · "Then we'd better walk fast." · "You kept them alive." |
 | **Adult Mira (narrator)** | warm, spare; memory and meaning, never describes the picture | "He was holding my hand too hard." · "I used to think it was because he liked it." |
 
 ## Voice & sound casting
@@ -75,7 +76,7 @@ as `VOICE_<SPEAKER>` in `.env` (`docs/ELEVENLABS_SETUP.md`).
 | Mira (8) | *(Voice Design)* | "Bright, cheeky eight-year-old girl, quick and blunt, clear diction, a giggle close to the surface." Use only if the account's policy allows young-sounding voices; otherwise a light, youthful adult female voice. | 0.40 / 0.80 / 0.50 |
 | Kai (16) | *Liam*, *Will* | "Sixteen-year-old boy whose voice has just broken; dry, sarcastic, protective; slightly mumbly when tired, sharp when scared." | 0.42 / 0.80 / 0.45 |
 | Mr. Ito (74) | *George*, *Bill* | "Gentle, precise British-Japanese man in his seventies; a retired astronomer; formal, kind, dry humour; slow, careful consonants; a slight rasp." | 0.50 / 0.80 / 0.40 |
-| Young Ito (30, 1982) | *(Voice Design from Ito's prompt)* | Ito's prompt with "in his early thirties, clearer and quicker, the same careful consonants", so the voices match (the twist's audio clue). | 0.50 / 0.85 / 0.35 |
+| Young Ito (30, 1983) | *(Voice Design from Ito's prompt)* | Ito's prompt with "in his early thirties, clearer and quicker, the same careful consonants", so the voices match (the twist's audio clue). | 0.50 / 0.85 / 0.35 |
 | Mum (Grace) | *Sarah*, *Laura* | "Warm, tired nurse in her early forties; steady and reassuring; a mother speaking to her children." | 0.50 / 0.80 / 0.35 |
 | Radio announcer | *Daniel* | "Calm British news presenter on emergency broadcast." | 0.70 / 0.80 / 0.10 |
 | Future Files | — | Each File's screenplay doc adds its narrator's Voice Design prompt before voicing. | — |
@@ -136,3 +137,24 @@ npx tsx scripts/lint-episode.ts sun01                                     # scri
 REMOTION_BROWSER=/path/to/headless_shell npx tsx scripts/render.ts sun01  # video, master, SRT, thumbnail, metadata
 python3 scripts/qa_motion.py renders/sun01-hq.mp4 out/sun01-timeline.json # motion gate + frame strip
 ```
+
+
+## v4 canon (File 001), fixed for every later File
+- **The shell** was built by the people of **HD 219134** (a real orange dwarf 21.3 ly away in Cassiopeia, five or more
+  known planets) long before 1919. Its slats sit edge-on, almost invisible; during total eclipses they show as faint
+  straight lines that, extended, point to their star: a number to call.
+- **1983:** Haruki Ito (30) finds the lines on old plates, is refused by the Council, and knocks anyway (1, 2, 3).
+  The knock reaches HD 219134 in 2004; their answer reaches the shell in 2026.
+- **Day 0, 6:52 local (UTC+1):** every slat turns to face the Sun. For one year the shell beams the Sun's power to
+  HD 219134, carrying everything it ever recorded from Earth (a century of radio and TV).
+- **Day 2:** infrared telescopes find a warm sphere twice the Sun's width. **Day 7:** grids fail worldwide.
+  **Day 300:** astronomers find the beam and its target.
+- **Day 365, 6:52:** the beam stops. The shell knocks 1, 2, 3, then sends 1,679 pulses (23 × 73, the Arecibo format):
+  the count to ten, a builder beside a small human, their star and home world, our Sun in its shell, Earth, and an
+  empty square. The slats stay shut: it is holding the line for our answer.
+- **Day 367, 6:35:** Mira's drawing (a sun, a girl standing under it) is sent from Ito's transmitter, without
+  permission. 8 min 20 s out, 8 min 20 s back: **the Sun returns at 6:52**, the same minute it went out.
+- **Grace Okafor (Mum)** spends Days 0–180 at St Anne's hospital across the river (the city's shelter), calls nightly at
+  seven on Ito's ham radio, and on Day 180 leads forty patients across the frozen river to Harbour Street station.
+- Open questions the series owns: what the builders will answer in 2047; whether they knew a year of darkness would
+  hurt us; the second message (File 2).

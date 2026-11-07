@@ -797,7 +797,7 @@ const shots: Shot[] = [
     action: 'The city from above. Districts go dark one after another, rolling toward their street.',
     lines: [N('On Day 7, the power went out.')],
   }),
-  sh('grid-world', sc('space', {v: 'gridDown', day: 7}), {
+  sh('grid-world', sc('globe', {v: 'gridDown', day: 7}), {
     dev: 'the whole world goes dark',
     action: 'Earth’s night side from orbit: the lights of whole countries fading out.',
     lines: [N('Not just ours. All over the world, the grids gave out.')],
@@ -1720,7 +1720,7 @@ const shots: Shot[] = [
     action: 'Low in the east, the Sun is simply there. Gold light floods across the snow and their faces.',
     lines: [M('There it is!', 0.8)],
   }),
-  sh('globe-return', sc('space', {v: 'sunreturn', lon: 20, sunAt: 0.6}), {
+  sh('globe-return', sc('globe', {v: 'sunreturn', lon: 20, sunAt: 0.6, day: 367}), {
     letterbox: true,
     dev: 'the whole day side lights at once',
     action: 'Earth from space: the whole day side lights up at once.',

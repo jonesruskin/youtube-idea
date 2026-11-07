@@ -4,17 +4,18 @@
 
 A YouTube channel of animated space-science survival stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev): the narration is voiced locally with Kokoro-82M (Apache-2.0), and the score is synthesised from scratch.
 
-**Launch episode: File 001, "The Sun Went Out. Day 1 to Day 365" (v3)** is in `renders/`:
-- `sun01.mp4`: about 9:30, 1080p web copy with soft English subtitles. The upload master `sun01-hq.mp4` is git-ignored.
-- **The story:** grown-up Mira tells the year she was eight and the Sun went out. With her brother Kai, their dog Biscuit and Mr. Ito, the retired astronomer upstairs, she works it out clue by clue: light delay, tides, a thermal camera, a shell that was always there, a beam to one star. Intercut, unnarrated, a young astronomer works through one night in a mountain observatory. The twist: it is 1982, he is Mr. Ito, and the shell's "count" is his own knock coming back.
+**Launch episode: File 001, "The Sun Went Out. Day 1 to Day 365" (v4)** is in `renders/`:
+- `sun01.mp4`: about 13:20, 1080p web copy with soft English subtitles. The upload master `sun01-hq.mp4` is git-ignored.
+- **The story:** grown-up Mira tells the year she was eight and the Sun went out. With her brother Kai, their dog Biscuit and Mr. Ito, the retired astronomer upstairs, she works it out clue by clue (light delay, tides, the world's infrared telescopes, a beam to a real star) while Mum, a nurse, holds the hospital across the river together and calls every night by radio. Intercut, unnarrated, a young astronomer works through one night in 1983. The turn: he is Mr. Ito, the shell is a telephone, he dialled, and the 1,679-pulse picture on Day 365 is the answer. Mira sends her drawing back, and the Sun returns.
+- **Every question answered on screen:** [`docs/12-sun01-v4-logic.md`](docs/12-sun01-v4-logic.md) maps each one to its shot.
 - **Craft:**
-  - 162 shots at about 3.5 s each, a development every ≤30 s, and seven turns
-  - a first-person narrator and named characters with their own voices (Kai and Mum added)
-  - a silent second timeline, lint-gated against early reveals
+  - 218 shots at about 3.6 s each, a development every ≤30 s, eight turns
+  - zero-tolerance continuity gates: props change hands only by give/take/put; things put down stay put; nobody vanishes from a visible spot; no automatic hand-waving; 180° rule
+  - a first-person narrator and named characters with their own voices (news anchor and scientist added)
   - real-world scale, and nobody floating (auto seats, grounded poses, attached piggybacks)
 - Also in `renders/`:
   - `sun01.srt` (captions) and `sun01-described.srt`
-  - three thumbnails for YouTube's Test & Compare: `sun01-thumbnail.png` WHO BUILT THIS?, `-b` HE KNEW and `-c` 1982
+  - three thumbnails for YouTube's Test & Compare: `sun01-thumbnail.png` WHO TURNED IT OFF?, `-b` HE KNEW and `-c` 1983
   - `sun01-metadata.md` (title, description with chapters and sources, tags, mid-rolls, end screen, pinned comment)
 - **Docs:**
   - screenplay, clue map and cause→effect links: [`docs/11-sun01-v3-screenplay.md`](docs/11-sun01-v3-screenplay.md)
