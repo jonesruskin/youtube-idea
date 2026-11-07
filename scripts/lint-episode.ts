@@ -276,6 +276,40 @@ if (episode.style === 'cinema') {
       prev = {key, id: s.id, items: atEnd};
     }
   }
+  // ── v4 presence: nobody vanishes from a spot the next shot's camera can see ──────────────────────
+  {
+    const MAIN = ['you', 'mira', 'ito', 'mum', 'biscuit'];
+    let day6 = 0;
+    let prev: {key: string; id: string; pos: Map<string, [number, number, number]>} | null = null;
+    for (const s of tl.shots as any[]) {
+      if (s.hud && 'day' in s.hud) day6 = s.hud.day;
+      if (s.scene !== 'stage') {
+        continue;
+      }
+      const p = s.props ?? {};
+      const key = `${s.thread ?? ''}:${day6}:${p.set}:${p.v}`;
+      const cast = (p.cast ?? []) as any[];
+      if (prev && prev.key === key && !s.timeJump) {
+        const k0 = ((p.cam ?? [[0, 1, 960, 540]]) as number[][])[0];
+        const half = 960 / k0[1] - 40;
+        const halfY = 540 / k0[1];
+        for (const [who, [x, y, h]] of prev.pos) {
+          if (cast.some((c) => c.who === who)) continue;
+          const vis = y > k0[3] - halfY + 20 && y - h < k0[3] + halfY - 20;
+          if (Math.abs(x - k0[2]) < half && vis) errors.push(`Presence: ${who} is in "${prev.id}" but vanishes from "${s.id}", though their spot (x ${Math.round(x)}) is in frame.`);
+        }
+      }
+      const pos = new Map<string, [number, number, number]>();
+      for (const c of cast) {
+        if (!MAIN.includes(c.who) || (c.opacity ?? 1) < 0.5) continue;
+        let x = c.x;
+        for (const a of (p.acts ?? []) as any[]) if (a.who === c.who && a.to !== undefined) x = Array.isArray(a.to) ? a.to[0] : a.to;
+        const h = c.who === 'biscuit' ? 90 : 330 * c.depth * (c.who === 'mira' ? 0.62 : 1) * (String(c.pose ?? '').startsWith('sit') || c.pose === 'lie' ? 0.6 : 1);
+        pos.set(c.who, [x, c.y, h]);
+      }
+      prev = {key, id: s.id, pos};
+    }
+  }
   // ── v4 acting gates: no talk loops; gestures are rare and scripted ─────────────────────────────
   {
     const per = new Map<string, {lines: number; g: number}>();

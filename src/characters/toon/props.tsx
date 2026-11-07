@@ -37,6 +37,15 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
   const ink = C.ink;
   const sw = Math.max(2.5, R * 0.06);
   switch (kind) {
+    case 'torchOff' as PropKind:
+      // the same torch, switched off (lit streets and stairwells: nobody shines a torch under a streetlight)
+      return (
+        <g>
+          <rect x={-R * 0.12} y={-R * 0.12} width={R * 0.7} height={R * 0.24} rx={R * 0.06} fill="#3A3F52" stroke={ink} strokeWidth={sw} />
+          <rect x={R * 0.52} y={-R * 0.17} width={R * 0.16} height={R * 0.34} rx={R * 0.05} fill="#C9CED6" stroke={ink} strokeWidth={sw} />
+          <circle cx={R * 0.7} cy={0} r={R * 0.12} fill="#8A8F9C" />
+        </g>
+      );
     case 'torch':
       return (
         <g>
