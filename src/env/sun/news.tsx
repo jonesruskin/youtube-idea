@@ -279,7 +279,17 @@ export const NewsScene: React.FC = () => {
               return (
                 <g key={i} transform={`translate(${x},${y})`}>
                   <svg x={0} y={0} width={910} height={370} viewBox="0 0 960 540" preserveAspectRatio="xMidYMid slice">
-                    <Feed kind={pn.kind} frame={c.frame} t={c.t} />
+                    {/* the same kind of feed twice never looks like a copy: a different camera on a different street */}
+                    {(() => {
+                      const rep = panels.slice(0, i).filter((q) => q.kind === pn.kind).length;
+                      const flip = rep % 2 === 1;
+                      const z = 1 + rep * 0.18;
+                      return (
+                        <g transform={`translate(${flip ? 960 : 0},0) scale(${flip ? -1 : 1},1) translate(480,${270 + rep * 30}) scale(${z}) translate(-480,-270)`}>
+                          <Feed kind={pn.kind} frame={c.frame + rep * 37} t={c.t} />
+                        </g>
+                      );
+                    })()}
                   </svg>
                   <rect x={0} y={0} width={910} height={370} fill="none" stroke="#3A4466" strokeWidth={4} />
                   <rect x={16} y={16} width={Math.max(240, pn.place.length * 26 + 40)} height={74} rx={6} fill="#0B1026" opacity={0.85} />
@@ -299,7 +309,7 @@ export const NewsScene: React.FC = () => {
         <Broadcast headline={p.headline} ticker={p.ticker} frame={c.frame}>
           <rect x={0} y={0} width={1920} height={880} fill="#1A2448" />
           {Array.from({length: 9}, (_, i) => <rect key={i} x={i * 220} y={0} width={4} height={880} fill="#24345E" />)}
-          <g transform="translate(560,870)">{person(70, 0, 0, 1.6, mouth)}</g>
+          <g transform="translate(560,870)">{person(80, 0, 0, 1.6, mouth)}</g>
           <rect x={200} y={700} width={760} height={180} fill="#2E3A66" stroke={INK} strokeWidth={4} />
           <g transform="translate(1060,170)">
             <svg x={0} y={0} width={780} height={440} viewBox="0 0 960 540" preserveAspectRatio="xMidYMid slice">
@@ -335,7 +345,7 @@ export const NewsScene: React.FC = () => {
             <text x={490} y={545} textAnchor="middle" fontFamily={fonts.mono} fontSize={24} fill="#FFD08A">INFRARED · 2× SOLAR DIAMETER</text>
           </g>
           <g transform="translate(420,880)">
-            {person(71, 0, 0, 1.5, mouth)}
+            {person(87, 0, 0, 1.5, mouth)}
             <path d="M-130,-260 L130,-260 L110,0 L-110,0 Z" fill="#3A4466" stroke={INK} strokeWidth={4} />
             <circle cx={0} cy={-200} r={26} fill="#C9D6F0" />
           </g>

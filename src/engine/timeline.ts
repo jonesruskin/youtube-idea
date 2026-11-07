@@ -53,7 +53,7 @@ export const buildTimeline = (episode: Episode, voice: VoiceMap = {}): Timeline 
   // The narrated File format cuts tighter: shorter breaths before and after each shot's lines.
   const cinema = episode.style === 'cinema';
   const lead = cinema ? 0.15 : 0.3;
-  const pad = cinema ? 0.32 : SHOT_PAD;
+  const pad = cinema ? 0.22 : SHOT_PAD;
   episode.shots.forEach((shot, index) => {
     const start = t;
     let cursor = shot.lead ?? lead;

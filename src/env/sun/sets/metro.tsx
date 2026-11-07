@@ -218,6 +218,27 @@ const School: React.FC<{c: SetCtx}> = ({c}) => (
   </g>
 );
 
+/** Day 300: the big screen the engineers hung over the platform, showing the news: the beam, and the star it points at. */
+const StationScreen: React.FC<{c: SetCtx}> = ({c}) => {
+  const draw = Math.min(1, Math.max(0, (c.t - 0.3) / 1.6));
+  return (
+    <g transform="translate(960,330)">
+      <path d="M-200,-200 L-200,-150 M200,-200 L200,-150" stroke={INK} strokeWidth={6} />
+      <rect x={-330} y={-150} width={660} height={370} rx={10} fill="#1A1C24" stroke={INK} strokeWidth={6} />
+      <rect x={-312} y={-132} width={624} height={334} fill="#05060D" />
+      {Array.from({length: 40}, (_, i) => (
+        <circle key={i} cx={-300 + ((i * 137) % 600)} cy={-120 + ((i * 71) % 300)} r={i % 7 === 0 ? 2.4 : 1.3} fill="#EAF0FF" opacity={0.7} />
+      ))}
+      <path d={`M-200,180 L${-200 + 360 * draw},${180 - 250 * draw}`} stroke="#FFB13B" strokeWidth={6} />
+      <circle cx={160} cy={-70} r={7} fill="#FFFFFF" />
+      <circle cx={160} cy={-70} r={26} fill="none" stroke="#FF5A3A" strokeWidth={4} opacity={draw} />
+      <text x={160} y={-112} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={26} fill="#FFD08A" opacity={draw}>HD 219134</text>
+      <rect x={-312} y={160} width={624} height={42} fill="#C2464F" />
+      <text x={-296} y={190} fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={26} fill="#FFFFFF">BEAM DETECTED LEAVING THE SHELL</text>
+    </g>
+  );
+};
+
 const Workshop: React.FC<{c: SetCtx}> = ({c}) => (
   <g>
     <rect x={-900} y={-300} width={3800} height={1300} fill="#3A3442" />
@@ -300,6 +321,7 @@ registerSet('metro', {
                 <g>
                   <Platform />
                   {v === 'farm' ? <Farm c={c} /> : v === 'stairs' ? <Stairs /> : <Town c={c} lit={lit} />}
+                  {c.p.screen && <StationScreen c={c} />}
                 </g>
               ),
             },

@@ -201,9 +201,10 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
         </g>
       );
     case 'sunDrawing':
-      // Mira's drawing from the last morning: a yellow sun with rays, and a small girl standing under it
+      // Mira's drawing from the last morning: a yellow sun with rays, and a small girl standing under it.
+      // Held by its top edge, so it hangs below the hand and never covers her face.
       return (
-        <g transform={`translate(${-R * 0.2},${-R * 1.1})`}>
+        <g transform={`translate(${-R * 0.1},${R * 0.48})`}>
           <rect x={-R * 0.7} y={-R * 0.5} width={R * 1.4} height={R * 1.0} fill="#FFFDF6" stroke={ink} strokeWidth={sw} />
           <circle cx={0} cy={-R * 0.12} r={R * 0.2} fill="#FFC93C" stroke="#E08A1E" strokeWidth={sw * 0.7} />
           {Array.from({length: 8}, (_, k) => (

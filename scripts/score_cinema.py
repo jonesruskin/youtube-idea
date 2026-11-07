@@ -554,6 +554,8 @@ def amb_key(sh, prev):
             "surface": "wind",
             "metro": "metro_quiet" if v == "dark" else "obs_room" if v == "workshop" else "metro",
             "observatory": "obs_room" if v == "room" else "morning" if v == "dawn" else "wind_lo",
+            "hospital": "ward",
+            "river": "wind",
         }.get(st, prev)
     if sc_ in ("closeup",):
         return prev
@@ -595,6 +597,9 @@ def amb_bed(key, dur):
         return wind(dur, 0.75, 0.6)
     if key == "metro":
         return metro_bed(dur, 1.0) * 0.8
+    if key == "ward":
+        # a corridor full of people: a low murmur, a far-off cough, the hum of the lights
+        return metro_bed(dur, 0.45) * 0.5 + amb_bed("obs_room", dur) * 0.8
     if key == "metro_quiet":
         return metro_bed(dur, 0.35) * 0.6
     if key == "obs_room":
@@ -826,6 +831,42 @@ def render(tl):
             mix.add("hall", fl, choir(["D4", "F#4", "A4", "D5"], 1.15, "ah", a=0.05, r=0.5), 1.2)
             mix.add("hits", fl, boom(1.0, 5), 1.0)
             mix.add("music", fl + 1.2, strings(["D3", "A3", "F4"], e - fl - 1.2, a=2.5, r=2, bright=2200), 0.6)
+        elif c == "news":
+            # rolling news: a tight synth pulse, a second-hand tick, a low drone (the world, through a screen)
+            ostinato(mix, s, e, 120, ["D3", "D3", "F3", "D3", "A2", "D3", "E3", "D3"], 0.35)
+            ticks(mix, s, e, 1.0, 0.5)
+            mix.add("music", s, strings(["D2", "A2", "D3"], L, a=0.6, r=0.8, bright=1500), 0.5)
+        elif c == "decode":
+            # the picture assembling: bells climbing faster and faster over a swelling chord
+            t, i, gap = s + 0.2, 0, 0.42
+            notes = ["D5", "F5", "A5", "C6", "D6", "F6", "A6"]
+            while t < e - 0.2:
+                mix.add("music", t, bell(notes[i % len(notes)], 1.6, 0.28), 0.7)
+                t += gap
+                gap = max(0.09, gap * 0.94)
+                i += 1
+            mix.add("hall", s, choir(["D4", "F4", "A4", "C5"], L, "oo", a=1.5, r=2.0), 0.7)
+            mix.add("music", s, strings(["D3", "A3", "D4", "F4"], L, a=1.2, r=2.0, bright=3200), 0.6)
+        elif c == "countdown":
+            # 16:40 → 0:00: a clock, a heartbeat, a chord that will not resolve
+            ticks(mix, s, e, 1.0, 0.9)
+            k, t = 0, s + 0.4
+            while t < e:
+                mix.add("hits", t, heartbeat(0.55 + 0.25 * (t - s) / max(1, L)), 0.6)
+                t += max(0.55, 1.0 - k * 0.02)
+                k += 1
+            mix.add("music", s, strings(["D2", "A2", "D3", "E3", "A3"], L, a=L * 0.6, r=0.1, bright=2400), 0.85)
+            mix.add("hits", e - 3.0, riser(3.0, 1.0), 0.9)
+            gate.append((e - 0.05, e + 0.35))
+        elif c == "sunrise":
+            # the Sun comes back: the theme in the major, full, for the first time
+            mix.add("hits", s + 0.35, boom(1.0, 5), 1.0)
+            mix.add("hall", s + 0.35, organ(["D2", "A2", "D3", "F#3", "A3", "D4"], L, a=1.2, r=3.0), 1.1)
+            mix.add("hall", s + 0.5, choir(["D4", "F#4", "A4", "D5"], L, "ah", a=1.5, r=3.0), 0.9)
+            chords(mix, s + 0.4, e, PROG_MAJOR, 62, "strings", 1.3, choir_vowel="ah")
+            melody(mix, s + 2.5, e, THEME_MAJOR, 62, "piano", 0.7)
+            for k in range(int(L // 1.9)):
+                mix.add("music", s + 1.2 + k * 1.9, bell(rng.choice(["F#6", "A6", "D7"]), 5, 0.3), 0.6)
         elif c == "afterglow":
             mix.add("music", s, strings(["D4", "F#4", "A4"], L, a=0.5, r=2.0, bright=3000), 0.6)
             mix.add("music", s + 0.4, bell("F#6", 5, 0.4), 0.7)
@@ -899,6 +940,23 @@ def render(tl):
         span = max(1.2, (ty["end"] - ty["start"]) * 0.55)
         for k in range(12):
             mix.add("fx", ty["start"] + span * (k + 0.5) / 12, page_flip(0.9), 0.9)
+    if "pulses" in shots:
+        ps = shots["pulses"]
+        t, gap = ps["start"] + 0.3, 0.3
+        while t < ps["end"] - 0.1:
+            mix.add("fx", t, beep(1320, max(0.03, gap * 0.4), 0.8), 0.8)
+            t += gap
+            gap = max(0.025, gap * 0.9)
+    if "press-key" in shots:
+        pk = shots["press-key"]
+        t0 = line_start("press-key:0", pk["start"]) + 0.4
+        mix.add("fx", t0, tick(False, 1.3), 1.0)
+        mix.add("fx", t0, beep(700, 1.2, 0.9), 0.7)
+    if "lights-work" in shots:
+        mix.add("fx", shots["lights-work"]["start"] + 1.25, tick(True, 1.4), 1.1)
+    for sid in ("bedtime",):
+        if sid in shots:
+            mix.add("fx", shots[sid]["start"] + 1.2, tick(True, 1.2), 1.0)
     if "closed-them" in shots:
         ct = shots["closed-them"]
         mix.add("fx", ct["start"] + 0.45, slat_ripple(1.1, 1.0), 1.0)
@@ -925,6 +983,8 @@ def render(tl):
             mix.add("music", t0 + 0.1, bell("E6", 3, 0.6), 0.8)
         elif fx == "crash":
             mix.add("fx", t0, ice_crack(1.0), 0.8)
+        elif fx == "static":
+            mix.add("fx", t0, static(min(3.0, sh["end"] - t0), 1.2), 1.0)
         elif fx == "stamp":
             for k in range(3):
                 mix.add("hits", t0 + 0.1 + k * 0.28, taiko(0.8), 0.9)
