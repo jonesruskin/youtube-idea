@@ -2,9 +2,9 @@
 
 **Thumbnail text:** WHO BUILT THIS?
 **Thumbnails for Test & Compare:** sun01-thumbnail.png, sun01-thumbnail-b.png, sun01-thumbnail-c.png (upload all of them; YouTube serves each to a share of viewers and keeps the one with the best watch time)
-**End screen:** the last 15 s (from 9:16) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 9:20 to the end.
-**Runtime:** 9:31
-**Manual mid-roll positions:** 4:19, 6:44 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
+**End screen:** the last 15 s (from 9:18) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 9:22 to the end.
+**Runtime:** 9:33
+**Manual mid-roll positions:** 4:20, 6:43 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
 
 ## Description (paste as-is)
 
@@ -14,21 +14,21 @@ On a summer morning the Sun goes out. Eight-year-old Mira, her brother Kai and M
 Something knocked back. What would you say? Tell us below 👇
 
 0:00 The last morning
-1:03 Hour one
-2:22 Day 1
-2:38 Day 2
-3:19 Day 3
-3:38 Day 7
-4:19 Day 8
-4:49 Day 30
+1:00 Hour one
+2:19 Day 1
+2:35 Day 2
+3:21 Day 3
+3:40 Day 7
+4:20 Day 8
+4:51 Day 30
 5:37 Day 40
 6:30 Day 100
 6:47 Day 180
 7:03 Day 300
-7:37 Day 365
+7:36 Day 365
 
 THE REAL SCIENCE IN THIS STORY
-(1) Venus near greatest elongation: sunlight needs ~361 s to reach it and ~345 s to come back to us, versus 499 s Sun→Earth, so it fades ~3.5 minutes after the Sun. — Source: Calculation from 1 AU = 149.6 million km, c = 299,792 km/s, Venus orbit 0.72 AU (NASA JPL planetary fact sheets)
+(1) Venus near the far side of the Sun: sunlight needs ~361 s to reach it and ~860 s more to cross 1.72 AU back to us, versus 499 s straight from the Sun, so it fades ~12 minutes after the Sun (6:52 → 7:04). — Source: Calculation from 1 AU = 149.6 million km, c = 299,792 km/s, Venus orbit 0.72 AU (NASA JPL planetary fact sheets)
 (2) Jupiter is 5.2 AU from the Sun; light needs ~43 minutes to reach it and ~37 more to reach us when it is 4.5 AU away: about 72 minutes after the Sun. — Source: NASA Jupiter fact sheet (nssdc.gsfc.nasa.gov)
 (3) The Sun’s tide-raising force is about 46% of the Moon’s; at spring tide the two add up. — Source: NOAA Ocean Service, ‘Tides and Water Levels’ tutorial
 (4) Ice floats and insulates the water below it, so oceans freeze from the top and stay liquid underneath for a very long time. — Source: National Snow and Ice Data Center, ‘All About Sea Ice’
