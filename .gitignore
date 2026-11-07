@@ -7,3 +7,4 @@ public/audio/
 renders/*-hq.mp4
 research/niche-scan/data/*.json
 __pycache__/
+renders/*-raw.mov
