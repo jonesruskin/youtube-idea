@@ -282,10 +282,10 @@ export const NewsScene: React.FC = () => {
                     {/* the same kind of feed twice never looks like a copy: a different camera on a different street */}
                     {(() => {
                       const rep = panels.slice(0, i).filter((q) => q.kind === pn.kind).length;
-                      const flip = rep % 2 === 1;
-                      const z = 1 + rep * 0.18;
+                      const z = 1 + rep * 0.22;
+                      const dx = rep % 2 === 1 ? -150 : 120;
                       return (
-                        <g transform={`translate(${flip ? 960 : 0},0) scale(${flip ? -1 : 1},1) translate(480,${270 + rep * 30}) scale(${z}) translate(-480,-270)`}>
+                        <g transform={`translate(${480 + (rep ? dx : 0)},${270 + rep * 30}) scale(${z}) translate(-480,-270)`}>
                           <Feed kind={pn.kind} frame={c.frame + rep * 37} t={c.t} />
                         </g>
                       );

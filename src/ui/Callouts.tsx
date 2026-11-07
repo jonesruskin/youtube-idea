@@ -61,6 +61,7 @@ export const Countdown: React.FC = () => {
               {tm.label}
             </text>
           )}
+          <rect x={-230} y={-92} width={460} height={184} rx={36} fill="#05060D" opacity={0.72} />
           <text textAnchor="middle" dominantBaseline="central" fontFamily={fonts.display} fontWeight={900} fontSize={150} letterSpacing={6} fill="#FFF6E0" stroke="#0B1026" strokeWidth={16} paintOrder="stroke">
             {txt}
           </text>
