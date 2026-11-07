@@ -183,6 +183,112 @@ if (episode.style === 'cinema') {
       if (sy > 760 && sy < 1080 && Math.abs(sx - 960) < 520) warnings.push(`Caption in "${s.id}" may cover ${c.who}'s face; use pos 'top'.`);
     }
   }
+  // ── v4 continuity gates: nothing a person holds may pop in or out ─────────────────────────────
+  {
+    type Hold = {r?: string; l?: string};
+    const MAIN = ['you', 'mira', 'ito', 'itoYoung', 'itoMid', 'mum', 'biscuit'];
+    const resolve = (at: any, s: any) => {
+      if (typeof at === 'number') return at;
+      const m = /^l(\d+)([+-][\d.]+)?$/.exec(String(at));
+      const l = m ? (s.timedLines ?? [])[Number(m[1])] : null;
+      return (l ? l.startInShot : 0) + (m && m[2] ? Number(m[2]) : 0);
+    };
+    const endState = (s: any) => {
+      const p = s.props ?? {};
+      const st = new Map<string, Hold>();
+      for (const c of (p.cast ?? []) as any[]) if (MAIN.includes(c.who)) st.set(c.who, {r: c.hold ?? undefined, l: c.holdL ?? undefined});
+      const acts = [...((p.acts ?? []) as any[])].sort((a, b) => resolve(a.at, s) - resolve(b.at, s));
+      for (const a of acts) {
+        if (!st.has(a.who) && !(a.give && st.has(a.give))) continue;
+        const h = st.get(a.who) ?? {};
+        if ('hold' in a || 'holdL' in a) errors.push(`Props: "${s.id}" sets ${a.who}'s ${'hold' in a ? 'hold' : 'holdL'} directly at ${a.at}; use give/take/put so the change is seen.`);
+        if (a.put || a.give) {
+          if (a.left) h.l = undefined;
+          else h.r = undefined;
+          if (a.give) {
+            if (!a.prop) errors.push(`Props: "${s.id}" give without prop.`);
+            const g = st.get(a.give) ?? {};
+            g.r = a.prop;
+            st.set(a.give, g);
+          }
+        }
+        if (a.take) {
+          if (!a.prop) errors.push(`Props: "${s.id}" take without prop.`);
+          if (a.left) h.l = a.prop;
+          else h.r = a.prop;
+        }
+        st.set(a.who, h);
+      }
+      return st;
+    };
+    let day3 = 0;
+    let prev: {key: string; end: Map<string, Hold>; id: string} | null = null;
+    for (const s of tl.shots as any[]) {
+      if (s.hud && 'day' in s.hud) day3 = s.hud.day;
+      if (s.scene !== 'stage') continue;
+      const p = s.props ?? {};
+      const key = `${s.thread ?? ''}:${day3}:${p.set}`;
+      if (prev && prev.key === key && !s.timeJump) {
+        for (const c of (p.cast ?? []) as any[]) {
+          if (!MAIN.includes(c.who) || !prev.end.has(c.who)) continue;
+          const e = prev.end.get(c.who)!;
+          const r = c.hold ?? undefined;
+          const l = c.holdL ?? undefined;
+          if (e.r !== r || e.l !== l) errors.push(`Props: ${c.who} ends "${prev.id}" holding [${e.r ?? '-'} | ${e.l ?? '-'}] but starts "${s.id}" holding [${r ?? '-'} | ${l ?? '-'}].`);
+        }
+      }
+      prev = {key, end: endState(s), id: s.id};
+    }
+  }
+  // ── v4 acting gates: no talk loops; gestures are rare and scripted ─────────────────────────────
+  {
+    const per = new Map<string, {lines: number; g: number}>();
+    for (const s of tl.shots as any[]) {
+      for (const a of ((s.props as any)?.acts ?? []) as any[]) if (a.loop === 'talk') errors.push(`Acting: "${s.id}" uses a 'talk' arm loop; people do not wave on every line.`);
+      for (const l of s.lines ?? []) {
+        if (['NARRATOR', 'RADIO', 'MUM_RADIO'].includes(l.speaker)) continue;
+        const x = per.get(l.speaker) ?? {lines: 0, g: 0};
+        x.lines++;
+        if (l.g) x.g++;
+        per.set(l.speaker, x);
+        if (l.g === 'count' && !/\b(one|two|three|four|five|first|1|2|3|twenty|forty|sixteen)\b/i.test(l.text)) warnings.push(`Gesture: "count" on a line with no number in "${s.id}".`);
+      }
+    }
+    for (const [spk, x] of per) if (x.g > Math.ceil(x.lines / 3)) errors.push(`Acting: ${spk} gestures on ${x.g} of ${x.lines} lines (cap: 1 in 3).`);
+  }
+  // ── v4 staging gates: speakers are in the shot; two people talking keep their sides (180° rule) ──
+  {
+    const SPK: Record<string, string> = {KAI: 'you', MIRA: 'mira', ITO: 'ito', MUM: 'mum', MAN: '*'};
+    let side = new Map<string, number>();
+    let runKey = '';
+    let day4 = 0;
+    for (const s of tl.shots as any[]) {
+      if (s.hud && 'day' in s.hud) day4 = s.hud.day;
+      if (s.scene !== 'stage') continue;
+      const p = s.props ?? {};
+      const cast = (p.cast ?? []) as any[];
+      for (const l of s.lines ?? []) {
+        const who = SPK[l.speaker];
+        if (!who || who === '*') continue;
+        if (!cast.some((c) => c.who === who || c.speaker === l.speaker)) errors.push(`Staging: ${l.speaker} speaks in "${s.id}" but is not in the shot.`);
+      }
+      const key = `${s.thread ?? ''}:${day4}:${p.set}`;
+      if (key !== runKey) {
+        runKey = key;
+        side = new Map();
+      }
+      const fam = cast.filter((c) => ['you', 'mira', 'ito', 'mum'].includes(c.who));
+      for (const a of fam)
+        for (const b of fam) {
+          if (a.who >= b.who) continue;
+          const pair = `${a.who}|${b.who}`;
+          const sgn = Math.sign(a.x - b.x);
+          const moves = ((p.acts ?? []) as any[]).some((x) => (x.who === a.who || x.who === b.who) && x.to !== undefined);
+          if (side.has(pair) && side.get(pair) !== sgn && !moves && sgn !== 0) errors.push(`Staging: ${a.who} and ${b.who} swap sides in "${s.id}" (180° rule).`);
+          if (!moves) side.set(pair, sgn);
+        }
+    }
+  }
   // scale: everyone on the same floor line shares one depth (heights come from the chart, never per shot)
   for (const s of tl.shots) {
     const cast = ((s.props as any)?.cast ?? []) as any[];

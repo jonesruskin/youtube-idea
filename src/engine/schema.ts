@@ -32,6 +32,8 @@ export type Line = {
   text: string;
   /** Seconds of silence after the line (dramatic beat). */
   pause?: number;
+  /** A scripted hand gesture for this line (people do not gesture on every line; most lines have none). */
+  g?: 'point' | 'palm' | 'shrug' | 'count' | 'chest' | 'rub' | 'up';
 };
 
 export type Mood =

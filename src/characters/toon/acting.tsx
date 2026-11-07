@@ -76,6 +76,16 @@ export type Act = {
   watchGlow?: number;
   /** Hold this pose (a point otherwise relaxes after ~1.2 s). */
   keep?: boolean;
+  /** Hand the prop in the near hand (`prop`) to another cast member: both reach, it changes hands at the end. */
+  give?: Who;
+  /** The prop being given / put away / picked up (required with give, put and take). */
+  prop?: PropKind;
+  /** Put the held prop away (the hand goes to it, then it is gone) — the only way a prop may leave a hand. */
+  put?: 'bag' | 'pocket' | 'table' | 'floor' | 'desk';
+  /** Pick a prop up (the hand goes down to it, then it is held) — the only way a prop may appear in a hand. */
+  take?: 'bag' | 'pocket' | 'table' | 'floor' | 'desk';
+  /** Use the far hand for put/take/give (default: near hand). */
+  left?: boolean;
 };
 
 /** Poses that sit on a chair-height seat (the seat is drawn under them, and stays when they stand up). */
@@ -108,6 +118,8 @@ export const resolveAt = (at: number | string, lines: LineInfo[]): number => {
 /** Pure: the state of one cast member at time t (seconds into the shot). */
 export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lines: LineInfo[], seed: number) => {
   const mine = acts.filter((a) => a.who === c.who).map((a) => ({...a, t0: resolveAt(a.at, lines)})).sort((a, b) => a.t0 - b.t0);
+  // gifts arriving: someone hands this character a prop (they reach for it too)
+  const gifts = acts.filter((a) => a.give === c.who && a.prop).map((a) => ({...a, t0: resolveAt(a.at, lines)}));
   let x = c.x;
   let y = c.y;
   let facing: Facing = c.facing ?? 'front';
@@ -130,7 +142,7 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
   let prevPose = POSES.relaxed;
   for (const a of mine) {
     if (t < a.t0) break;
-    const dur = a.dur ?? (a.to !== undefined ? 1.2 : a.loop ? 1.5 : 0.35);
+    const dur = a.dur ?? (a.to !== undefined ? 1.2 : a.loop ? 1.5 : a.give || a.put || a.take ? 0.8 : 0.35);
     const k = clamp01((t - a.t0) / Math.max(0.01, dur));
     if (a.pose) {
       if (!RELAX_FROM.includes(a.pose)) prevPose = POSES[a.pose as PoseName] ?? prevPose;
@@ -145,6 +157,22 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
     if (a.turn !== undefined) turn = turn + (a.turn - turn) * easeIO(k);
     if (a.hold !== undefined) hold = a.hold ?? undefined;
     if (a.holdL !== undefined) holdL = a.holdL ?? undefined;
+    // prop handling: the reach is visible, the change happens when the hand arrives
+    if (a.give || a.put || a.take) {
+      const reachK = Math.sin(Math.min(1, k) * Math.PI);
+      const arm = a.give ? [90, 10] : [18, 30]; // forward to the other person, or down to a pocket / bag / table
+      if (a.left) pose = {...pose, lArm: [pose.lArm[0] + (arm[0] - pose.lArm[0]) * reachK, pose.lArm[1] + (arm[1] - pose.lArm[1]) * reachK] as [number, number]};
+      else pose = {...pose, rArm: [pose.rArm[0] + (arm[0] - pose.rArm[0]) * reachK, pose.rArm[1] + (arm[1] - pose.rArm[1]) * reachK] as [number, number]};
+      if (k >= 0.5) {
+        if (a.give || a.put) {
+          if (a.left) holdL = undefined;
+          else hold = undefined;
+        } else if (a.take && a.prop) {
+          if (a.left) holdL = a.prop;
+          else hold = a.prop;
+        }
+      }
+    }
     if (a.hoodUp !== undefined) hoodUp = a.hoodUp;
     if (a.facing) facing = a.facing;
     if (a.opacity !== undefined) opacity = opacity + (a.opacity - opacity) * k;
@@ -166,6 +194,14 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
       y = ny;
     }
     if (a.loop && k < 1) loops.push({kind: a.loop, k, local: t - a.t0});
+  }
+  for (const g of gifts) {
+    if (t < g.t0) continue;
+    const dur = g.dur ?? 0.8;
+    const k = clamp01((t - g.t0) / dur);
+    const reachK = Math.sin(k * Math.PI);
+    pose = {...pose, rArm: [pose.rArm[0] + (90 - pose.rArm[0]) * reachK, pose.rArm[1] + (10 - pose.rArm[1]) * reachK] as [number, number]};
+    if (k >= 0.5) hold = g.prop;
   }
   // a point relaxes back to the previous resting pose ~1.2 s after it lands
   if (RELAX_FROM.includes(poseName) && !poseKeep && c.who !== 'biscuit') {
@@ -291,19 +327,26 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
         const ph = frame / 30 + i * 1.7;
         bob += Math.sin(ph * 1.6) * 1.2;
         pose = {...pose, lean: pose.lean + Math.sin(ph * 0.45) * 1.2, tilt: pose.tilt + Math.sin(ph * 0.7) * 1.2};
-        // talking: small head and hand rhythm
+        // talking: the face and head do the acting (a small head lift on the line, eyes to the listener). Hands move
+        // only when the script gives the line a gesture (`g`), the way people actually talk.
         if (line) {
-          pose = {...pose, tilt: pose.tilt + Math.sin(frame * 0.35) * 3, rArm: [pose.rArm[0] + Math.sin(frame * 0.21) * 6, pose.rArm[1] + Math.sin(frame * 0.3) * 8]};
-          // the beat: hand and head land together on the line's stressed (longest) word
-          const ws = (line.words ?? []).filter((w) => w.w.replace(/[^a-z]/gi, '').length > 2);
-          const stress = ws.length ? ws.reduce((a, b) => (b.e - b.s > a.e - a.s ? b : a)) : null;
-          if (stress && !r.moving) {
-            const lt = t - line.startInShot - stress.s + 0.08;
-            if (lt > 0 && lt < 0.5) {
-              const k = Math.sin((lt / 0.5) * Math.PI);
-              const free = !CHAIR_POSES.includes(r.poseName) && !['torch', 'carry', 'hug', 'kneelHug', 'sitHug'].includes(r.poseName);
-              pose = {...pose, tilt: pose.tilt + 6 * k, rArm: free ? [pose.rArm[0] + 26 * k, pose.rArm[1] + 30 * k] : pose.rArm};
-            }
+          const lt = t - line.startInShot;
+          const ld = line.end - line.start;
+          pose = {...pose, tilt: pose.tilt + Math.sin(Math.min(1, lt / Math.max(0.6, ld)) * Math.PI) * 2.5};
+          const g = (line as any).g as string | undefined;
+          if (g && !r.moving) {
+            const k = clamp01(lt / 0.3) * clamp01((Math.min(ld, 1.8) - lt) / 0.35);
+            const e = easeIO(k);
+            const mix = (cur: [number, number], to: [number, number]): [number, number] => [cur[0] + (to[0] - cur[0]) * e, cur[1] + (to[1] - cur[1]) * e];
+            const seated = CHAIR_POSES.includes(r.poseName);
+            if (g === 'point') pose = {...pose, rArm: mix(pose.rArm, [96, -4])};
+            if (g === 'palm') pose = {...pose, rArm: mix(pose.rArm, [62, 52])};
+            if (g === 'up') pose = {...pose, rArm: mix(pose.rArm, [150, 8])};
+            if (g === 'count') pose = {...pose, rArm: mix(pose.rArm, [84, 96])};
+            if (g === 'chest') pose = {...pose, rArm: mix(pose.rArm, [26, 128])};
+            if (g === 'shrug') pose = {...pose, lArm: mix(pose.lArm, [38, 84]), rArm: mix(pose.rArm, [44, 84]), tilt: pose.tilt + 6 * e};
+            if (g === 'rub') pose = {...pose, lArm: mix(pose.lArm, [46, 100 + Math.sin(frame * 0.6) * 6]), rArm: mix(pose.rArm, [52, 96 - Math.sin(frame * 0.6) * 6])};
+            void seated;
           }
         } else if (list.length > 1 && r.facing !== 'back') {
           // listening: a small nod as someone else's line lands
