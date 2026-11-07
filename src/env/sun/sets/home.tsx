@@ -258,7 +258,9 @@ registerSet('bathroom', {
 // ── STAIRWELL ───────────────────────────────────────────────────────────────────────────────────
 registerSet('stairs', {
   layers: (c) => {
-    const smoke = c.v === 'smoke' ? Math.min(1, 0.4 + c.t / 4) : 0.8;
+    // 'climb' is Day 0: no fire yet, the stairwell lights still on
+    const climb = c.v === 'climb';
+    const smoke = climb ? 0 : c.v === 'smoke' ? Math.min(1, 0.4 + c.t / 4) : 0.8;
     return [
       {
         depth: 1,
@@ -288,7 +290,7 @@ registerSet('stairs', {
                 <text x={x} y={940 - M(2.15) - 24} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={700} fontSize={22} fill={INK}>
                   {['3A', '3B', '3C'][i]}
                 </text>
-                {i === 1 && <rect x={x - M(0.43)} y={930} width={M(0.86)} height={10} fill="#FF8A3A" opacity={0.6 + 0.4 * Math.sin(c.frame * 0.4)} />}
+                {i === 1 && !climb && <rect x={x - M(0.43)} y={930} width={M(0.86)} height={10} fill="#FF8A3A" opacity={0.6 + 0.4 * Math.sin(c.frame * 0.4)} />}
               </g>
             ))}
             {/* EXIT sign */}
@@ -297,23 +299,41 @@ registerSet('stairs', {
               EXIT
             </text>
             <rect x={-600} y={940} width={3100} height={500} fill="#3A3F48" />
+            {/* painted floor number at the landing, and the way to the roof */}
+            {climb && (
+              <g>
+                <rect x={-430} y={300} width={260} height={150} rx={10} fill="#E9DCC6" stroke={INK} strokeWidth={5} />
+                <text x={-300} y={410} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={900} fontSize={120} fill={INK}>
+                  6
+                </text>
+                <text x={-300} y={290} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={40} fill="#E9DCC6">
+                  ROOF ↑
+                </text>
+              </g>
+            )}
             {/* smoke from under 3B */}
-            <Smoke frame={c.frame} x={1000} y={300} w={600} h={640} color="#8A8F9C" opacity={0.55 * smoke} seed={2} rise={0.5} />
-            <Smoke frame={c.frame + 60} x={300} y={100} w={1500} h={700} color="#6E7380" opacity={0.35 * smoke} seed={9} rise={0.3} />
+            {smoke > 0 && <Smoke frame={c.frame} x={1000} y={300} w={600} h={640} color="#8A8F9C" opacity={0.55 * smoke} seed={2} rise={0.5} />}
+            {smoke > 0 && <Smoke frame={c.frame + 60} x={300} y={100} w={1500} h={700} color="#6E7380" opacity={0.35 * smoke} seed={9} rise={0.3} />}
           </g>
         ),
       },
     ];
   },
-  light: (c) => (
+  light: (c) =>
+    c.v === 'climb' ? (
+      <g>
+        <Glow x={-200} y={200} r={600} color="#FFF0C8" opacity={0.3} />
+        <Glow x={1590} y={460} r={260} color="#3CFF8A" opacity={0.25} />
+      </g>
+    ) : (
+      <g>
+        <Glow x={1590} y={460} r={260} color="#3CFF8A" opacity={0.3} />
+        <Glow x={1240} y={930} r={220} color="#FF8A3A" opacity={0.35 + 0.1 * Math.sin(c.frame * 0.4)} rx={320} />
+      </g>
+    ),
+  grade: (c) => (
     <g>
-      <Glow x={1590} y={460} r={260} color="#3CFF8A" opacity={0.3} />
-      <Glow x={1240} y={930} r={220} color="#FF8A3A" opacity={0.35 + 0.1 * Math.sin(c.frame * 0.4)} rx={320} />
-    </g>
-  ),
-  grade: () => (
-    <g>
-      <Grade color="#1E2A5E" amount={0.55} />
+      <Grade color="#1E2A5E" amount={c.v === 'climb' ? 0.3 : 0.55} />
       <Vignette amount={0.7} />
     </g>
   ),

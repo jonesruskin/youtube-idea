@@ -25,7 +25,8 @@ export type PropKind =
   | 'photo'
   | 'tideTable'
   | 'ear'
-  | 'tubeCase';
+  | 'tubeCase'
+  | 'receiver';
 
 /** Props drawn at the hand position (origin = hand centre). R = the holder's head radius. */
 export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({kind, R, frame}) => {
@@ -129,6 +130,15 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
       return <rect x={-R * 0.04} y={-R * 0.22} width={R * 0.08} height={R * 0.22} fill="#F4EFE6" stroke={ink} strokeWidth={sw * 0.5} />;
     case 'blanket':
       return <path d={`M${-R * 0.6},${-R * 0.3} L${R * 0.6},${-R * 0.4} L${R * 0.7},${R * 0.6} L${-R * 0.5},${R * 0.7} Z`} fill="#4FA3A5" stroke={ink} strokeWidth={sw} />;
+    case 'receiver':
+      // a 1980s handset held to the ear, its curly cord dropping away
+      return (
+        <g>
+          <path d={`M${-R * 0.1},${R * 0.1} q${R * 0.3},${R * 0.5} ${R * 0.1},${R * 1.1}`} stroke={ink} strokeWidth={sw * 0.8} fill="none" strokeDasharray={`${sw} ${sw * 0.7}`} />
+          <path d={`M${-R * 0.18},${-R * 0.42} Q${-R * 0.34},0 ${-R * 0.16},${R * 0.42}`} stroke="#A83A42" strokeWidth={sw * 2.6} fill="none" strokeLinecap="round" />
+          <path d={`M${-R * 0.18},${-R * 0.42} Q${-R * 0.34},0 ${-R * 0.16},${R * 0.42}`} stroke={ink} strokeWidth={sw * 0.6} fill="none" opacity={0.6} />
+        </g>
+      );
     case 'cane':
       return <path d={`M0,${-R * 0.1} L${R * 0.1},${R * 1.6} M0,${-R * 0.1} q-${R * 0.25},-${R * 0.05} -${R * 0.25},${R * 0.15}`} stroke="#6E4A2E" strokeWidth={sw * 1.4} fill="none" strokeLinecap="round" />;
     case 'toast':

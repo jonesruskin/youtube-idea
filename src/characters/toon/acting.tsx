@@ -17,7 +17,7 @@ import {Toon, type SeatKind, type ToonState} from './Toon';
  * sliding), and every character breathes, blinks and lip-syncs to its own lines automatically. Listeners turn
  * their eyes (and, facing front, their head) to whoever is speaking, and the speaker glances at the nearest listener.
  */
-export type Who = 'you' | 'mira' | 'ito' | 'itoYoung' | 'mum' | 'biscuit' | `extra:${number}`;
+export type Who = 'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'biscuit' | `extra:${number}`;
 export type Facing = 'right' | 'left' | 'front' | 'back';
 export type CastEntry = {
   who: Who;
@@ -48,6 +48,10 @@ export type CastEntry = {
   carriedBy?: Who;
   /** Lip-sync this cast member to a script speaker (for voiced extras, e.g. 'MAN'). */
   speaker?: string;
+  /** Dog only: rounder (the Day 30 fan club). */
+  fat?: boolean;
+  /** Keep a pointing pose held (otherwise points relax after a beat, like people really do). */
+  keepPose?: boolean;
 };
 export type LoopKind = 'wave' | 'nod' | 'shake' | 'shiver' | 'bounce' | 'clap' | 'talk' | 'jump' | 'tremble' | 'pant' | 'scratch' | 'stir' | 'tap';
 export type Act = {
@@ -70,8 +74,12 @@ export type Act = {
   opacity?: number;
   wag?: number;
   watchGlow?: number;
+  /** Hold this pose (a point otherwise relaxes after ~1.2 s). */
+  keep?: boolean;
 };
 
+/** Poses that sit on a chair-height seat (the seat is drawn under them, and stays when they stand up). */
+export const CHAIR_POSES = ['sitChair', 'sitShow', 'sitDraw', 'sitPoint', 'sitPhone'];
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const easeIO = Easing.bezier(0.42, 0, 0.58, 1);
 const easeBack = (k: number) => {
@@ -86,7 +94,9 @@ export const designOf = (who: Who): ToonDesign | null => {
   return CAST[who as keyof typeof CAST];
 };
 
-type LineInfo = {startInShot: number; end: number; start: number; speaker: string; text: string; chars?: number[]};
+type LineInfo = {startInShot: number; end: number; start: number; speaker: string; text: string; chars?: number[]; words?: {w: string; s: number; e: number}[]};
+/** Points are gestures, not statues: after a beat the arm comes back down. */
+const RELAX_FROM = ['point', 'pointUp', 'sitPoint'];
 export const resolveAt = (at: number | string, lines: LineInfo[]): number => {
   if (typeof at === 'number') return at;
   const m = /^l(\d+)([+-][\d.]+)?$/.exec(at);
@@ -115,12 +125,18 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
   let moving: null | {kind: 'walk' | 'run'; phase: number} = null;
   let travelled = 0;
   const loops: {kind: LoopKind; k: number; local: number}[] = [];
+  let poseSince = 0;
+  let poseKeep = !!c.keepPose;
+  let prevPose = POSES.relaxed;
   for (const a of mine) {
     if (t < a.t0) break;
     const dur = a.dur ?? (a.to !== undefined ? 1.2 : a.loop ? 1.5 : 0.35);
     const k = clamp01((t - a.t0) / Math.max(0.01, dur));
     if (a.pose) {
+      if (!RELAX_FROM.includes(a.pose)) prevPose = POSES[a.pose as PoseName] ?? prevPose;
       poseName = a.pose;
+      poseSince = a.t0 + dur;
+      poseKeep = !!a.keep;
       const target = POSES[a.pose as PoseName];
       if (target) pose = blendPose(pose, target, easeBack(k));
     }
@@ -150,6 +166,14 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
       y = ny;
     }
     if (a.loop && k < 1) loops.push({kind: a.loop, k, local: t - a.t0});
+  }
+  // a point relaxes back to the previous resting pose ~1.2 s after it lands
+  if (RELAX_FROM.includes(poseName) && !poseKeep && c.who !== 'biscuit') {
+    const k = clamp01((t - (poseSince + 1.2)) / 0.45);
+    if (k > 0) {
+      const rest = poseName === 'sitPoint' ? POSES.sitChair : prevPose === POSES.stand ? POSES.relaxed : prevPose;
+      pose = blendPose(pose, rest, easeIO(k));
+    }
   }
   return {x, y, facing, poseName, pose, face, look, turn, hold, holdL, hoodUp, opacity, wag, moving, loops, watchGlow};
 };
@@ -243,6 +267,7 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
               seed={i}
               rim={c.rim ? '#FFB25A' : undefined}
               carry={r.hold === 'toast' ? 'toast' : undefined}
+              fat={c.fat}
             />
           );
         }
@@ -269,6 +294,24 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
         // talking: small head and hand rhythm
         if (line) {
           pose = {...pose, tilt: pose.tilt + Math.sin(frame * 0.35) * 3, rArm: [pose.rArm[0] + Math.sin(frame * 0.21) * 6, pose.rArm[1] + Math.sin(frame * 0.3) * 8]};
+          // the beat: hand and head land together on the line's stressed (longest) word
+          const ws = (line.words ?? []).filter((w) => w.w.replace(/[^a-z]/gi, '').length > 2);
+          const stress = ws.length ? ws.reduce((a, b) => (b.e - b.s > a.e - a.s ? b : a)) : null;
+          if (stress && !r.moving) {
+            const lt = t - line.startInShot - stress.s + 0.08;
+            if (lt > 0 && lt < 0.5) {
+              const k = Math.sin((lt / 0.5) * Math.PI);
+              const free = !CHAIR_POSES.includes(r.poseName) && !['torch', 'carry', 'hug', 'kneelHug', 'sitHug'].includes(r.poseName);
+              pose = {...pose, tilt: pose.tilt + 6 * k, rArm: free ? [pose.rArm[0] + 26 * k, pose.rArm[1] + 30 * k] : pose.rArm};
+            }
+          }
+        } else if (list.length > 1 && r.facing !== 'back') {
+          // listening: a small nod as someone else's line lands
+          for (const l of lines) {
+            const lt = t - (l.startInShot + (l.end - l.start)) - 0.12;
+            const onStage = list.some((o) => o.who !== 'biscuit' && (o.speaker ?? designOf(o.who)?.speaker) === l.speaker);
+            if (onStage && l.speaker !== spk && lt > 0 && lt < 0.45) pose = {...pose, tilt: pose.tilt + 6 * Math.sin((lt / 0.45) * Math.PI)};
+          }
         }
         for (const l of r.loops) {
           const w = Math.sin(l.local * Math.PI * 2 * 1.6);
@@ -314,7 +357,7 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
           watchGlow: r.watchGlow,
           noShadow: !!c.carriedBy,
         };
-        const chairSit = r.poseName === 'sitChair';
+        const chairSit = CHAIR_POSES.includes(r.poseName);
         const lift = c.seatLift ?? 0;
         if (chairSit && c.seat !== 'none') {
           st.seat = c.seat ?? 'chair';
@@ -324,8 +367,8 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
         // a chair belongs to the set, not the sitter: once anyone sits in this shot, their seat stays where it
         // is for the whole shot (before they sit down, and after they stand up)
         let empty: React.ReactNode = null;
-        const sitAt = c.pose === 'sitChair' ? 0 : (() => {
-          const a = acts.find((x) => x.who === c.who && x.pose === 'sitChair');
+        const sitAt = CHAIR_POSES.includes(c.pose as string) ? 0 : (() => {
+          const a = acts.find((x) => x.who === c.who && CHAIR_POSES.includes(x.pose as string));
           return a ? resolveAt(a.at, lines) + (a.dur ?? 0.35) : null;
         })();
         if (!chairSit && sitAt !== null && c.seat !== 'none') {

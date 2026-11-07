@@ -34,7 +34,7 @@ export type ToonDesign = {
   watch?: boolean;
 };
 
-export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'mum', ToonDesign> = {
+export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum', ToonDesign> = {
   you: {
     id: 'you',
     height: 1,
@@ -103,6 +103,24 @@ export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'mum', ToonDesig
     outfits: {
       home: ['#8A6A4A', '#6E5236', '#3A3F52', '#2A2A2A'], // brown jumper
       cold: ['#8A6A4A', '#6E5236', '#3A3F52', '#2A2A2A'],
+    },
+    rim: '#FFD08A',
+  },
+  /** Mr. Ito in his fifties (the "44 years of sunrises" memory): greying, the cardigan already, not yet stooped. */
+  itoMid: {
+    id: 'itoMid',
+    height: 0.97,
+    head: 0.19,
+    build: 0.95,
+    skin: '#E8C4A2',
+    skinShade: '#C9A07E',
+    hair: 'short',
+    hairColor: '#8A8890',
+    glasses: true,
+    mustache: '#6E6C74',
+    outfits: {
+      home: ['#8A6A4A', '#6E5236', '#4A4E5C', '#2A2A2A'],
+      cold: ['#3E5C4A', '#2E4638', '#3A3A44', '#2A2A2A'],
     },
     rim: '#FFD08A',
   },

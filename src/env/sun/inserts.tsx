@@ -385,8 +385,17 @@ export const CloseupScene: React.FC = () => {
           ))}
         </g>
         {/* his thumb covers the name until the reveal */}
-        {!c.p.showName && <ellipse cx={760} cy={258} rx={90} ry={46} fill="#E8C4A2" stroke={INK} strokeWidth={5} />}
-        {!c.p.showName && <path d="M680,300 Q640,420 560,520 L460,520 L560,300 Z" fill="#8A6A4A" stroke={INK} strokeWidth={5} />}
+        {!c.p.showName && (
+          <g>
+            {/* brown wool cuff and the back of the hand, from the lower left */}
+            <path d="M300,700 Q420,520 560,420 L640,520 Q520,600 430,760 Z" fill="#8A6A4A" stroke={INK} strokeWidth={6} />
+            <path d="M560,420 Q620,360 690,330 Q720,360 700,400 Q680,450 640,520 Z" fill="#E8C4A2" stroke={INK} strokeWidth={6} />
+            {/* the thumb, lying across the name */}
+            <path d="M650,350 Q700,236 820,232 Q870,236 864,270 Q856,300 800,302 Q740,306 700,380 Z" fill="#E8C4A2" stroke={INK} strokeWidth={6} />
+            <path d="M800,246 Q846,244 852,268 Q846,290 810,290 Q790,276 800,246 Z" fill="#F6DCC6" stroke={INK} strokeWidth={3} />
+            <path d="M742,262 q-8,16 0,32" stroke={INK} strokeWidth={3} fill="none" opacity={0.6} />
+          </g>
+        )}
         <Glow x={960} y={400} r={700} color="#FFD08A" opacity={0.3} />
       </g>,
     );
@@ -416,8 +425,11 @@ export const CloseupScene: React.FC = () => {
             Sobral, 1919
           </text>
         </g>
-        <path d="M200,1080 Q360,860 520,880 L560,960 Q420,1000 380,1080 Z" fill="#E8C4A2" stroke={INK} strokeWidth={6} />
-        <path d="M0,1080 L0,900 Q120,880 240,1000 L300,1080 Z" fill="#3E5C4A" stroke={INK} strokeWidth={6} />
+        {/* his hand at the print's corner: fingers behind it, the thumb on the front edge, green coat sleeve */}
+        <path d="M0,1080 L0,880 Q160,840 300,960 L360,1080 Z" fill="#3E5C4A" stroke={INK} strokeWidth={6} />
+        <path d="M250,960 Q330,860 430,830 Q480,840 476,880 Q440,930 380,990 Z" fill="#E8C4A2" stroke={INK} strokeWidth={6} />
+        <path d="M430,840 Q470,800 520,808 Q548,820 534,846 Q500,866 462,872 Z" fill="#E8C4A2" stroke={INK} strokeWidth={6} />
+        <path d="M498,812 Q530,814 534,836 Q520,850 500,846 Q490,830 498,812 Z" fill="#F6DCC6" stroke={INK} strokeWidth={3} />
         <Glow x={960} y={500} r={700} color="#FFD08A" opacity={0.25} />
       </g>,
     );
@@ -426,7 +438,7 @@ export const CloseupScene: React.FC = () => {
   if (v === 'gauge') {
     // the harbour tide gauge in torchlight: the water sits exactly on the predicted mark
     const lap = Math.sin(f * 0.12) * 6;
-    const level = 560 + lap;
+    const level = 560 + lap - 70 * Math.max(0, 1 - t / 1.4) ** 2; // settling down onto the mark
     return wrap(
       '#05070F',
       <g>
@@ -452,11 +464,111 @@ export const CloseupScene: React.FC = () => {
             </text>
           </g>
         ))}
-        {/* the mark Mr. Ito predicted, pencilled on his table, and the water right on it */}
-        <path d={`M760,${560} L1100,${560}`} stroke="#FFD27A" strokeWidth={6} strokeDasharray="20 12" />
+        {/* the water settles, and sits exactly on the line Mr. Ito predicted from his tide table */}
         <rect x={0} y={level} width={W} height={H - level} fill="#1E4A6E" opacity={0.85} />
         <path d={`M0,${level} q60,-10 120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0`} stroke="#9FD8FF" strokeWidth={6} fill="none" />
+        <path d={`M700,560 L1240,560`} stroke="#FFD27A" strokeWidth={8} strokeDasharray="24 12" />
+        <g transform="translate(250,470) rotate(-3)" opacity={clamp((t - 0.3) / 0.4)}>
+          <rect x={0} y={0} width={380} height={130} rx={8} fill="#FBF6EA" stroke={INK} strokeWidth={5} />
+          <text x={22} y={50} fontFamily={fonts.mono} fontSize={28} fill="#2A2A2A">TIDE TABLE · 10:40</text>
+          <text x={22} y={104} fontFamily="'Caveat', 'Comic Sans MS', cursive" fontWeight={700} fontSize={54} fill="#C2464F">predicted 4.0 m</text>
+          <path d="M380,90 L450,90" stroke="#FFD27A" strokeWidth={6} />
+        </g>
         <Frost amount={0.25} w={W} h={H} seed={9} />
+      </g>,
+    );
+  }
+
+  if (v === 'fishIce') {
+    // under the new ice skin, in Mira's torch beam: a fish glides past, unbothered; her mitten points from above
+    const fx = interpolate(t, [0, Math.max(2.4, c.dur)], [-200, 2100]);
+    return wrap(
+      '#03060F',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#0A2238" />
+        <defs>
+          <radialGradient id="fishBeam" cx="0.52" cy="0.5" r="0.5">
+            <stop offset="0" stopColor="#CFEFFF" stopOpacity={0.5} />
+            <stop offset="1" stopColor="#CFEFFF" stopOpacity={0} />
+          </radialGradient>
+        </defs>
+        {/* the fish, under the ice */}
+        <g transform={`translate(${fx},${600 + Math.sin(t * 2.2) * 26}) scale(1.6)`}>
+          <path d={`M-90,0 Q-30,-46 50,-10 L96,-34 L86,0 L96,34 L50,10 Q-30,46 -90,0 Z`} fill="#E07A5F" stroke={INK} strokeWidth={4} transform={`rotate(${Math.sin(t * 6) * 3})`} />
+          <circle cx={-60} cy={-6} r={6} fill={INK} />
+          <path d="M-20,-24 q10,24 0,48" stroke={INK} strokeWidth={3} fill="none" opacity={0.6} />
+        </g>
+        {/* the ice skin: a pale translucent layer with cracks */}
+        <rect x={0} y={0} width={W} height={H} fill="#DDEFFF" opacity={0.26} />
+        {Array.from({length: 18}, (_, k) => (
+          <path key={k} d={`M${(k * 211) % W},${(k * 137) % H} l${60 + (k % 4) * 30},${-20 + (k % 3) * 25} l${40 + (k % 5) * 18},${30 - (k % 2) * 50}`} stroke="#F4FBFF" strokeWidth={3} fill="none" opacity={0.6} />
+        ))}
+        <rect x={0} y={0} width={W} height={H} fill="url(#fishBeam)" />
+        {/* Mira's blue mitten, pointing down at it */}
+        <g transform={`translate(${780 + Math.sin(t * 1.5) * 10},0)`}>
+          <path d="M120,-40 L210,-40 L230,180 L130,200 Z" fill="#3E7CB1" stroke={INK} strokeWidth={6} />
+          <path d="M120,170 Q110,250 160,300 Q200,320 230,280 Q250,230 236,170 Z" fill="#3E7CB1" stroke={INK} strokeWidth={6} />
+          <path d="M150,280 Q150,330 170,350 Q190,346 190,310" fill="#3E7CB1" stroke={INK} strokeWidth={6} />
+        </g>
+        <Frost amount={0.3} w={W} h={H} seed={14} />
+      </g>,
+    );
+  }
+
+  if (v === 'hands') {
+    // candlelight; Kai's hand (orange sleeve) closed hard around Mira's blue mitten, trembling a little
+    const tr = Math.sin(f * 1.7) * 2.5;
+    return wrap(
+      '#100A06',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#2A1C14" />
+        <path d="M0,760 Q960,700 1920,760 L1920,1080 L0,1080 Z" fill="#4FA3A5" stroke={INK} strokeWidth={6} opacity={0.85} />
+        {/* her mitten and sleeve, from the right */}
+        <path d="M1920,520 L1300,560 L1290,700 L1920,720 Z" fill="#3E7CB1" stroke={INK} strokeWidth={8} />
+        <path d="M1310,560 Q1120,520 1060,600 Q1040,690 1120,720 Q1220,740 1300,700 Z" fill="#3E7CB1" stroke={INK} strokeWidth={8} />
+        {/* his hand closing over it, from the left */}
+        <g transform={`translate(${tr},${tr * 0.6})`}>
+          <path d="M0,480 L760,520 L780,700 L0,740 Z" fill="#E07A2E" stroke={INK} strokeWidth={8} />
+          <path d="M760,520 Q900,470 1060,520 Q1160,560 1180,620 Q1170,660 1120,660 L960,650 Q980,700 940,740 Q860,770 780,700 Z" fill="#8A5A3A" stroke={INK} strokeWidth={8} />
+          {[0, 1, 2].map((k) => (
+            <path key={k} d={`M${980 + k * 50},${560 + k * 8} q30,30 20,80`} stroke={INK} strokeWidth={5} fill="none" opacity={0.7} />
+          ))}
+          {/* knuckles pale from gripping */}
+          {[0, 1, 2, 3].map((k) => <ellipse key={k} cx={940 + k * 52} cy={540 + k * 10} rx={16} ry={10} fill="#B07A56" />)}
+        </g>
+        <Glow x={1500} y={300} r={900} color="#FFB867" opacity={0.4 + 0.06 * Math.sin(f * 0.5)} />
+      </g>,
+    );
+  }
+
+  if (v === 'tapRail') {
+    // dawn, 1982: the young hand in the brown wool cuff taps the dome's railing — one, two, three
+    const taps = (c.p.taps as number[]) ?? [0.5, 1.1, 1.7];
+    const down = taps.some((tt) => t >= tt && t < tt + 0.14);
+    return wrap(
+      '#1A1008',
+      <g>
+        <defs>
+          <linearGradient id="railDawn" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#3E6CB8" />
+            <stop offset="0.55" stopColor="#F4B86A" />
+            <stop offset="1" stopColor="#FFE2A0" />
+          </linearGradient>
+        </defs>
+        <rect x={0} y={0} width={W} height={H} fill="url(#railDawn)" />
+        <circle cx={1460} cy={760} r={220} fill="#FFF6D6" opacity={0.9} />
+        <circle cx={1460} cy={760} r={420} fill="#FFE9A8" opacity={0.3} />
+        <path d="M0,820 L400,700 L800,780 L1200,690 L1920,800 L1920,1080 L0,1080 Z" fill="#6A5A7A" />
+        {/* the railing */}
+        <rect x={0} y={600} width={W} height={34} rx={17} fill="#8A8F9C" stroke={INK} strokeWidth={6} />
+        {[160, 640, 1120, 1600].map((x) => <rect key={x} x={x} y={630} width={24} height={460} fill="#7A7F8C" stroke={INK} strokeWidth={5} />)}
+        {/* hand + cuff */}
+        <g transform={`translate(0,${down ? 18 : 0})`}>
+          <path d="M1920,330 Q1500,360 1240,470 L1290,560 Q1560,500 1920,470 Z" fill="#8A6A4A" stroke={INK} strokeWidth={8} />
+          <path d="M1260,470 Q1120,480 1060,540 Q1040,590 1090,600 L1180,598 Q1200,620 1250,612 L1320,560 Z" fill="#E8C4A2" stroke={INK} strokeWidth={7} />
+          {[0, 1, 2].map((k) => <path key={k} d={`M${1100 + k * 40},${560} q6,20 0,36`} stroke={INK} strokeWidth={4} fill="none" opacity={0.6} />)}
+        </g>
+        {down && <path d="M1060,600 l-30,-30 M1080,592 l-10,-44 M1110,594 l14,-40" stroke="#FFFFFF" strokeWidth={5} opacity={0.8} />}
       </g>,
     );
   }
@@ -552,6 +664,32 @@ const NightSky: React.FC<{frame: number}> = ({frame}) => (
   </g>
 );
 
+/** Snow drifting down over a frozen Day-365 vignette. */
+const Snowfall: React.FC<{frame: number; n?: number}> = ({frame, n = 90}) => (
+  <g>
+    {Array.from({length: n}, (_, i) => {
+      const x = ((i * 337) % 2400) - 240 + Math.sin(frame * 0.03 + i) * 30;
+      const y = ((i * 191 + frame * (1.6 + (i % 5) * 0.5)) % 1300) - 120;
+      return <circle key={i} cx={x} cy={y} r={2 + (i % 3)} fill="#EAF2FF" opacity={0.75} />;
+    })}
+  </g>
+);
+/** The answer arriving: rings pulsing out of a radio, in threes (1, 2, 3). */
+const RadioPulse: React.FC<{x: number; y: number; t: number}> = ({x, y, t}) => (
+  <g style={{mixBlendMode: 'screen'}}>
+    {[0, 1, 2].map((k) => {
+      const ph = (t * 0.9 - k * 0.33 + 3) % 1.6;
+      if (ph > 1) return null;
+      return (
+        <g key={k}>
+          <circle cx={x} cy={y} r={20 + ph * 190} fill="none" stroke="#CFF0FF" strokeWidth={10 * (1 - ph) + 2} opacity={1 - ph} />
+          <circle cx={x} cy={y} r={20 + ph * 190} fill="none" stroke="#7FD8FF" strokeWidth={26 * (1 - ph)} opacity={0.25 * (1 - ph)} />
+        </g>
+      );
+    })}
+  </g>
+);
+
 /**
  * The world's last ordinary minute: Sydney, Tamil Nadu, Manila. `dark` (seconds or "l0+…") snaps the Sun off in
  * the same instant as the kitchen; after that the sky is stars and the colour drains out.
@@ -579,9 +717,12 @@ registerSet('montage', {
           depth: 0.6,
           node: (
             <g>
-              <rect x={-800} y={560} width={3600} height={800} fill="#1E7FC0" />
-              {Array.from({length: 12}, (_, i) => (
+              <rect x={-800} y={560} width={3600} height={800} fill={c.p.frozen ? '#C9D8E8' : '#1E7FC0'} />
+              {!c.p.frozen && Array.from({length: 12}, (_, i) => (
                 <path key={i} d={`M${-800 + ((i * 330 + f * 4) % 3600)},${600 + (i % 4) * 40} q40,-12 80,0`} stroke="#BFE8F8" strokeWidth={5} fill="none" />
+              ))}
+              {c.p.frozen && Array.from({length: 14}, (_, i) => (
+                <path key={i} d={`M${-700 + i * 260},${600 + (i % 4) * 50} l${60 + (i % 3) * 40},${18 - (i % 2) * 30} l${50},${25}`} stroke="#8EA4BE" strokeWidth={3} fill="none" />
               ))}
             </g>
           ),
@@ -591,9 +732,11 @@ registerSet('montage', {
           node: (
             <g>
               {/* the wave curling */}
-              <path d={`M-800,900 Q200,${560 + Math.sin(f * 0.05) * 20} 900,620 Q1300,560 1500,700 Q1400,640 1300,700 Q1600,820 2800,900 L2800,1400 L-800,1400 Z`} fill="#2A9BD6" stroke={INK} strokeWidth={5} />
+              <path d={`M-800,900 Q200,${560 + (c.p.frozen ? 0 : Math.sin(f * 0.05) * 20)} 900,620 Q1300,560 1500,700 Q1400,640 1300,700 Q1600,820 2800,900 L2800,1400 L-800,1400 Z`} fill={c.p.frozen ? '#B8CCE0' : '#2A9BD6'} stroke={INK} strokeWidth={5} />
               <path d="M900,620 Q1300,560 1500,700 Q1400,640 1300,700" fill="#E8F8FF" />
-              <rect x={-800} y={980} width={3600} height={500} fill="#F2D49A" />
+              {/* a frozen wave: the sea stopped mid-curl, icicles under the lip */}
+              {c.p.frozen && <path d="M1310,700 l10,40 l12,-38 l10,52 l12,-50 l12,34 l10,-30" fill="#E8F4FF" stroke={INK} strokeWidth={3} />}
+              <rect x={-800} y={980} width={3600} height={500} fill={c.p.frozen ? '#E6EEF7' : '#F2D49A'} />
               <path d="M-800,980 Q960,940 2800,980" stroke="#FFFFFF" strokeWidth={14} fill="none" opacity={0.8} />
               {/* surfboard under the surfer (cast stands on it) */}
               <ellipse cx={c.p.boardX ?? 1000} cy={712} rx={150} ry={20} fill="#E07A5F" stroke={INK} strokeWidth={5} transform={`rotate(-8,1000,712)`} />
@@ -609,9 +752,9 @@ registerSet('montage', {
           node: (
             <g>
               {Array.from({length: 6}, (_, i) => (
-                <path key={i} d={`M-800,${520 + i * 70} Q960,${470 + i * 70} 2800,${520 + i * 70} L2800,1400 L-800,1400 Z`} fill={['#9BC85A', '#86B84A', '#C9C04A', '#A6C24E', '#D8B84A', '#B8C04E'][i]} stroke={INK} strokeWidth={4} />
+                <path key={i} d={`M-800,${520 + i * 70} Q960,${470 + i * 70} 2800,${520 + i * 70} L2800,1400 L-800,1400 Z`} fill={c.p.frozen ? ['#E8EEF6', '#DCE4EE', '#E4EAF2', '#D6DEEA', '#E8EEF6', '#DCE4EE'][i] : ['#9BC85A', '#86B84A', '#C9C04A', '#A6C24E', '#D8B84A', '#B8C04E'][i]} stroke={INK} strokeWidth={4} />
               ))}
-              <path d="M-200,520 L200,300 L600,520 Z M1300,520 L1700,260 L2200,520 Z" fill="#6E9A6A" opacity={0.8} />
+              <path d="M-200,520 L200,300 L600,520 Z M1300,520 L1700,260 L2200,520 Z" fill={c.p.frozen ? '#B8C4D4' : '#6E9A6A'} opacity={0.8} />
             </g>
           ),
         },
@@ -619,16 +762,18 @@ registerSet('montage', {
           depth: 1,
           node: (
             <g>
-              <rect x={-800} y={900} width={3600} height={600} fill="#7FB04A" />
+              <rect x={-800} y={900} width={3600} height={600} fill={c.p.frozen ? '#EEF3F9' : '#7FB04A'} />
               {Array.from({length: 60}, (_, i) => (
-                <path key={i} d={`M${-700 + i * 60},${940 + (i % 3) * 30} q${Math.sin(f * 0.05 + i) * 8},-50 ${Math.sin(f * 0.05 + i) * 14},-90`} stroke="#4E8A3A" strokeWidth={6} fill="none" />
+                <path key={i} d={`M${-700 + i * 60},${940 + (i % 3) * 30} q${c.p.frozen ? 6 : Math.sin(f * 0.05 + i) * 8},-50 ${c.p.frozen ? 18 : Math.sin(f * 0.05 + i) * 14},${c.p.frozen ? -60 : -90}`} stroke={c.p.frozen ? '#8A7A62' : '#4E8A3A'} strokeWidth={c.p.frozen ? 4 : 6} fill="none" />
               ))}
             </g>
           ),
         },
       ];
     // bus: the kid (depth 1.4) runs along the near pavement; the bus waits on the road just behind him, at full size
-    const busX = c.p.noBus ? 9999 : interpolate(c.t, [c.at('l0+1.3', 1.5), c.at('l0+1.3', 1.5) + 2.0], [1420, 3900], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.in(Easing.quad)});
+    // the doors shut on his nose, then the bus pulls away and is gone before the cut (the dark shot has no bus)
+    const go = c.at(c.p.busGo, 1.35);
+    const busX = c.p.noBus ? 9999 : interpolate(c.t, [go, go + 1.3], [1420, 5600], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.in(Easing.quad)});
     return [
       {depth: 0.2, node: night ? <NightSky frame={f} /> : <DaySky top="#6FC0F0" bottom="#E8F4FA" />},
       {
@@ -636,7 +781,10 @@ registerSet('montage', {
         node: (
           <g>
             {Array.from({length: 9}, (_, i) => (
-              <rect key={i} x={-600 + i * 380} y={420 - (i % 3) * 80} width={320} height={600} fill={['#E9C46A', '#E07A5F', '#9AD1C8', '#F2D49A'][i % 4]} stroke={INK} strokeWidth={4} />
+              <g key={i}>
+                <rect x={-600 + i * 380} y={420 - (i % 3) * 80} width={320} height={600} fill={['#E9C46A', '#E07A5F', '#9AD1C8', '#F2D49A'][i % 4]} stroke={INK} strokeWidth={4} />
+                {c.p.frozen && <path d={`M${-610 + i * 380},${420 - (i % 3) * 80} q160,-36 340,0 l0,18 l-340,0 z`} fill="#F2F6FB" stroke={INK} strokeWidth={3} />}
+              </g>
             ))}
           </g>
         ),
@@ -648,7 +796,9 @@ registerSet('montage', {
             <rect x={-800} y={820} width={3600} height={40} fill="#B8B0A4" stroke={INK} strokeWidth={4} />
             <rect x={-800} y={860} width={3600} height={92} fill="#5A5E6A" />
             <rect x={-800} y={950} width={3600} height={12} fill="#D8D2C6" stroke={INK} strokeWidth={3} />
-            <rect x={-800} y={962} width={3600} height={500} fill="#B8B0A4" />
+            <rect x={-800} y={962} width={3600} height={500} fill={c.p.frozen ? '#E4EAF2' : '#B8B0A4'} />
+            {c.p.frozen && <path d="M-800,975 Q-400,930 0,968 Q500,920 900,966 Q1400,925 1900,968 Q2400,930 2800,970 L2800,1460 L-800,1460 Z" fill="#F2F6FB" stroke={INK} strokeWidth={4} />}
+            {c.p.frozen && <path d="M-800,858 Q200,832 1200,856 Q2000,836 2800,858 L2800,870 L-800,870 Z" fill="#EEF3F9" />}
             {Array.from({length: 30}, (_, i) => (
               <path key={i} d={`M${-800 + i * 140},962 L${-900 + i * 170},1460`} stroke="#A49C90" strokeWidth={3} />
             ))}
@@ -665,7 +815,17 @@ registerSet('montage', {
       },
     ];
   },
-  light: (c) => (c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0) ? null : <Glow x={1500} y={200} r={1100} color="#FFF3C8" opacity={0.35} />),
+  light: (c) =>
+    c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0) ? null : (
+      <Glow x={1500} y={200} r={1100} color="#FFF3C8" opacity={0.35} />
+    ),
+  post: (c) =>
+    c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0) ? (
+      <g>
+        {c.p.frozen && <Snowfall frame={c.frame} />}
+        {c.p.pulse && <RadioPulse x={c.p.pulse[0]} y={c.p.pulse[1]} t={c.t} />}
+      </g>
+    ) : null,
   grade: (c) => {
     const night = c.p.dark !== undefined && c.t >= c.at(c.p.dark, 0);
     return (

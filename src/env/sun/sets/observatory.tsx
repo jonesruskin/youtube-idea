@@ -50,6 +50,27 @@ const Room: React.FC<{c: SetCtx}> = ({c}) => {
         })}
         <path d="M-140,-60 Q0,-100 140,-40 M-140,40 Q0,0 140,70" stroke="#9A8C78" strokeWidth={1.5} fill="none" />
       </g>
+      {/* three eclipse plates pinned under the chart; red lines drawn up from each, meeting on it */}
+      {c.p.plates && (() => {
+        const k = Math.min(1, Math.max(0, (c.t - 1.0) / 1.6));
+        return (
+          <g>
+            {[110, 260, 410].map((x, i) => (
+              <g key={x} transform={`translate(${x},600) rotate(${[-3, 2, -1][i]})`}>
+                <rect x={-58} y={-44} width={116} height={88} fill="#2A2A2E" stroke={INK} strokeWidth={4} />
+                <circle r={14} fill="#0A0A0C" />
+                <circle r={26} fill="#E8E2D4" opacity={0.25} />
+                <path d={`M${-40 + i * 6},${-30 + i * 10} L${40 - i * 4},${30 - i * 12}`} stroke="#F4EFE6" strokeWidth={1.6} opacity={0.8} />
+                <circle cx={0} cy={-46} r={6} fill="#C2464F" />
+              </g>
+            ))}
+            {[110, 260, 410].map((x, i) => (
+              <path key={`l${x}`} d={`M${x},560 L${x + (300 - x) * k},${560 - 230 * k}`} stroke="#E0453A" strokeWidth={4} />
+            ))}
+            {k >= 1 && <circle cx={300} cy={330} r={14} fill="none" stroke="#E0453A" strokeWidth={4} />}
+          </g>
+        );
+      })()}
       <g transform="translate(520,330) rotate(1.5)">
         <rect x={-62} y={-50} width={124} height={100} fill="#5A3822" stroke={INK} strokeWidth={4} />
         <rect x={-52} y={-40} width={104} height={80} fill="#3A3836" />
@@ -105,7 +126,8 @@ const Room: React.FC<{c: SetCtx}> = ({c}) => {
       <g transform={`translate(1860,${920 - M(0.76)})`}>
         <path d="M-50,0 L-40,-46 L40,-46 L50,0 Z" fill="#C2464F" stroke={INK} strokeWidth={4} />
         <circle cx={0} cy={-26} r={16} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
-        <path d="M-56,-56 Q0,-80 56,-56 L50,-46 L-50,-46 Z" fill="#A83A42" stroke={INK} strokeWidth={4} />
+        {!c.p.phoneUp && <path d="M-56,-56 Q0,-80 56,-56 L50,-46 L-50,-46 Z" fill="#A83A42" stroke={INK} strokeWidth={4} />}
+        {c.p.phoneUp && <path d="M-40,-46 q-30,-10 -60,-40 q-20,-30 -60,-50" stroke={INK} strokeWidth={4} fill="none" strokeDasharray="6 5" />}
       </g>
       {/* transmitter rack + Morse key on the desk edge */}
       <g transform={`translate(1580,${920 - M(0.76)})`}>

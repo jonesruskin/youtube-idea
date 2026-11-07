@@ -43,6 +43,12 @@ export const POSES = {
   kneelHug: P({lLeg: [8, -96], rLeg: [82, -84], lArm: [62, 96], rArm: [72, 96], lean: 10}),
   sit: P({lLeg: [86, 0], rLeg: [90, 0], lArm: [20, 30], rArm: [30, 30], lean: -4}),
   sitChair: P({lLeg: [82, -82], rLeg: [86, -86], lArm: [20, 40], rArm: [30, 40]}),
+  // chair-sitting variants (same legs as sitChair, so the seat logic treats them as sitting)
+  sitShow: P({lLeg: [82, -82], rLeg: [86, -86], lArm: [118, 22], rArm: [132, 18], tilt: -6}), // holding a drawing up, proud
+  sitDraw: P({lLeg: [82, -82], rLeg: [86, -86], lArm: [58, 44], rArm: [66, 40], lean: 8, tilt: 6}), // leaning over the table, drawing
+  sitPoint: P({lLeg: [82, -82], rLeg: [86, -86], lArm: [20, 40], rArm: [92, -4]}),
+  sitPhone: P({lLeg: [82, -82], rLeg: [86, -86], lArm: [20, 40], rArm: [150, 128], tilt: 8}), // receiver at his ear
+  phoneEar: P({rArm: [150, 128], tilt: 8}),
   sitHug: P({lLeg: [128, -112], rLeg: [134, -116], lArm: [70, 60], rArm: [80, 60], lean: 6}),
   /** Riding piggyback: knees forward around the carrier's waist, arms over his shoulders. */
   carried: P({lLeg: [78, -58], rLeg: [84, -62], lArm: [118, 20], rArm: [126, 24], lean: 8}),

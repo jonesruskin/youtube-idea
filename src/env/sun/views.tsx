@@ -98,15 +98,27 @@ export const SkyScene: React.FC = () => {
             </g>
           )}
           {(v === 'venus' || v === 'venusOut') && (
-            <g transform="translate(1320,640)">
-              {venusOn && (
-                <g>
-                  <circle r={46} fill="#FFF6DA" opacity={0.18} />
-                  <circle r={16} fill="#FFF6DA" opacity={0.5} />
-                  <circle r={7} fill="#FFFFFF" />
-                  <path d="M-40,0 L40,0 M0,-40 L0,40" stroke="#FFFFFF" strokeWidth={2} opacity={0.5} />
-                </g>
-              )}
+            <g>
+              {/* where the Sun should be, just below the rooftops' edge of the sky: Venus sits right beside it */}
+              <g transform="translate(1150,760)" opacity={0.55}>
+                <circle r={44} fill="none" stroke="#9FB2DA" strokeWidth={3} strokeDasharray="8 8" />
+                <text y={14} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={40} fill="#9FB2DA">?</text>
+              </g>
+              <g transform="translate(1320,640)">
+                {venusOn && (
+                  <g>
+                    {/* by far the brightest thing in the sky */}
+                    <circle r={80} fill="#FFF6DA" opacity={0.14} />
+                    <circle r={34} fill="#FFF6DA" opacity={0.32} />
+                    <circle r={11} fill="#FFFFFF" />
+                    <path d="M-70,0 L70,0 M0,-70 L0,70" stroke="#FFFFFF" strokeWidth={2.5} opacity={0.55} />
+                    <path d="M28,-28 L96,-96 L190,-96" stroke="#EAF0FF" strokeWidth={3} fill="none" opacity={0.8} />
+                    <text x={200} y={-84} fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={40} letterSpacing={4} fill="#FFFFFF">
+                      VENUS
+                    </text>
+                  </g>
+                )}
+              </g>
             </g>
           )}
           <Rooftops frame={c.frame} lit={v === 'milky' || v === 'auroraWide' ? 0 : 0.5} snow={v === 'milky' || v.startsWith('aurora') ? 1 : 0} />

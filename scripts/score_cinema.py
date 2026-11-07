@@ -532,6 +532,105 @@ def beep(f=1320, dur=0.12, vel=1.0):
     x = np.sin(2 * np.pi * f * t) * env(n, 0.004, dur * 0.5)
     return pan((x * 0.5 * vel).astype(np.float32), 0)
 
+# ── ambience beds: every scene sounds like where it is (room tone, surf, crowd, metro, wind, hum) ──────────
+def amb_key(sh, prev):
+    p = sh.get("props") or {}
+    sc_, st, v = sh["scene"], p.get("set"), p.get("v", "")
+    if sh.get("thread") == "1982":
+        return "obs_room" if st != "observatory" or v == "room" or sc_ == "closeup" else ("morning" if v == "dawn" else "wind_lo")
+    if sc_ == "stage":
+        dark = p.get("dark") is not None
+        return {
+            "kitchen": "room" if v == "dark" else "morning",
+            "montage": "wind" if (dark and p.get("frozen")) else "wind_lo" if dark else {"beach": "surf", "field": "field", "bus": "city"}.get(v, "city"),
+            "street": "street",
+            "stairs": "room" if v == "climb" else "fire",
+            "roof": "morning" if v == "dawn" else "wind_lo",
+            "harbor": "harbour",
+            "apartment": "room_wind" if v in ("seal", "candle", "balcony") else "room",
+            "bathroom": "room",
+            "market": "crowd",
+            "snowstreet": "wind",
+            "surface": "wind",
+            "metro": "metro_quiet" if v == "dark" else "obs_room" if v == "workshop" else "metro",
+            "observatory": "obs_room" if v == "room" else "morning" if v == "dawn" else "wind_lo",
+        }.get(st, prev)
+    if sc_ in ("closeup",):
+        return prev
+    if sc_ == "sky":
+        return "wind_lo"
+    if sc_ == "thermal":
+        return "wind"
+    return None  # diagrams, space, title, end: music only
+
+def amb_bed(key, dur):
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    if key == "morning":
+        return city_morning(dur) * 0.9
+    if key == "surf":
+        x = filt(sos_lp(900), pink(n))
+        sw = (0.35 + 0.65 * (0.5 + 0.5 * np.sin(2 * np.pi * 0.11 * t))) ** 2
+        return pan((x * sw * 1.2).astype(np.float32), 0) + city_morning(dur) * 0.3
+    if key == "field":
+        return wind(dur, 0.35, 0.3) + city_morning(dur) * 0.6
+    if key == "city":
+        return metro_bed(dur, 0.6) * 0.7 + city_morning(dur) * 0.4
+    if key == "street":
+        return metro_bed(dur, 1.1) * 0.8 + wind(dur, 0.25, 0.3)
+    if key == "crowd":
+        return metro_bed(dur, 1.5) * 0.9
+    if key == "room":
+        x = filt(sos_lp(140), brown(n)) * 0.5 + filt(sos_hp(3000), pink(n)) * 0.02
+        return pan(x.astype(np.float32), 0) * env(n, 0.4, 0.4)[:, None]
+    if key == "room_wind":
+        return amb_bed("room", dur) + wind(dur, 0.3, 0.4)
+    if key == "harbour":
+        lap = filt(sos_bp(200, 900), rng.standard_normal(n).astype(np.float32))
+        lap *= (np.maximum(0, np.sin(2 * np.pi * 0.33 * t)) ** 3 * 0.6).astype(np.float32)
+        return wind(dur, 0.55, 0.5) + pan(lap, -0.2)
+    if key == "wind_lo":
+        return wind(dur, 0.4, 0.35)
+    if key == "wind":
+        return wind(dur, 0.75, 0.6)
+    if key == "metro":
+        return metro_bed(dur, 1.0) * 0.8
+    if key == "metro_quiet":
+        return metro_bed(dur, 0.35) * 0.6
+    if key == "obs_room":
+        hum = (np.sin(2 * np.pi * 60 * t) * 0.03 + np.sin(2 * np.pi * 120 * t) * 0.015).astype(np.float32)
+        hiss = filt(sos_hp(4000), pink(n)) * 0.03
+        return pan((hum + hiss).astype(np.float32), 0) * env(n, 0.4, 0.4)[:, None] + amb_bed("room", dur) * 0.6
+    if key == "fire":
+        out = amb_bed("room", dur)
+        k = 0.0
+        while k < dur - 0.1:
+            k += rng.uniform(0.04, 0.35)
+            m = int(0.02 * SR)
+            i = int(k * SR)
+            if i + m < n:
+                out[i:i + m] += pan((rng.standard_normal(m) * np.exp(-np.arange(m) / (m / 4)) * 0.18).astype(np.float32), rng.uniform(-0.6, 0.6))
+        return out
+    return np.zeros((n, 2), np.float32)
+
+def add_ambience(mix, tl):
+    regions = []
+    prev = None
+    for sh in tl["shots"]:
+        k = amb_key(sh, prev)
+        if k and regions and regions[-1][0] == k and abs(regions[-1][2] - sh["start"]) < 0.05:
+            regions[-1][2] = sh["end"]
+        elif k:
+            regions.append([k, sh["start"], sh["end"]])
+        prev = k if sh["scene"] == "stage" or k else prev
+    for k, a, b in regions:
+        L = b - a + 0.8
+        bed = amb_bed(k, L)
+        n = len(bed)
+        fade = np.minimum(1, np.minimum(np.arange(n) / (0.4 * SR), (n - np.arange(n)) / (0.4 * SR))).astype(np.float32)
+        mix.add("fx", a - 0.2, bed * fade[:, None], 0.55)
+    return len(regions)
+
 def render(tl):
     dur = tl["duration"]
     mix = Mix(dur)
@@ -782,6 +881,16 @@ def render(tl):
                 d = a.get("dur", 1.2)
                 for k in range(3):
                     mix.add("fx", sh["start"] + a["at"] + d * (k + 0.5) / 3, knock(0.45), 0.6)
+    for sh in tl["shots"]:
+        p = sh.get("props") or {}
+        if sh["scene"] == "closeup" and p.get("v") == "tapRail":
+            for tt in p.get("taps") or [0.5, 1.1, 1.7]:
+                mix.add("fx", sh["start"] + tt, knock(0.7), 0.8)
+                mix.add("music", sh["start"] + tt, bell("A6", 0.8, 0.25), 0.35)
+    if "world-bus" in shots:
+        wb = shots["world-bus"]
+        mix.add("fx", wb["start"] + 1.45, slam(0.5), 0.6)
+        mix.add("fx", wb["start"] + 1.6, whoosh(1.4, 0.8), 0.8)
     if "obs-phone" in shots:
         ph = shots["obs-phone"]
         mix.add("fx", ph["start"] + 0.4, static(1.6, 0.6), 0.5)
@@ -794,6 +903,7 @@ def render(tl):
         ct = shots["closed-them"]
         mix.add("fx", ct["start"] + 0.45, slat_ripple(1.1, 1.0), 1.0)
 
+    print(f"ambience: {add_ambience(mix, tl)} beds", flush=True)
     # per-shot sound effects and whip transitions
     for sh in tl["shots"]:
         t0 = sh["start"]

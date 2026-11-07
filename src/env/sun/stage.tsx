@@ -28,6 +28,8 @@ export type SetDef = {
   light?: (c: SetCtx) => React.ReactNode;
   /** Screen-space grade over everything. */
   grade?: (c: SetCtx) => React.ReactNode;
+  /** World-space overlay drawn after the grade (depth 1): emissive things the grade must not dim. */
+  post?: (c: SetCtx) => React.ReactNode;
   handheld?: number;
 };
 
@@ -75,6 +77,7 @@ export const Stage: React.FC = () => {
               </Plane>
             ))}
           <ScreenPlane>{def.grade?.(c)}</ScreenPlane>
+          {def.post && <Plane depth={1}>{def.post(c)}</Plane>}
           <FaceFill set={props.set} v={c.v} dark={!!props.dark} cast={(props.cast as CastEntry[]) ?? []} acts={(props.acts as Act[]) ?? []} />
         </Cine>
       </svg>
@@ -90,7 +93,7 @@ export const Stage: React.FC = () => {
 const FILL: Record<string, (v: string, dark: boolean) => [number, string]> = {
   kitchen: (v) => [v === 'dark' ? 0.26 : 0, '#CFE0FF'],
   apartment: (v) => [['seal', 'candle', 'balcony'].includes(v) ? 0.2 : 0, '#FFD9AE'],
-  stairs: () => [0.24, '#D8E4FF'],
+  stairs: (v) => [v === 'climb' ? 0.08 : 0.24, '#D8E4FF'],
   metro: (v) => [v === 'dark' ? 0.32 : 0, '#FFD3A0'],
   observatory: (v) => [v === 'room' ? 0.16 : 0, '#FFE2B8'],
   street: (v) => [v === 'night' ? 0.14 : 0, '#D8E4FF'],

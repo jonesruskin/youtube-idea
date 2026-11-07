@@ -230,11 +230,11 @@ const Table: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
             <path d="M-18,-4 L-18,-26 Q0,-38 18,-26 L18,-4 Z" fill="#F6D29A" />
           </g>
         )}
-        <g transform="translate(1300,786)">
+        <g transform="translate(1388,786)">
           <rect x={-22} y={-46} width={44} height={46} rx={6} fill="#F2C94C" stroke={INK} strokeWidth={3.5} />
           <path d="M22,-36 Q40,-30 22,-12" stroke={INK} strokeWidth={4} fill="none" />
         </g>
-        <g transform="translate(1240,786)">
+        <g transform="translate(1322,786)">
           <path d="M-40,-20 Q0,22 40,-20 Z" fill="#F4EFE6" stroke={INK} strokeWidth={3.5} />
           <circle cx={-14} cy={-28} r={14} fill="#D9443A" stroke={INK} strokeWidth={3} />
           <circle cx={12} cy={-30} r={13} fill="#F2994A" stroke={INK} strokeWidth={3} />
@@ -251,34 +251,66 @@ const Table: React.FC<{c: SetCtx; dark: boolean}> = ({c, dark}) => {
   );
 };
 
+/**
+ * The blackout is an event, not a cut: with `snap`, the sunlit room holds for a beat, then the dark sweeps across
+ * it from the window (the light leaves the way it came in), the grade sinks and the window fills with stars.
+ */
+const SNAP_AT = 0.35;
+const SNAP_LEN = 0.75;
+const snapK = (c: SetCtx) => (c.p.snap ? Math.max(0, Math.min(1, (c.t - SNAP_AT) / SNAP_LEN)) : 1);
+
 registerSet('kitchen', {
   layers: (c) => {
-    const snap = c.p.snap && c.t < 0.1;
-    const dark = c.v === 'dark' && !snap;
+    if (c.v === 'dark' && c.p.snap && snapK(c) < 1) {
+      const k = snapK(c);
+      const sx = -400 + k * 2900; // the dark's leading edge, travelling from the window to the far wall
+      return [
+        {depth: 1, node: <Room c={c} dark={false} />},
+        {
+          depth: 1,
+          node: (
+            <g>
+              <defs>
+                <linearGradient id="snapsweep" gradientUnits="userSpaceOnUse" x1={sx - 260} y1={0} x2={sx} y2={0}>
+                  <stop offset="0" stopColor="#fff" />
+                  <stop offset="1" stopColor="#000" />
+                </linearGradient>
+                <mask id="snapmask">
+                  <rect x={-600} y={-600} width={3200} height={2400} fill="url(#snapsweep)" />
+                </mask>
+              </defs>
+              <g mask="url(#snapmask)">
+                <Room c={c} dark />
+              </g>
+            </g>
+          ),
+        },
+        {depth: 1, node: <Table c={c} dark={k > 0.5} />, front: true},
+      ];
+    }
+    const dark = c.v === 'dark';
     return [
       {depth: 1, node: <Room c={c} dark={dark} />},
       {depth: 1, node: <Table c={c} dark={dark} />, front: true},
     ];
   },
   light: (c) => {
-    const dark = c.v === 'dark' && !(c.p.snap && c.t < 0.1);
-    return dark ? (
+    const k = c.v === 'dark' ? snapK(c) : 0;
+    return (
       <g>
-        <Glow x={520} y={480} r={520} color="#6FA8FF" opacity={0.28} />
-      </g>
-    ) : (
-      <g>
-        <Glow x={700} y={600} r={700} color="#FFE6A8" opacity={0.35} />
-        <Glow x={1180} y={420} r={300} color="#FFD9A0" opacity={0.25} />
+        {k > 0 && <Glow x={520} y={480} r={520} color="#6FA8FF" opacity={0.28 * k} />}
+        {k < 1 && <Glow x={700} y={600} r={700} color="#FFE6A8" opacity={0.35 * (1 - k)} />}
+        {k < 1 && <Glow x={1180} y={420} r={300} color="#FFD9A0" opacity={0.25 * (1 - k)} />}
       </g>
     );
   },
   grade: (c) => {
-    const dark = c.v === 'dark' && !(c.p.snap && c.t < 0.1);
+    const k = c.v === 'dark' ? snapK(c) : 0;
     return (
       <g>
-        <Grade color={dark ? '#14205E' : '#FFF4E0'} amount={dark ? 0.72 : 0.06} />
-        <Vignette amount={dark ? 0.7 : 0.35} />
+        <Grade color="#FFF4E0" amount={0.06 * (1 - k)} />
+        <Grade color="#14205E" amount={0.72 * k} />
+        <Vignette amount={0.35 + 0.35 * k} />
       </g>
     );
   },

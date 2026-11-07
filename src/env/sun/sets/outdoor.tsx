@@ -587,6 +587,18 @@ registerSet('surface', {
             {/* a half-buried bus shelter (2.4 m tall, 3.2 m wide) and a statue on its plinth, a little further back */}
             <BusShelter x={300} base={928} sc={M(0.85)} />
             <Statue x={1660} base={912} sc={M(0.62)} />
+            {/* Day 300: the camera has grown a long lens on a surveying tripod, aimed high at the hidden Sun */}
+            {c.p.lens !== undefined && (
+              <g transform={`translate(${c.p.lens},940)`}>
+                <path d={`M0,${-M(1.25)} L${-M(0.45)},0 M0,${-M(1.25)} L${M(0.4)},0 M0,${-M(1.25)} L${M(0.05)},0`} stroke="#2A2E3A" strokeWidth={9} />
+                <g transform={`translate(0,${-M(1.3)}) rotate(-38)`}>
+                  <rect x={-M(0.2)} y={-M(0.12)} width={M(0.32)} height={M(0.24)} rx={8} fill="#E9C46A" stroke={INK} strokeWidth={5} />
+                  <rect x={M(0.12)} y={-M(0.1)} width={M(0.9)} height={M(0.2)} rx={10} fill="#3A3F48" stroke={INK} strokeWidth={5} />
+                  <rect x={M(0.98)} y={-M(0.13)} width={M(0.12)} height={M(0.26)} rx={6} fill="#2A2E3A" stroke={INK} strokeWidth={4} />
+                  <path d={`M${M(0.4)},${-M(0.1)} L${M(0.4)},${M(0.1)} M${M(0.7)},${-M(0.1)} L${M(0.7)},${M(0.1)}`} stroke="#5A5E6A" strokeWidth={4} />
+                </g>
+              </g>
+            )}
           </g>
         ),
       },

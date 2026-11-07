@@ -85,12 +85,24 @@ registerSet('market', {
           <rect x={620} y={950} width={40} height={30} rx={4} fill="#E9C46A" stroke={INK} strokeWidth={3} transform="rotate(20,640,965)" />
           <circle cx={1300} cy={975} r={18} fill="#C2464F" stroke={INK} strokeWidth={3} />
           {c.v === 'heater' && (
-            <g transform="translate(1000,790) scale(0.6)">
-              <rect x={-110} y={-90} width={220} height={130} rx={10} fill="#F4EFE6" stroke={INK} strokeWidth={5} transform={`rotate(${Math.sin(c.frame * 0.5) * 6})`} />
-              <text x={0} y={-12} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={30} fill="#C2464F" transform={`rotate(${Math.sin(c.frame * 0.5) * 6})`}>
-                HEATER
+            <g transform={`translate(1000,${730 + Math.sin(c.frame * 0.5) * 6}) rotate(${Math.sin(c.frame * 0.5) * 6}) scale(1.1)`}>
+              {/* the last electric heater: a cardboard box with the product printed on it, cable dangling */}
+              <path d="M96,40 q30,40 6,90 q-10,24 14,40" stroke={INK} strokeWidth={6} fill="none" />
+              <rect x={108} y={162} width={22} height={30} rx={4} fill="#3A3F48" stroke={INK} strokeWidth={3} />
+              <rect x={-120} y={-100} width={240} height={150} rx={6} fill="#D6A86A" stroke={INK} strokeWidth={5} />
+              <path d="M-120,-70 L120,-70" stroke="#B8894E" strokeWidth={4} />
+              {/* printed picture of the heater: grille with glowing orange bars */}
+              <rect x={-100} y={-58} width={110} height={92} rx={10} fill="#F4EFE6" stroke={INK} strokeWidth={4} />
+              {[0, 1, 2].map((k) => (
+                <rect key={k} x={-88} y={-44 + k * 26} width={86} height={12} rx={6} fill="#FF7A2E" stroke={INK} strokeWidth={2.5} />
+              ))}
+              <text x={66} y={-22} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={900} fontSize={34} fill="#C2464F">
+                HEAT
               </text>
-              <path d="M-80,10 L80,10" stroke="#F2994A" strokeWidth={8} transform={`rotate(${Math.sin(c.frame * 0.5) * 6})`} />
+              <text x={66} y={16} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={24} fill={INK}>
+                2000 W
+              </text>
+              <path d="M30,36 l12,-8 l12,8" stroke={INK} strokeWidth={3} fill="none" />
             </g>
           )}
         </g>

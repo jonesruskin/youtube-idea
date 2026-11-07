@@ -98,6 +98,17 @@ const Clock: React.FC<{x: number; y: number; r: number; turns: number}> = ({x, y
   </g>
 );
 
+/** A name under (or over) a body, so nobody has to guess which dot is Venus. Fades in. */
+const Label: React.FC<{x: number; y: number; text: string; t: number; at?: number; col?: string; size?: number}> = ({x, y, text, t, at = 0.2, col = '#EAF0FF', size = 34}) => {
+  const k = clamp((t - at) / 0.35);
+  if (k <= 0) return null;
+  return (
+    <text x={x} y={y + (1 - k) * 10} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={size} letterSpacing={4} fill={col} opacity={k} stroke="#060A1E" strokeWidth={6} paintOrder="stroke">
+      {text}
+    </text>
+  );
+};
+
 export const DiagramScene: React.FC = () => {
   const c = useSetCtx();
   const v = c.v;
@@ -116,8 +127,11 @@ export const DiagramScene: React.FC = () => {
       <Board frame={f} z={interpolate(p, [0, 1], [1, 1.05])}>
         <SunMark shell={!!c.p.shell} x={S[0]} y={S[1]} r={120} frame={f} />
         <path d={`M${S[0]},${S[1]} L${V[0]},${V[1]} L${E[0]},${E[1]}`} stroke="#FFE9A8" strokeWidth={4} strokeDasharray="14 14" opacity={0.6} fill="none" />
-        <Planet x={V[0]} y={V[1]} r={44} col="#F2D49A" lit={1} />
-        <Earth x={E[0]} y={E[1]} r={70} />
+        <Planet x={V[0]} y={V[1]} r={58} col="#F2D49A" lit={1} />
+        <Earth x={E[0]} y={E[1]} r={84} />
+        <Label x={S[0]} y={S[1] + 180} text={c.p.shell ? 'THE SUN' : 'THE SUN ?'} t={t} at={0.1} />
+        <Label x={V[0]} y={V[1] + 104} text="VENUS" t={t} at={0.3} />
+        <Label x={E[0]} y={E[1] + 136} text="EARTH" t={t} at={0.5} />
         {step === 0 ? (
           <g>
             {/* a mirror glint on Venus */}
@@ -149,7 +163,10 @@ export const DiagramScene: React.FC = () => {
         {[-40, 0, 30].map((y) => (
           <path key={y} d={`M${J[0] - 80},${J[1] + y} L${J[0] + 80},${J[1] + y}`} stroke="#B07A52" strokeWidth={10} opacity={0.6} />
         ))}
-        <Earth x={E[0]} y={E[1]} r={50} />
+        <Earth x={E[0]} y={E[1]} r={62} />
+        <Label x={S[0]} y={S[1] + 150} text="THE SUN ?" t={t} at={0.1} />
+        <Label x={J[0]} y={J[1] + 146} text="JUPITER" t={t} at={0.3} />
+        <Label x={E[0]} y={E[1] + 110} text="EARTH" t={t} at={0.5} />
         <Photon pts={[J, E]} u={u} />
         <Clock x={1500} y={700} r={110} turns={p * 6} />
       </Board>
@@ -220,9 +237,13 @@ export const DiagramScene: React.FC = () => {
         </g>
         {/* tide gauge bar */}
         <g transform="translate(1500,900)">
-          <rect x={-30} y={-300} width={60} height={300} fill="#1A2448" stroke={INK} strokeWidth={4} />
-          <rect x={-30} y={-205 * bulge} width={60} height={205 * bulge} fill="#4A9BEA" />
+          <rect x={-36} y={-300} width={72} height={300} fill="#1A2448" stroke={INK} strokeWidth={4} />
+          <rect x={-36} y={-205 * bulge} width={72} height={205 * bulge} fill="#4A9BEA" />
         </g>
+        <Label x={1500} y={960} text="TIDE" t={t} at={0.2} />
+        <Label x={160} y={690} text="THE SUN ?" t={t} at={0.1} />
+        <Label x={1720} y={590} text="MOON" t={t} at={0.3} />
+        <Label x={960} y={262} text="EARTH" t={t} at={0.4} />
       </Board>
     );
   }
@@ -467,6 +488,9 @@ export const DiagramScene: React.FC = () => {
         <path d={`M960,${cy - 60} L960,${cy - 60 - len}`} stroke="#FFB13B" strokeWidth={8} />
         <path d={`M960,${cy - 60} L960,${cy - 60 - len}`} stroke="#FFB13B" strokeWidth={30} opacity={0.2} />
         {draw > 0 && <circle cx={960} cy={cy - 60 - len} r={10} fill="#FFE9B0" />}
+        <Label x={960} y={cy + 110} text="THE SHELL" t={t} at={0.2} col="#FFD08A" />
+        <Label x={960 + 330 + 60} y={cy + 10 + 330 * ryf * 0.2} text="EARTH'S ORBIT" t={t} at={0.6} col="#9FD0FF" size={26} />
+        {draw > 0.6 && <Label x={1100} y={cy - 60 - len * 0.6} text="THE BEAM" t={t} at={1.4} col="#FFB13B" />}
       </Board>
     );
   }
@@ -552,6 +576,7 @@ export const DiagramScene: React.FC = () => {
             {i === 2 ? <Earth x={x} y={540} r={70} lit={i < lit} /> : <Planet x={x} y={540} r={[40, 62, 70, 52][i]} col={cols[i]} lit={i < lit ? 1 : 0} />}
             {i < lit &&
               Array.from({length: i + 1}, (_, k) => <circle key={k} cx={x - i * 14 + k * 28} cy={720} r={10} fill="#7FE8FF" />)}
+            <Label x={x} y={440 - (i === 2 ? 20 : 0)} text={['MERCURY', 'VENUS', 'EARTH', 'MARS'][i]} t={i < lit ? 9 : 0} at={0} size={i === 2 ? 40 : 32} col={i < lit ? '#EAF0FF' : '#5A6488'} />
           </g>
         ))}
         {step === 1 && <circle cx={1220} cy={540} r={100 + 10 * Math.sin(f * 0.2)} fill="none" stroke="#7FE8FF" strokeWidth={6} />}

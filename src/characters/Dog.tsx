@@ -27,7 +27,9 @@ export const Dog: React.FC<{
   rim?: string;
   /** Something in his mouth. */
   carry?: 'toast';
-}> = ({x, y, s = 1, pose = 'stand', flip = false, wag = 0.5, lookUp = 0, breath = false, seed = 0, rim, carry}) => {
+  /** Day 30: the fan club has been feeding him. */
+  fat?: boolean;
+}> = ({x, y, s = 1, pose = 'stand', flip = false, wag = 0.5, lookUp = 0, breath = false, seed = 0, rim, carry, fat}) => {
   const f = useCurrentFrame() + seed * 13;
   const ink = C.ink;
   const sw = 4.5;
@@ -71,7 +73,8 @@ export const Dog: React.FC<{
         {sit && <ellipse cx={-20} cy={-4} rx={26} ry={10} fill={LIGHT} stroke={ink} strokeWidth={3.5} />}
         {/* body */}
         <g transform={sit ? `rotate(-28,-30,${bodyY})` : undefined}>
-          <ellipse cx={0} cy={bodyY} rx={lie ? 92 : 84} ry={lie ? 30 : 40} fill={FUR} stroke={ink} strokeWidth={sw} />
+          <ellipse cx={0} cy={bodyY + (fat ? 8 : 0)} rx={(lie ? 92 : 84) * (fat ? 1.2 : 1)} ry={(lie ? 30 : 40) * (fat ? 1.75 : 1)} fill={FUR} stroke={ink} strokeWidth={sw} />
+          {fat && <ellipse cx={8} cy={bodyY + 36} rx={66} ry={28} fill={LIGHT} opacity={0.9} />}
           <ellipse cx={-6} cy={bodyY + 14} rx={56} ry={16} fill={SHADE} opacity={0.35} />
         </g>
         {/* front legs */}

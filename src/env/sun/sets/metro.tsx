@@ -68,14 +68,25 @@ const Vault: React.FC<{c: SetCtx; lamps: number; warm: number}> = ({c, lamps, wa
         </text>
       </g>
     ))}
-    {/* the big lamps in the roof: grey → orange → gold */}
-    {[300, 960, 1620].map((x, i) => (
-      <g key={x}>
-        <path d={`M${x},-300 L${x},40`} stroke={INK} strokeWidth={4} />
-        <path d={`M${x - 90},90 Q${x},10 ${x + 90},90 Z`} fill="#3A3442" stroke={INK} strokeWidth={4} />
-        <ellipse cx={x} cy={92} rx={70} ry={16} fill={lamps > 0 ? (warm > 0.5 ? '#FFE9A8' : '#FFB25A') : '#4A4552'} opacity={0.4 + lamps * 0.6} />
-      </g>
-    ))}
+    {/* the big lamps: floodlight banks hung low under the vault, warming red → orange → gold, with beams */}
+    {[300, 960, 1620].map((x) => {
+      const col = lamps <= 0.06 ? '#3E3946' : warm > 0.6 ? '#FFF0B8' : warm > 0.2 ? '#FFC060' : lamps > 0.4 ? '#FF7A3A' : '#B8402E';
+      return (
+        <g key={x}>
+          <path d={`M${x - 90},-300 L${x - 90},170 M${x + 90},-300 L${x + 90},170`} stroke={INK} strokeWidth={5} />
+          {lamps > 0.06 && (
+            <path d={`M${x - 120},236 L${x + 120},236 L${x + 330},700 L${x - 330},700 Z`} fill={col} opacity={0.1 + 0.18 * lamps} style={{mixBlendMode: 'screen'}} />
+          )}
+          <rect x={x - 130} y={170} width={260} height={70} rx={10} fill="#2E2A36" stroke={INK} strokeWidth={5} />
+          {[0, 1, 2, 3].map((k) => (
+            <g key={k}>
+              <circle cx={x - 96 + k * 64} cy={212} r={22} fill={col} stroke={INK} strokeWidth={3} />
+              {lamps > 0.06 && <circle cx={x - 96 + k * 64} cy={212} r={44} fill={col} opacity={0.25 * lamps} style={{mixBlendMode: 'screen'}} />}
+            </g>
+          ))}
+        </g>
+      );
+    })}
     {/* platform back wall: posters, a clock stuck at 6:52 */}
     {[60, 1580].map((x, i) => (
       <g key={x}>
@@ -146,6 +157,23 @@ const Farm: React.FC<{c: SetCtx}> = ({c}) => (
           <g key={k} transform={`translate(${-60 + k * 80},${520 + row * 130})`}>
             <path d="M0,0 Q-22,-26 -6,-46 Q0,-20 0,0 Q4,-30 18,-44 Q22,-16 0,0" fill={['#5BBF6A', '#7FD27A', '#4EA85C'][(k + row) % 3]} stroke={INK} strokeWidth={2} />
           </g>
+        ))}
+      </g>
+    ))}
+    {/* the canteen menu, chalked by someone who has given up */}
+    <g transform="translate(1660,560) rotate(2)">
+      <rect x={-150} y={-190} width={300} height={330} rx={8} fill="#2F4A3A" stroke="#7A4E30" strokeWidth={12} />
+      <text x={0} y={-140} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={34} fill="#FFE7A6">MENU</text>
+      {['MON  lettuce', 'TUE  lettuce', 'WED  lettuce', 'THU  lettuce', 'FRI  ...lettuce'].map((t, k) => (
+        <text key={k} x={-120} y={-90 + k * 46} fontFamily="'Space Grotesk', sans-serif" fontWeight={600} fontSize={28} fill="#F4EFE6" opacity={0.9}>{t}</text>
+      ))}
+    </g>
+    {/* harvest crates on the platform */}
+    {[260, 420].map((x, i) => (
+      <g key={x} transform={`translate(${x},900)`}>
+        <rect x={-70} y={-70} width={140} height={70} fill="#A86E42" stroke={INK} strokeWidth={4} />
+        {[0, 1, 2].map((k) => (
+          <circle key={k} cx={-40 + k * 40} cy={-74} r={24} fill={['#5BBF6A', '#7FD27A', '#4EA85C'][(k + i) % 3]} stroke={INK} strokeWidth={3} />
         ))}
       </g>
     ))}
@@ -231,6 +259,27 @@ const Workshop: React.FC<{c: SetCtx}> = ({c}) => (
     <path d="M1360,715 l40,-20 l30,10" stroke="#C2464F" strokeWidth={4} fill="none" />
     <path d="M1460,715 L1400,500 L1260,520" stroke="#5A5E6A" strokeWidth={10} fill="none" />
     <ellipse cx={1240} cy={540} rx={60} ry={20} fill="#5A5E6A" stroke={INK} strokeWidth={4} />
+    {c.p.parts && (() => {
+      const burn = Math.min(1, c.t / Math.max(1, c.dur));
+      return (
+        <g>
+          {/* the firefighter's camera, opened up: body, lens, a green circuit board, wires */}
+          <rect x={760} y={662} width={130} height={54} rx={10} fill="#E9C46A" stroke={INK} strokeWidth={4} />
+          <circle cx={900} cy={688} r={20} fill="#2A2E3A" stroke={INK} strokeWidth={4} />
+          <rect x={940} y={690} width={110} height={24} fill="#2E7A4A" stroke={INK} strokeWidth={3} />
+          {[0, 1, 2, 3, 4].map((k) => <rect key={k} x={950 + k * 20} y={694} width={10} height={8} fill="#C9CED6" />)}
+          <path d="M890,700 q40,-30 80,-4 M1050,700 q30,-24 60,4" stroke="#C2464F" strokeWidth={4} fill="none" />
+          <circle cx={1150} cy={704} r={12} fill="#5A5E6A" stroke={INK} strokeWidth={3} />
+          {/* soldering iron on its stand, tip glowing, a thread of smoke */}
+          <path d="M1170,712 L1250,640" stroke="#2A2E3A" strokeWidth={10} strokeLinecap="round" />
+          <circle cx={1166} cy={716} r={6} fill="#FF7A2E" opacity={0.7 + 0.3 * Math.sin(c.frame * 0.9)} />
+          <path d={`M1164,708 q${-10 + Math.sin(c.frame * 0.1) * 8},-40 ${4},-80 q${10},-30 ${-6},-60`} stroke="#C9CED6" strokeWidth={3} fill="none" opacity={0.45} />
+          {/* a candle stub burning down as the weeks pass */}
+          <rect x={640} y={715 - 70 * (1 - burn * 0.8)} width={22} height={70 * (1 - burn * 0.8)} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
+          <path d={`M651,${708 - 70 * (1 - burn * 0.8)} q-6,-10 0,-20 q6,10 0,20`} fill="#FFB25A" />
+        </g>
+      );
+    })()}
     <rect x={-900} y={900} width={3800} height={600} fill="#4A4552" />
   </g>
 );
@@ -271,7 +320,14 @@ registerSet('metro', {
     const sunriseAt = c.p.sunrise !== undefined ? c.at(c.p.sunrise, 0) : -1;
     const flickerAt = c.p.flicker !== undefined ? c.at(c.p.flicker, 0) : -1;
     if (v === 'farm') return <Glow x={960} y={500} r={1000} color="#FF5FD2" opacity={0.3} />;
-    if (v === 'workshop') return <Glow x={1240} y={620} r={420} color="#FFF1C8" opacity={0.45} />;
+    if (v === 'workshop')
+      return (
+        <g>
+          <Glow x={1240} y={620} r={420} color="#FFF1C8" opacity={0.45} />
+          {c.p.parts && <Glow x={1166} y={716} r={60} color="#FF8A3A" opacity={0.35 + 0.15 * Math.sin(c.frame * 0.9)} />}
+          {c.p.parts && <Glow x={651} y={660} r={120} color="#FFD08A" opacity={0.3} />}
+        </g>
+      );
     if (v === 'school') return <Glow x={600} y={300} r={800} color="#FFE9C0" opacity={0.3} />;
     if (v === 'dark' || (flickerAt >= 0 && c.t > flickerAt + 0.9))
       return (

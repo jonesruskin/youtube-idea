@@ -28,6 +28,8 @@ export type TimedLine = Line & {
   audio?: string;
   /** Per-character start times (s, from line start) when voiced — drives lip-sync. */
   chars?: number[];
+  /** Per-word timings (s, from line start) when voiced — drives gesture beats on the stressed word. */
+  words?: {w: string; s: number; e: number}[];
 };
 
 export type TimedShot = Shot & {
@@ -67,6 +69,7 @@ export const buildTimeline = (episode: Episode, voice: VoiceMap = {}): Timeline 
         end: start + cursor + seconds,
         audio: measured?.file,
         chars: measured?.chars,
+        words: measured?.words,
       };
       cursor += seconds + (line.pause ?? 0) + LINE_GAP;
       return tl;
