@@ -3,634 +3,905 @@
 I was eight the summer the Sun went out.
 
 2
-00:00:05,780 --> 00:00:07,570
+00:00:06,530 --> 00:00:08,320
 I was drawing the Sun.
 
 3
-00:00:08,540 --> 00:00:10,875
+00:00:09,190 --> 00:00:11,525
 Who draws at six in the morning?
 
 4
-00:00:11,345 --> 00:00:12,505
+00:00:11,895 --> 00:00:13,055
 MIRA: Artists.
 
 5
-00:00:13,345 --> 00:00:15,730
+00:00:13,895 --> 00:00:16,280
 And Biscuit was planning a crime.
 
 6
-00:00:16,200 --> 00:00:19,385
+00:00:16,650 --> 00:00:19,835
 At that moment, half the
 world was in sunlight.
 
 7
-00:00:24,855 --> 00:00:26,245
+00:00:25,205 --> 00:00:26,595
 Biscuit, no!
 
 8
-00:00:26,855 --> 00:00:28,590
+00:00:27,205 --> 00:00:28,940
 Then the Sun went out.
 
 9
-00:00:32,960 --> 00:00:34,400
+00:00:33,210 --> 00:00:34,650
 MIRA: Is it night again?
 
 10
-00:00:35,170 --> 00:00:37,055
+00:00:36,410 --> 00:00:38,295
 It's seven in the morning.
 
 11
-00:00:37,925 --> 00:00:40,535
-Then someone knocked. Three times.
+00:00:41,360 --> 00:00:44,070
+The lights still worked. The Sun didn't.
 
 12
-00:00:41,005 --> 00:00:44,920
+00:00:44,440 --> 00:00:47,050
+Then someone knocked. Three times.
+
+13
+00:00:47,420 --> 00:00:51,335
 MR. ITO: Good morning. Shoes
 on, please. Both of you.
 
-13
-00:00:45,390 --> 00:00:47,750
-Mr. Ito, from upstairs.
-
 14
-00:00:48,220 --> 00:00:52,635
-He had a torch, a radio, and a bag
-he'd packed the night before.
+00:00:51,705 --> 00:00:57,215
+Mr. Ito, from upstairs. He was
+seventy-three, and he was never in a hurry.
 
 15
-00:00:53,105 --> 00:00:56,020
-MR. ITO: And bring the dog. And the toast.
+00:00:57,585 --> 00:01:01,520
+His bag was already packed. It
+had been packed for years.
 
 16
-00:00:56,490 --> 00:00:58,980
-It took me a year to understand why.
+00:01:01,890 --> 00:01:05,055
+MR. ITO: And bring the dog.
+He has your toast.
 
 17
-00:01:00,250 --> 00:01:03,010
-Outside, the whole street was looking up.
+00:01:05,425 --> 00:01:07,915
+It took me a year to understand why.
 
 18
-00:01:03,480 --> 00:01:04,790
-It's an eclipse!
+00:01:09,085 --> 00:01:11,845
+Outside, the whole street was looking up.
 
 19
-00:01:05,480 --> 00:01:09,770
-MR. ITO: Eclipses are polite. They
-leave after seven minutes.
+00:01:12,215 --> 00:01:13,800
+It's just an eclipse!
 
 20
-00:01:10,240 --> 00:01:12,655
-Roof. Bring the telescope.
+00:01:14,215 --> 00:01:18,380
+MR. ITO: Eclipses are polite.
+They're over in seven minutes.
 
 21
-00:01:13,125 --> 00:01:17,310
+00:01:18,750 --> 00:01:21,835
+It was happening everywhere,
+at the same moment.
+
+22
+00:01:22,505 --> 00:01:25,090
+In New York, it was two in the morning.
+
+23
+00:01:25,760 --> 00:01:29,045
+Most of them woke up to a
+morning that never came.
+
+24
+00:01:29,815 --> 00:01:33,455
+MR. ITO: Up to the roof. Kai,
+bring my telescope.
+
+25
+00:01:33,825 --> 00:01:38,010
 Kai carried it up six floors. He
 complained about every one.
 
-22
-00:01:17,780 --> 00:01:19,545
-MR. ITO: Venus first.
-
-23
-00:01:20,015 --> 00:01:21,830
-MIRA: Why is that one still on?
-
-24
-00:01:22,300 --> 00:01:25,490
-MR. ITO: Venus shines with
-the Sun's light.
-
-25
-00:01:25,960 --> 00:01:29,775
-That light takes the long
-way round to reach us.
-
 26
-00:01:30,245 --> 00:01:35,810
-If something happened at the Sun, Venus
-goes dark at four minutes past seven.
+00:01:38,380 --> 00:01:42,640
+Mr. Ito came up here every
+morning to watch the sunrise.
 
 27
-00:01:36,280 --> 00:01:37,670
-So we waited.
+00:01:43,010 --> 00:01:45,545
+That morning, he had seen the last one.
 
 28
-00:01:41,540 --> 00:01:44,130
-MR. ITO: Then it happened at the Sun.
+00:01:46,195 --> 00:01:47,960
+MR. ITO: Venus first.
 
 29
-00:01:45,000 --> 00:01:49,165
-And Jupiter will go out at
-four minutes past eight.
+00:01:48,330 --> 00:01:50,145
+MIRA: Why is that one still on?
 
 30
-00:01:49,635 --> 00:01:52,100
-At four minutes past eight, it did.
+00:01:50,515 --> 00:01:56,905
+MR. ITO: Venus has no light of its own. It's the
+Sun's light, coming the long way round.
 
 31
-00:01:52,970 --> 00:01:56,610
-He always tapped it three
-times. I never asked why.
+00:01:57,275 --> 00:02:01,815
+If it happened at the Sun, Venus
+goes out at seven-oh-four.
 
 32
-00:02:06,480 --> 00:02:08,995
-By nine, it was a degree colder.
+00:02:02,185 --> 00:02:03,575
+So we waited.
 
 33
-00:02:09,465 --> 00:02:13,805
-(RADIO) Phone networks are down
-across the city. Stay indoors.
+00:02:07,345 --> 00:02:09,935
+MR. ITO: Then it happened at the Sun.
 
 34
-00:02:14,275 --> 00:02:16,435
-Everyone's going to the shops.
+00:02:10,705 --> 00:02:14,245
+Jupiter is further out. Eight-oh-four.
 
 35
-00:02:16,905 --> 00:02:19,145
-MR. ITO: Then so are we.
+00:02:14,615 --> 00:02:17,080
+At four minutes past eight, it did.
 
 36
-00:02:19,615 --> 00:02:23,080
+00:02:17,850 --> 00:02:23,065
+He tapped the telescope three times. He
+always did that. I never asked why.
+
+37
+00:02:32,135 --> 00:02:36,750
+(RADIO) Phone networks are down across
+the city. Please stay indoors.
+
+38
+00:02:37,120 --> 00:02:39,280
+Everyone's going to the shops.
+
+39
+00:02:40,300 --> 00:02:42,540
+MR. ITO: Then so are we.
+
+40
+00:02:43,050 --> 00:02:46,515
 Kai was right. The whole
 city had the same idea.
 
-37
-00:02:23,550 --> 00:02:26,065
+41
+00:02:46,885 --> 00:02:49,400
 Candles. Rice. Batteries. Water.
 
-38
-00:02:26,535 --> 00:02:27,975
-MIRA: They're on my list.
+42
+00:02:49,770 --> 00:02:51,535
+MIRA: They're on Biscuit's list.
 
-39
-00:02:28,535 --> 00:02:31,375
-Two grown men fought over the last heater.
+43
+00:02:51,905 --> 00:02:55,415
+Two grown men fought over the
+last electric heater.
 
-40
-00:02:31,845 --> 00:02:35,310
+44
+00:02:55,785 --> 00:02:59,250
 MR. ITO: Heaters need
 electricity. They'll learn.
 
-41
-00:02:35,780 --> 00:02:39,845
-(RADIO) Now, messages from
-hospital staff to their families.
-
-42
-00:02:40,515 --> 00:02:45,455
-Kai, Mira, it's Mum. They need me at
-the hospital. Stay with Mr. Ito.
-
-43
-00:02:45,925 --> 00:02:49,010
-Mum was a nurse. She'd been
-on the night shift.
-
-44
-00:02:49,480 --> 00:02:51,245
-Is the Sun… dead?
-
 45
-00:02:52,015 --> 00:02:55,555
-MR. ITO: The Moon pulls the
-sea. So does the Sun.
+00:02:59,620 --> 00:03:01,960
+Kai? It’s Mum. Can you hear me?
 
 46
-00:02:56,025 --> 00:03:00,540
-If the Sun were gone, today's tide
-would be a third smaller.
+00:03:02,880 --> 00:03:04,595
+Mum! Are you okay?
 
 47
-00:03:01,010 --> 00:03:02,675
-Go and look.
+00:03:04,965 --> 00:03:08,305
+I'm fine, love. But I can't come home yet.
 
 48
-00:03:03,145 --> 00:03:05,835
-So, Kai and I walked down to the harbour.
+00:03:08,675 --> 00:03:12,415
+The whole city is coming here.
+They need every nurse.
 
 49
-00:03:06,305 --> 00:03:08,265
-MIRA: It's exactly on the line!
+00:03:12,785 --> 00:03:14,400
+MIRA: When are you coming home?
 
 50
-00:03:08,735 --> 00:03:10,695
-So the Sun's still there.
+00:03:14,785 --> 00:03:19,150
+Soon. I'll call every night at
+seven. Stay with Mr. Ito.
 
 51
-00:03:11,165 --> 00:03:12,575
-MIRA: Then where is it?
+00:03:19,520 --> 00:03:23,005
+She called every night at
+seven. We never missed one.
 
 52
-00:03:13,345 --> 00:03:17,205
+00:03:23,375 --> 00:03:25,140
+Is the Sun… dead?
+
+53
+00:03:25,810 --> 00:03:29,775
+MR. ITO: If the Sun were gone,
+its pull would be gone too.
+
+54
+00:03:30,145 --> 00:03:33,935
+And tomorrow's tide would
+be a third smaller.
+
+55
+00:03:35,055 --> 00:03:38,470
+Go and look. High tide is at eleven.
+
+56
+00:03:38,840 --> 00:03:42,505
+So the next morning, Kai and I
+walked down to the harbour.
+
+57
+00:03:42,875 --> 00:03:44,540
+MIRA: It's right on the line!
+
+58
+00:03:44,910 --> 00:03:46,870
+So the Sun's still there.
+
+59
+00:03:47,240 --> 00:03:48,650
+MIRA: Then where is it?
+
+60
+00:03:49,320 --> 00:03:53,180
 The Sun hadn't gone anywhere.
 Something was in front of it.
 
-53
-00:03:18,175 --> 00:03:21,340
+61
+00:03:54,050 --> 00:03:57,215
 MIRA: The sea's growing a
 skin. The fish don't mind!
 
-54
-00:03:21,810 --> 00:03:25,195
-On Day 3, the sky did something beautiful.
+62
+00:03:57,585 --> 00:04:01,175
+NEWS ANCHOR: Infrared telescopes have
+found something around the Sun.
 
-55
-00:03:25,665 --> 00:03:30,980
+63
+00:04:01,545 --> 00:04:05,560
+It's warm. It's round. And it's
+twice as wide as the Sun.
+
+64
+00:04:06,230 --> 00:04:08,365
+There was something around the Sun.
+
+65
+00:04:08,735 --> 00:04:11,050
+A shell. Wrapped around a star.
+
+66
+00:04:12,220 --> 00:04:15,360
+NEWS ANCHOR: Governments are
+asking everyone to stay calm.
+
+67
+00:04:15,710 --> 00:04:17,350
+Nobody was calm.
+
+68
+00:04:18,120 --> 00:04:20,230
+MIRA: Mr. Ito, who built it?
+
+69
+00:04:21,750 --> 00:04:24,165
+MR. ITO: It's bedtime, Mira.
+
+70
+00:04:24,535 --> 00:04:26,620
+It was four in the afternoon.
+
+71
+00:04:27,270 --> 00:04:29,760
+He'd never sent me to bed before.
+
+72
+00:04:30,530 --> 00:04:35,470
 (RADIO) …a solar storm that left the Sun
-four days ago, still arriving tonight.
+four days ago, arriving tonight.
 
-56
-00:03:31,450 --> 00:03:33,115
+73
+00:04:35,840 --> 00:04:37,505
 MIRA: It's saying goodbye.
 
-57
-00:03:40,785 --> 00:03:43,495
+74
+00:04:44,675 --> 00:04:47,385
 On Day 7, the power went out.
 
-58
-00:03:43,965 --> 00:03:47,280
-MR. ITO: Fill the bath.
-Before the pipes freeze.
+75
+00:04:47,755 --> 00:04:51,540
+Not just ours. All over the
+world, the grids gave out.
 
-59
-00:03:47,750 --> 00:03:51,160
+76
+00:04:51,910 --> 00:04:55,320
 Mr. Ito showed us how to
 make one warm room.
 
-60
-00:03:51,630 --> 00:03:54,215
+77
+00:04:55,690 --> 00:04:58,275
 Free fridge. Finally, some good news.
 
-61
-00:03:54,685 --> 00:03:57,670
+78
+00:04:59,090 --> 00:05:02,075
 That night, Kai pretended
 he wasn't scared.
 
-62
-00:03:58,140 --> 00:04:00,555
+79
+00:05:02,445 --> 00:05:04,860
 He was holding my hand too hard.
 
-63
-00:04:01,525 --> 00:04:03,265
+80
+00:05:05,730 --> 00:05:07,470
 Then we smelled smoke.
 
-64
-00:04:03,735 --> 00:04:06,950
+81
+00:05:07,840 --> 00:05:11,055
 MR. ITO: They're burning
 furniture. Indoors.
 
-65
-00:04:07,420 --> 00:04:11,860
-Everyone out. The smoke you can
-see. The gas you can't.
+82
+00:05:11,425 --> 00:05:14,965
+Everyone out! It's the gas you can't see.
 
-66
-00:04:12,330 --> 00:04:14,915
+83
+00:05:15,335 --> 00:05:17,920
 Mr. Ito got the whole floor out.
 
-67
-00:04:15,385 --> 00:04:17,945
+84
+00:05:18,290 --> 00:05:20,850
 At the street door, Biscuit panicked.
 
-68
-00:04:18,415 --> 00:04:19,550
+85
+00:05:21,220 --> 00:05:22,355
 MIRA: BISCUIT!
 
-69
-00:04:21,020 --> 00:04:22,685
+86
+00:05:23,725 --> 00:05:27,490
+Mira, listen to me.
+Biscuit is a clever dog.
+
+87
+00:05:27,860 --> 00:05:30,625
+Clever dogs find warm places.
+
+88
+00:05:31,395 --> 00:05:33,485
+MIRA: Kai. What’s warm out there?
+
+89
+00:05:33,835 --> 00:05:35,620
+…The metro. The vents.
+
+90
+00:05:36,290 --> 00:05:37,955
 Biscuit! Come on, boy!
 
-70
-00:04:23,155 --> 00:04:27,295
+91
+00:05:38,325 --> 00:05:42,465
 Kai searched all night. Then
 again, it was always night now.
 
-71
-00:04:29,965 --> 00:04:32,050
+92
+00:05:45,035 --> 00:05:47,120
 Paw prints. Fresh ones.
 
-72
-00:04:32,520 --> 00:04:35,505
+93
+00:05:47,490 --> 00:05:50,475
 They led to the only warm
 thing on the street.
 
-73
-00:04:35,975 --> 00:04:38,140
+94
+00:05:52,595 --> 00:05:54,760
 You stupid, brilliant dog.
 
-74
-00:04:38,610 --> 00:04:42,670
+95
+00:05:55,130 --> 00:05:59,190
 A few metres down, the ground
 stays around ten degrees.
 
-75
-00:04:43,140 --> 00:04:46,700
+96
+00:05:59,560 --> 00:06:03,120
 Biscuit hadn't run away. He'd
 found the way down.
 
-76
-00:04:47,170 --> 00:04:50,755
+97
+00:06:03,490 --> 00:06:07,075
 By morning, half the street had
 followed him underground.
 
-77
-00:04:51,225 --> 00:04:55,010
+98
+00:06:07,445 --> 00:06:10,755
+All over the world, cities
+moved underground.
+
+99
+00:06:11,125 --> 00:06:14,910
 By Day 30, Harbour Street
 station was a town.
 
-78
-00:04:55,480 --> 00:05:00,215
+100
+00:06:15,280 --> 00:06:20,015
 We grew food under pink lamps.
 Everyone got very sick of lettuce.
 
-79
-00:05:00,685 --> 00:05:05,070
+101
+00:06:20,385 --> 00:06:24,770
 At seven every morning, the
 engineers turned on the big lamps.
 
-80
-00:05:05,540 --> 00:05:07,680
+102
+00:06:25,140 --> 00:06:27,280
 MR. ITO: We'll call it sunrise.
 
-81
-00:05:08,150 --> 00:05:11,810
+103
+00:06:28,400 --> 00:06:32,060
 MIRA: It's yellow. And round. And
 it's warm on your face.
 
-82
-00:05:12,280 --> 00:05:15,565
+104
+00:06:32,430 --> 00:06:35,715
 Some of them had already
 forgotten what colour it was.
 
-83
-00:05:16,635 --> 00:05:19,800
+105
+00:06:36,685 --> 00:06:39,350
+I kept mine in my pocket, all year.
+
+106
+00:06:40,120 --> 00:06:43,285
 Biscuit got a fan club.
 And a bigger belly.
 
-84
-00:05:26,870 --> 00:05:31,235
-Mr. Ito spent weeks rebuilding
-a firefighter's camera.
+107
+00:06:49,855 --> 00:06:52,090
+MIRA: Mr. Ito. Who built it?
 
-85
-00:05:31,705 --> 00:05:37,145
-MR. ITO: It sees heat, not light. If
-something's out there, it has to be warm.
+108
+00:06:52,460 --> 00:06:55,220
+Nobody builds a thing that size in a day.
 
-86
-00:05:37,615 --> 00:05:40,850
-On Day 40, he took us up to the surface.
-
-87
-00:05:41,320 --> 00:05:43,955
-He pointed it where the Sun
-should have been.
-
-88
-00:05:44,425 --> 00:05:45,940
-MR. ITO: It's warm.
-
-89
-00:05:46,910 --> 00:05:50,300
-And it's twice as wide as the Sun.
-
-90
-00:05:50,770 --> 00:05:52,905
-There was something around the Sun.
-
-91
-00:05:53,375 --> 00:05:55,690
-A shell. Wrapped around a star.
-
-92
-00:05:56,960 --> 00:05:58,245
-MIRA: Who built it?
-
-93
-00:05:59,115 --> 00:06:01,625
-Nobody could build that in a day.
-
-94
-00:06:02,095 --> 00:06:04,210
+109
+00:06:55,590 --> 00:06:57,705
 MR. ITO: No. Nobody did.
 
-95
-00:06:04,980 --> 00:06:08,345
-Nineteen-nineteen. Look at the lines.
+110
+00:06:59,190 --> 00:07:03,830
+Nineteen-nineteen. A total
+eclipse. Look at the lines.
 
-96
-00:06:08,815 --> 00:06:13,380
+111
+00:07:04,200 --> 00:07:08,765
 It was always there. Edge-on,
 like the slats of a blind.
 
-97
-00:06:13,850 --> 00:06:17,990
-And on the morning the Sun went
-out, someone closed it.
+112
+00:07:09,135 --> 00:07:13,275
+On the morning the Sun went
+out, every slat turned.
 
-98
-00:06:18,860 --> 00:06:20,950
-MIRA: You've seen those lines before?
+113
+00:07:14,045 --> 00:07:16,160
+MIRA: You've seen those lines before.
 
-99
-00:06:21,420 --> 00:06:26,135
-MR. ITO: I saw them once. A long
-time ago. Nobody listened.
+114
+00:07:16,530 --> 00:07:20,270
+MR. ITO: Once. A long time
+ago. Nobody listened.
 
-100
-00:06:27,005 --> 00:06:29,645
-I believed him. It was even true.
+115
+00:07:21,040 --> 00:07:25,000
+I believed him. It was true. It
+just wasn’t all of it.
 
-101
-00:06:30,715 --> 00:06:34,080
+116
+00:07:25,970 --> 00:07:29,335
 On Day 100, the generators failed.
 
-102
-00:06:34,550 --> 00:06:37,915
+117
+00:07:29,705 --> 00:07:33,070
 MR. ITO: I know a little
 about old machines.
 
-103
-00:06:38,385 --> 00:06:40,345
-That was the coldest night.
-
-104
-00:06:40,815 --> 00:06:42,880
-How does this end, Mira?
-
-105
-00:06:44,150 --> 00:06:46,165
-MIRA: With the lights coming back on.
-
-106
-00:06:47,235 --> 00:06:49,750
-On Day 180, they did.
-
-107
-00:06:50,220 --> 00:06:51,835
-And so did Mum.
-
-108
-00:06:53,105 --> 00:06:54,995
-You kept them alive.
-
-109
-00:06:55,465 --> 00:06:57,455
-MR. ITO: They kept me alive.
-
-110
-00:06:58,325 --> 00:06:59,785
-MIRA: What are you building?
-
-111
-00:07:00,325 --> 00:07:02,540
-MR. ITO: Something to listen with.
-
-112
-00:07:03,410 --> 00:07:07,595
-By Day 300, his camera had
-a much bigger lens.
-
-113
-00:07:08,065 --> 00:07:10,925
-A thin, warm thread was leaving the shell.
-
-114
-00:07:11,395 --> 00:07:15,860
-MR. ITO: It's sending the light away.
-Out of the plane of the planets.
-
-115
-00:07:16,330 --> 00:07:17,845
-Sending it where?
-
-116
-00:07:20,930 --> 00:07:22,570
-MR. ITO: Twenty-two.
-
-117
-00:07:24,040 --> 00:07:28,180
-He whispered a number. Twenty-two.
-I didn't ask what it meant.
-
 118
-00:07:28,650 --> 00:07:31,490
-All the Sun's light, sent to one star.
+00:07:33,440 --> 00:07:36,330
+Mira? Our generators are going too.
 
 119
-00:07:36,960 --> 00:07:41,875
-On Day 365, we all went up to
-the surface together.
+00:07:36,700 --> 00:07:39,315
+If you can't hear me for a while, don't—
 
 120
-00:07:42,345 --> 00:07:45,110
-MR. ITO: I need to point this at the Sun.
+00:07:39,885 --> 00:07:41,400
+MIRA: Mum? Mum!
 
 121
-00:07:45,580 --> 00:07:49,094
+00:07:43,485 --> 00:07:45,445
+That was the coldest night.
+
+122
+00:07:45,815 --> 00:07:47,880
+How does this end, Mira?
+
+123
+00:07:49,050 --> 00:07:51,065
+MIRA: With the lights coming back on.
+
+124
+00:07:52,035 --> 00:07:57,470
+On Day 180, Mr. Ito and the
+engineers got them running again.
+
+125
+00:07:57,840 --> 00:08:01,805
+Kai, Mira, it’s Mum. Our
+power’s gone. Yours is back.
+
+126
+00:08:02,175 --> 00:08:05,690
+So we're bringing everyone to
+you. Across the river.
+
+127
+00:08:06,360 --> 00:08:08,770
+Mum, it's sixty below out there.
+
+128
+00:08:09,140 --> 00:08:11,430
+Then we'd better walk fast.
+
+129
+00:08:12,200 --> 00:08:17,510
+She walked two kilometres across the ice at
+sixty below, with forty patients.
+
+130
+00:08:17,880 --> 00:08:19,645
+And then she was home.
+
+131
+00:08:21,280 --> 00:08:23,170
+You kept them alive.
+
+132
+00:08:23,540 --> 00:08:25,530
+MR. ITO: They kept me alive.
+
+133
+00:08:26,300 --> 00:08:27,760
+MIRA: What are you building?
+
+134
+00:08:28,300 --> 00:08:30,515
+MR. ITO: Something to listen with.
+
+135
+00:08:31,285 --> 00:08:34,700
+NEWS ANCHOR: Astronomers have found a
+beam of light leaving the shell.
+
+136
+00:08:35,070 --> 00:08:42,335
+It's aimed at a star called HD 219134.
+Twenty-one light-years away.
+
+137
+00:08:43,105 --> 00:08:44,620
+MR. ITO: Twenty-one.
+
+138
+00:08:45,990 --> 00:08:47,900
+I didn't ask what it meant.
+
+139
+00:08:48,570 --> 00:08:51,385
+All the Sun's light, going to one star.
+
+140
+00:08:56,755 --> 00:09:02,765
+On Day 365, we all went up to the
+surface. One year, to the minute.
+
+141
+00:09:03,135 --> 00:09:06,649
 MIRA: One whole lap around the
 Sun. Happy birthday, Earth.
 
-122
-00:07:49,564 --> 00:07:51,779
-MR. ITO: It's coming from the Sun.
+142
+00:09:07,019 --> 00:09:10,934
+MR. ITO: The beam's stopped.
+Something's coming from the Sun.
 
-123
-00:07:52,249 --> 00:07:53,034
+143
+00:09:11,304 --> 00:09:12,089
 One.
 
-124
-00:07:53,784 --> 00:07:54,319
+144
+00:09:12,839 --> 00:09:13,374
 Two.
 
-125
-00:07:55,069 --> 00:07:55,804
+145
+00:09:14,124 --> 00:09:14,859
 Three.
 
-126
-00:07:56,974 --> 00:07:59,039
-Mercury. Venus. Earth.
+146
+00:09:15,929 --> 00:09:17,619
+Then it didn't stop.
 
-127
-00:07:59,509 --> 00:08:01,249
-It stopped at three.
+147
+00:09:18,489 --> 00:09:20,849
+That's not three. That's hundreds.
 
-128
-00:08:02,519 --> 00:08:03,727
-MIRA: That's us.
+148
+00:09:21,219 --> 00:09:25,009
+MR. ITO: One thousand, six
+hundred and seventy-nine.
 
-129
-00:08:05,197 --> 00:08:06,162
-MR. ITO: No.
+149
+00:09:25,679 --> 00:09:27,214
+Is that a lot?
 
-130
-00:08:07,112 --> 00:08:09,652
-It isn't counting planets.
+150
+00:09:27,784 --> 00:09:31,974
+MR. ITO: It's twenty-three times
+seventy-three. Nothing else.
 
-131
-00:08:24,122 --> 00:08:29,037
+151
+00:09:32,644 --> 00:09:34,634
+MIRA: Like squares on graph paper.
+
+152
+00:09:35,284 --> 00:09:36,624
+It's a picture!
+
+153
+00:09:37,494 --> 00:09:41,034
+MR. ITO: Twenty-three across.
+Seventy-three down.
+
+154
+00:09:41,494 --> 00:09:45,034
+At the top, they'd finished
+his count. Up to ten.
+
+155
+00:09:45,404 --> 00:09:48,639
+Then them. And us, beside
+them, very small.
+
+156
+00:09:49,409 --> 00:09:53,419
+Their star. Their home. And our
+Sun, inside its shell.
+
+157
+00:09:54,389 --> 00:09:56,524
+MIRA: Mr. Ito? What is it?
+
+158
+00:09:56,894 --> 00:09:58,609
+MR. ITO: It's a reply.
+
+159
+00:09:59,379 --> 00:10:00,394
+MIRA: To who?
+
+160
+00:10:01,379 --> 00:10:02,669
+MR. ITO: To me.
+
+161
+00:10:17,439 --> 00:10:22,354
 The man in the observatory was Mr.
-Ito. Forty-four years ago.
+Ito. Forty-three years ago.
 
-132
-00:08:29,907 --> 00:08:33,122
+162
+00:10:23,124 --> 00:10:26,339
 He found the lines, and the
 star they pointed to.
 
-133
-00:08:33,592 --> 00:08:36,182
-And he knocked. One. Two. Three.
+163
+00:10:26,709 --> 00:10:30,949
+They told him not to. He knocked
+anyway. One. Two. Three.
 
-134
-00:08:37,052 --> 00:08:41,167
-Twenty-two years to get there.
-Twenty-two years to come back.
+164
+00:10:31,719 --> 00:10:35,809
+Twenty-one years to get there.
+Twenty-one years to come back.
 
-135
-00:08:41,637 --> 00:08:45,852
-MR. ITO: It's been knocking back since
-the morning the Sun went out.
+165
+00:10:36,179 --> 00:10:39,819
+MR. ITO: It's a telephone,
+Mira. Theirs. I dialled it.
 
-136
-00:08:46,322 --> 00:08:50,037
-I was the only one who
-knew where to listen.
+166
+00:10:40,189 --> 00:10:42,679
+And now they've answered.
 
-137
-00:08:50,507 --> 00:08:52,547
-It isn't counting.
+167
+00:10:43,449 --> 00:10:48,789
+To call that far, it needed the Sun.
+All of it. For one whole year.
 
-138
-00:08:53,197 --> 00:08:54,962
-It's answering.
+168
+00:10:49,159 --> 00:10:52,824
+It sent them everything it
+ever heard from us.
 
-139
-00:08:56,232 --> 00:08:58,397
+169
+00:10:53,174 --> 00:10:54,309
+MIRA: Like what?
+
+170
+00:10:54,879 --> 00:10:59,219
+MR. ITO: Every song. Every
+voice. A hundred years of us.
+
+171
+00:10:59,989 --> 00:11:01,824
+MIRA: Did they know it would hurt us?
+
+172
+00:11:02,594 --> 00:11:04,109
+MR. ITO: I don't know.
+
+173
+00:11:05,279 --> 00:11:07,444
 I'm sorry, Mira.
 
-140
-00:09:00,067 --> 00:09:02,957
-That night, Mr. Ito told the world.
+174
+00:11:08,814 --> 00:11:12,149
+At the bottom of their picture
+was an empty square.
 
-141
-00:09:03,427 --> 00:09:05,687
-Every radio on Earth heard it.
+175
+00:11:12,919 --> 00:11:14,259
+MIRA: It's our turn.
 
-142
-00:09:08,157 --> 00:09:12,992
-Every morning for forty-four years,
+176
+00:11:15,229 --> 00:11:20,044
+MR. ITO: It's stopped sending. But it's
+still shut. It's waiting for us.
+
+177
+00:11:20,414 --> 00:11:23,779
+NEWS ANCHOR: World leaders still
+cannot agree on what to say.
+
+178
+00:11:24,149 --> 00:11:26,909
+Two days later, they were still arguing.
+
+179
+00:11:27,579 --> 00:11:30,994
+MR. ITO: Every day we wait,
+the Sun stays shut.
+
+180
+00:11:31,364 --> 00:11:33,199
+So what do we even send?
+
+181
+00:11:34,919 --> 00:11:36,429
+MIRA: Can we send this?
+
+182
+00:11:36,799 --> 00:11:39,014
+MR. ITO: Yes. I think we can.
+
+183
+00:11:39,784 --> 00:11:42,244
+My drawing from the morning it went out.
+
+184
+00:11:42,594 --> 00:11:46,154
+A big yellow sun. And me,
+standing under it.
+
+185
+00:11:47,024 --> 00:11:49,309
+Are we even allowed to do this?
+
+186
+00:11:49,659 --> 00:11:51,374
+MR. ITO: Probably not.
+
+187
+00:11:52,344 --> 00:11:57,029
+Kai carried the transmitter up to the
+surface. He didn’t complain once.
+
+188
+00:11:57,399 --> 00:12:03,014
+MR. ITO: If we send it at 6:35,
+the light gets back at 6:52.
+
+189
+00:12:03,384 --> 00:12:05,144
+MIRA: The same minute it went out.
+
+190
+00:12:05,814 --> 00:12:09,749
+He pressed the key, the
+way he had in 1983.
+
+191
+00:12:10,119 --> 00:12:13,409
+MR. ITO: Eight minutes to get
+there. Eight to come back.
+
+192
+00:12:13,779 --> 00:12:16,264
+Sixteen minutes and forty seconds.
+
+193
+00:12:17,034 --> 00:12:20,649
+The whole world was looking at
+the same patch of sky.
+
+194
+00:12:21,019 --> 00:12:22,534
+MIRA: What if it doesn’t work?
+
+195
+00:12:22,884 --> 00:12:24,849
+Then we'll wait together.
+
+196
+00:12:34,719 --> 00:12:35,979
+MIRA: There it is!
+
+197
+00:12:37,149 --> 00:12:40,459
+Everywhere it was day, the
+Sun came back at once.
+
+198
+00:12:47,029 --> 00:12:51,364
+At 6:52, the same minute it went
+out, the Sun came back.
+
+199
+00:12:52,734 --> 00:12:57,619
+Every morning for forty-three years,
 Mr. Ito watched the sunrise.
 
-143
-00:09:14,062 --> 00:09:17,097
+200
+00:12:58,589 --> 00:13:01,624
 I used to think it was
 because he liked it.
 
-144
-00:09:18,967 --> 00:09:21,407
-Whoever answered is still out there.
+201
+00:13:02,794 --> 00:13:04,884
+He was waiting for an answer.
 
-145
-00:09:21,757 --> 00:09:24,742
-What would you say back? Tell
-us in the comments.
+202
+00:13:06,454 --> 00:13:09,364
+In twenty-one years,
+they'll get my drawing.
+
+203
+00:13:10,114 --> 00:13:11,879
+I wonder what they'll say.
+
+204
+00:13:13,249 --> 00:13:16,109
+What would you have sent?
+Tell us in the comments.
