@@ -346,6 +346,7 @@ if (episode.style === 'cinema') {
       return {start, end, acted, acts};
     };
     let day7 = 0;
+    const blackout = (tl.shots as any[]).find((x) => x.id === 'lights-out')?.index ?? Infinity;
     let prev: {key: string; id: string; end: Map<string, string>} | null = null;
     const shockRun = new Map<string, number>();
     for (const s of tl.shots as any[]) {
@@ -370,6 +371,8 @@ if (episode.style === 'cinema') {
         shockRun.set(who, n);
         if (n > 2) errors.push(`Face: ${who} is startled in ${n} shots in a row ("${s.id}"); let the reaction settle.`);
       }
+      // heavy lids read as half-shut eyes: sleepy is for the breakfast before the Sun goes out, nowhere else
+      if (s.index > blackout) for (const [who, e] of [...start, ...acts.map((a: any) => [a.who, a.expr] as [string, string])]) if (e === 'sleepy') errors.push(`Face: ${who} is sleepy in "${s.id}" after the Sun went out; half-shut eyes need a reason the viewer can see (use focused, cold or worried).`);
       // mood: no grins in dread, and no blank faces watching a big moment
       const grim = ['dread', 'tension', 'silence', 'sting', 'shellSting'].includes(s.cue);
       for (const [who, e] of start) {

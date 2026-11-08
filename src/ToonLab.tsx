@@ -1,6 +1,10 @@
 import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {Actors, type Act, type CastEntry} from './characters/toon/acting';
+import {Toon} from './characters/toon/Toon';
+import {CAST} from './characters/toon/design';
+import {FACES} from './characters/toon/face';
+import {POSES} from './characters/toon/poses';
 import {ShotProvider} from './engine/shot-context';
 import {PhotoGlobe} from './fx/PhotoGlobe';
 import type {TimedShot} from './engine/timeline';
@@ -217,5 +221,40 @@ export const ScaleLab: React.FC = () => {
         </svg>
       </AbsoluteFill>
     </ShotProvider>
+  );
+};
+
+/**
+ * EyeLab: the review sheet for eyes, at the size a close-up shows them. One character per page; columns are the
+ * expressions the film uses, rows are the head turns and gaze directions it uses (3/4 left looking at a speaker,
+ * front, 3/4 right looking up). Both eyes must read as the same size and fully open on every calm face.
+ */
+export const EyeLab: React.FC<{who: 'you' | 'mira' | 'ito'}> = ({who}) => {
+  const exprs = ['neutral', 'smile', 'worried', 'focused', 'sad', 'cold', 'alert', 'uneasy', 'surprised', 'sleepy'] as const;
+  const rows: {turn: number; look: [number, number]; tag: string}[] = [
+    {turn: -0.3, look: [-0.7, -0.3], tag: '3/4 L, at speaker'},
+    {turn: 0, look: [0, 0], tag: 'front'},
+    {turn: 0.3, look: [0.5, -1], tag: '3/4 R, looking up'},
+  ];
+  const d = CAST[who];
+  return (
+    <AbsoluteFill style={{background: '#E9D6B4'}}>
+      <svg viewBox="0 0 1920 1080" width={1920} height={1080}>
+        {rows.map((r, ri) =>
+          exprs.map((e, ci) => (
+            <g key={`${ri}-${ci}`}>
+              <svg x={ci * 192} y={60 + ri * 340} width={192} height={320} viewBox="0 0 192 320" overflow="hidden">
+                <Toon
+                  d={d}
+                  s={{x: 96, y: who === 'mira' ? 262 : 382, scale: who === 'mira' ? 1.5 : 1.25, facing: 'front', pose: POSES.stand, bob: 0, face: FACES[e], turn: r.turn, look: r.look, talk: 0, blink: 0, outfit: 'home', hoodUp: false, breath: 0, frame: 10, rim: false, opacity: 1, watchGlow: 0}}
+                />
+              </svg>
+              {ri === 0 && <text x={ci * 192 + 96} y={40} textAnchor="middle" fontFamily="monospace" fontSize={20} fill="#0B1026">{e}</text>}
+            </g>
+          )),
+        )}
+        {rows.map((r, ri) => <text key={ri} x={8} y={80 + ri * 340} fontFamily="monospace" fontSize={16} fill="#5A4A3A">{r.tag}</text>)}
+      </svg>
+    </AbsoluteFill>
   );
 };

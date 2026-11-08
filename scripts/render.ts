@@ -29,7 +29,7 @@ else if (!existsSync(join(ROOT, 'public', 'audio', `${id}-score.wav`))) throw ne
 run(`npx tsx scripts/make-srt.ts ${id}`);
 run(`npx tsx scripts/metadata.ts ${id} > /dev/null`);
 
-const serveUrl = await bundle({entryPoint: join(ROOT, 'src/index.ts')});
+const serveUrl = await bundle({entryPoint: join(ROOT, 'src/index.ts'), enableCaching: false});
 // each bundle is ~260 MB in /tmp: remove ours when the script ends, or the disk fills up across runs
 process.on('exit', () => rmSync(serveUrl, {recursive: true, force: true}));
 for (const [suffix, name] of [['', 'a'], ['-b', 'b'], ['-c', 'c']]) {

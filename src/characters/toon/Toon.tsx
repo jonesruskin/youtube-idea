@@ -119,9 +119,11 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
   const eyeY = headY + R * 0.04;
   const eyeSep = R * 0.36;
   const eye = (k: -1 | 1) => {
-    const far = (k === -1 && turn > 0.2) || (k === 1 && turn < -0.2);
+    // the far eye foreshortens a little as the head turns: smoothly, and never so much that the two eyes read as
+    // different sizes (a hard 18% step at |turn| > 0.2 made every 3/4 face look lopsided)
+    const far = Math.sign(turn) === -k;
     const ex = fx + k * eyeSep * (1 - Math.abs(turn) * 0.25);
-    const rx = R * 0.21 * f.eye * (far ? 0.82 : 1);
+    const rx = R * 0.21 * f.eye * (far ? 1 - 0.1 * Math.min(1, Math.abs(turn) / 0.6) : 1);
     const ry = R * 0.27 * f.eye;
     const lid = Math.min(1, f.lid + s.blink);
     if (f.happyEyes > 0.5 || lid > 0.9) {

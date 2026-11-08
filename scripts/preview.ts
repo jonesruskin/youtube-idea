@@ -19,7 +19,7 @@ const tl = buildTimeline(episode, voice);
 const outDir = join(ROOT, 'out', 'preview', id);
 mkdirSync(outDir, {recursive: true});
 
-const serveUrl = await bundle({entryPoint: join(ROOT, 'src/index.ts')});
+const serveUrl = await bundle({entryPoint: join(ROOT, 'src/index.ts'), enableCaching: false});
 // each bundle is ~260 MB in /tmp: remove ours when the script ends, or the disk fills up across runs
 process.on('exit', () => rmSync(serveUrl, {recursive: true, force: true}));
 const composition = await selectComposition({serveUrl, id, inputProps: {episodeId: id}, browserExecutable});

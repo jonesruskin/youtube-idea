@@ -350,7 +350,7 @@ const shots: Shot[] = [
   }),
   sh('six-floors', stage('stairs', 'climb', move([1.2, 300, 580], [1.25, 160, 540]), [
     c(IT, -60, 680, {outfit: 'home', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', facing: 'left'}),
-    c(Y, 420, 940, {pose: 'carry', hold: 'tubeCase', facing: 'left', expr: 'sleepy'}),
+    c(Y, 420, 940, {pose: 'carry', hold: 'tubeCase', facing: 'left', expr: 'focused'}),
     c(MI, 560, 940, {facing: 'left', expr: 'smile'}),
   ], [
     {at: 0, who: IT, to: [-440, 600], dur: 3.0},
@@ -364,7 +364,7 @@ const shots: Shot[] = [
     lines: [N('Kai carried it up six floors. He complained about every one.')],
   }),
   sh('roof-arrive', stage('roof', 'night', move([1.0, 960, 560], [1.1, 1000, 590]), [
-    c(Y, 760, 900, {pose: 'carry', hold: 'tubeCase', facing: 'right', expr: 'sleepy'}),
+    c(Y, 760, 900, {pose: 'carry', hold: 'tubeCase', facing: 'right', expr: 'focused'}),
     c(MI, 880, 900, {facing: 'right'}),
     c(IT, 1150, 900, {outfit: 'home', hold: 'torch', pose: 'hold', holdL: 'bag', facing: 'right'}),
     c(B, 600, 900, {pose: 'sit'}),
@@ -380,7 +380,7 @@ const shots: Shot[] = [
   }),
   sh('roof-setup', stage('roof', 'night', push(1.4, 1.55, 1180, 620), [
     c(B, 600, 900, {pose: 'sit'}),
-    c(Y, 760, 900, {facing: 'right', expr: 'sleepy'}),
+    c(Y, 760, 900, {facing: 'right', expr: 'focused'}),
     c(MI, 880, 900, {facing: 'right'}),
     c(IT, 1150, 900, {outfit: 'home', hold: 'torch', pose: 'hold', facing: 'right'}),
   ], [
@@ -405,7 +405,7 @@ const shots: Shot[] = [
   }),
   sh('the-wait', stage('roof', 'night', move([1.2, 900, 620], [1.3, 960, 640]), [
     c(Y, 760, 900, {pose: 'sit', facing: 'right'}),
-    c(MI, 880, 900, {pose: 'sitHug', facing: 'right', expr: 'sleepy'}),
+    c(MI, 880, 900, {pose: 'sitHug', facing: 'right', expr: 'cold'}),
     c(B, 1000, 900, {pose: 'lie'}),
     c(IT, 1150, 900, {pose: 'think', outfit: 'home', facing: 'left'}),
   ], [{at: 0.8, who: Y, look: [0.3, 0.9], watchGlow: 1}], {items: ROOF_ITEMS}), {
@@ -615,7 +615,7 @@ const shots: Shot[] = [
     lines: [N('She called every night at seven. We never missed one.')],
   }),
   sh('is-it-dead', stage('apartment', '', push(2.4, 2.6, 940, 640), [
-    c(MI, 820, 930, {pose: 'sit', facing: 'right', expr: 'sleepy'}),
+    c(MI, 820, 930, {pose: 'sit', facing: 'right', expr: 'worried'}),
     c(Y, 960, 930, {pose: 'sit', facing: 'right', expr: 'worried'}),
   ], [{at: 'l0', who: Y, look: [1, -0.3]}], {frosty: false, ham: true, items: [MIC_DESK]}), {
     timeJump: true,
@@ -632,7 +632,7 @@ const shots: Shot[] = [
     action: 'The Sun’s bulge is removed: the tide shrinks by a third.',
     lines: [I("And tomorrow's tide would be a third smaller.")],
   }),
-  sh('go-look', stage('apartment', '', push(2.1, 2.3, 1060, 620), [c(MI, 820, 930, {pose: 'sit', facing: 'right', expr: 'sleepy'}), c(Y, 960, 930, {pose: 'sit', facing: 'right'}), c(IT, 1200, 930, {facing: 'left', holdL: 'bag'})], [
+  sh('go-look', stage('apartment', '', push(2.1, 2.3, 1060, 620), [c(MI, 820, 930, {pose: 'sit', facing: 'right', expr: 'worried'}), c(Y, 960, 930, {pose: 'sit', facing: 'right'}), c(IT, 1200, 930, {facing: 'left', holdL: 'bag'})], [
     {at: 0.1, who: IT, take: 'bag', prop: 'tideTable'},
     {at: 0.8, who: Y, pose: 'stand'},
     {at: 'l0+0.3', who: IT, give: Y, prop: 'tideTable'},
@@ -1827,11 +1827,11 @@ const DIRECT: Record<string, Partial<Record<'you' | 'mira' | 'ito' | 'mum', Face
   'street-phones': {you: 'worried', mira: 'worried', ito: 'focused'},
   polite: {mira: 'worried', ito: 'focused'},
   'roof-order': {mira: 'alert', you: 'worried', ito: 'determined'},
-  'six-floors': {ito: 'focused', you: 'sleepy', mira: 'smile'},
-  'roof-arrive': {you: 'sleepy', mira: 'focused', ito: 'focused'},
-  'roof-setup': {you: 'sleepy', mira: 'focused', ito: 'focused'},
+  'six-floors': {ito: 'focused', you: 'focused', mira: 'smile'},
+  'roof-arrive': {you: 'focused', mira: 'focused', ito: 'focused'},
+  'roof-setup': {you: 'focused', mira: 'focused', ito: 'focused'},
   'ito-predict': {mira: 'focused', ito: 'focused'},
-  'the-wait': {you: 'focused', mira: 'sleepy', ito: 'focused'},
+  'the-wait': {you: 'focused', mira: 'cold', ito: 'focused'},
   'at-the-sun': {ito: 'focused'},
   'three-taps': {mira: 'focused', ito: 'focused'},
   'kai-shops': {you: 'worried', ito: 'focused'},
@@ -1840,8 +1840,8 @@ const DIRECT: Record<string, Partial<Record<'you' | 'mira' | 'ito' | 'mum', Face
   'apt-answer': {mira: 'worried', you: 'worried', ito: 'focused'},
   'apt-when': {mira: 'sad', you: 'worried'},
   'every-night': {mira: 'sad', you: 'sad', ito: 'sad'},
-  'is-it-dead': {mira: 'sleepy', you: 'worried'},
-  'go-look': {mira: 'sleepy', you: 'worried', ito: 'focused'},
+  'is-it-dead': {mira: 'worried', you: 'worried'},
+  'go-look': {mira: 'worried', you: 'worried', ito: 'focused'},
   'hosp-call': {mum: 'worried'},
   'hosp-bridges': {mum: 'smile'},
   'hosp-wide': {mum: 'worried'},

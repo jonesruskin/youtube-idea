@@ -126,8 +126,10 @@ export const hashStr = (s: string) => {
  * whenever the face changes or the head turns. Returns lid closure 0..1.
  */
 export const blinkAt = (t: number, seed: string, talking: boolean, events: number[] = []) => {
-  const LEN = 0.16;
-  const shape = (dt: number) => (dt >= 0 && dt < LEN ? 1 - Math.abs(dt - LEN / 2) / (LEN / 2) : 0);
+  // the animator's blink: one in-between frame, two frames shut, one in-between frame. A triangle-shaped blink
+  // spends most of its frames half-shut and reads as drowsy, fluttering eyelids.
+  const LEN = 0.14;
+  const shape = (dt: number) => (dt < 0 || dt >= LEN ? 0 : dt < 0.034 ? 0.6 : dt < 0.1 ? 1 : 0.55);
   let v = 0;
   for (const e of events) v = Math.max(v, shape(t - e - 0.03));
   let b = 0.3 + hashStr(seed) * 2.2;
