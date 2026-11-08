@@ -2,6 +2,7 @@
 // Usage: npm run lint:episode ep01
 import {buildTimeline, formatTimestamp, wordCount} from '../src/engine/timeline';
 import {loadEpisode} from './load-episode';
+import {blinkAt, hashStr} from '../src/characters/toon/acting';
 
 const id = process.argv[2] ?? 'ep01';
 const {episode, voice} = await loadEpisode(id);
@@ -382,6 +383,24 @@ if (episode.style === 'cinema') {
       if (big) for (const [who, e] of start) if (e === 'neutral' && !acted.has(who) && (p.cast as any[]).length > 1) errors.push(`Face: ${who} watches "${s.id}" with a blank face; give them the scene's feeling.`);
       prev = {key, id: s.id, end};
     }
+  }
+  // ── blinks: the engine never blinks twice in a flutter (two blinks with the eyes barely open between) ──
+  {
+    let minGap = 99;
+    for (let k = 0; k < 300; k++) {
+      const ev = Array.from({length: 6}, (_, i) => hashStr(`ev${k}:${i}`) * 10).sort((a, b) => a - b);
+      let prev = 0;
+      let lastStart = -99;
+      for (let f = 0; f < 300; f++) {
+        const v = blinkAt(f / 30, `lint${k}`, k % 2 === 0, ev);
+        if (v >= 1 && prev < 1) {
+          minGap = Math.min(minGap, f / 30 - lastStart);
+          lastStart = f / 30;
+        }
+        prev = v;
+      }
+    }
+    if (minGap < 0.39) errors.push(`Blinks: two blinks start ${minGap.toFixed(2)} s apart; anything under 0.4 s reads as fluttering eyelids.`);
   }
   // ── timing: every act, item and prop time that names a line (lN) must name a line the shot has ──
   for (const s of tl.shots as any[]) {
