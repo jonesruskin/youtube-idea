@@ -89,7 +89,7 @@ export type Shot = {
   sfx?: Sfx;
   /** One bold kinetic word/number on screen (the genre's emphasis device). Used sparingly. */
   /** A countdown clock on screen: mm:ss running from `from` to `to` seconds across the shot. */
-  timer?: {from: number; to: number; label?: string};
+  timer?: {from: number; to: number; label?: string; pos?: 'band'}; // 'band': smaller, in the top letterbox band, clear of a 2×2 news wall's labels
   callout?: {text: string; at?: number | string; pos?: 'center' | 'top' | 'low' | 'left' | 'right'; color?: string};
   /** Corner tag that marks a jump in time: Day N and the outside temperature. */
   hud?: {day: number; temp: number} | {place: string; time: string};

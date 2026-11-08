@@ -1,6 +1,6 @@
 // Renders one still per shot (mid-point) for visual review, plus optional contact sheet.
 // Usage: npx tsx scripts/preview.ts ep01 [shotId,shotId...] [--at=0.5] [--scale=0.5]
-import {mkdirSync} from 'node:fs';
+import {mkdirSync, rmSync} from 'node:fs';
 import {join} from 'node:path';
 import {bundle} from '@remotion/bundler';
 import {renderStill, selectComposition} from '@remotion/renderer';
@@ -20,6 +20,8 @@ const outDir = join(ROOT, 'out', 'preview', id);
 mkdirSync(outDir, {recursive: true});
 
 const serveUrl = await bundle({entryPoint: join(ROOT, 'src/index.ts')});
+// each bundle is ~260 MB in /tmp: remove ours when the script ends, or the disk fills up across runs
+process.on('exit', () => rmSync(serveUrl, {recursive: true, force: true}));
 const composition = await selectComposition({serveUrl, id, inputProps: {episodeId: id}, browserExecutable});
 const shots = tl.shots.filter((s) => !only || only.includes(s.id));
 for (const s of shots) {

@@ -55,7 +55,7 @@ export const Countdown: React.FC = () => {
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
       <svg viewBox="0 0 1920 1080" width="100%" height="100%">
-        <g transform="translate(960,190)" opacity={appear}>
+        <g transform={tm.pos === 'band' ? 'translate(960,76) scale(0.7)' : 'translate(960,190)'} opacity={appear}>
           {tm.label && (
             <text y={-92} textAnchor="middle" fontFamily={fonts.display} fontWeight={800} fontSize={34} letterSpacing={6} fill="#FFF6E0" stroke="#0B1026" strokeWidth={6} paintOrder="stroke">
               {tm.label}

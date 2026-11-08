@@ -1685,7 +1685,7 @@ const shots: Shot[] = [
     {place: 'MANILA', time: '1:43 PM', kind: 'rooftops'},
     {place: 'NEW YORK', time: '1:43 AM', kind: 'rooftops'},
   ]}), {
-    timer: {from: 545, to: 540},
+    timer: {from: 545, to: 540, pos: 'band'},
     action: 'All over the world, people on rooftops in the dark, looking up at the same patch of sky.',
     lines: [N('The whole world was looking at the same patch of sky.')],
   }),

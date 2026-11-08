@@ -30,6 +30,8 @@ run(`npx tsx scripts/make-srt.ts ${id}`);
 run(`npx tsx scripts/metadata.ts ${id} > /dev/null`);
 
 const serveUrl = await bundle({entryPoint: join(ROOT, 'src/index.ts')});
+// each bundle is ~260 MB in /tmp: remove ours when the script ends, or the disk fills up across runs
+process.on('exit', () => rmSync(serveUrl, {recursive: true, force: true}));
 for (const [suffix, name] of [['', 'a'], ['-b', 'b'], ['-c', 'c']]) {
   const thumb = await selectComposition({serveUrl, id: `${id}-thumbnail${suffix}`, browserExecutable}).catch(() => null);
   if (thumb) await renderStill({serveUrl, composition: thumb, output: join(rel, `thumbnail-${name}.png`), browserExecutable});
@@ -144,7 +146,7 @@ if (cinema) {
       `| \`${id}-described.srt\` | captions plus stage directions (review copy) |\n` +
       `| \`metadata.md\` | title, Test & Compare alternates, description with chapters and sources, tags, pinned comment, mid-rolls, end screen |\n` +
       `| \`thumbnail-a/b/c.png\` | three spoiler-free thumbnails for Test & Compare |\n\n` +
-      `- **Runtime:** ${(composition.durationInFrames / composition.fps / 60).toFixed(0)}:${String(Math.round((composition.durationInFrames / composition.fps) % 60)).padStart(2, '0')}\n` +
+      `- **Runtime:** ${Math.floor(composition.durationInFrames / composition.fps / 60)}:${String(Math.round((composition.durationInFrames / composition.fps) % 60)).padStart(2, '0')}\n` +
       `- **Voice:** ${voiceNote}\n- **Music and sound:** synthesised score and sound design (scripts/score_cinema.py)\n- **Built from:** commit \`${rev}\`\n`,
   );
   console.log(`done → ${rel}: ${id}.mp4, ${id}-master.mp4, ${id}.srt, ${id}-described.srt, metadata.md, thumbnails`);
