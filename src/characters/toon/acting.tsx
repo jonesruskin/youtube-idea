@@ -130,26 +130,25 @@ export const blinkAt = (t: number, seed: string, talking: boolean, events: numbe
   // spends most of its frames half-shut and reads as drowsy, fluttering eyelids.
   const LEN = 0.14;
   const shape = (dt: number) => (dt < 0 || dt >= LEN ? 0 : dt < 0.034 ? 0.6 : dt < 0.1 ? 1 : 0.55);
-  // every trigger (a face change, a head turn, the natural rhythm) asks for a blink; triggers closer than 0.4 s
-  // merge into one, or two blinks three frames apart read as a nervous flutter. Only a deliberate double blink
-  // (the odd one in the natural rhythm) may follow its partner closely.
-  const asks: {at: number; dbl: boolean}[] = events.map((e) => ({at: e + 0.03, dbl: false}));
+  // every trigger (a face change, a head turn, the natural rhythm) asks for a blink; a trigger within 1 s of the
+  // last blink is dropped. Two blinks closer than that (even a "natural" double blink) read as a twitch on these
+  // big, simple eyes.
+  const asks = events.map((e) => e + 0.03);
   let b = 0.3 + hashStr(seed) * 2.2;
   let n = 0;
   while (b < t + LEN && n < 200) {
-    asks.push({at: b, dbl: false});
+    asks.push(b);
     const h = hashStr(`${seed}:${n}`);
-    if (h > 0.92) asks.push({at: b + 0.4, dbl: true}); // the odd double blink, eyes clearly open in between
     b += (talking ? 1.6 : 2.2) + h * (talking ? 2.6 : 3.8);
     n++;
   }
-  asks.sort((p, q) => p.at - q.at);
+  asks.sort((p, q) => p - q);
   let v = 0;
   let last = -99;
-  for (const a of asks) {
-    if (a.dbl ? Math.abs(last - (a.at - 0.4)) > 1e-6 : a.at - last < 0.4) continue; // a double needs its partner kept
-    last = a.at;
-    v = Math.max(v, shape(t - a.at));
+  for (const at of asks) {
+    if (at - last < 1) continue;
+    last = at;
+    v = Math.max(v, shape(t - at));
   }
   return v;
 };

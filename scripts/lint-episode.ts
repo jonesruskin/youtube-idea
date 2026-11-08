@@ -400,7 +400,7 @@ if (episode.style === 'cinema') {
         prev = v;
       }
     }
-    if (minGap < 0.39) errors.push(`Blinks: two blinks start ${minGap.toFixed(2)} s apart; anything under 0.4 s reads as fluttering eyelids.`);
+    if (minGap < 0.95) errors.push(`Blinks: two blinks start ${minGap.toFixed(2)} s apart; anything under 1 s reads as a twitch.`);
   }
   // ── timing: every act, item and prop time that names a line (lN) must name a line the shot has ──
   for (const s of tl.shots as any[]) {
