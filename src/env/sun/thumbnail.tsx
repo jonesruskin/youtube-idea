@@ -8,13 +8,14 @@ import {Snow} from '../../fx/cinema/atmos';
 import {Stars} from '../../fx/sky';
 import {fonts} from '../../theme';
 import {PhotoGlobe} from '../../fx/PhotoGlobe';
-import {doorScreen, Shell, Sun} from './space';
 import {FrozenSkyline} from './sets/outdoor';
 
 /**
- * File 001 thumbnail: one impossible image + three words, readable at phone size.
- * The Sun caged in dark plates (one plate cracked open, light spilling), a frozen city,
- * you and Mira looking up in fear. Text: WHO BUILT THIS?
+ * File 001 thumbnails: spoiler-free, one impossible image and two or three words, readable at phone size.
+ * Nothing about what is around the Sun, who is behind it, or how it ends: only the premise.
+ *  A "IT'S 7 AM.": a kitchen at breakfast, the window full of stars, the clock at seven, a girl holding up her sun drawing
+ *  B "NO SUN. DAY 1": Earth from orbit, the whole planet on its night side, only city lights left
+ *  C "365 DAYS IN THE DARK": a family on a frozen street at night, one torch beam, breath in the air
  */
 const state = (x: number, y: number, scale: number, face: keyof typeof FACES, extra: Partial<React.ComponentProps<typeof Toon>['s']> = {}) => ({
   x,
@@ -38,57 +39,6 @@ const state = (x: number, y: number, scale: number, face: keyof typeof FACES, ex
   ...extra,
 });
 
-export const SunThumbnail: React.FC<{text: string}> = ({text}) => (
-  <AbsoluteFill style={{background: '#000'}}>
-    <svg viewBox="0 0 1920 1080" width="100%" height="100%">
-      <defs>
-        <linearGradient id="thsky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#02030A" />
-          <stop offset="0.7" stopColor="#0E1838" />
-          <stop offset="1" stopColor="#3A2A40" />
-        </linearGradient>
-      </defs>
-      <rect width={1920} height={1080} fill="url(#thsky)" />
-      <Stars frame={0} count={320} w={1920} h={1080} seed={5} maxR={2.4} />
-      {/* the caged Sun: light leaking through one open plate */}
-      <g>
-        <circle cx={1330} cy={400} r={470} fill="#FF7A2A" opacity={0.18} filter="blur(30px)" />
-        <Shell cx={1330} cy={400} r={345} turn={1} spin={0.6} seam={0.95} frame={10} door={0.9} inner={<Sun cx={1330} cy={400} r={172} frame={10} />} />
-        {(() => {
-          const [dx, dy] = doorScreen(1330, 400, 345, 0.6, 0.22);
-          return (
-            <g style={{mixBlendMode: 'screen'}}>
-              {Array.from({length: 7}, (_, i) => (
-                <path key={i} d={`M${dx},${dy} L${dx - 1400 + i * 120},${dy + 900}`} stroke="#FFF1C2" strokeWidth={10 + (i % 3) * 8} opacity={0.22} />
-              ))}
-            </g>
-          );
-        })()}
-      </g>
-      <FrozenSkyline base={920} seed={47} col="#141B36" />
-      <rect x={0} y={900} width={1920} height={200} fill="#C9D6E8" />
-      <rect x={0} y={900} width={1920} height={200} fill="#2A3A6A" opacity={0.3} />
-      <Snow frame={40} density={0.4} w={1920} h={1080} x0={0} y0={0} />
-      {/* you and Mira, looking up */}
-      <Toon d={CAST.you} s={state(600, 1300, 2.4, 'scared', {pose: POSES.handsOnHead})} />
-      <Toon d={CAST.mira} s={state(960, 1200, 2.4, 'awe', {turn: 0.35, pose: POSES.coverMouth})} />
-      {/* the words */}
-      <g transform="rotate(-3,560,180)">
-        {text.split(' ').map((w, i) => (
-          <g key={i}>
-            <text x={70} y={190 + i * 190} fontFamily={fonts.display} fontWeight={900} fontSize={180} fill="#000" opacity={0.65} transform="translate(10,12)">
-              {w}
-            </text>
-            <text x={70} y={190 + i * 190} fontFamily={fonts.display} fontWeight={900} fontSize={180} fill={i === text.split(' ').length - 1 ? '#FF8A2A' : '#FFFFFF'} stroke="#0B1026" strokeWidth={12} paintOrder="stroke">
-              {w}
-            </text>
-          </g>
-        ))}
-      </g>
-    </svg>
-  </AbsoluteFill>
-);
-
 const BigWords: React.FC<{words: {t: string; size: number; col: string}[]; x: number; y: number; anchor?: 'start' | 'end'; tilt?: number}> = ({words, x, y, anchor = 'start', tilt = -3}) => (
   <g transform={`rotate(${tilt},${x},${y})`}>
     {words.reduce<{el: React.ReactNode[]; yy: number}>(
@@ -111,64 +61,90 @@ const BigWords: React.FC<{words: {t: string; size: number; col: string}[]; x: nu
   </g>
 );
 
-/** Thumbnail B: one face, two times. Left, old Mr. Ito in starlight; right, the same man at 30 in a 1982 sunrise. "HE KNEW". */
-export const SunThumbnailB: React.FC = () => (
+/** A: "IT'S 7 AM." Breakfast, and a night sky in the window. */
+export const SunThumbnail: React.FC<{text?: string}> = () => (
   <AbsoluteFill style={{background: '#000'}}>
     <svg viewBox="0 0 1920 1080" width="100%" height="100%">
+      {/* the kitchen wall, lamp-lit */}
+      <rect width={1920} height={1080} fill="#E9D6B4" />
+      {Array.from({length: 24}, (_, i) => <rect key={i} x={i * 84} y={0} width={42} height={1080} fill="#E2CBA4" opacity={0.6} />)}
       <defs>
-        <clipPath id="leftHalf">
-          <rect x={0} y={0} width={760} height={1080} />
+        <clipPath id="thWin">
+          <rect x={120} y={90} width={900} height={640} />
         </clipPath>
-        <clipPath id="rightHalf">
-          <rect x={760} y={0} width={1160} height={1080} />
-        </clipPath>
-        <linearGradient id="dawnTh" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#F2B07A" />
-          <stop offset="1" stopColor="#FFE2A8" />
-        </linearGradient>
+        <radialGradient id="thLamp" cx="0.5" cy="0" r="0.8">
+          <stop offset="0" stopColor="#FFE9B8" stopOpacity={0.55} />
+          <stop offset="1" stopColor="#FFE9B8" stopOpacity={0} />
+        </radialGradient>
       </defs>
-      <g clipPath="url(#leftHalf)">
-        <rect width={1920} height={1080} fill="#060A1E" />
-        <Stars frame={0} count={300} w={1920} h={1080} seed={11} maxR={2.4} />
-        <Toon d={CAST.ito} s={state(760, 1640, 5.59, 'sad', {turn: 0.1, look: [0.2, 0.2], outfit: 'cold'})} />
+      <rect width={1920} height={1080} fill="url(#thLamp)" />
+      {/* the window: night over the city, full of stars, at breakfast time */}
+      <g clipPath="url(#thWin)">
+        <rect x={120} y={90} width={900} height={640} fill="#03061A" />
+        <g transform="translate(120,90)">
+          <Stars frame={0} count={240} w={900} h={460} seed={9} maxR={3.2} />
+        </g>
+        <g transform="translate(120,330) scale(0.47)">
+          <FrozenSkyline base={860} seed={23} col="#141C3E" />
+        </g>
       </g>
-      <g clipPath="url(#rightHalf)">
-        <rect width={1920} height={1080} fill="url(#dawnTh)" />
-        <circle cx={1700} cy={260} r={130} fill="#FFFBE8" />
-        <Toon d={CAST.itoYoung} s={state(760, 1640, 5.2, 'smile', {turn: 0.1, look: [0.2, 0.2], outfit: 'home'})} />
+      <rect x={120} y={90} width={900} height={640} fill="none" stroke="#F4EFE6" strokeWidth={30} />
+      <path d="M570,90 L570,730 M120,410 L1020,410" stroke="#F4EFE6" strokeWidth={20} />
+      <rect x={90} y={730} width={960} height={34} fill="#C98E5E" stroke="#0B1026" strokeWidth={5} />
+      {/* the wall clock: seven o'clock */}
+      <g transform="translate(1640,820)">
+        <circle r={140} fill="#FFFBF2" stroke="#0B1026" strokeWidth={12} />
+        {Array.from({length: 12}, (_, i) => <path key={i} d="M0,-114 L0,-95" stroke="#0B1026" strokeWidth={8} transform={`rotate(${i * 30})`} />)}
+        <path d="M0,0 L0,-98" stroke="#0B1026" strokeWidth={10} strokeLinecap="round" />
+        <path d="M0,0 L-48,28" stroke="#0B1026" strokeWidth={16} strokeLinecap="round" />
+        <circle r={12} fill="#D9443A" />
       </g>
-      <path d="M760,0 L760,1080" stroke="#FFF6E0" strokeWidth={8} />
-      <BigWords words={[{t: 'HE', size: 230, col: '#FFFFFF'}, {t: 'KNEW', size: 230, col: '#FFB13B'}]} x={1880} y={480} anchor="end" tilt={-3} />
+      {/* Kai with his mug, and Mira holding up her drawing of the Sun against the night */}
+      <Toon d={CAST.you} s={state(930, 1370, 2.9, 'uneasy', {outfit: 'home', turn: -0.25, look: [-0.7, -0.4], holdL: 'mug', pose: POSES.hold, rim: false})} />
+      <Toon d={CAST.mira} s={state(470, 1180, 3.1, 'awe', {outfit: 'home', turn: -0.3, look: [-0.5, -0.6], hold: 'sunDrawing', pose: POSES.cheer, rim: false})} />
+      <BigWords words={[{t: "IT'S", size: 180, col: '#FFFFFF'}, {t: '7 AM.', size: 250, col: '#FFC93C'}]} x={1890} y={120} anchor="end" tilt={-3} />
     </svg>
   </AbsoluteFill>
 );
 
-/** Thumbnail C: a small observatory on a mountain at night, one window lit, the dish aimed at one star. "1983". */
+/** B: "NO SUN. DAY 1": the whole Earth on its night side. */
+export const SunThumbnailB: React.FC = () => (
+  <AbsoluteFill style={{background: '#000'}}>
+    <svg viewBox="0 0 1920 1080" width="100%" height="100%" style={{position: 'absolute'}}>
+      <Stars frame={0} count={700} w={1920} h={1080} seed={17} maxR={2.4} />
+    </svg>
+    <div style={{position: 'absolute', left: '50%', top: '9%', width: '45%', filter: 'drop-shadow(0 0 30px rgba(80,120,220,0.5))'}}>
+      <PhotoGlobe size={580} center={[10, 35]} sun={null} lights={1} ice={78} />
+    </div>
+    <svg viewBox="0 0 1920 1080" width="100%" height="100%" style={{position: 'absolute'}}>
+      <BigWords words={[{t: 'NO SUN.', size: 200, col: '#FFFFFF'}, {t: 'DAY 1', size: 260, col: '#FFC93C'}]} x={70} y={260} anchor="start" tilt={-3} />
+    </svg>
+  </AbsoluteFill>
+);
+
+/** C: "365 DAYS IN THE DARK": a family on a frozen street at night. */
 export const SunThumbnailC: React.FC = () => (
   <AbsoluteFill style={{background: '#000'}}>
     <svg viewBox="0 0 1920 1080" width="100%" height="100%">
-      <rect width={1920} height={1080} fill="#050818" />
-      <Stars frame={0} count={600} w={1920} h={1080} seed={41} maxR={2.6} />
-      <circle cx={1500} cy={170} r={10} fill="#FFFFFF" />
-      <circle cx={1500} cy={170} r={60} fill="#BFD8FF" opacity={0.25} />
-      <path d="M1180,640 L1500,170" stroke="#FFD27A" strokeWidth={4} strokeDasharray="14 12" opacity={0.7} />
-      <path d="M0,820 L400,640 L760,760 L1200,600 L1920,760 L1920,1080 L0,1080 Z" fill="#141A33" />
-      <path d="M0,900 Q600,780 1100,830 Q1500,870 1920,820 L1920,1080 L0,1080 Z" fill="#0B0F22" />
-      <g transform="translate(560,880) scale(1.6)">
-        <rect x={-150} y={-160} width={300} height={160} fill="#C9CED6" stroke="#0B1026" strokeWidth={5} />
-        <path d="M-160,-160 A160,160 0 0 1 160,-160 Z" fill="#DCE2EA" stroke="#0B1026" strokeWidth={5} />
-        <path d="M-22,-316 L22,-316 L26,-160 L-26,-160 Z" fill="#141826" />
-        <rect x={-30} y={-90} width={60} height={90} fill="#FFD58A" stroke="#0B1026" strokeWidth={4} />
-      </g>
-      <g transform="translate(1180,860) scale(1.6)">
-        <path d="M-40,0 L0,-150 L40,0 Z" fill="#8A8F9C" stroke="#0B1026" strokeWidth={5} />
-        <g transform="translate(0,-150) rotate(-55)">
-          <path d="M-150,-20 Q0,90 150,-20 Q0,30 -150,-20 Z" fill="#DCE2EA" stroke="#0B1026" strokeWidth={5} />
-          <path d="M0,40 L0,-110" stroke="#0B1026" strokeWidth={5} />
-        </g>
-      </g>
-      <circle cx={560} cy={790} r={140} fill="#FFD58A" opacity={0.18} />
-      <BigWords words={[{t: '1983', size: 260, col: '#FFD27A'}]} x={80} y={120} anchor="start" tilt={-3} />
+      <defs>
+        <linearGradient id="thC" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#02030A" />
+          <stop offset="0.75" stopColor="#101A3E" />
+          <stop offset="1" stopColor="#24305A" />
+        </linearGradient>
+      </defs>
+      <rect width={1920} height={1080} fill="url(#thC)" />
+      <Stars frame={0} count={420} w={1920} h={700} seed={29} maxR={2.6} />
+      <FrozenSkyline base={860} seed={47} col="#141B36" />
+      <rect x={0} y={840} width={1920} height={240} fill="#D6E2F0" />
+      <rect x={0} y={840} width={1920} height={240} fill="#2A3A6A" opacity={0.28} />
+      <Snow frame={40} density={0.45} w={1920} h={1080} x0={0} y0={0} />
+      {/* the torch beam cutting across the snow */}
+      <path d="M1180,760 L1920,560 L1920,980 Z" fill="#FFF4D6" opacity={0.16} />
+      <Toon d={CAST.ito} s={state(560, 1180, 1.9, 'focused', {turn: 0.2, look: [0.6, -0.5], hold: 'torchOff', breath: 0.8})} />
+      <Toon d={CAST.mira} s={state(800, 1160, 1.9, 'uneasy', {turn: 0.2, look: [0.5, -0.8], breath: 0.8})} />
+      <Toon d={CAST.you} s={state(1020, 1180, 1.9, 'worried', {turn: 0.3, look: [0.8, -0.2], hold: 'torch', pose: POSES.torch, hoodUp: true, breath: 0.8})} />
+      <BigWords words={[{t: '365 DAYS', size: 210, col: '#FFFFFF'}, {t: 'IN THE DARK', size: 150, col: '#FFC93C'}]} x={60} y={60} anchor="start" tilt={-2} />
     </svg>
   </AbsoluteFill>
 );

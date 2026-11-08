@@ -1,4 +1,4 @@
-// Full episode render → renders/<id>.mp4 (+ thumbnail, SRT, metadata).
+// Full episode render → episodes/<id folder>/release/: <id>.mp4 (web) + <id>-master.mp4, SRTs, metadata, thumbnails.
 // Usage: npm run render ep01   (set REMOTION_BROWSER=/path/to/chrome if the bundled one can't download)
 // Cinema episodes (style: 'cinema', e.g. sun01) expect the Kokoro voice + cinematic score to exist already:
 //   npx tsx scripts/export-timeline.ts sun01 > out/sun01-timeline.json
@@ -8,7 +8,7 @@
 // and finish with a master pass: loudness to −14 LUFS / −1 dBTP, captions embedded as a soft subtitle track.
 import {execSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, unlinkSync, writeFileSync} from 'node:fs';
+import {copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, unlinkSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {bundle} from '@remotion/bundler';
 import {renderMedia, renderStill, selectComposition} from '@remotion/renderer';
@@ -19,6 +19,8 @@ const crf = Number(process.env.CRF ?? 20);
 const browserExecutable = process.env.REMOTION_BROWSER ?? null;
 const run = (cmd: string) => execSync(cmd, {cwd: ROOT, stdio: 'inherit'});
 const {episode, dir: epDir} = await loadEpisode(id);
+const rel = join(epDir, 'release');
+mkdirSync(rel, {recursive: true});
 const cinema = episode.style === 'cinema';
 
 run(`npx tsx scripts/lint-episode.ts ${id}`);
@@ -28,11 +30,14 @@ run(`npx tsx scripts/make-srt.ts ${id}`);
 run(`npx tsx scripts/metadata.ts ${id} > /dev/null`);
 
 const serveUrl = await bundle({entryPoint: join(ROOT, 'src/index.ts')});
-const thumb = await selectComposition({serveUrl, id: `${id}-thumbnail`, browserExecutable});
-await renderStill({serveUrl, composition: thumb, output: join(ROOT, 'renders', `${id}-thumbnail.png`), browserExecutable});
+for (const [suffix, name] of [['', 'a'], ['-b', 'b'], ['-c', 'c']]) {
+  const thumb = await selectComposition({serveUrl, id: `${id}-thumbnail${suffix}`, browserExecutable}).catch(() => null);
+  if (thumb) await renderStill({serveUrl, composition: thumb, output: join(rel, `thumbnail-${name}.png`), browserExecutable});
+}
+run(`npx tsx scripts/metadata.ts ${id} > /dev/null`); // again, now that the thumbnails exist
 
 const composition = await selectComposition({serveUrl, id, inputProps: {episodeId: id}, browserExecutable});
-const raw = join(ROOT, 'renders', cinema ? `${id}-raw.mov` : `${id}.mp4`);
+const raw = cinema ? join(ROOT, 'out', `${id}-raw.mov`) : join(rel, `${id}.mp4`);
 const common = {serveUrl, composition, inputProps: composition.props, browserExecutable, concurrency: Number(process.env.CONCURRENCY ?? 4), imageFormat: 'jpeg' as const, jpegQuality: 92};
 const progress = (label: string) => {
   let last = -1;
@@ -106,25 +111,43 @@ if (!cinema) {
 if (cinema) {
   // Master: flat gain to −14 LUFS, then an 4×-oversampled limiter at −2 dBFS that only catches transient peaks
   // (true peak lands ≈ −1.5 dBTP after AAC). Unlike loudnorm's dynamic fallback, this keeps the film's dynamics.
-  const r = (p: string) => join(ROOT, 'renders', p);
+  const r = (p: string) => join(rel, p);
   const meas = execSync(`ffmpeg -hide_banner -i "${raw}" -map 0:a -af ebur128 -f null - 2>&1`, {cwd: ROOT}).toString();
   const inI = Number([...meas.matchAll(/I:\s+(-?[\d.]+) LUFS/g)].pop()![1]);
   const gain = (-14 - inI + 0.6).toFixed(2); // +0.6 dB compensates what the limiter shaves off
   const chain = `aresample=192000,volume=${gain}dB,alimiter=limit=0.794:attack=0.5:release=40:level=disabled,aresample=48000`;
-  run(`ffmpeg -v error -y -i "${raw}" -i "${r(`${id}.srt`)}" -map 0:v -map 0:a -map 1:0 -c:v copy -af "${chain}" -c:a aac -b:a 256k -c:s mov_text -metadata:s:s:0 language=eng -movflags +faststart "${r(`${id}-hq.mp4`)}"`);
+  run(`ffmpeg -v error -y -i "${raw}" -i "${r(`${id}.srt`)}" -map 0:v -map 0:a -map 1:0 -c:v copy -af "${chain}" -c:a aac -b:a 256k -c:s mov_text -metadata:s:s:0 language=eng -movflags +faststart "${r(`${id}-master.mp4`)}"`);
   unlinkSync(raw);
-  // Web copy for the repo (GitHub's 100 MB file limit): re-encode only if needed.
-  const hq = r(`${id}-hq.mp4`);
+  // The master stays (Git LFS); a ~90 MB web copy sits beside it for quick viewing.
+  const hq = r(`${id}-master.mp4`);
   const mb = statSync(hq).size / 1e6;
   if (mb <= 95) {
-    renameSync(hq, r(`${id}.mp4`));
+    copyFileSync(hq, r(`${id}.mp4`));
   } else {
     const secs = Number(execSync(`ffprobe -v error -show_entries format=duration -of csv=p=0 "${hq}"`).toString());
     const vk = Math.floor((90 * 8000) / secs - 192);
     run(`ffmpeg -v error -y -i "${hq}" -map 0 -c:v libx264 -preset slow -b:v ${vk}k -maxrate ${Math.floor(vk * 1.6)}k -bufsize ${vk * 2}k -c:a aac -b:a 192k -c:s copy -movflags +faststart "${r(`${id}.mp4`)}"`);
   }
   rmSync(join(ROOT, 'out', 'chunks'), {recursive: true, force: true});
-  console.log(`done → renders/${id}.mp4 (+ ${existsSync(hq) ? `${id}-hq.mp4, ` : ''}${id}.srt, ${id}-thumbnail.png, ${id}-metadata.md)`);
+  // the release folder explains itself
+  const size = (f: string) => (existsSync(r(f)) ? `${(statSync(r(f)).size / 1e6).toFixed(0)} MB` : '—');
+  const rev = execSync('git rev-parse --short HEAD', {cwd: ROOT}).toString().trim();
+  const voiceNote = process.env.VOICE === 'elevenlabs' ? 'ElevenLabs (final)' : 'Kokoro-82M, free local voices (placeholder: to be replaced with ElevenLabs once the picture is approved)';
+  writeFileSync(
+    r('README.md'),
+    `# ${episode.file} · ${episode.youtubeTitle}\n\n` +
+      `Everything needed to publish this episode. Big files are stored with Git LFS (\`git lfs pull\` to download them).\n\n` +
+      `| file | what it is |\n|---|---|\n` +
+      `| \`${id}-master.mp4\` | upload master: 1080p30, H.264, AAC 256k, −14 LUFS, soft English subtitles (${size(`${id}-master.mp4`)}) |\n` +
+      `| \`${id}.mp4\` | web copy for quick viewing (${size(`${id}.mp4`)}) |\n` +
+      `| \`${id}.srt\` | English captions for YouTube |\n` +
+      `| \`${id}-described.srt\` | captions plus stage directions (review copy) |\n` +
+      `| \`metadata.md\` | title, Test & Compare alternates, description with chapters and sources, tags, pinned comment, mid-rolls, end screen |\n` +
+      `| \`thumbnail-a/b/c.png\` | three spoiler-free thumbnails for Test & Compare |\n\n` +
+      `- **Runtime:** ${(composition.durationInFrames / composition.fps / 60).toFixed(0)}:${String(Math.round((composition.durationInFrames / composition.fps) % 60)).padStart(2, '0')}\n` +
+      `- **Voice:** ${voiceNote}\n- **Music and sound:** synthesised score and sound design (scripts/score_cinema.py)\n- **Built from:** commit \`${rev}\`\n`,
+  );
+  console.log(`done → ${rel}: ${id}.mp4, ${id}-master.mp4, ${id}.srt, ${id}-described.srt, metadata.md, thumbnails`);
 } else {
-  console.log(`done → renders/${id}.mp4`);
+  console.log(`done → ${rel}/${id}.mp4`);
 }

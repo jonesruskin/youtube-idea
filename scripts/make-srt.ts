@@ -1,13 +1,14 @@
 // Writes a speaker-labelled .srt from the episode timeline (estimated timings until voiced;
 // re-run after `npm run voice` and it uses the real ElevenLabs timings).
-// Usage: npm run srt ep01 → renders/ep01.srt
+// Usage: npm run srt ep01 → episodes/<ep01 folder>/release/ep01.srt
 import {mkdirSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {buildTimeline} from '../src/engine/timeline';
 import {loadEpisode, ROOT} from './load-episode';
 
 const id = process.argv[2] ?? 'ep01';
-const {episode, voice} = await loadEpisode(id);
+const {episode, voice, dir} = await loadEpisode(id);
+const rel = join(dir, 'release');
 const tl = buildTimeline(episode, voice);
 
 const ts = (s: number) => {
@@ -92,8 +93,8 @@ for (const ev of events) {
   });
   lastSpeaker = l.speaker;
 }
-mkdirSync(join(ROOT, 'renders'), {recursive: true});
-const out = join(ROOT, 'renders', `${id}.srt`);
+mkdirSync(rel, {recursive: true});
+const out = join(rel, `${id}.srt`);
 writeFileSync(out, cues.join('\n'));
 console.log(`${n} cues → ${out}`);
 
@@ -105,6 +106,6 @@ for (const s of tl.shots) {
 }
 for (const l of tl.lines) described.push({start: l.start, end: l.end, text: `${NAMES[l.speaker] || 'NARRATOR'}: ${l.text}`});
 described.sort((a, b) => a.start - b.start);
-const dOut = join(ROOT, 'renders', `${id}-described.srt`);
+const dOut = join(rel, `${id}-described.srt`);
 writeFileSync(dOut, described.map((c, i) => `${i + 1}\n${ts(c.start)} --> ${ts(c.end)}\n${c.text}\n`).join('\n'));
 console.log(`${described.length} described cues → ${dOut}`);

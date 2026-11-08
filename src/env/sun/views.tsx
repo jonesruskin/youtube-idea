@@ -258,8 +258,11 @@ export const TitleScene: React.FC = () => {
           {/* where the Sun was: nothing, just the ghost of its glow fading from the sky (no answers yet) */}
           <circle cx={960} cy={420} r={330} fill="#FF9E3A" opacity={0.1 * (1 - clamp(c.t / c.dur))} filter="blur(30px)" />
           <circle cx={960} cy={420} r={150} fill="none" stroke="#FFB13B" strokeWidth={3} strokeDasharray="10 12" opacity={0.35} />
-          <text x={960} y={860} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={120} fill="#F4EFE6" letterSpacing={8} opacity={a}>
+          <text x={960} y={830} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={120} fill="#F4EFE6" letterSpacing={8} opacity={a}>
             THE SUN WENT OUT
+          </text>
+          <text x={960} y={930} textAnchor="middle" fontFamily={fonts.display} fontWeight={800} fontSize={64} fill="#FFC93C" letterSpacing={14} opacity={a}>
+            AT BREAKFAST
           </text>
         </g>
         <Vignette amount={0.6} />
@@ -294,7 +297,7 @@ export const EndScene: React.FC = () => {
           NEXT FILE · THE REPLY
         </text>
         <text x={960} y={556} textAnchor="middle" fontFamily={fonts.ui} fontWeight={700} fontSize={34} fill="#9FE8FF" letterSpacing={3} opacity={slots}>
-          WHAT WOULD YOU SAY BACK? TELL US BELOW ↓
+          WHAT WOULD YOU HAVE SENT? TELL US BELOW ↓
         </text>
         <g opacity={slots}>
           <text x={570} y={640} textAnchor="middle" fontFamily={fonts.ui} fontWeight={800} fontSize={30} fill="#F4EFE6" letterSpacing={4}>

@@ -1,7 +1,8 @@
-# The Sun Went Out. Day 1 to Day 365
+# The Sun Went Out at Breakfast. Day 1 to Day 365 in the Dark
 
-**Thumbnail text:** WHO TURNED IT OFF?
-**Thumbnails for Test & Compare:** sun01-thumbnail.png, sun01-thumbnail-b.png, sun01-thumbnail-c.png (upload all of them; YouTube serves each to a share of viewers and keeps the one with the best watch time)
+**Title alternates for Test & Compare:** “What If the Sun Went Out? A Family Survives Day 1 to Day 365” · “The Sun Disappeared at 6:52 AM. This Is What Happened Next”
+**Thumbnail text:** IT'S 7 AM.
+**Thumbnails for Test & Compare:** thumbnail-a.png, thumbnail-b.png, thumbnail-c.png (upload all of them; YouTube serves each to a share of viewers and keeps the one with the best watch time)
 **End screen:** the last 12 s (from 13:13) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 13:16 to the end.
 **Runtime:** 13:25
 **Manual mid-roll positions:** 5:23, 7:48 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
@@ -9,9 +10,9 @@
 ## Description (paste as-is)
 
 ```
-On a summer morning the Sun goes out. Eight-year-old Mira, her brother Kai and Mr. Ito, the retired astronomer upstairs, survive a year in the dark while their mum works across the frozen river. Every clue is real physics. The thing around the Sun is a telephone, the call was meant for Mr. Ito, and the answer is Mira's to give.
+On a summer morning, at 6:52, the Sun goes out. Eight-year-old Mira, her big brother Kai and Mr. Ito, the retired astronomer upstairs, have to survive a year in the dark while their mum holds a hospital together across the river. Every clue they find is real physics. Watch to the end.
 
-They left an empty square for our answer. What would you have sent? Tell us below 👇
+If the Sun went out tomorrow, what's the first thing you'd do? Tell us below 👇
 
 0:00 The last morning
 1:08 Hour one
@@ -27,8 +28,17 @@ They left an empty square for our answer. What would you have sent? Tell us belo
 7:51 Day 180
 8:31 Day 300
 8:56 Day 365
-11:20 The answer
+11:20 Day 367
 
+THE BLINK FILES — one impossible year, seen by a different person each time. Every clue is real physics. Subscribe for the next File.
+
+This is a work of fiction. Everything that follows from its one impossible event is real physics. Earth imagery: NASA Blue Marble / Black Marble (public domain).
+#whatif #space #survival #animation #theblinkfiles
+
+⚠️ SPOILERS BELOW — watch to the end first.
+.
+.
+.
 THE REAL SCIENCE IN THIS STORY
 (1) Venus near the far side of the Sun: sunlight needs ~361 s to reach it and ~860 s more to cross 1.72 AU back to us, versus 499 s straight from the Sun, so it fades ~12 minutes after the Sun (6:52 → 7:04). — Source: Calculation from 1 AU = 149.6 million km, c = 299,792 km/s, Venus orbit 0.72 AU (NASA JPL planetary fact sheets)
 (2) Jupiter is 5.2 AU from the Sun; light needs ~43 minutes to reach it and ~37 more to reach us when it is 4.5 AU away: about 72 minutes after the Sun. — Source: NASA Jupiter fact sheet (nssdc.gsfc.nasa.gov)
@@ -44,17 +54,12 @@ THE REAL SCIENCE IN THIS STORY
 (12) HD 219134 is a real orange dwarf star about 21 light-years away in Cassiopeia, with at least five known planets. — Source: NASA Exoplanet Archive, ‘HD 219134’; Motalebi et al., Astronomy & Astrophysics (2015)
 (13) In 1974 the Arecibo radio telescope sent a message of 1,679 pulses toward the star cluster M13, because 1,679 = 23 × 73 (two primes) can only be laid out as one grid, which forms a picture. — Source: Cornell University / SETI Institute, ‘The Arecibo Message’ (1974)
 (14) Radio waves travel at the speed of light, so a signal to a star 21.3 light-years away and an answer back take about 43 years: 1983 → 2004 → 2026. — Source: Definition of the light-year (IAU); HD 219134 distance 6.5 pc (Gaia DR3)
-
-THE BLINK FILES — one family, one year, the end of the world as physics would really play it. Part 2 continues from Day 365. Subscribe so you don't miss the reply.
-
-This is a work of fiction: nothing is building a shell around the Sun (as far as we know). Everything that follows from it is real physics. Earth imagery: NASA Blue Marble / Black Marble (public domain).
-#whatif #space #survival #animation #theblinkfiles
 ```
 
 ## Tags
-what if the sun disappeared, what if the sun went out, day 1 to day 365, survival, what if, space, science, animation, dyson sphere, arecibo message, the sun, earth without the sun, plot twist, the blink files
+what if the sun disappeared, what if the sun went out, day 1 to day 365, survival, what if, space, science, animation, sun disappeared, what if the sun disappeared for a year, the sun, earth without the sun, plot twist, the blink files
 
 ## Pinned comment
-When did you realise who the man in the observatory was? 👀
+Did you catch the clue in the first ten seconds? 👀 (No spoilers in the replies, please, for people still watching!)
 
-They left an empty square for our answer. Mira sent a drawing. What would you have sent? Best answer gets read out in the next File. 👇
+If the Sun went out tomorrow, what's the first thing you'd do? 👇

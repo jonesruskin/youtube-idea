@@ -110,6 +110,8 @@ export type Episode = {
   file: string; // "FILE 01"
   title: string;
   youtubeTitle: string;
+  /** Other titles for YouTube's Test & Compare (same promise, no spoilers). */
+  titleAlternates?: string[];
   thumbnailText: string;
   commentPrompt: string;
   /** Description opener, tags and pinned comment for YouTube (scripts/metadata.ts). */

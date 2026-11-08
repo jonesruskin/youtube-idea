@@ -313,7 +313,7 @@ const shots: Shot[] = [
     action: 'A man in a dressing gown shouts at the sky.',
     lines: [MAN("It's just an eclipse!")],
   }),
-  sh('polite', stage('street', 'night', push(2.4, 2.6, 1060, 640), [c(MI, 960, 960, {facing: 'right', expr: 'worried'}), c(IT, 1120, 960, {outfit: 'home', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', facing: 'left', expr: 'neutral'})], [{at: 'l0+0.2', who: MI, look: [1, -0.4], expr: 'surprised'}]), {
+  sh('polite', stage('street', 'night', push(2.4, 2.6, 1060, 640), [c(MI, 960, 960, {facing: 'right', expr: 'worried'}), c(IT, 1120, 960, {outfit: 'home', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', facing: 'left', expr: 'neutral'})], [{at: 'l0+0.2', who: MI, look: [1, -0.4], expr: 'focused'}]), {
     beats: ['laugh'],
     dev: 'not an eclipse',
     action: 'Ito, unimpressed, to Mira.',
@@ -1582,7 +1582,7 @@ const shots: Shot[] = [
 
   // ══ THE ANSWER ═════════════════════════════════════════════════════════════════════════════
   sh('leaders', sc('news', {v: 'anchor', inset: 'protest', headline: 'NO AGREEMENT ON REPLY', ticker: 'UN EMERGENCY SESSION ENTERS THIRD DAY · "WE CANNOT SPEAK FOR ALL HUMANITY" · PROTESTS IN 60 CITIES'}), {
-    chapter: 'The answer',
+    chapter: 'Day 367',
     hud: {day: 367, temp: -73},
     cue: 'news',
     transition: 'fade',
@@ -1973,12 +1973,13 @@ for (const s of shots) {
 export const sun01: Episode = {
   id: 'sun01',
   file: 'FILE 001',
-  title: 'The Sun Went Out',
-  youtubeTitle: 'The Sun Went Out. Day 1 to Day 365',
-  thumbnailText: 'WHO TURNED IT OFF?',
-  commentPrompt: 'They left an empty square for our answer. What would you have sent?',
+  title: 'The Sun Went Out at Breakfast',
+  youtubeTitle: 'The Sun Went Out at Breakfast. Day 1 to Day 365 in the Dark',
+  titleAlternates: ['What If the Sun Went Out? A Family Survives Day 1 to Day 365', 'The Sun Disappeared at 6:52 AM. This Is What Happened Next'],
+  thumbnailText: "IT'S 7 AM.",
+  commentPrompt: "If the Sun went out tomorrow, what's the first thing you'd do?",
   logline:
-    "On a summer morning the Sun goes out. Eight-year-old Mira, her brother Kai and Mr. Ito, the retired astronomer upstairs, survive a year in the dark while their mum works across the frozen river. Every clue is real physics. The thing around the Sun is a telephone, the call was meant for Mr. Ito, and the answer is Mira's to give.",
+    "On a summer morning, at 6:52, the Sun goes out. Eight-year-old Mira, her big brother Kai and Mr. Ito, the retired astronomer upstairs, have to survive a year in the dark while their mum holds a hospital together across the river. Every clue they find is real physics. Watch to the end.",
   tags: [
     'what if the sun disappeared',
     'what if the sun went out',
@@ -1988,14 +1989,14 @@ export const sun01: Episode = {
     'space',
     'science',
     'animation',
-    'dyson sphere',
-    'arecibo message',
+    'sun disappeared',
+    'what if the sun disappeared for a year',
     'the sun',
     'earth without the sun',
     'plot twist',
     'the blink files',
   ],
-  pinnedComment: 'When did you realise who the man in the observatory was? 👀\n\nThey left an empty square for our answer. Mira sent a drawing. What would you have sent? Best answer gets read out in the next File. 👇',
+  pinnedComment: "Did you catch the clue in the first ten seconds? 👀 (No spoilers in the replies, please, for people still watching!)\n\nIf the Sun went out tomorrow, what's the first thing you'd do? 👇",
   fps: 30,
   style: 'cinema',
   shots,
