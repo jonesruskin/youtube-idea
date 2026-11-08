@@ -35,7 +35,7 @@ export const FACES = {
   focused: F({lid: 0.24, browY: 0, browAng: 3, mouthW: 0.38, smile: 0.12}),
   determined: F({lid: 0.2, browY: 0, browAng: 1, mouthW: 0.5, smile: 0.45}),
   cold: F({lid: 0.22, browAng: 10, browY: 2, mouthW: 0.44, open: 0.12, smile: -0.2, wobble: 1}),
-  sleepy: F({lid: 0.92, browAng: 2, mouthW: 0.36, smile: 0.2}),
+  sleepy: F({lid: 0.7, browAng: 2, mouthW: 0.36, smile: 0.2}),
   angry: F({lid: 0.3, browY: -6, browAng: -16, mouthW: 0.5, smile: -0.5}),
   // settled versions of the startle faces: still reacting, no longer staring
   alert: F({lid: 0.1, eye: 1.04, browY: 6, browAng: 6, mouthW: 0.36, open: 0.12, smile: 0, round: 0.3}),

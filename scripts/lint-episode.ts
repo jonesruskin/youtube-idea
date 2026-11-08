@@ -380,6 +380,22 @@ if (episode.style === 'cinema') {
       prev = {key, id: s.id, end};
     }
   }
+  // ── timing: every act, item and prop time that names a line (lN) must name a line the shot has ──
+  for (const s of tl.shots as any[]) {
+    const n = (s.lines ?? []).length;
+    const check = (at: any, what: string) => {
+      const m = /^l(\d+)/.exec(String(at ?? ''));
+      if (m && Number(m[1]) >= n) errors.push(`Timing: "${s.id}" times ${what} to line ${m[1]}, but the shot has ${n} line(s).`);
+    };
+    const p = s.props ?? {};
+    for (const a of (p.acts ?? []) as any[]) check(a.at, `an act for ${a.who}`);
+    for (const it of (p.items ?? []) as any[]) {
+      check(it.from, `the ${it.prop} item`);
+      check(it.until, `the ${it.prop} item`);
+    }
+    for (const k of ['lampOn', 'tvOff', 'txOn', 'sunAt', 'flicker', 'sunrise', 'drawingUntil', 'setupAt']) check(p[k], k);
+    if (s.callout) check(s.callout.at, 'the callout');
+  }
   // ── v4 acting gates: no talk loops; gestures are rare and scripted ─────────────────────────────
   {
     const per = new Map<string, {lines: number; g: number}>();

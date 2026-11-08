@@ -664,7 +664,7 @@ const shots: Shot[] = [
     action: 'Kai stares at the tide table, then up.',
     lines: [K("So the Sun's still there.")],
   }),
-  sh('where-is-it', stage('harbor', 'freeze', push(2.8, 3.0, 580, 700), [c(Y, 700, 940, {...COLD, hold: 'torch', pose: 'hold', holdL: 'tideTable', facing: 'right'}), c(MI, 580, 940, {...COLD, facing: 'front', expr: 'worried', pose: 'lookUp'})], [{at: 'l0+0.6', who: MI, look: [0, -1]}]), {
+  sh('where-is-it', stage('harbor', 'freeze', push(2.5, 2.7, 610, 650), [c(Y, 700, 940, {...COLD, hold: 'torch', pose: 'hold', holdL: 'tideTable', facing: 'right'}), c(MI, 580, 940, {...COLD, facing: 'front', expr: 'worried', pose: 'lookUp'})], [{at: 'l0+0.6', who: MI, look: [0, -1]}]), {
     action: 'Mira looks up at the black sky.',
     lines: [M('Then where is it?', 0.3)],
   }),
@@ -898,7 +898,7 @@ const shots: Shot[] = [
   }),
 
   // ══ DAY 8 · the search ═════════════════════════════════════════════════════════════════════
-  sh('hosp-biscuit', stage('hospital', 'lit', push(2.3, 2.5, 1470, 600), [c(MU, 1480, 930, {facing: 'left', pose: 'think', hold: 'mic', expr: 'focused'})], [{at: 'l1', who: MU, expr: 'smile'}]), {
+  sh('hosp-biscuit', stage('hospital', 'lit', push(2.3, 2.5, 1470, 600), [c(MU, 1480, 930, {facing: 'left', pose: 'think', hold: 'mic', expr: 'focused'})], [{at: 'l0+1.4', who: MU, expr: 'smile'}]), {
     chapter: 'Day 8',
     hud: {day: 8, temp: -21},
     cue: 'warm',
@@ -1181,7 +1181,7 @@ const shots: Shot[] = [
     action: 'Ito follows the engineers into the dark tunnel, torch in hand.',
     lines: [I('I know a little about old machines.')],
   }),
-  sh('hosp-fading', stage('hospital', 'dark', push(2.4, 2.7, 1470, 600), [c(MU, 1480, 930, {facing: 'left', pose: 'think', hold: 'mic', expr: 'worried'})], [{at: 'l1', who: MU, expr: 'scared'}]), {
+  sh('hosp-fading', stage('hospital', 'dark', push(2.4, 2.7, 1470, 600), [c(MU, 1480, 930, {facing: 'left', pose: 'think', hold: 'mic', expr: 'worried'})], [{at: 'l0+1.4', who: MU, expr: 'scared'}]), {
     dev: 'Mum’s call breaks up',
     action: 'The hospital by lantern light, the generators failing there too. Mum at the radio.',
     lines: [MUM('Mira? Our generators are going too.')],
@@ -1241,7 +1241,7 @@ const shots: Shot[] = [
     action: 'Day 180. The lamps blaze back on. The whole station roars.',
     lines: [N('On Day 180, Mr. Ito and the engineers got them running again.')],
   }),
-  sh('hosp-walk', stage('hospital', 'dark', push(2.3, 2.5, 1470, 600), [c(MU, 1480, 930, {facing: 'left', pose: 'think', hold: 'mic', expr: 'determined'})], [{at: 'l1', who: MU, look: [-0.8, -0.2]}]), {
+  sh('hosp-walk', stage('hospital', 'dark', push(2.3, 2.5, 1470, 600), [c(MU, 1480, 930, {facing: 'left', pose: 'think', hold: 'mic', expr: 'determined'})], [{at: 'l0+1.4', who: MU, look: [-0.8, -0.2]}]), {
     dev: 'Mum is alive, and coming',
     action: 'The hospital, dark and freezing. Mum, alive, at the radio, her breath smoking.',
     lines: [MUM('Kai, Mira, it’s Mum. Our power’s gone. Yours is back.')],
@@ -1251,7 +1251,7 @@ const shots: Shot[] = [
     action: 'The workshop, lit again. Kai holds the mic. Mira’s hands fly to her mouth.',
     lines: [MUMR("So we're bringing everyone to you. Across the river.", 0.3)],
   }),
-  sh('sixty-below', stage('metro', 'workshop', push(2.2, 2.4, 790, 640), [c(Y, 700, 900, {outfit: 'cold', facing: 'right', pose: 'think', hold: 'mic', expr: 'worried'}), c(MI, 840, 900, {outfit: 'cold', facing: 'right', expr: 'laugh'})], [{at: 'l1', who: Y, expr: 'smile'}], {ham: true, hamOn: true, parts: true, items: [BAG_BENCH]}), {
+  sh('sixty-below', stage('metro', 'workshop', push(2.2, 2.4, 790, 640), [c(Y, 700, 900, {outfit: 'cold', facing: 'right', pose: 'think', hold: 'mic', expr: 'worried'}), c(MI, 840, 900, {outfit: 'cold', facing: 'right', expr: 'laugh'})], [{at: 'l0+1.4', who: Y, expr: 'smile'}], {ham: true, hamOn: true, parts: true, items: [BAG_BENCH]}), {
     beats: ['laugh', 'heart'],
     action: 'In the workshop, Kai has the mic. Mira is laughing and crying.',
     lines: [K("Mum, it's sixty below out there.")],
@@ -1425,7 +1425,7 @@ const shots: Shot[] = [
   }),
   sh('primes', stage('surface', 'milky', push(2.6, 2.8, 1270, 620), SURF({ito: {pose: 'holdBoth', expr: 'focused'}}), [{at: 'l0+1.6', who: IT, look: [-1, 0.2]}]), {
     action: 'Ito, not looking up.',
-    lines: [I("It's twenty-three times seventy-three. Nothing else.", 0.3, 'count')],
+    lines: [I("It's twenty-three times seventy-three. Nothing else.", 0.3)],
   }),
   sh('a-picture', stage('surface', 'milky', push(2.8, 3.2, 940, 620), SURF({mira: {facing: 'front', expr: 'focused'}}), [{at: 'l1', who: MI, expr: 'laugh'}]), {
     cue: 'decode',
@@ -1524,7 +1524,7 @@ const shots: Shot[] = [
     action: 'Earth and a star 21 light-years apart. The knock crosses out: 1983 → 2004. The answer crosses back: 2004 → 2026.',
     lines: [N('Twenty-one years to get there. Twenty-one years to come back.')],
   }),
-  sh('telephone', stage('surface', 'milky', push(1.9, 2.1, 1100, 620), SURF({mira: {expr: 'surprised'}, ito: {pose: 'holdBoth', expr: 'sad'}}), [{at: 'l1', who: IT, look: [-1, 0.2]}]), {
+  sh('telephone', stage('surface', 'milky', push(1.9, 2.1, 1100, 620), SURF({mira: {expr: 'surprised'}, ito: {pose: 'holdBoth', expr: 'sad'}}), [{at: 'l0+1.4', who: IT, look: [-1, 0.2]}]), {
     dev: 'the shell is their telephone, and he dialled',
     action: 'Ito turns to Mira and tells her, plainly.',
     lines: [I("It's a telephone, Mira. Theirs. I dialled it.", 0, 'chest')],
@@ -1652,7 +1652,7 @@ const shots: Shot[] = [
     action: 'Up the frozen metro stairs: Kai hauls the big transmitter dish on his back, step by step, Mira behind him with the drawing.',
     lines: [N('Kai carried the transmitter up to the surface. He didn’t complain once.')],
   }),
-  sh('send-time', stage('surface', 'milky', move([1.2, 1000, 640], [1.3, 1060, 620]), SURF367({ito: {hold: undefined, facing: 'right', pose: 'reach', expr: 'focused'}, mira: {hold: 'sunDrawing'}}), [{at: 'l1', who: MI, look: [1, -0.4]}], {transmitter: 1380}), {
+  sh('send-time', stage('surface', 'milky', move([1.2, 1000, 640], [1.3, 1060, 620]), SURF367({ito: {hold: undefined, facing: 'right', pose: 'reach', expr: 'focused'}, mira: {hold: 'sunDrawing'}}), [{at: 'l0+1.4', who: MI, look: [1, -0.4]}], {transmitter: 1380}), {
     hud: {place: 'THE SURFACE', time: '6:35 AM'},
     dev: 'they choose the time: the light will come back at 6:52',
     action: '6:35 in the morning, on the surface. The transmitter on its tripod, aimed at the hidden Sun. Ito at the key.',
@@ -1778,7 +1778,7 @@ const shots: Shot[] = [
     action: 'A memory, warm as home movie: the same roof, every dawn for forty-three years. Mr. Ito, young, then greying, then old, taps his telescope three times as the Sun comes up.',
     lines: [N('Every morning for forty-three years, Mr. Ito watched the sunrise.', 0.6)],
   }),
-  sh('liked-it', stage('roof', 'dawn', push(2.6, 3.2, 1150, 600, 1180, 570), [c(IT, 1150, 900, {outfit: 'home', facing: 'right', expr: 'smile'})], [{at: 0.4, who: IT, look: [0.9, -0.6]}, {at: 'l1', who: IT, expr: 'sad'}]), {
+  sh('liked-it', stage('roof', 'dawn', push(2.6, 3.2, 1150, 600, 1180, 570), [c(IT, 1150, 900, {outfit: 'home', facing: 'right', expr: 'smile'})], [{at: 0.4, who: IT, look: [0.9, -0.6]}, {at: 'l0+1.4', who: IT, expr: 'sad'}]), {
     thread: 'memory',
     look: 'memory',
     action: 'Close on his face in the early light.',
@@ -1944,6 +1944,8 @@ const DIRECT: Record<string, Partial<Record<'you' | 'mira' | 'ito' | 'mum', Face
 };
 /** In-shot reactions, each timed to its cause (a line, a sound, a sight). */
 const REACT: Record<string, {at: number | string; who: string; expr: Face}[]> = {
+  'toast-steal': [{at: 'l0+1.3', who: MI, expr: 'laugh'}],
+  'from-the-sun': [{at: 0.25, who: IT, expr: 'surprised'}, {at: 'l0+1.2', who: MI, expr: 'alert'}, {at: 'l0+1.4', who: MU, expr: 'alert'}],
   'stars-at-breakfast': [{at: 0.4, who: MI, expr: 'awe'}],
   'apt-answer': [{at: 0.35, who: Y, expr: 'surprised'}, {at: 0.45, who: MI, expr: 'surprised'}],
   'hosp-call': [{at: 'l0+1.0', who: MU, expr: 'focused'}],
