@@ -310,6 +310,76 @@ if (episode.style === 'cinema') {
       prev = {key, id: s.id, pos};
     }
   }
+  // ── v4.1 face gates: expressions follow events, flow across cuts, and nobody watches a big moment blank ──
+  {
+    const MAIN = ['you', 'mira', 'ito', 'mum'];
+    const SETTLE: Record<string, string> = {surprised: 'alert', scared: 'uneasy'};
+    const GROUPS = [
+      ['neutral', 'focused', 'determined', 'alert', 'smile', 'sleepy', 'awe'],
+      ['worried', 'uneasy', 'sad', 'cold', 'alert', 'focused', 'determined', 'scared', 'surprised'],
+      ['smile', 'laugh', 'relieved', 'awe', 'neutral', 'alert', 'surprised'],
+    ];
+    const near = (a: string, b: string) => a === b || GROUPS.some((g) => g.includes(a) && g.includes(b));
+    const SHOCK = ['surprised', 'scared'];
+    const resolveT = (at: any, s: any) => {
+      if (typeof at === 'number') return at;
+      const m = /^l(\d+)([+-][\d.]+)?$/.exec(String(at));
+      const l = m ? (s.timedLines ?? [])[Number(m[1])] : null;
+      return (l ? l.startInShot : 0) + (m && m[2] ? Number(m[2]) : 0);
+    };
+    const exprs = (s: any) => {
+      const p = s.props ?? {};
+      const start = new Map<string, string>();
+      const end = new Map<string, string>();
+      const acted = new Set<string>();
+      for (const c of (p.cast ?? []) as any[]) {
+        if (!MAIN.includes(c.who)) continue;
+        const e0 = c.expr ?? 'neutral';
+        start.set(c.who, SETTLE[e0] ?? e0);
+        end.set(c.who, SETTLE[e0] ?? e0);
+      }
+      const acts = ((p.acts ?? []) as any[]).filter((a) => a.expr && start.has(a.who)).sort((a, b) => resolveT(a.at, s) - resolveT(b.at, s));
+      for (const a of acts) {
+        end.set(a.who, SETTLE[a.expr] ?? a.expr);
+        acted.add(a.who);
+      }
+      return {start, end, acted, acts};
+    };
+    let day7 = 0;
+    let prev: {key: string; id: string; end: Map<string, string>} | null = null;
+    const shockRun = new Map<string, number>();
+    for (const s of tl.shots as any[]) {
+      if (s.hud && 'day' in s.hud) day7 = s.hud.day;
+      if (s.scene !== 'stage') continue;
+      const p = s.props ?? {};
+      const key = `${s.thread ?? ''}:${day7}:${p.set}`;
+      const {start, end, acted, acts} = exprs(s);
+      // continuity across a cut in the same place
+      if (prev && prev.key === key && !s.timeJump) {
+        for (const [who, e] of start) {
+          const pe = prev.end.get(who);
+          if (pe && !near(pe, e)) errors.push(`Face: ${who} ends "${prev.id}" ${pe} but starts "${s.id}" ${e} (a face cannot jump between unrelated emotions across a cut).`);
+        }
+      }
+      // a shock needs a cause in the shot, and nobody stays shocked for shot after shot
+      const event = !!(s.sfx || s.dev || s.twist || (s.lines ?? []).length || (s.beats ?? []).length);
+      for (const who of start.keys()) {
+        const shocked = acts.some((a: any) => a.who === who && SHOCK.includes(a.expr));
+        if (shocked && !event) errors.push(`Face: ${who} is startled in "${s.id}" with nothing happening.`);
+        const n = shocked ? (shockRun.get(who) ?? 0) + 1 : 0;
+        shockRun.set(who, n);
+        if (n > 2) errors.push(`Face: ${who} is startled in ${n} shots in a row ("${s.id}"); let the reaction settle.`);
+      }
+      // mood: no grins in dread, and no blank faces watching a big moment
+      const grim = ['dread', 'tension', 'silence', 'sting', 'shellSting'].includes(s.cue);
+      for (const [who, e] of start) {
+        if (grim && ['laugh', 'smile'].includes(e) && !acted.has(who)) errors.push(`Face: ${who} smiles through a ${s.cue} moment in "${s.id}".`);
+      }
+      const big = s.twist || (s.beats ?? []).some((b: string) => ['wow', 'heart', 'loop'].includes(b)) || s.dev;
+      if (big) for (const [who, e] of start) if (e === 'neutral' && !acted.has(who) && (p.cast as any[]).length > 1) errors.push(`Face: ${who} watches "${s.id}" with a blank face; give them the scene's feeling.`);
+      prev = {key, id: s.id, end};
+    }
+  }
   // ── v4 acting gates: no talk loops; gestures are rare and scripted ─────────────────────────────
   {
     const per = new Map<string, {lines: number; g: number}>();

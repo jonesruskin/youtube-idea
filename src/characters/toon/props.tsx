@@ -30,14 +30,15 @@ export type PropKind =
   | 'list'
   | 'dish'
   | 'mic'
-  | 'sunDrawing';
+  | 'sunDrawing'
+  | 'torchOff';
 
 /** Props drawn at the hand position (origin = hand centre). R = the holder's head radius. */
 export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({kind, R, frame}) => {
   const ink = C.ink;
   const sw = Math.max(2.5, R * 0.06);
   switch (kind) {
-    case 'torchOff' as PropKind:
+    case 'torchOff':
       // the same torch, switched off (lit streets and stairwells: nobody shines a torch under a streetlight)
       return (
         <g>

@@ -5,7 +5,7 @@ import {useShot} from '../../engine/shot-context';
 import {Dog, type DogPose} from '../Dog';
 import {visemeAt} from '../visemes';
 import {CAST, extra, HERO_PX, type Outfit, type ToonDesign} from './design';
-import {blendFace, type Expr, FACES} from './face';
+import {blendFace, type Expr, FACES, onsetOf, SETTLE, SETTLE_HOLD, SETTLE_LEN} from './face';
 import {blendPose, gait, POSES, type PoseName, STRIDE} from './poses';
 import type {PropKind} from './props';
 import {Toon, type SeatKind, type ToonState} from './Toon';
@@ -115,6 +115,33 @@ export const resolveAt = (at: number | string, lines: LineInfo[]): number => {
   return (l ? l.startInShot : 0) + (m[2] ? Number(m[2]) : 0);
 };
 
+/** Deterministic 0..1 hash of a string (stable across renders). */
+export const hashStr = (s: string) => {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);
+  return ((h >>> 0) % 10007) / 10007;
+};
+/**
+ * Blinks like a person: irregular gaps of 2–6 s (shorter while talking), the odd double blink, and a blink
+ * whenever the face changes or the head turns. Returns lid closure 0..1.
+ */
+export const blinkAt = (t: number, seed: string, talking: boolean, events: number[] = []) => {
+  const LEN = 0.16;
+  const shape = (dt: number) => (dt >= 0 && dt < LEN ? 1 - Math.abs(dt - LEN / 2) / (LEN / 2) : 0);
+  let v = 0;
+  for (const e of events) v = Math.max(v, shape(t - e - 0.03));
+  let b = 0.3 + hashStr(seed) * 2.2;
+  let n = 0;
+  while (b < t + LEN && n < 200) {
+    v = Math.max(v, shape(t - b));
+    const h = hashStr(`${seed}:${n}`);
+    if (h > 0.86) v = Math.max(v, shape(t - b - 0.26)); // a double blink
+    b += (talking ? 1.6 : 2.2) + h * (talking ? 2.6 : 3.8);
+    n++;
+  }
+  return v;
+};
+
 /** Pure: the state of one cast member at time t (seconds into the shot). */
 export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lines: LineInfo[], seed: number) => {
   const mine = acts.filter((a) => a.who === c.who).map((a) => ({...a, t0: resolveAt(a.at, lines)})).sort((a, b) => a.t0 - b.t0);
@@ -125,7 +152,11 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
   let facing: Facing = c.facing ?? 'front';
   let poseName = (c.pose ?? 'stand') as string;
   let pose = POSES[(c.pose as PoseName) ?? 'stand'] ?? POSES.stand;
-  let face = FACES[c.expr ?? 'neutral'];
+  const startExpr = (c.expr ?? 'neutral') as Expr;
+  let face = FACES[SETTLE[startExpr] ?? startExpr];
+  let exprNow: Expr = SETTLE[startExpr] ?? startExpr;
+  let exprAt = -99;
+  const events: number[] = []; // moments that trigger a blink: an expression change, a head turn
   let look = c.look ?? [0, 0];
   let turn = c.turn ?? 0;
   let hold = c.hold;
@@ -152,7 +183,15 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
       const target = POSES[a.pose as PoseName];
       if (target) pose = blendPose(pose, target, easeBack(k));
     }
-    if (a.expr) face = blendFace(face, FACES[a.expr], easeIO(clamp01(k * 1.6)));
+    if (a.expr) {
+      // each face arrives at its own natural speed, independent of the act's duration
+      face = blendFace(face, FACES[a.expr], easeIO(clamp01((t - a.t0) / onsetOf(a.expr))));
+      exprNow = a.expr;
+      exprAt = a.t0;
+      events.push(a.t0);
+    }
+    if (a.turn !== undefined && Math.abs(a.turn - turn) > 0.3) events.push(a.t0);
+    if (a.facing && a.facing !== facing) events.push(a.t0);
     if (a.look) look = [look[0] + (a.look[0] - look[0]) * easeIO(k), look[1] + (a.look[1] - look[1]) * easeIO(k)];
     if (a.turn !== undefined) turn = turn + (a.turn - turn) * easeIO(k);
     if (a.hold !== undefined) hold = a.hold ?? undefined;
@@ -203,6 +242,12 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
     pose = {...pose, rArm: [pose.rArm[0] + (90 - pose.rArm[0]) * reachK, pose.rArm[1] + (10 - pose.rArm[1]) * reachK] as [number, number]};
     if (k >= 0.5) hold = g.prop;
   }
+  // a startle peaks, holds, then settles into something a person can hold
+  const settled = SETTLE[exprNow];
+  if (settled && exprAt > -99) {
+    const k = clamp01((t - exprAt - onsetOf(exprNow) - SETTLE_HOLD) / SETTLE_LEN);
+    if (k > 0) face = blendFace(face, FACES[settled], easeIO(k));
+  }
   // a point relaxes back to the previous resting pose ~1.2 s after it lands
   if (RELAX_FROM.includes(poseName) && !poseKeep && c.who !== 'biscuit') {
     const k = clamp01((t - (poseSince + 1.2)) / 0.45);
@@ -211,7 +256,7 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
       pose = blendPose(pose, rest, easeIO(k));
     }
   }
-  return {x, y, facing, poseName, pose, face, look, turn, hold, holdL, hoodUp, opacity, wag, moving, loops, watchGlow};
+  return {x, y, facing, poseName, pose, face, look, turn, hold, holdL, hoodUp, opacity, wag, moving, loops, watchGlow, events};
 };
 
 /** Renders a shot's cast at the current frame (back-to-front by ground line). */
@@ -271,6 +316,15 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
     const dx = resolved[target].x - r.x;
     if (Math.abs(dx) < 20 || Math.hypot(r.look[0], r.look[1]) > 0.05) return {look: r.look, turn: r.turn};
     const dir = Math.sign(dx) * (r.facing === 'left' ? -1 : 1);
+    // nobody holds eye contact forever: a listener's eyes drop away for a moment every few seconds
+    if (i !== speakerIdx) {
+      const gp = (t + hashStr(list[i].who) * 5) % (4.6 + hashStr(list[i].who + 'g') * 1.6);
+      if (gp < 0.5) {
+        const g = Math.sin((gp / 0.5) * Math.PI);
+        k = k * (1 - 0.85 * g);
+        return {look: [r.look[0] + (dir * 0.75 - r.look[0]) * k, r.look[1] + (-0.08 - r.look[1]) * k + 0.28 * g], turn: r.turn + (r.facing === 'front' ? dir * 0.3 * k : 0)};
+      }
+    }
     return {look: [r.look[0] + (dir * 0.75 - r.look[0]) * k, r.look[1] + (-0.08 - r.look[1]) * k], turn: r.turn + (r.facing === 'front' ? dir * 0.3 * k : 0)};
   };
   // draw order: back to front by ground line; a piggyback rider goes just behind their carrier
@@ -324,9 +378,11 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
           bob = g.bob;
         }
         // breathing + idle weight shift (never perfectly still)
-        const ph = frame / 30 + i * 1.7;
-        bob += Math.sin(ph * 1.6) * 1.2;
-        pose = {...pose, lean: pose.lean + Math.sin(ph * 0.45) * 1.2, tilt: pose.tilt + Math.sin(ph * 0.7) * 1.2};
+        const hs = hashStr(c.who);
+        const ph = frame / 30 + hs * 6.28;
+        const rate = 0.85 + hs * 0.3; // no two people breathe in step
+        bob += Math.sin(ph * 1.6 * rate) * 1.2;
+        pose = {...pose, lean: pose.lean + Math.sin(ph * 0.45 * rate) * 1.2, tilt: pose.tilt + Math.sin(ph * 0.7 * rate) * 1.2};
         // talking: the face and head do the acting (a small head lift on the line, eyes to the listener). Hands move
         // only when the script gives the line a gesture (`g`), the way people actually talk.
         if (line) {
@@ -350,11 +406,20 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
           }
         } else if (list.length > 1 && r.facing !== 'back') {
           // listening: a small nod as someone else's line lands
-          for (const l of lines) {
-            const lt = t - (l.startInShot + (l.end - l.start)) - 0.12;
+          lines.forEach((l, li) => {
             const onStage = list.some((o) => o.who !== 'biscuit' && (o.speaker ?? designOf(o.who)?.speaker) === l.speaker);
-            if (onStage && l.speaker !== spk && lt > 0 && lt < 0.45) pose = {...pose, tilt: pose.tilt + 6 * Math.sin((lt / 0.45) * Math.PI)};
-          }
+            if (!onStage || l.speaker === spk) return;
+            const h = hashStr(`${shot.id}:${li}:${c.who}`);
+            const question = /\?\s*$/.test(l.text);
+            if (!question && h > 0.36) return; // most lines get no nod at all
+            const delay = 0.1 + h * 0.4;
+            const len = question ? 0.7 : 0.45;
+            const lt = t - (l.startInShot + (l.end - l.start)) - delay;
+            if (lt > 0 && lt < len) {
+              const w = Math.sin((lt / len) * Math.PI);
+              pose = question ? {...pose, tilt: pose.tilt - 4 * w} : {...pose, tilt: pose.tilt + (4 + h * 6) * w};
+            }
+          });
         }
         for (const l of r.loops) {
           const w = Math.sin(l.local * Math.PI * 2 * 1.6);
@@ -374,9 +439,7 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
             pose = {...pose, rArm: [72 - tp * 14, 70 + tp * 30]};
           }
         }
-        // blink every ~3.5 s
-        const bp = (frame + i * 41 + 25) % 104;
-        const blink = bp < 3 ? 1 - Math.abs(bp - 1.5) / 1.5 : 0;
+        const blink = blinkAt(t, `${shot.id}:${c.who}`, !!line, r.events);
         const st: ToonState = {
           x: r.x + xo,
           y: r.y + yo * c.depth,
