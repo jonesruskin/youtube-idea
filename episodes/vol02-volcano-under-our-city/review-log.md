@@ -57,3 +57,17 @@
   - true peak −0.5 dBTP → render.ts now measures the encoded peak and tightens the limiter until it is ≤ −1.2 dBTP;
   - two idle alert inserts → they now move.
 - Re-rendered.
+
+## Pass 6 (v5.2): the CEO's File 001 notes applied here before the CEO sees it
+- **Every line rewritten for feeling and delivery (docs/00 D17–D19).** Comfort comes before analysis ("Oh, Lui. I'm sorry." before Ana works out the pond clue). Mum's pride is said out loud ("Your map did that. // I'm so *proud* of you."). Dad: "We lost a house. / Look around you. // We didn't lose *anyone*." Ten faces were redirected to carry their lines.
+- **Logic:** "about fifty volcanoes" → "fifty-three" (it now matches the title's 53 and the "fifty-four now" ending).
+- **Text-safe audit:**
+  - the place tags overlapped the LIVE bug on news shots;
+  - emoji on Ana's map → words ("fish died", "bus bump");
+  - "Kōwhai St" collided with a pin;
+  - the CO₂, surge and bottom labels drifted off frame → moved into the safe area.
+- **Gates:**
+  - facing: clean;
+  - check-episode: all pass (text-safe: 1,105 samples, every label visible);
+  - 145 lines signed;
+  - WER 1.3% (homophones such as Mum/Mom are now normalised; Māori names are checked by ear).
