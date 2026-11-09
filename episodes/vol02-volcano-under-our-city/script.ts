@@ -1,0 +1,40 @@
+import type {Line, Shot, Episode} from '../../src/engine/schema';
+
+/**
+ * FILE 002: "A Volcano Started Growing Under Our City"
+ * Premise (one causal chain): see world-model.md §1. Rules: docs/00-production-standards.md. Stages: docs/PIPELINE.md.
+ */
+const L =
+  (speaker: Line['speaker']) =>
+  (text: string, pause?: number): Line => ({speaker, text, pause});
+const N = L('NARRATOR');
+const sh = (id: string, base: {scene: string; props?: Record<string, unknown>}, o: Partial<Shot> = {}): Shot => ({id, ...base, ...o}) as Shot;
+const sc = (scene: string, props: Record<string, unknown> = {}) => ({scene, props});
+
+const shots: Shot[] = [
+  sh('title', sc('title'), {min: 3.6, cue: 'title', action: 'Title card.', lines: [N('…')]}),
+  sh('end', sc('end'), {cue: 'end', action: 'End screen.', lines: [N('What would you have done? Tell us in the comments.', 1.0)]}),
+];
+
+export const vol02: Episode = {
+  id: 'vol02',
+  file: 'FILE 002',
+  title: 'A Volcano Started Growing Under Our City',
+  youtubeTitle: 'A Volcano Started Growing Under Our City',
+  titleAlternates: [],
+  thumbnailText: '',
+  commentPrompt: '',
+  logline: '',
+  tags: [],
+  pinnedComment: '',
+  fps: 30,
+  style: 'cinema',
+  // every fact the story depends on, written as things that may not appear (docs/00 S3/S6)
+  world: {facts: [], banLines: [], banProps: [], onlySfx: [], banSets: [], presence: []},
+  // words that would give the story away; never in title, thumbnail text, logline, tags or pinned comment (K1)
+  spoilers: [],
+  questionBank: 'episodes/vol02-volcano-under-our-city/world-model.md',
+  narratorIs: [],
+  dialogueLedger: 'episodes/vol02-volcano-under-our-city/dialogue-review.md',
+  shots,
+};

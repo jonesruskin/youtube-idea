@@ -70,6 +70,33 @@ try {
   lines.slice(1, 12).forEach((l) => fails.push(`  ${l.trim()}`));
 }
 
+// 2c · premise registry (docs/00 S11): a new story, not a re-use of an earlier episode's event or title
+{
+  const reg = join(ROOT, 'docs', 'premises.md');
+  if (!existsSync(reg)) fails.push('premise registry: docs/premises.md missing');
+  else {
+    const STOPW = new Set('the a an and of to in on at for with my our is was were it its their they a i we when while from by as be up out this that what who'.split(' '));
+    const words = (t: string) => new Set(t.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter((w) => w.length > 2 && !STOPW.has(w)));
+    const rows = readFileSync(reg, 'utf8').split('\n').filter((l) => /^\|\s*[a-z]+\d+\s*\|/.test(l)).map((l) => l.split('|').map((c) => c.trim()));
+    const mine = rows.find((r) => r[1] === id);
+    if (!mine) fails.push(`premise registry: ${id} is not registered in docs/premises.md`);
+    const lead = (t: string) => t.toLowerCase().split(/\s+/).slice(0, 4).join(' ');
+    for (const r of rows) {
+      if (r[1] === id) continue;
+      if (r[4] === 'archived' && mine?.[4] === 'released') continue; // a rejected later draft doesn't fail the original
+      if (lead(r[2]) === lead(episode.title) || lead(r[2]) === lead(episode.youtubeTitle)) fails.push(`premise registry: title starts like ${r[1]} ("${r[2]}"); every episode is a new story (S11)`);
+      if (mine) {
+        const a2 = words(mine[3]);
+        const b2 = words(r[3]);
+        const shared = [...a2].filter((w) => b2.has(w));
+        const j = shared.length / Math.max(1, Math.min(a2.size, b2.size));
+        if (j > 0.3) fails.push(`premise registry: premise overlaps ${r[1]} (${shared.join(', ')}); every episode is a new story (S11)`);
+      }
+    }
+    if (mine && !fails.some((f) => f.startsWith('premise registry'))) ok.push('premise registry: a new story (no shared event or title lead)');
+  }
+}
+
 // 3 · packaging
 const t = episode.youtubeTitle;
 if (t.length < 50 || t.length > 70) fails.push(`title: "${t}" is ${t.length} characters (50–70)`);
