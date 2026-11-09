@@ -3,13 +3,11 @@
 > **One impossible year, seen by a different person each time. Every clue is real physics. Every episode has its own twist.**
 
 ## The format in one paragraph
-On a summer morning the Sun goes out. **Every File is one person's complete story of that year**, told by them, from
-their corner of the planet, with its own mystery solved and its own twist landed inside the episode. Underneath runs a
-quiet spine: the shell around the Sun (a harbour brake left long ago by the builders at HD 219134, 21 light-years away),
-the knock Mr. Ito sent in 1983, the builders' ship that set off when it arrived and braked against our Sun for one year,
-and the conversation that began when Mira answered. Each File moves the spine
-forward by exactly one clue. A regular viewer gets the extra layer; someone who starts at File 7 over lunch still gets a
-full meal. (An anthology with a mythology: "monster of the week" plus a slow arc.)
+**Every File is a new story.** A different event or mystery, a different family, a different city, a different
+title and twist; nothing carries over except the quality bar (docs/00 S11, premise registry `docs/premises.md`).
+What every File shares: a kid or family at the centre, told by one of them later in the first person; every clue is
+real science, researched and sourced; one twist, set up by what the characters do; complete in one episode.
+File 001: the Sun goes dark for a year (an alien brake). File 002: a new volcano rises under Auckland in four days.
 
 ## Rules every File follows
 1. **Standalone first.** The logline, the first 30 seconds and the ending must work without any other File (the
@@ -27,7 +25,7 @@ full meal. (An anthology with a mythology: "monster of the week" plus a slow arc
 7. **Titles and thumbnails stand alone** ("The Sun Went Out", "The Rice Farmer"), never "Part 7". Numbers live in the
    description and playlist.
 
-## The 12 Files: narrators, casts, twists
+## Earlier File ideas (pre-S11, kept only as raw material; each must become a new, unrelated story)
 
 > Rows 3–12 were drafted before the v5 canon (harbour brake, Sun back on Day 365). Before any of them is made, its premise is re-checked against `docs/16-sun01-world-model.md` and rewritten where it clashes (e.g. File 7's "never seen the Sun"), through the full pipeline.
 Heights are fractions of the 1.75 m reference hero (1.0). Every new design is added to `design.ts` CAST.
