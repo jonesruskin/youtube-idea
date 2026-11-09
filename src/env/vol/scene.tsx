@@ -289,7 +289,7 @@ export const VolScene: React.FC = () => {
             <path d={`M1300,560 Q1450,${560 + 70} 1600,560`} fill="#B8C8D8" opacity={0.5 + 0.2 * Math.sin(frame * 0.1)} />
             <Label x={1450} y={520} t="GAS SINKS INTO THE HOLLOW" s={30} />
             <Label x={420} y={520} t="CREEK FIZZES" s={30} />
-            <Label x={960} y={960} t="CO₂ · HEAVIER THAN AIR" s={34} c="#FFD27A" />
+            <Label x={1250} y={800} t="CO₂ · HEAVIER THAN AIR" s={34} c="#FFD27A" />
           </g>
         )}
         {up && (

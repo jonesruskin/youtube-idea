@@ -65,6 +65,15 @@ def spoken(text):
         text = re.sub(rf"\b{word}\b", sub, text)
     return text
 
+PAD = 0.3  # s of silence around audio sent through rubberband/ffmpeg: its latency otherwise clips short lines' edges
+
+def padded(fn):
+    def run(audio, *a):
+        n = int(PAD * SR)
+        out = fn(np.concatenate([np.zeros(n, np.float32), audio.astype(np.float32), np.zeros(n, np.float32)]), *a)
+        return out[n:n + len(audio)] if len(out) >= n + len(audio) else out[n:]
+    return run
+
 def ffmpeg_fx(audio, fx):
     """Child voice = pitch up with formants shifted too; radio = band-limited, saturated, with a bed of static."""
     with tempfile.TemporaryDirectory() as d:
@@ -92,7 +101,7 @@ def ffmpeg_fx(audio, fx):
     return out
 
 # Delivery marks (src/engine/delivery.ts): *stress*, " / " beat, " // " long beat. Bump to re-voice everything.
-DELIVERY_VERSION = 4
+DELIVERY_VERSION = 7
 STRESS = re.compile(r"\*([^*]+)\*")
 BEATS = {"/": 0.24, "//": 0.6}  # plus ≈0.11 s of phrase edges
 
@@ -113,14 +122,15 @@ def segments(say):
     return out
 
 def stress_words(span):
-    """Kokoro/misaki stress markup: each stressed word becomes [word](+2) (names keep their phoneme fix instead)."""
+    """Kokoro/misaki stress markup: each stressed word becomes [word](+1) (names keep their phoneme fix instead).
+    +2 and stress on very short lines bend the vowels ('To me' read as 'That's amazing' once aged): see the caller."""
     out = []
     for tok in span.split():
         m = re.match(r"^([\w'’-]+)(\W*)$", tok)
         if not m or any(m.group(1) == n for n in PRONOUNCE):
             out.append(tok)
         else:
-            out.append(f"[{m.group(1)}](+2){m.group(2)}")
+            out.append(f"[{m.group(1)}](+1){m.group(2)}")
     return " ".join(out)
 
 def pitch_shift(audio, ratio):
@@ -131,6 +141,9 @@ def pitch_shift(audio, ratio):
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-af", f"rubberband=pitch={ratio}:tempo=1.0:formant=preserved", "-ar", str(SR), dst], check=True)
         out, _ = sf.read(dst, dtype="float32")
     return out
+
+ffmpeg_fx = padded(ffmpeg_fx)
+pitch_shift = padded(pitch_shift)
 
 def char_times(text, words):
     """Spread word start/end times over the characters of `text` (lip-sync wants one start time per character)."""
@@ -174,38 +187,66 @@ def main():
         lang = cfg.get("lang", "a")
         if lang not in pipes:
             pipes[lang] = KPipeline(lang_code=lang, repo_id="hexgrad/Kokoro-82M")
-        # Delivery: synthesise each phrase between beats separately, stress marked words, then join with the beats.
-        chunks, words, offset, stressed = [], [], 0.0, []
+        # Delivery: the whole line in ONE pass (natural intonation runs across the beats), stress marked inline; then
+        # each beat is inserted as silence at the end of the word before it (Kokoro's word timestamps). If the words
+        # can't be matched to the phrases, fall back to synthesising the phrases one by one.
         segs = segments(say)
-        for si, (seg, beat) in enumerate(segs):
-            want = [w.lower() for w in STRESS.findall(seg) for w in re.findall(r"[\w'’-]+", w)]
-            text = spoken(STRESS.sub(lambda m: stress_words(m.group(1)), seg))
-            seg_words, seg_audio, loc = [], [], 0.0
-            for r in pipes[lang](text, voice=cfg["voice"], speed=cfg["speed"] * fv["speed"]):
+        def synth(txt):
+            ws, au, loc = [], [], 0.0
+            for r in pipes[lang](txt, voice=cfg["voice"], speed=cfg["speed"] * fv["speed"]):
                 a = r.audio.numpy()
                 for t in r.tokens or []:
                     if t.start_ts is not None and t.end_ts is not None and t.text.strip() and any(c.isalnum() for c in t.text):
-                        seg_words.append({"w": t.text, "s": loc + t.start_ts, "e": loc + t.end_ts})
-                seg_audio.append(a)
+                        ws.append({"w": t.text, "s": loc + t.start_ts, "e": loc + t.end_ts})
+                au.append(a)
                 loc += len(a) / SR
-            seg = np.concatenate(seg_audio) if seg_audio else np.zeros(1, np.float32)
-            # each phrase trimmed to its own words (Kokoro pads both ends), so a beat is exactly the beat asked for
-            if seg_words:
-                h0 = max(0.0, seg_words[0]["s"] - 0.03) if si > 0 else 0.0
-                t0 = min(len(seg) / SR, seg_words[-1]["e"] + 0.08) if si < len(segs) - 1 else len(seg) / SR
-                seg = seg[int(h0 * SR):int(t0 * SR)]
-                seg_words = [{**w, "s": w["s"] - h0 + offset, "e": w["e"] - h0 + offset} for w in seg_words]
-            chunks.append(seg)
-            offset += len(seg) / SR
-            for w in seg_words:
-                key = re.sub(r"[^\w'’-]", "", w["w"].lower())
-                if want and key == want[0]:
-                    stressed.append((w["s"], w["e"]))
-                    want.pop(0)
-            words += seg_words
-            if beat:
+            return (np.concatenate(au) if au else np.zeros(1, np.float32)), ws
+        full = " ".join(seg for seg, _ in segs)
+        want = [w.lower() for span in STRESS.findall(full) for w in re.findall(r"[\w'’-]+", span)]
+        short = len(re.findall(r"[\w'’]+", STRESS.sub(lambda m: m.group(1), full))) <= 3
+        mark = (lambda m: m.group(1)) if short else (lambda m: stress_words(m.group(1)))  # tiny lines: lift only
+        base, words = synth(spoken(STRESS.sub(mark, full)))
+        counts = [len(re.findall(r"[\w'’]+(?:[-.:][\w'’]+)*", STRESS.sub(lambda m: m.group(1), seg))) for seg, _ in segs]
+        chunks, offset, stressed = [], 0.0, []
+        if len(segs) == 1 or sum(counts) == len(words):
+            # cut points: after the last word of each phrase that ends in a beat
+            cuts, n = [], 0
+            for (seg, beat), c in zip(segs, counts):
+                n += c
+                if beat and n < len(words):
+                    cuts.append((words[n - 1]["e"], beat, n))
+            pos, shift, out_words = 0, 0.0, []
+            for k, w in enumerate(words):
+                out_words.append(w)
+            for t_cut, beat, n in cuts:
+                a = int(t_cut * SR)
+                chunks.append(base[pos:a])
                 chunks.append(np.zeros(int(beat * SR), np.float32))
-                offset += beat
+                pos = a
+                for w in words[n:]:
+                    w["s"] += beat
+                    w["e"] += beat
+            chunks.append(base[pos:])
+        else:
+            words = []
+            for si, (seg, beat) in enumerate(segs):
+                seg_audio, seg_words = synth(spoken(STRESS.sub(lambda m: stress_words(m.group(1)), seg)))
+                if seg_words:
+                    h0 = max(0.0, seg_words[0]["s"] - 0.03) if si > 0 else 0.0
+                    t0 = min(len(seg_audio) / SR, seg_words[-1]["e"] + 0.08) if si < len(segs) - 1 else len(seg_audio) / SR
+                    seg_audio = seg_audio[int(h0 * SR):int(t0 * SR)]
+                    seg_words = [{**w, "s": w["s"] - h0 + offset, "e": w["e"] - h0 + offset} for w in seg_words]
+                chunks.append(seg_audio)
+                offset += len(seg_audio) / SR
+                words += seg_words
+                if beat:
+                    chunks.append(np.zeros(int(beat * SR), np.float32))
+                    offset += beat
+        for w in words:
+            key = re.sub(r"[^\w'’-]", "", w["w"].lower())
+            if want and key == want[0]:
+                stressed.append((w["s"], w["e"]))
+                want.pop(0)
         audio = np.concatenate(chunks).astype(np.float32)
         # stress: the marked words a little louder (+3.5 dB, 25 ms ramps), on top of Kokoro's own emphasis
         if stressed:

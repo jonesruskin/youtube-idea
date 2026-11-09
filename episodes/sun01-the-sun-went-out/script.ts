@@ -277,7 +277,7 @@ const shots: Shot[] = [
     c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', outfit: 'home', expr: 'focused'}),
   ], [{at: 'l0+0.3', who: Y, look: [-1, 0.6]}], {frosty: false, doorOpen: true}), {
     action: 'Ito, calm, nods at their bare feet.',
-    lines: [I("(firm) Shoes on, please. / *Both* of you.")],
+    lines: [I("(firm) Put your shoes on, please. / *Both* of you.")],
   }),
   sh('from-upstairs', stage('apartment', 'door', push(2.3, 2.5, 1560, 600), [c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', outfit: 'home', expr: 'neutral'})], [{at: 'l0+0.8', who: IT, look: [-0.6, 0.2]}], {frosty: false, doorOpen: true}), {
     action: 'Close on Ito, calm in the torchlight.',
@@ -285,6 +285,7 @@ const shots: Shot[] = [
   }),
   sh('packed', stage('apartment', 'door', push(2.4, 2.7, 1560, 800, 1540, 840), [c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', outfit: 'home'})], [{at: 0.3, who: IT, look: [-0.4, 0.4]}], {frosty: false, doorOpen: true}), {
     action: 'Close on the canvas bag in his hand: worn straps, a luggage tag, packed tight.',
+    dev: 'his bag has been packed for years: he was expecting something',
     lines: [N("(wistful) His bag was *already* packed. / It had been packed for *years*.")],
   }),
   sh('and-the-dog', stage('apartment', 'door', push(2.4, 2.7, 1500, 560), [c(IT, 1590, 930, {facing: 'left', outfit: 'home', pose: 'relaxed', hold: 'torchOff', expr: 'smile', holdL: 'bag'}), c(B, 1300, 930, {hold: 'toast'})], [
@@ -587,7 +588,7 @@ const shots: Shot[] = [
     transition: 'fade',
     dev: 'Mum is a nurse; she video-calls the kids on her phone',
     action: 'Day 0, evening. A hospital corridor turned shelter. At the nurses’ station, a nurse in scrubs holds up her phone for a video call.',
-    lines: [MUM("(relieved) Kai! Mira! / Oh, there you *are*.")],
+    lines: [MUM("(relieved) Kai! / Mira! / Oh, there you *are*.")],
   }),
   sh('apt-answer', stage('apartment', '', push(1.7, 1.9, 1240, 640), [
     c(MI, 1090, 930, {facing: 'right', expr: 'surprised'}),
@@ -648,6 +649,7 @@ const shots: Shot[] = [
   ], [{at: 'l0', who: Y, look: [1, -0.3]}], {frosty: false}), {
     timeJump: true,
     action: 'Later. Kai and Mira on the rug. Kai finally asks it.',
+    beats: ['loop'],
     lines: [K("(scared) Is the Sun / *dead*?", 0.3)],
   }),
   sh('if-dead', sc('diagram', {v: 'tide', step: 0}), {

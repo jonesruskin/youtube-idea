@@ -38,7 +38,12 @@ def norm(s):
     s = re.sub(r"(\d+)\.(\d+)", r"\1 \2", s)
     s = re.sub(r"\d+", lambda m: " " + spell(m.group()) + " ", s)
     s = re.sub(r"[^a-z' ]", " ", s)
-    return [w for w in s.split() if w not in ("and", "hundred")]
+    return [HOMOPHONES.get(w, w) for w in s.split() if w not in ("and", "hundred")]
+
+# Same sounds, different spellings: the ASR model writes American and common spellings for what was said right.
+# Only true homophones of the script's words belong here (the WER gate measures pronunciation, not spelling).
+HOMOPHONES = {"mom": "mum", "moms": "mums", "mommy": "mummy", "anna": "ana", "core": "kaur", "louis": "lui", "louie": "lui",
+              "louis's": "lui's", "louie's": "lui's", "neighbors": "neighbours", "meters": "metres", "kilometers": "kilometres", "gray": "grey"}
 
 def wer(ref, hyp):
     d = [[0] * (len(hyp) + 1) for _ in range(len(ref) + 1)]
