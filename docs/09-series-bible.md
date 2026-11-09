@@ -1,12 +1,13 @@
-# 09 · Series bible: THE BLINK FILES (v4)
+# 09 · Series bible: THE BLINK FILES (v5)
 
 > **One impossible year, seen by a different person each time. Every clue is real physics. Every episode has its own twist.**
 
 ## The format in one paragraph
 On a summer morning the Sun goes out. **Every File is one person's complete story of that year**, told by them, from
 their corner of the planet, with its own mystery solved and its own twist landed inside the episode. Underneath runs a
-quiet spine: the shell around the Sun (a telephone left by the builders at HD 219134, 21 light-years away), the knock
-Mr. Ito sent in 1983, their answer in 2026, and Mira's drawing, now on its way to them. Each File moves the spine
+quiet spine: the shell around the Sun (a harbour brake left long ago by the builders at HD 219134, 21 light-years away),
+the knock Mr. Ito sent in 1983, the builders' ship that set off when it arrived and braked against our Sun for one year,
+and the conversation that began when Mira answered. Each File moves the spine
 forward by exactly one clue. A regular viewer gets the extra layer; someone who starts at File 7 over lunch still gets a
 full meal. (An anthology with a mythology: "monster of the week" plus a slow arc.)
 
@@ -31,8 +32,8 @@ Heights are fractions of the 1.75 m reference hero (1.0). Every new design is ad
 
 | # | Title | Narrator (who / when / why they know) | Principal cast | The File's twist | Spine clue it adds |
 |---|---|---|---|---|---|
-| 1 | **The Sun Went Out** | **Mira Okafor**, ~30, recording years later; she lived it | Mira (8, 0.6), **Kai Okafor** (16, 1.0), **Mr. Haruki Ito** (73, 0.93; 30 in 1983, 1.0), **Grace Okafor** (Mum, 41, nurse at St Anne's across the river, 0.97), Biscuit | The young astronomer in the "other" thread is Ito in 1983. He dialled; the 1,679-pulse picture is the answer, and the empty square at its bottom is our turn. Mira sends her sun drawing; 16:40 later the Sun comes back at 6:52. | The shell carried a century of Earth's broadcasts to HD 219134, and Mira's drawing arrives there in 2047. |
-| 2 | **The Reply** | **Tomás Reyes**, the 6:51 Manila bus boy, now 19 | Tomás, his gran **Lola Pilar** (78, retired radio operator, 0.85), radio engineer **Dr. Amara Bello** (45, 0.98), Ito (cameo) | While the world argues over a reply, Lola Pilar's shortwave logs the shell's 1,679 pulses a second time, a minute after the first, and they are not identical: one square has been filled in. | When the slats opened, the shell sent one more short message toward Earth. Nobody has decoded it. |
+| 1 | **The Sun Went Out** | **Mira Okafor**, ~30, recording years later; she lived it | Mira (8, 0.6), **Kai Okafor** (16, 1.0), **Mr. Haruki Ito** (73, 0.93; 30 in 1983, 1.0), **Grace Okafor** (Mum, 41, nurse at St Anne's across the river, 0.97), Biscuit | The young astronomer in the "other" thread is Ito in 1983. He answered a signpost and knocked; the builders set off, and the shell was braking their ship with our Sun. Their 1,679-pulse picture shows them, their ship beside our Sun, and an empty square. Mira sends her sun drawing; at 6:52 the ship stops and the Sun comes back. | They are here, 8 light-minutes away, and at 7:03 they answer Mira: one, two, three. |
+| 2 | **The Reply** | **Tomás Reyes**, the 6:51 Manila bus boy, now 19 | Tomás, his gran **Lola Pilar** (78, retired radio operator, 0.85), radio engineer **Dr. Amara Bello** (45, 0.98), Ito (cameo) | While the world argues over what to say to the ship beside the Sun, Lola Pilar's shortwave logs its 7:03 answer to Mira, and the minutes of signal that follow it: the empty square, filled in. | The ship has started to move again, toward us. |
 | 3 | **The Rice Farmer** | **Lakshmi Iyer**, the farmer's daughter (12 then, 0.7) | **Arjun Iyer** (the 6:51 farmer, 48, 1.0), grandmother **Paati** (80, 0.82), neighbour **Selvam** (35) | Their village never froze: the "hot spring" Paati guards is a geothermal vent her grandfather hid from the government. | The beam never wavers, even during an earthquake: it isn't on a planet. |
 | 4 | **The Surfer** | **Leilani Brooks**, the 6:51 Sydney surfer (24, 0.98) | Leilani, her brother **Josh** (17), ship's captain **Mags Moana** (52) | The first ship to cross the frozen ocean is sailing *under* the ice, and the ocean is warmer than it should be. | Tides now show a tiny monthly wobble: the Sun is being nudged. |
 | 5 | **Venus Went Dark First** | **Dr. Edith Marlow**, astronomer on the 1919 Sobral expedition, in her diary | Edith, her assistant **Joaquim** (22), and, in a 1983 frame, young Ito reading her diary | Edith saw the lines in 1919, reported them, and was told by the expedition committee to crop them out. Ito learned about them from her diary. | The lines were noticed by someone else first, a hundred years ago. |
@@ -139,22 +140,29 @@ python3 scripts/qa_motion.py renders/sun01-hq.mp4 out/sun01-timeline.json # moti
 ```
 
 
-## v4 canon (File 001), fixed for every later File
-- **The shell** was built by the people of **HD 219134** (a real orange dwarf 21.3 ly away in Cassiopeia, five or more
-  known planets) long before 1919. Its slats sit edge-on, almost invisible; during total eclipses they show as faint
-  straight lines that, extended, point to their star: a number to call.
-- **1983:** Haruki Ito (30) finds the lines on old plates, is refused by the Council, and knocks anyway (1, 2, 3).
-  The knock reaches HD 219134 in 2004; their answer reaches the shell in 2026.
-- **Day 0, 6:52 local (UTC+1):** every slat turns to face the Sun. For one year the shell beams the Sun's power to
-  HD 219134, carrying everything it ever recorded from Earth (a century of radio and TV).
-- **Day 2:** infrared telescopes find a warm sphere twice the Sun's width. **Day 7:** grids fail worldwide.
-  **Day 300:** astronomers find the beam and its target.
-- **Day 365, 6:52:** the beam stops. The shell knocks 1, 2, 3, then sends 1,679 pulses (23 × 73, the Arecibo format):
-  the count to ten, a builder beside a small human, their star and home world, our Sun in its shell, Earth, and an
-  empty square. The slats stay shut: it is holding the line for our answer.
-- **Day 367, 6:35:** Mira's drawing (a sun, a girl standing under it) is sent from Ito's transmitter, without
-  permission. 8 min 20 s out, 8 min 20 s back: **the Sun returns at 6:52**, the same minute it went out.
-- **Grace Okafor (Mum)** spends Days 0–180 at St Anne's hospital across the river (the city's shelter), calls nightly at
-  seven on Ito's ham radio, and on Day 180 leads forty patients across the frozen river to Harbour Street station.
-- Open questions the series owns: what the builders will answer in 2047; whether they knew a year of darkness would
-  hurt us; the second message (File 2).
+## v5 canon (File 001), fixed for every later File (full model: docs/16-sun01-world-model.md)
+- **The shell** was built long ago by the people of **HD 219134** (a real orange dwarf 21.3 ly away in Cassiopeia, five
+  or more known planets): a **harbour brake** at our Sun, so a ship could one day stop here. Its slats sit edge-on, almost
+  invisible; in total-eclipse photos (1919 Sobral and others) some show as straight lines that point to their star: a
+  signpost, "if you can see this, call us". How it was built is the series' first open question.
+- **1983:** Haruki Ito (30) traces the lines, is refused by the Council, and knocks anyway (1, 2, 3). The knock reaches
+  HD 219134 in 2004; the builders set off at once, at nearly the speed of light.
+- **Day 0 (summer 2026), 6:52 local (UTC+1):** the arriving ship switches the shell on. Every slat turns, focusing all
+  the Sun's light into one beam that pushes against the ship's sail from the front: a brake. Earth goes dark (the day
+  side at once; the night side wakes to no morning).
+- **The world:** power, phones and internet keep running (coal, gas, nuclear, hydro); electric trains carry food, fuel and
+  patients; planes are grounded and diesel trucks stop below about −30 °C; one big snowfall in week one, then frost.
+  −30 °C by Day 7, −50 °C by Day 100, −70 °C by Day 365; underground stays about +10 °C. Cities move into metro shelters;
+  underground farms grow lettuce, potatoes and mushrooms. Not everyone survives.
+- **Day 2:** infrared telescopes find a warm sphere twice the Sun's width. **Day 300:** astronomers find the beam, aimed
+  at HD 219134, and something inside it, slowing; it will stop in 65 days.
+- **Day 365, 6:31:** the nearly stopped ship sends 1,679 pulses (23 × 73, the Arecibo format): the count to ten
+  (continuing Ito's 1-2-3), a builder beside a small human, their star, their ship parked beside our Sun, Earth, and an
+  empty square. **6:47:** while governments argue, Mira's drawing (a sun, a girl under it) goes out from Ito's dish.
+  **6:52:** the ship stops; the brake is no longer needed; the Sun returns on the day side at once (New York, at night,
+  gets an ordinary sunrise hours later). **7:03:** their answer to Mira: one, two, three.
+- **Grace Okafor (Mum)**, a nurse at St Anne's, is held at the hospital by the Day 0 emergency, sleeps there and
+  video-calls the kids every night at seven; on Day 30 the hospital opens a clinic in Harbour Street station and she
+  works there, with the family, from then on.
+- Open questions the series owns: how the shell was built; what the builders say next (their 7:03 reply to Mira is
+  the hook of File 2); whether they knew a year of darkness would hurt us.

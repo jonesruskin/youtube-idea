@@ -3,32 +3,30 @@
 **Title alternates for Test & Compare:** “What If the Sun Went Out? A Family Survives Day 1 to Day 365” · “The Sun Disappeared at 6:52 AM. This Is What Happened Next”
 **Thumbnail text:** IT'S 7 AM.
 **Thumbnails for Test & Compare:** thumbnail-a.png, thumbnail-b.png, thumbnail-c.png (upload all of them; YouTube serves each to a share of viewers and keeps the one with the best watch time)
-**End screen:** the last 12 s (from 13:13) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 13:16 to the end.
-**Runtime:** 13:25
-**Manual mid-roll positions:** 5:23, 7:48 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
+**End screen:** the last 12 s (from 14:50) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 14:54 to the end.
+**Runtime:** 15:02
+**Manual mid-roll positions:** 5:58, 8:58 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
 
 ## Description (paste as-is)
 
 ```
-On a summer morning, at 6:52, the Sun goes out. Eight-year-old Mira, her big brother Kai and Mr. Ito, the retired astronomer upstairs, have to survive a year in the dark while their mum holds a hospital together across the river. Every clue they find is real physics. Watch to the end.
+On a summer morning, at 6:52, the Sun goes out. Eight-year-old Mira, her big brother Kai and Mr. Ito, the retired astronomer upstairs, have to survive a year in the dark while their mum, a nurse, works around the clock. Every clue they find is real physics. Watch to the end.
 
 If the Sun went out tomorrow, what's the first thing you'd do? Tell us below 👇
 
 0:00 The last morning
-1:08 Hour one
-2:31 The first day
-3:38 Day 1
-3:57 Day 2
-4:30 Day 3
-4:44 Day 7
-5:23 Day 8
-6:10 Day 30
-6:49 Day 40
-7:25 Day 100
-7:51 Day 180
-8:31 Day 300
-8:56 Day 365
-11:20 Day 367
+1:14 Hour one
+2:51 The first day
+4:04 Day 1
+4:24 Day 2
+4:57 Day 3
+5:11 Day 7
+6:06 Day 8
+6:50 Day 30
+8:00 Day 40
+8:36 Day 100
+9:12 Day 300
+9:52 Day 365
 
 THE BLINK FILES — one impossible year, seen by a different person each time. Every clue is real physics. Subscribe for the next File.
 
@@ -54,6 +52,7 @@ THE REAL SCIENCE IN THIS STORY
 (12) HD 219134 is a real orange dwarf star about 21 light-years away in Cassiopeia, with at least five known planets. — Source: NASA Exoplanet Archive, ‘HD 219134’; Motalebi et al., Astronomy & Astrophysics (2015)
 (13) In 1974 the Arecibo radio telescope sent a message of 1,679 pulses toward the star cluster M13, because 1,679 = 23 × 73 (two primes) can only be laid out as one grid, which forms a picture. — Source: Cornell University / SETI Institute, ‘The Arecibo Message’ (1974)
 (14) Radio waves travel at the speed of light, so a signal to a star 21.3 light-years away and an answer back take about 43 years: 1983 → 2004 → 2026. — Source: Definition of the light-year (IAU); HD 219134 distance 6.5 pc (Gaia DR3)
+(15) A ship near light speed cannot carry enough fuel to stop; one proposed way is to brake a light sail against the destination star’s light. Here the shell focuses the whole Sun onto the sail. — Source: Heller & Hippke, ‘Deceleration of high-velocity interstellar photon sails into bound orbits at Alpha Centauri’, Astrophysical Journal Letters (2017)
 ```
 
 ## Tags

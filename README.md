@@ -4,19 +4,11 @@
 
 A YouTube channel of animated space-science survival stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev): the narration is voiced locally with Kokoro-82M (Apache-2.0), and the score is synthesised from scratch.
 
-**Launch episode: File 001, "The Sun Went Out. Day 1 to Day 365" (v4)** is in `renders/`:
-- `sun01.mp4`: about 13:20, 1080p web copy with soft English subtitles. The upload master `sun01-hq.mp4` is git-ignored.
-- **The story:** grown-up Mira tells the year she was eight and the Sun went out. With her brother Kai, their dog Biscuit and Mr. Ito, the retired astronomer upstairs, she works it out clue by clue (light delay, tides, the world's infrared telescopes, a beam to a real star) while Mum, a nurse, holds the hospital across the river together and calls every night by radio. Intercut, unnarrated, a young astronomer works through one night in 1983. The turn: he is Mr. Ito, the shell is a telephone, he dialled, and the 1,679-pulse picture on Day 365 is the answer. Mira sends her drawing back, and the Sun returns.
-- **Every question answered on screen:** [`docs/12-sun01-v4-logic.md`](docs/12-sun01-v4-logic.md) maps each one to its shot.
-- **Craft:**
-  - 218 shots at about 3.6 s each, a development every ≤30 s, eight turns
-  - zero-tolerance continuity gates: props change hands only by give/take/put; things put down stay put; nobody vanishes from a visible spot; no automatic hand-waving; 180° rule
-  - a first-person narrator and named characters with their own voices (news anchor and scientist added)
-  - real-world scale, and nobody floating (auto seats, grounded poses, attached piggybacks)
-- Also in `renders/`:
-  - `sun01.srt` (captions) and `sun01-described.srt`
-  - three thumbnails for YouTube's Test & Compare: `sun01-thumbnail.png` WHO TURNED IT OFF?, `-b` HE KNEW and `-c` 1983
-  - `sun01-metadata.md` (title, description with chapters and sources, tags, mid-rolls, end screen, pinned comment)
+**Launch episode: File 001, "The Sun Went Out at Breakfast. Day 1 to Day 365 in the Dark" (v5)** is in `episodes/sun01-the-sun-went-out/release/` (videos on Git LFS: `git lfs pull`):
+- `sun01-master.mp4` (upload master) and `sun01.mp4` (web copy), about 15 minutes, 1080p, soft English subtitles; SRTs, `metadata.md`, three spoiler-free thumbnails and a README.
+- **The story:** grown-up Mira tells the year she was eight and the Sun went out. With her brother Kai, their dog Biscuit and Mr. Ito, the retired astronomer upstairs, she works it out clue by clue (light delay, tides, infrared telescopes, a beam to a real star) while Mum, a nurse, works at the hospital and video-calls every night, until she joins them at the station clinic on Day 30. Intercut, unnarrated, a young astronomer works through one night in 1983. The turn: he is Mr. Ito; he answered a signpost in eclipse photos and knocked; the builders set off, and the shell around the Sun was their brake. When their ship stopped, the Sun came back.
+- **How every episode is made:** [`docs/PIPELINE.md`](docs/PIPELINE.md) (stages and exit criteria) and [`docs/00-production-standards.md`](docs/00-production-standards.md) (every rule, each enforced by a gate or checklist). One command checks an episode before voicing: `npx tsx scripts/check-episode.ts <id>`; one checks the rendered release: `npx tsx scripts/qa-release.ts <id>`. New episodes start from `npx tsx scripts/new-episode.ts <id> <slug> "FILE 00X" "Title"`.
+- **Every viewer question answered on screen:** [`docs/16-sun01-world-model.md`](docs/16-sun01-world-model.md) (world model and 103-question bank); full screenplay in [`docs/15-sun01-v5-screenplay.md`](docs/15-sun01-v5-screenplay.md); review log in [`docs/14-sun01-v4.1-review-log.md`](docs/14-sun01-v4.1-review-log.md).
 - **Docs:**
   - screenplay, clue map and cause→effect links: [`docs/11-sun01-v3-screenplay.md`](docs/11-sun01-v3-screenplay.md)
   - series bible (12 standalone Files, narrators, casts, ElevenLabs voice and music casting): [`docs/09-series-bible.md`](docs/09-series-bible.md)
