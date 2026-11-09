@@ -112,6 +112,7 @@ if (episode.style === 'cinema') {
     if (s.hud && 'day' in s.hud) day = s.hud.day;
     if (s.thread) continue; // other timelines (1982, a memory) dress for their own day
     for (const c of ((s.props as any)?.cast ?? []) as any[]) {
+      if (episode.costumeByDay === false) break;
       if (!MAIN_CAST.includes(c.who) || c.who === 'mum') continue;
       const outfit = c.outfit ?? 'home';
       if (day < COATS && outfit !== 'home') errors.push(`Continuity: ${c.who} wears "${outfit}" before Day ${COATS} in "${s.id}".`);
@@ -148,7 +149,7 @@ if (episode.style === 'cinema') {
       const p = (s.props ?? {}) as any;
       if (s.thread || s.scene !== 'stage') continue;
       const key = `${day2}:${p.set}`;
-      if (key !== runKey) {
+      if (key !== runKey || s.timeJump) {
         runKey = key;
         worn = new Map();
       }

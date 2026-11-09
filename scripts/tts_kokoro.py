@@ -40,15 +40,24 @@ VOICES = {
     "CAPTAIN": {"voice": "am_onyx", "speed": 0.95, "fx": None},
     "OFFICER": {"voice": "af_jessica", "speed": 0.95, "fx": None},
     "CLERK": {"voice": "am_eric", "speed": 0.95, "fx": "radio"},
+    # File 002 (vol02)
+    "ANA": {"voice": "af_sky", "speed": 1.0, "fx": "child"},
+    "LUI": {"voice": "af_jessica", "speed": 1.02, "fx": "child"},
+    "SIONE": {"voice": "am_adam", "speed": 0.95, "fx": None},
+    "MELE": {"voice": "af_nova", "speed": 0.95, "fx": None},
+    "MELE_PHONE": {"voice": "af_nova", "speed": 0.95, "fx": "radio"},
+    "TEACHER": {"voice": "bm_lewis", "speed": 0.98, "fx": None},
+    "COLLEAGUE": {"voice": "am_eric", "speed": 0.98, "fx": None},
 }
 
 # Per-episode voice overrides (each File has its own narrator)
 EP_VOICES = {
     "sun02": {"NARRATOR": {"voice": "am_michael", "speed": 0.9, "fx": None}},
+    "vol02": {"NARRATOR": {"voice": "af_aoede", "speed": 0.9, "fx": None}},
 }
 
 # Pronunciation fixes (Kokoro inline phonemes); the script and captions keep normal spelling.
-PRONOUNCE = {"Mira": "[Mira](/mˈɪɹə/)", "Ito": "[Ito](/ˈiːtoʊ/)", "Kai": "[Kai](/kˈaɪ/)", "Tomás": "[Tomás](/toʊmˈɑs/)", "Amihan": "[Amihan](/ɑmˈiːhɑn/)", "anak": "[anak](/ˈɑnɑk/)", "Lola": "[Lola](/lˈoʊlə/)", "Luzon": "[Luzon](/luːzˈɔn/)", "Pilar": "[Pilar](/piːlˈɑɹ/)"}
+PRONOUNCE = {"Mira": "[Mira](/mˈɪɹə/)", "Ito": "[Ito](/ˈiːtoʊ/)", "Kai": "[Kai](/kˈaɪ/)", "Tomás": "[Tomás](/toʊmˈɑs/)", "Amihan": "[Amihan](/ɑmˈiːhɑn/)", "anak": "[anak](/ˈɑnɑk/)", "Lola": "[Lola](/lˈoʊlə/)", "Luzon": "[Luzon](/luːzˈɔn/)", "Pilar": "[Pilar](/piːlˈɑɹ/)", "Ana": "[Ana](/ˈɑːnə/)", "Lui": "[Lui](/lˈuːi/)", "Mele": "[Mele](/mˈɛlɛ/)", "Sione": "[Sione](/siˈoʊnɛ/)", "Kōwhai": "[Kōwhai](/kˈɔːfaɪ/)", "Rangitoto": "[Rangitoto](/ɹˌɑŋɡiːtˈoʊtoʊ/)", "Motutapu": "[Motutapu](/mˌoʊtuːtˈɑːpuː/)"}
 
 def spoken(text):
     for word, sub in PRONOUNCE.items():

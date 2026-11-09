@@ -34,7 +34,7 @@ export type ToonDesign = {
   watch?: boolean;
 };
 
-export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'tomas' | 'lola' | 'rosa' | 'captain' | 'officer', ToonDesign> = {
+export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'tomas' | 'lola' | 'rosa' | 'captain' | 'officer' | 'ana' | 'lui' | 'sione' | 'mele' | 'teacher', ToonDesign> = {
   you: {
     id: 'you',
     height: 1,
@@ -229,6 +229,91 @@ export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum'
     },
     rim: '#9FD8FF',
     speaker: 'OFFICER',
+  },
+  // ── File 002 (vol02) · Auckland: the Tupou family ─────────────────────────────────────────────────
+  // Ana, 12: curly hair in a high puff, a yellow raincoat over her school polo, always a notebook
+  ana: {
+    id: 'ana',
+    height: 0.76,
+    head: 0.25,
+    build: 0.86,
+    skin: '#9A6440',
+    skinShade: '#7A4C2E',
+    hair: 'curly',
+    hairColor: '#1A1210',
+    outfits: {
+      home: ['#2E7D6E', '#24665A', '#2A3550', '#F4EFE6'], // green school polo
+      cold: ['#F2C94C', '#D4A72C', '#2A3550', '#2A2A2A'], // yellow raincoat
+    },
+    rim: '#FFD27A',
+    speaker: 'ANA',
+  },
+  // Lui, 7: small, big head, a dinosaur T-shirt
+  lui: {
+    id: 'lui',
+    height: 0.52,
+    head: 0.3,
+    build: 0.85,
+    skin: '#9A6440',
+    skinShade: '#7A4C2E',
+    hair: 'buzz',
+    hairColor: '#1A1210',
+    outfits: {
+      home: ['#E07A5F', '#C2464F', '#3B3B3B', '#3E7CB1'],
+      cold: ['#3E7CB1', '#2E5A9A', '#3B3B3B', '#3E7CB1'],
+    },
+    rim: '#FF8A7A',
+    speaker: 'LUI',
+  },
+  // Sione, 41: bus driver; navy uniform shirt with a yellow stripe
+  sione: {
+    id: 'sione',
+    height: 1.06,
+    head: 0.19,
+    build: 1.25,
+    skin: '#8A5838',
+    skinShade: '#6E4428',
+    hair: 'short',
+    hairColor: '#17120F',
+    beard: 'goatee',
+    outfits: {
+      home: ['#22304F', '#E9C46A', '#2A2A2A', '#1A1A1A'],
+      cold: ['#22304F', '#E9C46A', '#2A2A2A', '#1A1A1A'],
+    },
+    rim: '#9FD8FF',
+    speaker: 'SIONE',
+  },
+  // Dr. Mele Tupou, 40: volcano scientist; red fleece, ID lanyard, hair tied back
+  mele: {
+    id: 'mele',
+    height: 0.96,
+    head: 0.19,
+    build: 1.0,
+    skin: '#9A6440',
+    skinShade: '#7A4C2E',
+    hair: 'ponytail',
+    hairColor: '#17120F',
+    glasses: true,
+    outfits: {
+      home: ['#C2464F', '#9E3A42', '#2A3550', '#1A1A1A'],
+      cold: ['#C2464F', '#9E3A42', '#2A3550', '#1A1A1A'],
+    },
+    rim: '#FFB58A',
+    speaker: 'MELE',
+  },
+  teacher: {
+    id: 'teacher',
+    height: 1.0,
+    head: 0.19,
+    build: 1.05,
+    skin: '#E0B48E',
+    skinShade: '#C29470',
+    hair: 'short',
+    hairColor: '#8A6A3A',
+    glasses: true,
+    outfits: {home: ['#3C8D6E', '#2E6E56', '#4A5568', '#2A2A2A'], cold: ['#3C8D6E', '#2E6E56', '#4A5568', '#2A2A2A']},
+    rim: '#9FD8FF',
+    speaker: 'TEACHER',
   },
 };
 

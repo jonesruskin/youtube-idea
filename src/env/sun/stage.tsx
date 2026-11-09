@@ -113,6 +113,10 @@ const FILL: Record<string, (v: string, dark: boolean) => [number, string]> = {
   bridge: (v) => [v === 'drift' ? 0.22 : 0.16, '#CFF0E0'],
   deck: (v) => [v === 'rescued' ? 0.1 : 0.24, '#D8E6FF'],
   pier: () => [0.18, '#FFF0D8'],
+  villa: (v) => [v === '' ? 0 : 0.08, '#FFE0B8'],
+  busroute: (v) => [v === 'night' ? 0.2 : 0, '#FFE0B8'],
+  hall: (v) => [v === '' ? 0 : 0.18, v === 'glow' ? '#FFB07A' : '#D8E4FF'],
+  ops: (v) => [v === 'night' ? 0.12 : 0, '#E8F0FF'],
 };
 /**
  * Things that sit in the set rather than in a hand: whatever someone puts down stays where it was put (from the

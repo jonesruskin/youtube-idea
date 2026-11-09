@@ -34,7 +34,15 @@ export type Speaker =
   | 'ROSA_RADIO'
   | 'CAPTAIN'
   | 'OFFICER'
-  | 'CLERK';
+  | 'CLERK'
+  // File 002 (vol02)
+  | 'ANA'
+  | 'LUI'
+  | 'SIONE'
+  | 'MELE'
+  | 'MELE_PHONE'
+  | 'TEACHER'
+  | 'COLLEAGUE';
 
 export type Line = {
   speaker: Speaker;
@@ -149,6 +157,8 @@ export type Episode = {
   speakerCast?: Record<string, string>;
   /** First Day on which the main cast must wear cold-weather clothes outdoors and in. Default 1. */
   coatsFromDay?: number;
+  /** Set false for stories without a cold-by-day rule (costume continuity within a scene still applies). */
+  costumeByDay?: boolean;
   /** Characters who must never look angry (the family). Default File 001's kids and Ito. */
   noAngry?: string[];
   shots: Shot[];

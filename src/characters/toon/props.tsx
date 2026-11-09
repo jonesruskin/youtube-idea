@@ -33,7 +33,10 @@ export type PropKind =
   | 'sunDrawing'
   | 'torchOff'
   | 'sextant'
-  | 'cable';
+  | 'cable'
+  | 'thermo'
+  | 'meter'
+  | 'catbox';
 
 /** Props drawn at the hand position (origin = hand centre). R = the holder's head radius. */
 export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({kind, R, frame}) => {
@@ -161,6 +164,34 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
           <path d={`M${-R * 0.9},${-R * 0.1} Q0,${R * 0.75} ${R * 0.9},${-R * 0.1} Q0,${R * 0.25} ${-R * 0.9},${-R * 0.1} Z`} fill="#DCE2EA" stroke={ink} strokeWidth={sw} />
           <path d={`M0,${R * 0.3} L0,${-R * 0.55}`} stroke={ink} strokeWidth={sw * 0.8} />
           <circle cx={0} cy={-R * 0.58} r={R * 0.07} fill="#3A3442" />
+        </g>
+      );
+    case 'thermo':
+      // a long glass thermometer with a red bead
+      return (
+        <g transform="rotate(-30)">
+          <rect x={-R * 0.05} y={-R * 0.7} width={R * 0.1} height={R * 1.0} rx={R * 0.05} fill="#E8F4FF" stroke={ink} strokeWidth={sw * 0.5} />
+          <rect x={-R * 0.025} y={-R * 0.2} width={R * 0.05} height={R * 0.45} fill="#D9443A" />
+          <circle cx={0} cy={R * 0.3} r={R * 0.08} fill="#D9443A" stroke={ink} strokeWidth={sw * 0.5} />
+        </g>
+      );
+    case 'meter':
+      // a handheld gas meter: yellow body, screen, flashing red light
+      return (
+        <g>
+          <rect x={-R * 0.22} y={-R * 0.4} width={R * 0.44} height={R * 0.6} rx={R * 0.08} fill="#F2C94C" stroke={ink} strokeWidth={sw * 0.6} />
+          <rect x={-R * 0.15} y={-R * 0.32} width={R * 0.3} height={R * 0.18} fill="#1A2A1A" />
+          <circle cx={0} cy={-R * 0.48} r={R * 0.07} fill={Math.sin(frame * 0.5) > 0 ? '#FF3A2A' : '#5A1A1A'} />
+        </g>
+      );
+    case 'catbox':
+      // a pet carrier with a cat face peeking through the grille
+      return (
+        <g>
+          <rect x={-R * 0.5} y={-R * 0.1} width={R * 1.0} height={R * 0.6} rx={R * 0.1} fill="#8E6BBF" stroke={ink} strokeWidth={sw * 0.6} />
+          <rect x={R * 0.2} y={0} width={R * 0.25} height={R * 0.4} fill="#2A2230" />
+          <circle cx={R * 0.32} cy={R * 0.2} r={R * 0.1} fill="#E8A040" />
+          <path d={`M${-R * 0.2},${-R * 0.1} Q0,${-R * 0.4} ${R * 0.2},${-R * 0.1}`} stroke={ink} strokeWidth={sw} fill="none" />
         </g>
       );
     case 'sextant':
