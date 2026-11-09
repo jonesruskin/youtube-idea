@@ -28,9 +28,10 @@ the eruption itself is fiction set in a place where it could really happen.
 ## 2. Timeline arithmetic
 | Event | When | Check |
 |---|---|---|
-| First felt quakes, swarm at about 30 km depth | Monday 7:40 AM | the 2007 Lifelines estimate starts unrest at about 30 km |
+| First felt quakes, swarm at about 10 km depth | Monday 7:40 AM | deeper unrest (from ~30 km, Lifelines 2007) is too small to feel or pin down under a noisy city |
 | Magma ascent | about 1–2.5 km per day (0.01–0.03 m/s) | Brenna et al. 2018 (EQC/NHC): "a few days at best" |
-| Depth Tuesday evening | about 5 km, shallowing | |
+| Depth Tuesday evening | about 6 km | 10 km − 2.5 km/day × 1.5 days |
+| Depth Thursday 2 PM | about 1 km ("less than a kilometre") | 10 km − 2.5 × 3.3 days; then 1 km in the last 10 hours ✓ |
 | Clues appear | Tuesday morning (creek, pond, road) | gas and uplift arrive before the magma |
 | Zone redrawn, evacuation ordered | Wednesday 9 AM | Ruaumoko research: zones change as vent uncertainty shrinks |
 | Evacuation complete | Thursday 6 PM | about 33 hours, by bus and car |

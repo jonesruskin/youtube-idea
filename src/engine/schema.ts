@@ -42,7 +42,8 @@ export type Speaker =
   | 'MELE'
   | 'MELE_PHONE'
   | 'TEACHER'
-  | 'COLLEAGUE';
+  | 'COLLEAGUE'
+  | 'JAZ';
 
 export type Line = {
   speaker: Speaker;

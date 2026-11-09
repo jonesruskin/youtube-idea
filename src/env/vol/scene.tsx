@@ -157,7 +157,7 @@ export const VolScene: React.FC = () => {
           return on ? <circle key={i} cx={sx} cy={sy} r={blur ? 10 : 7} fill="#FFFFFF" opacity={blur ? 0.5 : 1} /> : null;
         })}
         {blur && <ellipse cx={960} cy={tip + 20} rx={380} ry={150} fill="none" stroke="#FFD27A" strokeWidth={4} strokeDasharray="14 12" />}
-        <Label x={1500} y={tip} t={step === 0 ? `${Math.round(30 - k * 4)} KM DOWN` : 'WHERE EXACTLY?'} s={42} c="#FFD27A" />
+        <Label x={1500} y={tip} t={step === 0 ? `${Math.round(10 - k * 1)} KM DOWN` : 'WHERE EXACTLY?'} s={42} c="#FFD27A" />
       </Frame>
     );
   }
@@ -190,7 +190,21 @@ export const VolScene: React.FC = () => {
           {Array.from({length: 15}, (_, i) => (
             <line key={i} x1={40} y1={100 + i * 54} x2={1220} y2={100 + i * 54} stroke="#B8C8E0" strokeWidth={2} />
           ))}
-          {!map ? (
+          {p.mode === 'log' ? (
+            <g>
+              <text x={80} y={80} fontFamily="'Caveat', 'Comic Neue', cursive" fontWeight={700} fontSize={54} fill="#3A3442">
+                Magma depth (from the TV) · Thursday
+              </text>
+              {['9 AM · 1.6 km', '11 AM · 1.4 km', '1 PM · 1.1 km', '3 PM · 0.9 km', '5 PM · 0.7 km'].map((l, i) => {
+                const show = clamp(k * 6 - i);
+                return show > 0 ? (
+                  <text key={i} x={100} y={200 + i * 120} fontFamily="'Caveat', 'Comic Neue', cursive" fontWeight={700} fontSize={62} fill={i === 4 ? '#C2464F' : '#1F2A44'} opacity={show}>
+                    {l}
+                  </text>
+                ) : null;
+              })}
+            </g>
+          ) : !map ? (
             <g>
               <text x={80} y={80} fontFamily="'Caveat', 'Comic Neue', cursive" fontWeight={700} fontSize={54} fill="#3A3442">
                 Creek temperature · Mondays
@@ -461,6 +475,58 @@ export const VolScene: React.FC = () => {
           return <rect key={i} x={x - 30 * sc} y={y} width={60 * sc} height={(bus ? 160 : 90) * sc} rx={8 * sc} fill={bus ? '#2E6EB5' : ['#C2464F', '#E9E4DA', '#E9C46A', '#3C8D6E'][i % 4]} stroke={INK} strokeWidth={2} />;
         })}
         <Label x={960} y={1030} t="ALL LANES · OUT OF THE ZONE" s={40} c="#FFD27A" />
+      </Frame>
+    );
+  }
+
+  if (v === 'rangitoto') {
+    const g = clamp(k * 1.4);
+    const forest = clamp((k - 0.55) * 3);
+    return (
+      <Frame frame={frame} bg="#9FD0F0">
+        <rect x={0} y={0} width={W} height={H} fill={forest > 0 ? '#BFE0F0' : '#8AA8C0'} />
+        <rect x={0} y={700} width={W} height={380} fill="#3E7CB1" />
+        {g < 0.25 &&
+          Array.from({length: 30}, (_, i) => {
+            const r = rnd(i + frame % 9);
+            return <circle key={i} cx={760 + r() * 400} cy={700 - r() * 40} r={6 + r() * 10} fill="#FFFFFF" opacity={0.7} />;
+          })}
+        <path d={`M${960 - 700 * g},700 Q960,${700 - 320 * g} ${960 + 700 * g},700 Z`} fill={forest > 0 ? `rgb(${60 - 20 * forest},${70 + 60 * forest},${60})` : '#3A3238'} stroke={INK} strokeWidth={5} />
+        {g > 0.2 && forest < 0.3 && <path d={`M960,${700 - 320 * g} q-10,-120 0,-200`} stroke="#FF8A2A" strokeWidth={24} opacity={0.8} />}
+        {forest > 0.6 && (
+          <g>
+            <path d="M200,760 l140,0 l-20,24 l-100,0 Z" fill="#F4F4F0" stroke={INK} strokeWidth={3} />
+            <Label x={960} y={140} t="RANGITOTO · THE YOUNGEST · ABOUT 600 YEARS OLD" s={36} />
+          </g>
+        )}
+        <Label x={1700} y={1040} t={forest > 0 ? 'TODAY' : 'ABOUT 1450'} s={44} c="#FFD27A" />
+      </Frame>
+    );
+  }
+
+  if (v === 'crateredge') {
+    return (
+      <Frame frame={frame} bg="#8A8680">
+        <rect x={0} y={0} width={W} height={H} fill="#A8B4BE" />
+        <path d="M0,520 Q600,380 960,420 Q1400,460 1920,360 L1920,1080 L0,1080 Z" fill="#7A7672" />
+        <path d="M900,430 Q1100,330 1300,430" stroke="#5A5652" strokeWidth={16} fill="none" />
+        {[0, 1, 2].map((i) => {
+          const y = 400 - ((frame * 0.8 + i * 70) % 220);
+          return <ellipse key={i} cx={1100 + i * 30} cy={y} rx={60 + (400 - y) * 0.2} ry={30} fill="#F4F4F4" opacity={0.4 * (y / 400)} />;
+        })}
+        {/* the top of a red letterbox sticking out of the ash */}
+        <g transform="translate(700,640)">
+          <rect x={-40} y={-40} width={80} height={40} rx={10} fill="#C2464F" stroke={INK} strokeWidth={4} />
+          <rect x={-24} y={-26} width={48} height={8} fill="#2A2A2A" />
+        </g>
+        {/* the safety fence and the two of them */}
+        <rect x={0} y={820} width={W} height={260} fill="#6A7A5A" />
+        {Array.from({length: 26}, (_, i) => (
+          <line key={i} x1={i * 80} y1={760} x2={i * 80} y2={880} stroke="#C9CED6" strokeWidth={6} />
+        ))}
+        <path d="M0,780 L1920,780 M0,840 L1920,840" stroke="#C9CED6" strokeWidth={4} />
+        <Toon d={CAST.mele} s={{x: 820, y: 1000, scale: 0.9, facing: 'back', pose: POSES.stand, bob: 0, face: FACES.sad, turn: 0, look: [0, 0], talk: 0, blink: 0, outfit: 'home', hoodUp: false, breath: 0, frame, rim: true, opacity: 1, watchGlow: 0} as any} />
+        <Toon d={CAST.ana} s={{x: 980, y: 1000, scale: 0.9, facing: 'back', pose: POSES.stand, bob: 0, face: FACES.sad, turn: 0, look: [0, 0], talk: 0, blink: 0, outfit: 'cold', hoodUp: false, breath: 0, frame, rim: true, opacity: 1, watchGlow: 0} as any} />
       </Frame>
     );
   }

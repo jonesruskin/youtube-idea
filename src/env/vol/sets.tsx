@@ -218,7 +218,7 @@ registerSet('creek', {
         depth: 0.3,
         node: (
           <g transform={`translate(${shake},0)`}>
-            <rect x={-900} y={-600} width={3720} height={1300} fill="#CFE6E0" />
+            <rect x={-900} y={-600} width={3720} height={1300} fill={c.p.night ? '#0A1428' : '#CFE6E0'} />
             {Array.from({length: 18}, (_, i) => (
               <g key={i}>
                 <path d={`M${-400 + i * 160},700 L${-400 + i * 160},${120 + (i % 3) * 60}`} stroke="#5A4A3A" strokeWidth={16} />
@@ -263,9 +263,10 @@ registerSet('creek', {
       },
     ];
   },
-  grade: () => (
+  light: (c) => (c.p.night ? <Glow x={1000} y={900} r={420} color="#FFF4D6" opacity={0.3} /> : null),
+  grade: (c) => (
     <g>
-      <Grade color="#F0FFF0" amount={0.06} />
+      <Grade color={c.p.night ? '#2A3A7A' : '#F0FFF0'} amount={c.p.night ? 0.34 : 0.06} />
       <Vignette amount={0.45} />
     </g>
   ),

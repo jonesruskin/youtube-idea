@@ -89,6 +89,11 @@ const shots: Shot[] = [
     action: 'Close on Ana reading the thermometer.',
     lines: [A('Fourteen degrees. Same as always.')],
   }),
+  sh('nerd', stage('creek', '', push(1.8, 1.95, 1000, 600), [c(AA, 900, 940, {pose: 'kneel', facing: 'right', hold: 'thermo', outfit: 'cold', expr: 'focused'}), c('extra:308', 1100, 940, {facing: 'left', outfit: 'cold', expr: 'laugh'})], [{at: 'l0+0.3', who: AA, look: [1, -0.3]}, {at: 'l1+0.2', who: 'extra:308', expr: 'smile'}]), {
+    beats: ['laugh'],
+    action: 'Her classmate Jaz peers at the notebook, grinning.',
+    lines: [L('JAZ')('Fourteen again? You and your nerd notebook.'), A('Nerds notice things.', 0.3)],
+  }),
   sh('quake-school', stage('creek', 'quake', dutch(1.3, 1.5, 1000, 560, 4), [c(AA, 900, 940, {pose: 'kneel', facing: 'right', outfit: 'cold', expr: 'surprised', hold: 'thermo'}), c('extra:301', 700, 940, {facing: 'right', outfit: 'cold', expr: 'scared'}), c('extra:308', 1100, 940, {facing: 'left', outfit: 'cold', expr: 'scared'}), c('teacher', 1420, 940, {facing: 'left', expr: 'alert'})], [{at: 0.4, who: 'teacher', pose: 'point'}]), {
     sfx: 'impact',
     cue: 'tension',
@@ -98,14 +103,15 @@ const shots: Shot[] = [
     lines: [TE('Everyone, step away from the trees!', 0, 'point')],
   }),
   sh('alert', vol('alert', {mode: 'unrest'}), {
+    beats: ['loop'],
     action: 'A phone emergency alert: VOLCANIC UNREST · AUCKLAND · Earthquakes under the city. Stay informed.',
     lines: [N('By lunchtime, every phone in the city showed the same alert.')],
   }),
   sh('swarm', vol('magma', {step: 0}), {
-    science: {text: 'Volcanic unrest under a monogenetic field begins with swarms of small earthquakes as magma forces its way up through the crust; under Auckland the first are expected around 30 km down.', source: 'Auckland Lifelines Forum (2007); GNS Science, ‘Auckland Volcanic Field’'},
+    science: {text: 'Volcanic unrest under a monogenetic field begins with swarms of small earthquakes as magma forces its way up through the crust; under Auckland they would be felt and located once the magma is within roughly 10–30 km of the surface.', source: 'Auckland Lifelines Forum (2007); GNS Science, ‘Auckland Volcanic Field’'},
     dev: 'magma is rising',
-    action: 'Cut-away under the city: a thin finger of glowing magma deep below, a cloud of tiny flashes around its tip. Depth readout: 30 KM.',
-    lines: [N('Thirty kilometres under the city, hot rock was rising, cracking its way up.')],
+    action: 'Cut-away under the city: a thin finger of glowing magma deep below, a cloud of tiny flashes around its tip. Depth readout: 10 KM.',
+    lines: [N('Ten kilometres under the city, hot melted rock was rising, cracking its way up.')],
   }),
   sh('field-map', vol('field'), {
     science: {text: 'Auckland sits on a volcanic field of about 53 volcanoes; each erupted once (except Rangitoto), so the next eruption will most likely open at a brand-new site.', source: 'Hayward, ‘Volcanoes of Auckland’ (Auckland University Press, 2019)'},
@@ -126,7 +132,7 @@ const shots: Shot[] = [
   }),
   sh('mum-call', stage('villa', 'night', push(2.0, 2.15, 1450, 580), TABLE({ana: {expr: 'focused'}, lui: {expr: 'uneasy'}, dad: {expr: 'worried'}}), [{at: 0.1, who: AA, take: 'pocket', prop: 'phoneLit'}, {at: 0.5, who: AA, pose: 'hold'}, {at: 'l0+0.4', who: LL, look: [1, -0.2]}]), {
     action: 'Ana holds up the phone: Mum on a video call from the monitoring centre.',
-    lines: [MP("It's about thirty kilometres down, and it's rising. It could take a few days.", 0.2), A('Where will it come out?', 0.2)],
+    lines: [MP("It's about ten kilometres down, and it's rising. It could take a few days.", 0.2), A('Where will it come out?', 0.2)],
   }),
   sh('mum-where', stage('ops', '', push(1.9, 2.05, 1250, 560), OPS({mele: {hold: 'phoneLit', pose: 'hold', expr: 'worried'}}), [{at: 'l0+0.4', who: MM, look: [-1, -0.2]}, {at: 'l0+2.0', who: 'extra:64', look: [-1, 0]}]), {
     hud: {place: 'VOLCANO MONITORING CENTRE', time: 'MONDAY · 7:02 PM'},
@@ -134,6 +140,7 @@ const shots: Shot[] = [
     lines: [ME("We don't know yet. That's what we're trying to work out.")],
   }),
   sh('cant-pin', vol('magma', {step: 1}), {
+    beats: ['loop'],
     science: {text: 'Small earthquakes in the Auckland Volcanic Field are hard to record and locate because of the high level of surface noise in a city.', source: 'GNS Science / GeoNet, Auckland Volcanic Field monitoring'},
     dev: 'the city noise hides the quakes',
     action: 'The cut-away again: traffic and trains on the surface shake the picture; the flashes around the magma blur into a wide fuzzy circle.',
@@ -143,6 +150,12 @@ const shots: Shot[] = [
     hud: {place: 'AUCKLAND', time: 'MONDAY · 8:30 PM'},
     action: 'After dinner. Lui, in pyjamas, grips the back of the sofa as a small jolt rattles the cups.',
     lines: [LU('Is the volcano going to come up under my bed?')],
+  }),
+  sh('drop-cover', stage('villa', 'night', dutch(1.4, 1.55, 1500, 640, 3), [c(DD, 1560, 930, {facing: 'left', expr: 'determined', pose: 'crouch'}), c(AA, 1460, 930, {facing: 'right', outfit: 'home', expr: 'alert', pose: 'crouch'}), c(LL, 1360, 930, {facing: 'right', expr: 'scared', pose: 'crouch'})], [{at: 'l0+1.2', who: LL, expr: 'uneasy'}], {emptyChair: 1640}), {
+    sfx: 'impact',
+    science: {text: 'In New Zealand the advice in an earthquake is Drop, Cover and Hold: get down, take cover under a sturdy table, hold on until the shaking stops.', source: 'NZ ShakeOut / National Emergency Management Agency'},
+    action: 'A stronger jolt. The family drops under the dining table, Dad’s arm over the kids.',
+    lines: [SI('Drop, cover, hold! Under the table, both of you!')],
   }),
   sh('ana-calm', stage('villa', 'night', push(2.2, 2.35, 1120, 580), [c(LL, 1000, 930, {facing: 'right', expr: 'uneasy'}), c(AA, 1180, 930, {facing: 'left', outfit: 'home', expr: 'smile'})], [{at: 'l0+0.4', who: AA, look: [-1, 0.4]}, {at: 'l0+2.2', who: LL, expr: 'smile'}]), {
     action: 'Ana crouches to his height.',
@@ -177,10 +190,12 @@ const shots: Shot[] = [
     lines: [TE('Every volcano in Auckland is a one-off. It erupts once, and then it never wakes up again.')],
   }),
   sh('lesson-q', stage('classroom', '', push(2.0, 2.15, 900, 600), [c('teacher', 1500, 930, {facing: 'left', expr: 'focused'}), c(AA, 760, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', outfit: 'home', expr: 'focused'}), c('extra:301', 560, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', outfit: 'home', expr: 'uneasy'}), c('extra:308', 960, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', outfit: 'home'})], [{at: 'l0+0.2', who: 'extra:308', look: [-1, 0]}]), {
+    dev: 'the next one could open under a house',
     action: 'The class goes quiet, looking at the dots.',
     lines: [N('So the next one would open somewhere brand new: under a road, a field, or a house.')],
   }),
   sh('mum-tv', sc('news', {v: 'anchor', headline: 'MAGMA RISING UNDER AUCKLAND', ticker: 'SCIENTISTS: BEST ESTIMATE UNDER THE HARBOUR · LOCATION STILL UNCERTAIN · BE READY TO LEAVE'}), {
+    beats: ['loop'],
     hud: {place: 'AUCKLAND', time: 'TUESDAY · 1:00 PM'},
     cue: 'news',
     dev: 'the official estimate: under the harbour',
@@ -232,6 +247,22 @@ const shots: Shot[] = [
     action: 'Diagram: the magma swelling up from below; the road surface bulging above it; a GPS station’s arrow climbing.',
     lines: [N('And as the magma pushes upward, the ground above it rises.')],
   }),
+  sh('check-it', stage('villa', 'night', push(1.8, 1.95, 1600, 600), TABLE({ana: {expr: 'determined', pose: 'stand', seat: undefined}, lui: {expr: 'sad'}, dad: {expr: 'focused'}}), [{at: 'l0+0.4', who: DD, look: [-1, 0]}], {emptyChair: 1640}), {
+    dev: 'Ana tests her idea before she calls',
+    action: 'Ana stands up from the table, notebook in hand.',
+    lines: [A('Dad, can you drive me to the creek? I want to check it again.'), SI("Get your coat. I'll get the torch.", 0.3)],
+  }),
+  sh('night-creek', stage('creek', 'fizz', push(1.7, 1.85, 920, 600), [c(AA, 900, 940, {pose: 'kneel', facing: 'right', hold: 'thermo', outfit: 'cold', expr: 'focused'}), c(DD, 1120, 940, {facing: 'left', hold: 'torch', pose: 'torch', expr: 'worried'})], [{at: 'l0+1.6', who: AA, look: [1, -0.4]}], {night: true}), {
+    hud: {place: 'AUCKLAND', time: 'TUESDAY · 7:45 PM'},
+    timeJump: true,
+    beats: ['loop'],
+    action: 'Night at the creek. Dad’s torch on the fizzing water. Ana reads the thermometer.',
+    lines: [A("Twenty-one degrees. It's still getting warmer.")],
+  }),
+  sh('warm-road', stage('busroute', 'night', push(2.0, 2.15, 1300, 640), [c(AA, 1240, 940, {pose: 'kneel', facing: 'right', outfit: 'cold', expr: 'alert'}), c(DD, 1420, 940, {facing: 'left', hold: 'torch', pose: 'torch', expr: 'worried'})], [{at: 'l0+0.4', who: AA, look: [0.4, 0.6]}], {hump: true}), {
+    action: 'Kōwhai Street, the hump in the torchlight. Ana lays her palm on the road.',
+    lines: [A("Dad, feel this. The road's warm."), SI('Call your mother. Now.', 0.3)],
+  }),
   sh('ana-calls', stage('villa', 'night', push(2.0, 2.15, 900, 580), [c(AA, 900, 930, {facing: 'right', outfit: 'home', expr: 'determined'})], [{at: 0.1, who: AA, take: 'pocket', prop: 'phoneLit'}, {at: 0.5, who: AA, pose: 'hold'}, {at: 'l0+0.4', who: AA, look: [0.8, -0.2]}], {window: true}), {
     action: 'By the dark front window, Ana calls Mum.',
     lines: [A('Mum, I think I know where it’s going to come up.')],
@@ -257,7 +288,7 @@ const shots: Shot[] = [
   sh('confirm', stage('ops', 'night', push(1.6, 1.75, 1100, 540), OPS({mele: {expr: 'focused', hold: 'phoneLit', pose: 'hold'}, col: {expr: 'surprised'}}), [{at: 'l0+0.3', who: MM, look: [1, 0]}], {gps: true}), {
     dev: 'the instruments confirm it',
     action: 'A colleague points at a screen: the graph of the nearest GPS station climbing steeply since the morning.',
-    lines: [CO('The nearest GPS station has risen four centimetres since this morning.')],
+    lines: [CO('The nearest GPS station has risen four centimetres since this morning.'), ME('We have a handful of instruments for a whole city. She just gave us three more.', 0.3)],
   }),
   sh('send-team', stage('ops', 'night', push(2.2, 2.35, 1260, 540), OPS({mele: {expr: 'determined', hold: 'phoneLit', pose: 'hold'}, col: {expr: 'focused'}}), [{at: 'l0+0.2', who: MM, pose: 'point'}]), {
     action: 'Mum, already moving.',
@@ -313,6 +344,10 @@ const shots: Shot[] = [
     action: 'Ana props the hatch open, shakes a box of cat biscuits, and the cat strolls out into its carrier.',
     lines: [N('I shook a box of cat biscuits at the hatch instead. Cats always come for biscuits.')],
   }),
+  sh('ramp', stage('busroute', 'evac', push(1.6, 1.75, 1300, 600), [c(DD, 1360, 940, {facing: 'left', expr: 'smile', pose: 'push'}), c('extra:73', 1220, 940, {facing: 'right', pose: 'sitChair', seat: 'chair', expr: 'smile'})], [{at: 0.2, who: DD, to: 1460, dur: 1.4}, {at: 0.2, who: 'extra:73', to: 1340, dur: 1.4}]), {
+    action: 'Dad lowers the bus ramp and wheels Mr. Tane up it in his wheelchair.',
+    lines: [N("Dad lowered the ramp for Mr. Tane. Nobody on our street was left behind.")],
+  }),
   sh('dads-bus', stage('busroute', 'evac', move([1.0, 960, 560], [1.08, 1000, 560]), [c(DD, 1180, 940, {facing: 'left', expr: 'determined'}), c('extra:70', 900, 940, {facing: 'right', hold: 'catbox', pose: 'hold', expr: 'worried'}), c(AA, 760, 940, {facing: 'right', outfit: 'cold', expr: 'focused'}), c(LL, 640, 940, {facing: 'right', outfit: 'cold', expr: 'sad'})], [{at: 0.6, who: 'extra:70', to: 1060, dur: 1.4}]), {
     dev: 'Dad drives the neighbours out',
     beats: ['laugh'],
@@ -336,7 +371,22 @@ const shots: Shot[] = [
     action: 'A school hall eight kilometres away, outside the zone: rows of camp beds, families, a tea urn, volunteers.',
     lines: [N('Forty thousand people left their homes in a day and a half.')],
   }),
-  sh('dad-again', stage('hall', '', push(1.9, 2.05, 1120, 560), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'sad'}), c(LL, 1180, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', outfit: 'cold', expr: 'sleepy'}), c(DD, 1340, 940, {facing: 'left', expr: 'determined'})], [{at: 'l0+0.3', who: DD, look: [-1, 0.3]}, {at: 'l0+2.4', who: AA, loop: 'nod', dur: 0.8}]), {
+  sh('mum-on-tv', sc('news', {v: 'anchor', headline: 'EVACUATION ZONE MOVED', ticker: 'SCIENTISTS: GAS AND GROUND UPLIFT POINT TO THE EASTERN SUBURBS · 40,000 PEOPLE EVACUATING · TIP CAME FROM A MEMBER OF THE PUBLIC'}), {
+    cue: 'news',
+    beats: ['heart'],
+    action: 'On the hall’s TV: Mum at the press conference, the new zone behind her.',
+    lines: [AN('Scientists say a tip from a member of the public helped them find the right place.')],
+  }),
+  sh('a-member', stage('hall', '', push(2.2, 2.35, 1120, 580), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'sad'}), c(LL, 1180, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', outfit: 'cold', expr: 'smile'})], [{at: 'l0+0.4', who: LL, look: [-1, 0]}, {at: 'l0+0.8', who: AA, expr: 'smile'}]), {
+    beats: ['laugh'],
+    action: 'Lui elbows Ana.',
+    lines: [LU("That's you! You're a member of the public!")],
+  }),
+  sh('house-ok', stage('hall', '', push(2.6, 2.75, 1120, 560), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'smile'}), c(LL, 1180, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', outfit: 'cold', expr: 'alert'})], [{at: 0.4, who: LL, expr: 'uneasy'}, {at: 'l0+0.3', who: AA, expr: 'worried'}, {at: 'l1+0.4', who: AA, look: [1, 0.3]}]), {
+    action: 'Then Lui goes quiet.',
+    lines: [LU('Will our house be okay?'), A("I don't know, Lui. But we will be.", 0.4)],
+  }),
+  sh('dad-again', stage('hall', '', push(1.9, 2.05, 1120, 560), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'focused'}), c(LL, 1180, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', outfit: 'cold', expr: 'uneasy'}), c(DD, 1340, 940, {facing: 'left', expr: 'determined'})], [{at: 'l0+0.3', who: DD, look: [-1, 0.3]}, {at: 'l0+2.4', who: AA, loop: 'nod', dur: 0.8}]), {
     action: 'Dad crouches by them for a moment, keys in hand.',
     lines: [SI("I'm going back for another load. Look after your brother.")],
   }),
@@ -367,6 +417,17 @@ const shots: Shot[] = [
     action: 'Mum on the phone at the centre, the earthquake screens almost solid.',
     lines: [ME("It's less than a kilometre down now. Keep everyone out of the zone.")],
   }),
+  sh('hourly', vol('notebook', {mode: 'log'}), {
+    beats: ['loop'],
+    action: 'Ana’s notebook, a new page: the depth of the magma, copied from the TV every hour. 5 km, 3 km, 2 km, 1.2 km, 0.8 km.',
+    lines: [N('At the hall, I wrote down the depth from the TV every hour. The numbers kept getting smaller.')],
+  }),
+  sh('depth-tv', sc('news', {v: 'anchor', headline: 'MAGMA NOW UNDER 1 KM', ticker: 'ZONE A EVACUATED · POWER TO THE ZONE SWITCHED OFF · DO NOT RETURN FOR ANY REASON'}), {
+    hud: {place: 'EVACUATION CENTRE', time: 'THURSDAY · 6:00 PM'},
+    cue: 'tension',
+    action: 'The hall TV: a depth gauge, less than one kilometre. ZONE A EVACUATED.',
+    lines: [AN('The zone is empty, and the power there is off. Do not go back for any reason.')],
+  }),
   sh('mum-arrives', stage('hall', 'night', move([1.2, 1100, 560], [1.3, 1100, 560]), [c(AA, 1060, 940, {facing: 'right', outfit: 'cold', expr: 'sad'}), c(LL, 1180, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', outfit: 'cold', expr: 'sleepy'}), c(MM, 1700, 940, {facing: 'left', expr: 'relieved'})], [{at: 0, who: MM, to: 1240, gait: 'run', dur: 1.4}, {at: 1.4, who: MM, pose: 'hug'}, {at: 1.4, who: AA, pose: 'hug'}, {at: 0.5, who: AA, expr: 'relieved'}]), {
     hud: {place: 'EVACUATION CENTRE', time: 'THURSDAY · 8:00 PM'},
     timeJump: true,
@@ -390,6 +451,13 @@ const shots: Shot[] = [
     action: 'Grey hardened ash on an island shore: a trail of footprints, big and small, and the paw prints of a dog beside them, heading away from the sea.',
     lines: [N("Their footprints are still there, in the hardened ash. Grown-ups, children, and dogs. They didn't run. They walked away.")],
   }),
+  sh('rangitoto', vol('rangitoto'), {
+    science: {text: 'Rangitoto rose out of the sea in the Hauraki Gulf about 600 years ago in two phases; it is the youngest and largest volcano in the Auckland field, now covered in pōhutukawa forest.', source: 'Hayward, ‘Volcanoes of Auckland’ (2019); Needham et al., Journal of Volcanology and Geothermal Research (2011)'},
+    beats: ['wow'],
+    dev: 'Rangitoto: the last one, 600 years ago',
+    action: 'Time-lapse: the sea bubbles, an island rises, lava fountains build a wide gentle cone; centuries roll; it turns green with forest; ferries and picnickers.',
+    lines: [N('Rangitoto rose straight out of the sea. Today it is covered in forest, and families climb it on Sundays.')],
+  }),
   sh('quiet', stage('hall', 'night', push(1.6, 1.75, 1100, 600), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'sleepy'}), c(LL, 1180, 940, {pose: 'lie', facing: 'left', outfit: 'cold', expr: 'sleepy'}), c(MM, 1300, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', expr: 'sleepy'})], [{at: 1.2, who: AA, look: [0.6, -0.6]}], {clock: '11:51'}), {
     cue: 'silence',
     min: 3.2,
@@ -404,6 +472,23 @@ const shots: Shot[] = [
     dev: 'the volcano opens',
     action: 'Across the dark city: a flash, then a white column of steam and ash punches up from the suburbs, lightning crackling in it.',
     lines: [N('At eight minutes to midnight, the ground opened.', 0.4)],
+  }),
+  sh('counting', stage('hall', 'glow', push(2.2, 2.4, 950, 560), [c(AA, 900, 940, {facing: 'back', outfit: 'cold', expr: 'focused'})], [{at: 0.4, who: AA, facing: 'right', look: [1, -0.3]}]), {
+    beats: ['wow'],
+    dev: 'sound takes time: Ana counts to 23',
+    action: 'Ana at the high window, the orange glow outside. Her lips move as she counts.',
+    lines: [N('I counted the seconds, the way Dad taught us to with lightning. One, two, three…', 0.6)],
+  }),
+  sh('boom', stage('hall', 'glow', dutch(1.4, 1.55, 1000, 560, 3), [c(AA, 900, 940, {facing: 'right', outfit: 'cold', expr: 'surprised'}), c(LL, 1020, 940, {pose: 'lie', facing: 'left', outfit: 'cold', expr: 'surprised'}), c(MM, 1300, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', expr: 'alert'})], [{at: 0.6, who: MM, pose: 'stand', seat: undefined}]), {
+    sfx: 'thunder',
+    science: {text: 'Sound travels about 343 metres per second in air, so a sound 8 km away arrives about 23 seconds after the light.', source: 'NIST / standard speed of sound in air at 20 °C'},
+    action: 'Twenty-three seconds later the windows rattle in their frames with a deep boom. Everyone in the hall wakes.',
+    lines: [N('At twenty-three, the boom hit the windows. Sound takes twenty-three seconds to travel eight kilometres.')],
+  }),
+  sh('headcount', stage('hall', 'glow', push(1.3, 1.45, 1100, 560), [c(AA, 900, 940, {facing: 'right', outfit: 'cold', expr: 'alert'}), c(LL, 1020, 940, {pose: 'lie', facing: 'left', outfit: 'cold', expr: 'alert'}), c(MM, 1300, 940, {facing: 'left', expr: 'focused'}), c('extra:74', 1600, 940, {facing: 'left', hold: 'list', pose: 'hold', expr: 'focused'}), c('extra:70', 640, 940, {facing: 'right', hold: 'catbox', pose: 'hold', expr: 'worried'})], [{at: 'l0+0.6', who: 'extra:74', look: [-1, 0]}]), {
+    dev: 'everyone from the zone is accounted for',
+    action: 'A volunteer with a clipboard calls names across the hall; hands go up everywhere.',
+    lines: [N('A volunteer read out every name from our street. Every single person answered.')],
   }),
   sh('surge', vol('surge'), {
     science: {text: 'When rising magma meets groundwater it flashes it to steam and explodes; the first eruptions of an Auckland volcano would send base surges, ground-hugging clouds of ash and rock, racing out for kilometres.', source: 'Science Learning Hub, ‘Future explosions in Auckland’; Natural Hazards Commission (2025)'},
@@ -458,10 +543,27 @@ const shots: Shot[] = [
     action: 'Time-lapse: night after night a fountain of lava builds a black cone where the park was; a slow tongue of lava creeps down one street; then it goes quiet.',
     lines: [N('For two months, it fountained lava every night and built itself a hill. Then it stopped, for good.')],
   }),
+  sh('crater-edge', vol('crateredge'), {
+    hud: {place: 'KŌWHAI STREET', time: 'TWO MONTHS LATER'},
+    beats: ['heart'],
+    dev: 'what is left of the street',
+    action: 'Ana and Mum in hard hats at a safety fence. Beyond it, where Kōwhai Street ran, a grey slope of ash and a steaming crater rim. Half a red letterbox sticks out of the ash.',
+    lines: [N("When it was safe, Mum took me to the fence. Our street was under three metres of ash. I could see the top of our letterbox.")],
+  }),
   sh('new-house', stage('villa', 'new', push(1.3, 1.45, 1300, 600), [c(DD, 1500, 930, {facing: 'left', expr: 'smile', hold: 'bag', pose: 'hold'}), c(AA, 1180, 930, {facing: 'right', outfit: 'home', expr: 'smile', hold: 'photo', pose: 'hold'}), c(LL, 1000, 930, {facing: 'right', expr: 'laugh'})], [{at: 'l0+0.8', who: AA, put: 'table', prop: 'photo'}, {at: 'l0+0.4', who: LL, loop: 'bounce', dur: 1.2}], {items: [{prop: 'photo', x: 1280, y: 380, from: 'l0+1.4'}]}), {
     hud: {place: 'AUCKLAND', time: 'THREE MONTHS LATER'},
     action: 'A different house, half-unpacked. Ana hangs the family photo on the new wall. Lui bounces on the boxes.',
     lines: [N('We moved into a house on the other side of town. I hung our photo up first.')],
+  }),
+  sh('gas-bump', stage('backyard', '', push(1.6, 1.75, 1150, 640), [c(LL, 1080, 950, {pose: 'kneel', facing: 'right', expr: 'laugh'}), c(AA, 900, 930, {facing: 'right', outfit: 'home', expr: 'smile'})], [{at: 'l0+0.4', who: LL, loop: 'bounce', dur: 1}]), {
+    beats: ['laugh'],
+    action: 'A new garden. Lui feeds two new goldfish in a new pond.',
+    lines: [N('Lui got two new goldfish. He named them Gas and Bump.')],
+  }),
+  sh('schools', stage('creek', '', push(1.2, 1.35, 1000, 580), [c(AA, 900, 940, {pose: 'kneel', facing: 'right', hold: 'thermo', outfit: 'cold', expr: 'smile'}), c('extra:301', 700, 940, {facing: 'right', outfit: 'cold', expr: 'smile'}), c('extra:308', 1100, 940, {facing: 'left', outfit: 'cold', expr: 'smile', hold: 'list', pose: 'hold'})], [{at: 'l0+1.0', who: 'extra:308', look: [-1, 0.4]}]), {
+    dev: 'what changed: schools test their creeks',
+    action: 'A creek again; this time Jaz holds the notebook.',
+    lines: [N("Now schools all over the city test their creeks every week, and send the numbers to the volcano scientists.")],
   }),
   sh('one-year', vol('oneyear', {people: true}), {
     hud: {place: 'AUCKLAND', time: 'ONE YEAR LATER'},
@@ -520,7 +622,7 @@ export const vol02: Episode = {
   narratorIs: ['Ana'],
   mainCast: ['ana', 'lui', 'sione', 'mele'],
   narratorCast: 'ana',
-  speakerCast: {ANA: 'ana', LUI: 'lui', SIONE: 'sione', MELE: 'mele', TEACHER: 'teacher', COLLEAGUE: 'extra:64'},
+  speakerCast: {ANA: 'ana', LUI: 'lui', SIONE: 'sione', MELE: 'mele', TEACHER: 'teacher', COLLEAGUE: 'extra:64', JAZ: 'extra:308'},
   costumeByDay: false,
   noAngry: ['ana', 'lui', 'sione', 'mele'],
   dialogueLedger: 'episodes/vol02-volcano-under-our-city/dialogue-review.md',

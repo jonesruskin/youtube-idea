@@ -48,6 +48,7 @@ VOICES = {
     "MELE_PHONE": {"voice": "af_nova", "speed": 0.95, "fx": "radio"},
     "TEACHER": {"voice": "bm_lewis", "speed": 0.98, "fx": None},
     "COLLEAGUE": {"voice": "am_eric", "speed": 0.98, "fx": None},
+    "JAZ": {"voice": "am_puck", "speed": 1.04, "fx": "boy"},
 }
 
 # Per-episode voice overrides (each File has its own narrator)
