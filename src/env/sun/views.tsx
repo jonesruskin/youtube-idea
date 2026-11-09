@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
-import {Aurora, MilkyWay} from '../../fx/cinema/atmos';
+import {Aurora, Frost, MilkyWay} from '../../fx/cinema/atmos';
 import {rand, Stars} from '../../fx/sky';
 import {fonts} from '../../theme';
 import {CityBlocks} from '../sun01/parts';
@@ -145,6 +145,8 @@ export const SkyScene: React.FC = () => {
 export const CityScene: React.FC = () => {
   const c = useSetCtx();
   const wave = clamp((c.t - 0.3) / Math.max(1.5, c.dur - 0.8));
+  // freeze: the power stays on (every window lit) while frost rolls over the rooftops; gridFail (old) is unused
+  const freeze = c.v === 'freeze';
   return (
     <AbsoluteFill style={{background: '#000'}}>
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%">
@@ -157,9 +159,14 @@ export const CityScene: React.FC = () => {
           [1080, 1.25, 94],
         ].map(([base, s, seed], i) => (
           <g key={i} transform={`translate(960,${base}) scale(${s}) translate(-960,${-base})`}>
-            <CityBlocks seed={seed} base={base} color={['#0E1430', '#121A38', '#161F42', '#1A244C', '#1E2A56'][i]} frame={c.frame} lights={0.9} minH={80} maxH={300} snow={0} darkWave={clamp(wave * 1.3 - i * 0.12)} x0={-600} x1={2500} />
+            <CityBlocks seed={seed} base={base} color={['#0E1430', '#121A38', '#161F42', '#1A244C', '#1E2A56'][i]} frame={c.frame} lights={0.9} minH={80} maxH={300} snow={freeze ? clamp(wave * 1.4 - i * 0.1) : 0} darkWave={freeze ? 0 : clamp(wave * 1.3 - i * 0.12)} x0={-600} x1={2500} />
           </g>
         ))}
+        {freeze && (
+          <g opacity={0.35 + 0.5 * wave}>
+            <Frost amount={0.3 + 0.6 * wave} w={W} h={H} seed={21} />
+          </g>
+        )}
         <Vignette amount={0.6} />
       </svg>
     </AbsoluteFill>

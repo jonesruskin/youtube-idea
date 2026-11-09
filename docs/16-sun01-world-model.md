@@ -110,12 +110,12 @@ marked **OPEN (series)** on purpose. Only two questions may stay open.
 37. Why an aurora on Day 3? A solar storm already on its way before the shell closed. (aurora)
 38. Why does a sea skin freeze but the fish live? Ice floats; the water underneath stays liquid. (fish)
 39. Why is underground warm? Ground heat: about 10 °C a few metres down. (ground-heat)
-40. How cold does it get? −30 °C by Day 7, −50 °C by Day 100, −70 °C on Day 365. (freeze, day100, surface)
-41. Why is it summer clothes on Day 0? It was summer. (kitchen)
+40. How cold does it get? −30 °C by Day 7, −50 °C by Day 100, −70 °C on Day 365. (freeze, day100-cold, day365)
+41. Why is it summer clothes on Day 0? It was summer. (kitchen-morning, day1-rush)
 42. Why stars at breakfast? With the Sun dark, the day sky is a night sky. (stars-at-breakfast)
 43. Why can people stand on the surface on Day 365? Full arctic gear (people work at −70 °C in Antarctica). (day365)
 44. Why does the light return at 6:52 everywhere at once? Everywhere in daylight sees it at the same instant. (globe-return)
-45. Why does Sydney get the Sun at 3:52 p.m.? It's 9 hours ahead and in daylight. (sun-beach tag)
+45. Why does Sydney get the Sun at 3:52 p.m.? It's 9 hours ahead and in daylight. (sun-beach)
 46. Why is New York still dark? It's the middle of the night there. (ny-night)
 47. Why do the drawing and the reply take 8 minutes each way? The ship is beside the Sun. (hook)
 48. Why "twenty-one" for Ito? It's the distance he wrote on his 1983 chart. (obs-chart, twenty-one)
@@ -126,12 +126,12 @@ marked **OPEN (series)** on purpose. Only two questions may stay open.
 51. Why does Mum call by phone? It's 2026. (hosp-call)
 52. Why does Ito have a radio dish? He built a listener after Day 100, expecting an answer. (an-ear)
 53. Can a home transmitter reach the ship? It's 8 light-minutes away, and the ship heard Earth's radio for years. (allowed)
-54. Is there internet? Yes: work from home. (world montage)
+54. Is there internet? Yes: work from home. (world-works-2)
 
 ### D. Transport and jobs
-55. How do people get around? Electric trains and metros; walking in cold gear. (world montage)
-56. What about trucks and planes? Planes grounded; diesel gels; only winter-fuel convoys. (world montage)
-57. What happens to jobs? Home working, or essential work underground. (world montage)
+55. How do people get around? Electric trains and metros; walking in cold gear. (world-trains, world-works)
+56. What about trucks and planes? Planes grounded; diesel gels; only winter-fuel convoys. (news-hour1, world-works)
+57. What happens to jobs? Home working, or essential work underground. (world-works-2)
 58. Do kids go to school? In the shelter, in a train carriage. (school)
 59. Why does Kai carry the telescope up the stairs? The lift is packed with neighbours. (six-floors)
 60. Why carry the dish up the stairs on Day 365? The escalators to the surface froze months ago. (dish-climb)
@@ -141,25 +141,25 @@ marked **OPEN (series)** on purpose. Only two questions may stay open.
 62. Why lettuce? Ready in a month. Plus potatoes and mushrooms. (farm)
 63. Why seeds on the list? Ito plans for the farms. (grab, theyll-learn)
 64. Why do men fight over a heater? Panic; Ito points out food is the real problem. (theyll-learn)
-65. Where does water come from? Melted ice and deep wells. (world montage)
+65. Where does water come from? Taps keep working ("power and water are working normally"); later, melted ice and deep wells. (alert)
 
 ### F. Health and safety
 66. Why can't Mum come home on Day 0? Crash injuries from the sudden dark; every nurse needed. (mum-text, hosp-call)
 67. Where does she sleep? At the hospital. (hosp-call)
-68. How do patients reach the hospital? Ambulances on chained tyres; electric trains. (hosp-wide line, world montage)
+68. How do patients reach the hospital? Ambulances on chained tyres; electric trains. (hosp-wide, world-trains)
 69. Why are the neighbours burning furniture? Their radiators died when the pipes froze. (furniture)
 70. Why evacuate? Carbon monoxide: invisible, odourless and deadly. (invisible)
 71. What happens after the fire? The fire brigade puts it out; the building is too cold to stay in. (evacuate)
 72. Why does the family move underground? Warmth, 10 °C, and the city opens shelters. (ground-heat, refuges)
 73. Why does Mum join them on Day 30? The hospital opens a clinic in the station; she asks to work there. (day30-clinic)
-74. Did people die? Yes, said honestly once. (day100)
+74. Did people die? Yes, said honestly once. (not-everyone)
 75. Why do the heaters matter if underground is +10 °C? Fresh air comes down from outside at −50 °C and must be warmed. On Day 100 those heaters freeze; Ito helps fix them. (day100-cold)
 
 ### G. Characters and motives
 76. Why does Ito come to their door at 6:55? Mum phoned him from the hospital. (ito-door)
 77. Why is his bag packed? He knew an answer could come any year after about 2025. (bag-payoff)
 78. Why does he avoid "who built it?" Guilt: he thinks he caused it. (bedtime, nobody-listened)
-79. Why does he watch every sunrise? Waiting for an answer. (roof-arrive, coda)
+79. Why does he watch every sunrise? Waiting for an answer. (roof-arrive, waiting-answer)
 80. Why three taps on the telescope? His knock, a private ritual. (three-taps, obs-tap)
 81. Why does he know about old machines? He ran observatory equipment. (ito-volunteers)
 82. Why does Mira keep the drawing? It was the last thing she made in sunlight. (keep-it)
@@ -173,18 +173,18 @@ marked **OPEN (series)** on purpose. Only two questions may stay open.
 
 ### H. Continuity
 90. Mira's drawing: made Day 0, kept in her pocket all year, sent Day 365. (mira-draws, keep-it, this)
-91. The torch: Ito has it Day 0 (switched off in daylight interiors).
-92. The tide table is given by Ito on Day 0 evening and used on Day 1.
-93. Mum's outfit: scrubs, a navy coat in the cold.
-94. Biscuit is rounder by Day 30.
-95. Every scene states its day (DAY tag) and, where it matters, its time.
-96. The door: Kai opens it; nothing opens by itself.
-97. Lamps stay on all year (power works).
+91. The torch: Ito has it Day 0, switched off indoors. (ito-door, roof-setup)
+92. The tide table is given by Ito on Day 0 evening and used on Day 1. (go-look, still-there)
+93. Mum's outfit: scrubs, a navy coat in the cold. (hosp-call, mum-returns)
+94. Biscuit is rounder by Day 30. (fan-club)
+95. Every scene states its day (DAY tag) and, where it matters, its time. (harbour, hosp-biscuit, dish-climb)
+96. The door: Kai opens it; nothing opens by itself. (knock, ito-door)
+97. Lamps stay on all year (power works). (lights-work, day100-cold, cold-night)
 
 ### I. Picture logic
-98. Everything moves head-first: fish, dog, people, buses.
-99. Paw prints point in the direction of travel.
-100. Place labels are cities: SYDNEY, CHENNAI, MANILA, TOKYO, NEW YORK, MONTRÉAL, MOSCOW METRO, HELSINKI.
-101. No mirrored text; no overlay over a label; no empty panels.
-102. Frost, not snowdrifts, after Day 7.
-103. Time-zone tags agree: story city UTC+1 → Sydney +9 h, Chennai +4 h 30 min, Manila +7 h, Tokyo +8 h, New York −5 h.
+98. Everything moves head-first: fish, dog, people, buses. (fish, biscuit-bolts, world-bus)
+99. Paw prints point in the direction of travel. (pawprints, vent)
+100. Place labels are cities: SYDNEY, CHENNAI, MANILA, TOKYO, NEW YORK, MONTRÉAL, MOSCOW METRO, HELSINKI. (world-field, refuges, countdown-world)
+101. No mirrored text; no overlay over a label; no empty panels. (refuges, countdown-world)
+102. Frost, not snowdrifts, after Day 7. (bark, sun-field)
+103. Time-zone tags agree: story city UTC+1 → Sydney +9 h, Chennai +4 h 30 min, Manila +7 h, Tokyo +8 h, New York −5 h. (world-beach, news-hour1, countdown-world)

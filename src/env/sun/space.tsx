@@ -2,6 +2,7 @@ import React, {useMemo} from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
 import {Stars, rand} from '../../fx/sky';
 import {PhotoGlobe} from '../../fx/PhotoGlobe';
+import {fonts} from '../../theme';
 import {useSetCtx, Vignette} from './stage';
 
 /**
@@ -378,7 +379,8 @@ const GlobeScene: React.FC = () => {
   const c = useSetCtx();
   const v = c.v;
   const day = (c.p.day as number) ?? 0;
-  const ice = day >= 7 ? 62 : 78;
+  // freeze: the ice creeps toward the equator while the cities' lights stay on (power works all year)
+  const ice = v === 'freeze' ? interpolate(c.t / c.dur, [0, 1], [74, 52]) : day >= 7 ? 62 : 78;
   const lights = v === 'lights' ? 1 : v === 'gridDown' ? Math.max(0.1, 1 - Math.max(0, c.t - 0.6) / 2.4) : 0.9;
   const z = interpolate(c.t / c.dur, [0, 1], [1, 1.08]);
   return (
@@ -391,9 +393,30 @@ const GlobeScene: React.FC = () => {
             return <circle key={i} cx={960} cy={560} r={rr} fill="none" stroke="#FF5A3A" strokeWidth={22} opacity={0.12 * (1 - (rr - 400) / 360)} filter="blur(8px)" />;
           })}
       </svg>
+      {v === 'sunreturn' && c.p.labels && (
+        <svg viewBox="0 0 1920 1080" width="100%" height="100%" style={{position: 'absolute', zIndex: 2}}>
+          {(() => {
+            const on = Math.max(0, Math.min(1, (c.t - ((c.p.sunAt as number) ?? 1) - 0.5) / 0.5));
+            const L = c.p.labels as {day: [number, number]; night: [number, number]};
+            const tag = (x: number, y: number, t1: string, t2: string, col: string) => (
+              <g opacity={on} transform={`translate(${x},${y})`}>
+                <rect x={-230} y={-58} width={460} height={110} rx={14} fill="#05060D" opacity={0.78} />
+                <text x={0} y={-8} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={40} fill={col}>{t1}</text>
+                <text x={0} y={34} textAnchor="middle" fontFamily={fonts.ui} fontWeight={700} fontSize={26} fill="#E8ECF5">{t2}</text>
+              </g>
+            );
+            return (
+              <g>
+                {tag(L.day[0], L.day[1], 'DAY SIDE', 'the Sun is back, all at once', '#FFD27A')}
+                {tag(L.night[0], L.night[1], 'NIGHT SIDE', 'sunrise comes later, as usual', '#9FB8FF')}
+              </g>
+            );
+          })()}
+        </svg>
+      )}
       <div style={{position: 'absolute', left: 960 - 400 * z, top: 560 - 400 * z, filter: 'drop-shadow(0 0 30px rgba(80,120,220,0.45))'}}>
         {v === 'sunreturn' ? (
-          <PhotoGlobe size={800 * z} center={[(c.p.lon as number) ?? 10, 30]} sun={[((c.p.lon as number) ?? 10) + 70, 18]} dim={1 - Math.max(0, Math.min(1, (c.t - ((c.p.sunAt as number) ?? 1)) / 0.7))} lights={0.3} ice={ice} />
+          <PhotoGlobe size={800 * z} center={[(c.p.lon as number) ?? 10, 30]} sun={[((c.p.lon as number) ?? 10) + ((c.p.sunOffset as number) ?? 70), 18]} dim={1 - Math.max(0, Math.min(1, (c.t - ((c.p.sunAt as number) ?? 1)) / 0.7))} lights={0.3} ice={ice} />
         ) : (
           <PhotoGlobe size={800 * z} center={[10 + c.frame * 0.06, 42]} sun={null} lights={lights} ice={ice} />
         )}

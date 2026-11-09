@@ -584,33 +584,81 @@ export const DiagramScene: React.FC = () => {
     );
   }
   if (v === 'knock') {
-    // Earth (left) and HD 219134 (right), 21 light-years apart. A knock leaves in 1983, arrives in 2004; the answer
-    // leaves at once and arrives in 2026. The year counter runs with the pulse.
+    // Earth (left) and HD 219134 (right), 21 light-years apart. The knock leaves in 1983 and arrives in 2004 (21 years);
+    // their ship leaves at once and, at almost the speed of light plus a year of braking, arrives in 2027 (23 years).
     const E: [number, number] = [260, 560];
     const S: [number, number] = [1660, 560];
-    const out = clamp((t - 0.3) / 1.6);
-    const back = clamp((t - 2.1) / 1.6);
-    const year = Math.round(back > 0 ? 2004.6 + 21.4 * back : 1983.3 + 21.3 * out);
+    const out = clamp((t - 0.3) / 1.8);
+    const back = clamp((t - 2.4) / 2.2);
+    const year = Math.round(back > 0 ? 2004 + 23 * back : 1983 + 21 * out);
     const px = back > 0 ? S[0] + (E[0] - S[0]) * back : E[0] + (S[0] - E[0]) * out;
     return (
       <Board frame={f}>
         <Earth x={E[0]} y={E[1]} r={70} />
         <circle cx={S[0]} cy={S[1]} r={14} fill="#FFFFFF" />
         <circle cx={S[0]} cy={S[1]} r={46} fill="#BFD8FF" opacity={0.2} />
+        <text x={S[0]} y={S[1] + 100} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={700} fontSize={32} fill="#C9D3E6">HD 219134</text>
         <path d={`M${E[0] + 90},${E[1]} L${S[0] - 40},${S[1]}`} stroke="#FFFFFF" strokeOpacity={0.2} strokeWidth={4} strokeDasharray="16 14" />
-        <text x={(E[0] + S[0]) / 2} y={470} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={700} fontSize={44} fill="#C9D3E6">
+        <text x={(E[0] + S[0]) / 2} y={440} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={700} fontSize={44} fill="#C9D3E6">
           21 light-years
         </text>
-        {(out > 0 && out < 1) || (back > 0 && back < 1) ? (
+        {out > 0 && out < 1 && (
           <g>
-            {[0, 1, 2].map((k) => (
-              <circle key={k} cx={px + (back > 0 ? 1 : -1) * k * 40} cy={E[1]} r={14} fill={back > 0 ? '#7FE8FF' : '#FF8A5A'} opacity={1 - k * 0.25} />
-            ))}
+            {[0, 1, 2].map((k) => <circle key={k} cx={px - k * 40} cy={E[1]} r={14} fill="#FF8A5A" opacity={1 - k * 0.25} />)}
+            <text x={px - 40} y={E[1] - 50} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={34} fill="#FF8A5A">HIS KNOCK · 21 YEARS</text>
           </g>
-        ) : null}
+        )}
+        {back > 0 && back < 1 && (
+          <g transform={`translate(${px},${E[1]})`}>
+            {/* their ship: a sail on a short hull, heading left toward us */}
+            <path d="M0,-40 L-46,10 L30,10 Z" fill="#7FE8FF" stroke="#0B1026" strokeWidth={4} />
+            <rect x={-30} y={10} width={56} height={10} fill="#C77DFF" stroke="#0B1026" strokeWidth={3} />
+            <text x={0} y={-60} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={34} fill="#7FE8FF">THEIR SHIP · 23 YEARS</text>
+          </g>
+        )}
         <text x={960} y={800} textAnchor="middle" fontFamily="'Unbounded', sans-serif" fontWeight={900} fontSize={120} fill="#FFF6E0" stroke="#0B1026" strokeWidth={12} paintOrder="stroke">
           {year}
         </text>
+      </Board>
+    );
+  }
+  if (v === 'brake') {
+    // the brake: a ship with a huge sail arrives at almost light speed; the shell's beam (all the Sun's light) hits the
+    // sail from the front and slows it to a stop over one year
+    const k = clamp((t - 0.6) / Math.max(2, (c.dur ?? 6) - 1.2));
+    const speed = 0.97 * (1 - k);
+    const shipX = 1640 - 620 * (1 - (1 - k) * (1 - k));
+    return (
+      <Board frame={f}>
+        {/* the Sun inside its shell, left */}
+        <circle cx={360} cy={520} r={110} fill="#2A1A10" stroke="#FF8A3A" strokeWidth={6} />
+        {Array.from({length: 16}, (_, i) => (
+          <path key={i} d={`M${360 + Math.cos(i * 0.39) * 110},${520 + Math.sin(i * 0.39) * 110} l${Math.cos(i * 0.39) * 26},${Math.sin(i * 0.39) * 26}`} stroke="#8A6A50" strokeWidth={8} />
+        ))}
+        <text x={360} y={700} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={700} fontSize={32} fill="#C9D3E6">OUR SUN, IN ITS SHELL</text>
+        {/* the beam to the ship */}
+        <path d={`M470,520 L${shipX - 60},520`} stroke="#FFD27A" strokeWidth={34} opacity={0.35} />
+        <path d={`M470,520 L${shipX - 60},520`} stroke="#FFF3C0" strokeWidth={8} />
+        <text x={500} y={466} fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={34} fill="#FFD27A">ALL THE SUN'S LIGHT →</text>
+        {/* the ship, sail facing the beam */}
+        <g transform={`translate(${shipX},520)`}>
+          <path d="M-60,-150 Q-20,0 -60,150 L-40,150 Q0,0 -40,-150 Z" fill="#7FE8FF" stroke="#0B1026" strokeWidth={4} />
+          <path d="M-40,0 L40,0" stroke="#C9D3E6" strokeWidth={4} />
+          <rect x={30} y={-16} width={70} height={32} rx={8} fill="#C77DFF" stroke="#0B1026" strokeWidth={4} />
+          <text x={0} y={200} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={700} fontSize={32} fill="#7FE8FF">THEIR SHIP</text>
+          <path d="M140,0 L220,0 M200,-16 L220,0 L200,16" stroke="#FFFFFF" strokeWidth={6} fill="none" opacity={1 - k} />
+        </g>
+        {/* speed bar and the year */}
+        <g transform="translate(560,860)">
+          <rect x={0} y={-30} width={800} height={40} rx={10} fill="#1A2140" stroke="#C9D3E6" strokeWidth={3} />
+          <rect x={0} y={-30} width={800 * speed} height={40} rx={10} fill="#7FE8FF" />
+          <text x={0} y={-50} fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={32} fill="#FFFFFF">
+            SPEED: {speed > 0.01 ? `${Math.round(speed * 100)}% OF LIGHT SPEED` : 'STOPPED'}
+          </text>
+          <text x={800} y={-50} textAnchor="end" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={32} fill="#FFD27A">
+            MONTH {Math.min(12, Math.floor(k * 12) + 1)} OF 12
+          </text>
+        </g>
       </Board>
     );
   }

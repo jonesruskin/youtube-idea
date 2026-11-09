@@ -4,8 +4,8 @@ import {Glow, Grade, INK, M, registerSet, Vignette, type SetCtx} from '../stage'
 
 /**
  * Where Mum is all year. floor y = 930 (hospital), ice y = 940 (river).
- *  hospital — St Anne's, across the river: a corridor turned shelter, cots along the wall, the nurses' station with
- *     a ham radio (how she calls the kids every night). v: lit (Day 0, mains power) · dark (generators failing: lanterns)
+ *  hospital — St Anne's, across the river: a corridor turned shelter, cots along the wall, the nurses' station.
+ *     Mum video-calls the kids on her phone. v: lit (power works all year). p.siren: blue ambulance light at the doors
  *  river    — the frozen river between them, Day 180: the closed bridge, the far bank where the hospital still
  *     has a few lit windows, and the ice, thick enough at last to walk on. v: walk
  */
@@ -50,10 +50,11 @@ const Hospital: React.FC<{c: SetCtx}> = ({c}) => {
       <g transform="translate(1150,930)">
         <rect x={-260} y={-M(1.05)} width={520} height={M(1.05)} fill="#E9EEF0" stroke={INK} strokeWidth={5} />
         <rect x={-280} y={-M(1.05) - 20} width={560} height={24} fill="#8AA6B8" stroke={INK} strokeWidth={4} />
-        <rect x={60} y={-M(1.05) - 96} width={160} height={76} rx={8} fill="#3A3F48" stroke={INK} strokeWidth={4} />
-        <circle cx={100} cy={-M(1.05) - 58} r={18} fill="#1A1C24" stroke="#8A8F9C" strokeWidth={3} />
-        <rect x={130} y={-M(1.05) - 80} width={70} height={18} fill="#FFB25A" />
-        <path d={`M200,${-M(1.05) - 96} L240,${-M(1.05) - 210}`} stroke="#8A8F9C" strokeWidth={5} />
+        {/* a desk monitor and files (Mum calls the kids on her phone; there is no radio) */}
+        <rect x={70} y={-M(1.05) - 110} width={150} height={92} rx={8} fill="#1A1C24" stroke={INK} strokeWidth={4} />
+        <rect x={80} y={-M(1.05) - 100} width={130} height={70} rx={4} fill="#5FA8C8" opacity={0.85} />
+        <rect x={135} y={-M(1.05) - 18} width={20} height={14} fill={INK} />
+        <rect x={-200} y={-M(1.05) - 44} width={110} height={26} rx={4} fill="#E9C46A" stroke={INK} strokeWidth={3} />
         {dark && <rect x={-200} y={-M(1.05) - 90} width={40} height={60} rx={6} fill="#FFE3A6" stroke={INK} strokeWidth={3} />}
       </g>
       <rect x={-700} y={930} width={3300} height={500} fill={dark ? '#5A5E6A' : '#C9CED6'} />
@@ -108,6 +109,8 @@ registerSet('hospital', {
       <g>
         <Glow x={960} y={100} r={1100} color="#FFFFFF" opacity={0.2} />
         <Glow x={1250} y={780} r={300} color="#FFB25A" opacity={0.15} />
+        {/* an ambulance at the doors: its blue light sweeping the corridor */}
+        {c.p.siren && <Glow x={-80} y={620} r={520} color="#3A7BFF" opacity={0.18 + 0.22 * Math.max(0, Math.sin(c.frame * 0.42))} />}
       </g>
     ),
   grade: (c) => (

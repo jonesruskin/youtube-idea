@@ -1,5 +1,6 @@
 import React from 'react';
 import {Flame, StringLights, Tent} from '../../sun01/parts';
+import {Frost} from '../../../fx/cinema/atmos';
 import {Glow, Grade, INK, M, registerSet, Vignette, type SetCtx} from '../stage';
 
 /**
@@ -114,6 +115,14 @@ const Platform: React.FC = () => (
   </g>
 );
 
+/** How warm the station's air heaters run (Day 100: they freeze at p.cold, and are back on at p.heatersBack). */
+export const heatOf = (c: SetCtx) => {
+  if (c.p.heatersBack !== undefined) return Math.min(1, Math.max(0, (c.t - c.at(c.p.heatersBack, 0)) / 1.2));
+  if (c.p.cold !== undefined) return 1 - Math.min(1, Math.max(0, (c.t - c.at(c.p.cold, 0)) / 1.6));
+  if (c.p.frozen) return 0;
+  return 1;
+};
+
 const Town: React.FC<{c: SetCtx; lit: number}> = ({c, lit}) => (
   <g>
     {/* carriages parked on the far track, a few metres behind the cast (k = 0.8) */}
@@ -134,7 +143,7 @@ const Town: React.FC<{c: SetCtx; lit: number}> = ({c, lit}) => (
     <g transform="translate(1100,900)">
       <rect x={-M(0.3)} y={-M(0.6)} width={M(0.6)} height={M(0.6)} rx={8} fill="#3A3442" stroke={INK} strokeWidth={4} />
       <path d={`M${M(0.1)},${-M(0.6)} L${M(0.1)},${-M(3.0)}`} stroke="#5A5E6A" strokeWidth={22} />
-      <rect x={-M(0.2)} y={-M(0.42)} width={M(0.4)} height={M(0.2)} rx={4} fill="#FF8A3A" opacity={0.5 + 0.3 * lit} />
+      <rect x={-M(0.2)} y={-M(0.42)} width={M(0.4)} height={M(0.2)} rx={4} fill="#FF8A3A" opacity={(0.5 + 0.3 * lit) * (0.15 + 0.85 * heatOf(c))} />
     </g>
     {[180, 1690].map((x) => (
       <g key={x}>
@@ -149,22 +158,49 @@ const Farm: React.FC<{c: SetCtx}> = ({c}) => (
   <g>
     {/* a disused tunnel mouth full of racks under pink grow lights */}
     <path d="M-200,900 L-200,350 Q960,-80 2120,350 L2120,900 Z" fill="#1E1A28" stroke={INK} strokeWidth={6} />
+    {/* three racks: lettuce (ready in a month), potatoes, and mushrooms (no light needed, so their shelf has no lamp) */}
     {Array.from({length: 3}, (_, row) => (
       <g key={row}>
         <rect x={-100} y={520 + row * 130} width={2120} height={14} fill="#5A5E6A" stroke={INK} strokeWidth={3} />
-        <rect x={-100} y={410 + row * 130} width={2120} height={10} fill="#FF5FD2" opacity={0.9} />
+        {row < 2 && <rect x={-100} y={410 + row * 130} width={2120} height={10} fill="#FF5FD2" opacity={0.9} />}
         {Array.from({length: 26}, (_, k) => (
           <g key={k} transform={`translate(${-60 + k * 80},${520 + row * 130})`}>
-            <path d="M0,0 Q-22,-26 -6,-46 Q0,-20 0,0 Q4,-30 18,-44 Q22,-16 0,0" fill={['#5BBF6A', '#7FD27A', '#4EA85C'][(k + row) % 3]} stroke={INK} strokeWidth={2} />
+            {row === 0 && <path d="M0,0 Q-22,-26 -6,-46 Q0,-20 0,0 Q4,-30 18,-44 Q22,-16 0,0" fill={['#5BBF6A', '#7FD27A', '#4EA85C'][k % 3]} stroke={INK} strokeWidth={2} />}
+            {row === 1 && (
+              <g>
+                <path d="M0,0 L0,-34 M0,-20 L-16,-36 M0,-24 L15,-40" stroke="#3E7A44" strokeWidth={4} />
+                <circle cx={-16} cy={-38} r={9} fill="#4EA85C" stroke={INK} strokeWidth={2} />
+                <circle cx={15} cy={-42} r={9} fill="#5BBF6A" stroke={INK} strokeWidth={2} />
+                <circle cx={0} cy={-38} r={8} fill="#7FD27A" stroke={INK} strokeWidth={2} />
+                {k % 4 === 0 && <ellipse cx={14} cy={-4} rx={11} ry={8} fill="#C8A26A" stroke={INK} strokeWidth={2} />}
+              </g>
+            )}
+            {row === 2 && k % 2 === 0 && (
+              <g>
+                <rect x={-30} y={-26} width={60} height={26} fill="#7A5A3A" stroke={INK} strokeWidth={2} />
+                {[-16, 0, 16].map((dx) => (
+                  <g key={dx}>
+                    <rect x={dx - 3} y={-40} width={6} height={14} fill="#EDE3D2" />
+                    <ellipse cx={dx} cy={-42} rx={11} ry={7} fill="#D9C7A6" stroke={INK} strokeWidth={2} />
+                  </g>
+                ))}
+              </g>
+            )}
           </g>
         ))}
+        <g transform={`translate(${620 + row * 60},${520 + row * 130 + 36})`}>
+          <rect x={-10} y={-24} width={row === 2 ? 330 : 250} height={34} rx={6} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
+          <text x={4} y={2} fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={24} fill="#1A1E2A">
+            {['LETTUCE · 30 DAYS', 'POTATOES', 'MUSHROOMS · NO LIGHT'][row]}
+          </text>
+        </g>
       </g>
     ))}
     {/* the canteen menu, chalked by someone who has given up */}
     <g transform="translate(1660,560) rotate(2)">
       <rect x={-150} y={-190} width={300} height={330} rx={8} fill="#2F4A3A" stroke="#7A4E30" strokeWidth={12} />
       <text x={0} y={-140} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={34} fill="#FFE7A6">MENU</text>
-      {['MON  lettuce', 'TUE  lettuce', 'WED  lettuce', 'THU  lettuce', 'FRI  ...lettuce'].map((t, k) => (
+      {['MON  lettuce', 'TUE  potatoes', 'WED  lettuce', 'THU  mushrooms', 'FRI  ...lettuce'].map((t, k) => (
         <text key={k} x={-120} y={-90 + k * 46} fontFamily="'Space Grotesk', sans-serif" fontWeight={600} fontSize={28} fill="#F4EFE6" opacity={0.9}>{t}</text>
       ))}
     </g>
@@ -321,7 +357,23 @@ registerSet('metro', {
                 <g>
                   <Platform />
                   {v === 'farm' ? <Farm c={c} /> : v === 'stairs' ? <Stairs /> : <Town c={c} lit={lit} />}
+                  {c.p.clinic && (
+                    // the hospital's clinic in the station (Day 30 on): a sign on the far wall
+                    <g transform="translate(1500,470)">
+                      <rect x={-150} y={-60} width={300} height={110} rx={10} fill="#F4F7F8" stroke={INK} strokeWidth={5} />
+                      <rect x={-128} y={-36} width={60} height={60} fill="#D9443A" />
+                      <rect x={-110} y={-48} width={24} height={84} fill="#D9443A" />
+                      <rect x={-140} y={-18} width={84} height={24} fill="#D9443A" />
+                      <text x={46} y={14} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={900} fontSize={40} fill="#1A1E2A">CLINIC</text>
+                    </g>
+                  )}
                   {c.p.screen && <StationScreen c={c} />}
+                  {heatOf(c) < 1 && (
+                    // frost creeping over the tiles and floor as the warmed air stops coming
+                    <g opacity={(1 - heatOf(c)) * 0.75}>
+                      <Frost amount={0.55} w={1920} h={1080} seed={33} />
+                    </g>
+                  )}
                 </g>
               ),
             },
@@ -361,6 +413,8 @@ registerSet('metro', {
         <Glow x={960} y={100} r={1100} color={k > 0.8 ? '#FFE9A8' : '#FFB25A'} opacity={0.15 + 0.35 * k} />
         <Glow x={520} y={860} r={200} color="#FFD08A" opacity={0.25} />
         <Glow x={1280} y={860} r={200} color="#FFD08A" opacity={0.25} />
+        <Glow x={1100} y={800} r={360} color="#FF8A3A" opacity={0.22 * heatOf(c)} />
+        {heatOf(c) < 1 && <Glow x={960} y={500} r={1200} color="#9FC8FF" opacity={0.16 * (1 - heatOf(c))} />}
       </g>
     );
   },

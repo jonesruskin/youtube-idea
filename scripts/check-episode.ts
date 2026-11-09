@@ -1,0 +1,85 @@
+// One command for stage 6 of docs/PIPELINE.md: everything that can be checked before voicing and rendering.
+// Usage: npx tsx scripts/check-episode.ts <id>
+//   1. lint-episode (props, faces, blinks, sleepy, presence, 180°, timing, world state, dialogue, pacing)
+//   2. question bank (docs/00 S4): ≥100 numbered questions, every one answered with a real shot id or OPEN, ≤2 OPEN
+//   3. packaging (docs/00 K1–K3): title 50–70 characters, no spoiler words in title / alternates / thumbnail text /
+//      logline / tags / pinned comment
+// Exit code 1 on any failure.
+import {execSync} from 'node:child_process';
+import {existsSync, readFileSync} from 'node:fs';
+import {join} from 'node:path';
+import {loadEpisode, ROOT} from './load-episode';
+
+const id = process.argv[2];
+if (!id) throw new Error('usage: npx tsx scripts/check-episode.ts <id>');
+const {episode} = await loadEpisode(id);
+const fails: string[] = [];
+const ok: string[] = [];
+
+// 1 · lint
+try {
+  const out = execSync(`npx tsx scripts/lint-episode.ts ${id}`, {cwd: ROOT, stdio: 'pipe'}).toString();
+  ok.push('lint: passes');
+  const warn = out.split('\n').filter((l) => l.includes('⚠')).length;
+  if (warn) ok.push(`lint: ${warn} warning(s) (advisory)`);
+} catch (e) {
+  const out = String((e as {stdout?: Buffer}).stdout ?? '');
+  out.split('\n').filter((l) => l.includes('✖')).forEach((l) => fails.push(`lint: ${l.replace(/^\s*✖\s*/, '')}`));
+  if (!fails.length) fails.push('lint: failed');
+}
+
+// 2 · question bank
+const qbPath = episode.questionBank ? join(ROOT, episode.questionBank) : null;
+if (!qbPath || !existsSync(qbPath)) fails.push(`question bank: missing (set episode.questionBank; docs/00 S4)`);
+else {
+  const text = readFileSync(qbPath, 'utf8');
+  const at = text.search(/^##+\s*(\d+\.\s*)?question bank/im);
+  const bank = at >= 0 ? text.slice(at) : '';
+  const qs = bank.split('\n').filter((l) => /^\d+\.\s/.test(l.trim()));
+  const ids = new Set(episode.shots.map((s) => s.id));
+  let open = 0;
+  const unanswered: string[] = [];
+  for (const q of qs) {
+    if (/OPEN \(series\)/.test(q)) {
+      open++;
+      continue;
+    }
+    // the answer must cite at least one real shot id in brackets: (shot-a, shot-b)
+    const cites = [...q.matchAll(/\(([^()]+)\)\s*$/g)].map((m) => m[1]);
+    const shotsCited = cites.join(',').split(/[,\s]+/).map((x) => x.trim()).filter(Boolean);
+    const real = shotsCited.filter((x) => ids.has(x));
+    const fake = shotsCited.filter((x) => !ids.has(x));
+    if (!real.length) unanswered.push(q.trim().slice(0, 90));
+    else if (fake.length) unanswered.push(`${q.trim().slice(0, 60)} … cites unknown shot(s): ${fake.join(', ')}`);
+  }
+  if (qs.length < 100) fails.push(`question bank: only ${qs.length} questions (need ≥100)`);
+  if (open > 2) fails.push(`question bank: ${open} OPEN questions (max 2)`);
+  unanswered.forEach((q) => fails.push(`question bank: no real shot cited → ${q}`));
+  if (qs.length >= 100 && open <= 2 && !unanswered.length) ok.push(`question bank: ${qs.length} questions, ${open} open on purpose, every answer cites a shot`);
+}
+
+// 3 · packaging
+const t = episode.youtubeTitle;
+if (t.length < 50 || t.length > 70) fails.push(`title: "${t}" is ${t.length} characters (50–70)`);
+else ok.push(`title: ${t.length} characters`);
+const spoilers = (episode.spoilers ?? []).map((s) => s.toLowerCase());
+const surfaces: [string, string][] = [
+  ['title', t],
+  ...(episode.titleAlternates ?? []).map((a, i) => [`alternate ${i + 1}`, a] as [string, string]),
+  ['thumbnail text', episode.thumbnailText],
+  ['logline', episode.logline],
+  ['tags', episode.tags.join(' · ')],
+  ['pinned comment', episode.pinnedComment],
+];
+for (const [where, text] of surfaces) {
+  const low = ` ${text.toLowerCase()} `;
+  for (const sp of spoilers) if (new RegExp(`[^a-z]${sp.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[^a-z]`).test(low)) fails.push(`spoiler: "${sp}" in ${where}`);
+}
+if (!spoilers.length) fails.push('spoilers: episode.spoilers is empty (docs/00 K1)');
+else ok.push(`spoilers: none of ${spoilers.length} spoiler words appear in title, thumbnails, logline, tags or pinned comment`);
+
+console.log(`\ncheck-episode ${id}`);
+ok.forEach((l) => console.log(`  ✔ ${l}`));
+fails.forEach((l) => console.log(`  ✖ ${l}`));
+console.log(fails.length ? `\n${fails.length} problem(s).` : '\nall checks pass.');
+process.exit(fails.length ? 1 : 0);

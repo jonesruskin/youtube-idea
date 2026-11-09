@@ -85,6 +85,10 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
   - cut pairs;
   - face strips at 1:1 for every close-up.
 - **Q5. Think from first principles; research real numbers; assume nothing.** Be original: no generic AI-slop formats.
+- **Q6. Pacing:**
+  - The average shot is ≤ 4.0 s for narrated story files (≤ 3.7 s for fast formats; set `pacing` in the episode).
+  - Any shot over 7 s with more than one sentence is split into two camera setups.
+  - Clarity beats cut speed: never clip a line to make the number. [gate]
 
 ## Source of these rules (CEO reviews)
 - **v3.1:** props popping in and out; hand-waving on every line; logic holes; Mum missing; no world chaos; unnatural dialogue.

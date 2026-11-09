@@ -46,7 +46,9 @@ const LivingRoom: React.FC<{c: SetCtx}> = ({c}) => {
   const v = c.v;
   const sealed = v === 'warm' || v === 'candle' || (v === 'seal' && c.p.blankets === 'up');
   const sealing = v === 'seal' && c.p.blankets !== 'up' ? Math.min(1, c.t / Math.max(1, c.dur * 0.8)) : sealed ? 1 : 0;
-  const doorOpen = v === 'door' && c.p.doorOpen;
+  // the door swings open on its hinge when someone opens it (doorOpenAt: a time in the shot); doorOpen: already open
+  const doorP = v !== 'door' ? 0 : c.p.doorOpen ? 1 : c.p.doorOpenAt !== undefined ? Math.max(0, Math.min(1, (c.t - c.at(c.p.doorOpenAt as number | string, 0)) / 0.45)) : 0;
+  const doorOpen = doorP > 0;
   const knock = v === 'door' && c.p.knock ? Math.sin(c.frame * 1.6) * (Math.floor(c.t * 3) % 2 === 0 ? 3 : 0) : 0;
   return (
     <g>
@@ -94,10 +96,18 @@ const LivingRoom: React.FC<{c: SetCtx}> = ({c}) => {
       {/* front door (right) */}
       <g>
         <rect x={1500} y={930 - M(2.05)} width={M(0.92)} height={M(2.05)} fill={doorOpen ? '#2A2028' : '#1C1A22'} stroke={INK} strokeWidth={5} />
-        {doorOpen && <rect x={1508} y={938 - M(2.05)} width={M(0.92) - 16} height={M(2.05) - 8} fill="#FFB867" opacity={0.3} />}
+        {doorOpen && <rect x={1508} y={938 - M(2.05)} width={M(0.92) - 16} height={M(2.05) - 8} fill="#FFB867" opacity={0.3 * doorP} />}
         <g transform={`translate(${1500 + knock},${930 - M(2.05)})`}>
           {doorOpen ? (
-            <path d={`M${M(0.92)},0 L${M(0.92) + 56},-24 L${M(0.92) + 56},${M(2.05) + 24} L${M(0.92)},${M(2.05)} Z`} fill="#6F4E46" stroke={INK} strokeWidth={5} />
+            (() => {
+              // hinge on the right edge: the free (left) edge swings across to the open position
+              const W0 = M(0.92);
+              const H0 = M(2.05);
+              const e = doorP * doorP * (3 - 2 * doorP);
+              const lx = (W0 + 56) * e;
+              const ly = -24 * e;
+              return <path d={`M${lx},${ly} L${W0},0 L${W0},${H0} L${lx},${H0 - ly} Z`} fill="#6F4E46" stroke={INK} strokeWidth={5} />;
+            })()
           ) : (
             <g>
               <rect x={0} y={0} width={M(0.92)} height={M(2.05)} fill="#6F4E46" stroke={INK} strokeWidth={5} />
@@ -160,7 +170,15 @@ const LivingRoom: React.FC<{c: SetCtx}> = ({c}) => {
           {/* mattresses dragged into one room, duvets */}
           <rect x={360} y={880} width={560} height={60} rx={20} fill="#E9E4F2" stroke={INK} strokeWidth={4} />
           <path d="M380,890 Q520,830 700,880 Q820,840 900,890 L900,930 L380,930 Z" fill="#4FA3A5" stroke={INK} strokeWidth={4} />
-          <rect x={1300} y={860} width={90} height={70} rx={10} fill="#C9CED6" stroke={INK} strokeWidth={4} />
+          {/* a small electric heater (the power works all year; the radiators died when the pipes froze) */}
+          <g transform="translate(1300,930)">
+            <rect x={0} y={-96} width={110} height={90} rx={10} fill="#C9CED6" stroke={INK} strokeWidth={4} />
+            {[0, 1, 2].map((k) => (
+              <rect key={k} x={14} y={-84 + k * 26} width={82} height={12} rx={6} fill="#FF7A2E" stroke={INK} strokeWidth={2} />
+            ))}
+            <rect x={10} y={-6} width={20} height={6} fill={INK} />
+            <rect x={80} y={-6} width={20} height={6} fill={INK} />
+          </g>
         </g>
       )}
       {v === 'balcony' && (
@@ -198,12 +216,16 @@ registerSet('apartment', {
     if (v === 'warm' || v === 'seal') {
       return (
         <g>
-          {/* camping lantern on the shelf */}
-          <Flame x={1300} y={860} s={0.9} frame={c.frame} kind="lantern" glow={1.6} />
+          {/* the electric heater's orange glow, and the room lamp */}
+          <Glow x={1355} y={870} r={420} color="#FF8A3A" opacity={0.42 + 0.03 * Math.sin(c.frame * 0.07)} />
+          <Glow x={960} y={200} r={700} color="#FFE3A6" opacity={0.28} />
         </g>
       );
     }
-    if (v === 'door' && c.p.doorOpen) return <Glow x={1600} y={700} r={500} color="#FFC77A" opacity={0.35} />;
+    if (v === 'door' && (c.p.doorOpen || c.p.doorOpenAt !== undefined)) {
+      const dp = c.p.doorOpen ? 1 : Math.max(0, Math.min(1, (c.t - c.at(c.p.doorOpenAt as number | string, 0)) / 0.45));
+      return <Glow x={1600} y={700} r={500} color="#FFC77A" opacity={0.35 * dp} />;
+    }
     return <Glow x={1150} y={250} r={500} color="#FFE3A6" opacity={0.25} />;
   },
   grade: (c) => {

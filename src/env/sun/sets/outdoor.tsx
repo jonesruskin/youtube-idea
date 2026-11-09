@@ -6,7 +6,8 @@ import {Glow, Grade, INK, M, registerSet, Smoke, TorchBeam, Vignette, type SetCt
 /**
  * Outdoor sets on the family's street (a cold, coastal northern city).
  *  street     — Hour one / Day 1: brick terraces, shopfronts, streetlights still on. floor y = 960
- *  snowstreet — Day 7–8: the same street buried in snow, no power; the metro entrance with its warm vent. floor y = 960
+ *  snowstreet — Day 7–8: the same street after the first week's big snowfall; power still on (lit windows, streetlights);
+ *     the metro entrance with its warm vent. floor y = 960
  *  surface    — Day 40–365: the frozen city from an open square; the sky is the subject. floor y = 940
  */
 
@@ -422,15 +423,15 @@ registerSet('snowstreet', {
     const wind = (c.p.wind as number) ?? 0.4;
     return [
       {depth: 0.15, node: <Sky frame={c.frame} top="#010208" mid="#070C22" bottom="#141C3A" seed={9} />},
-      {depth: 0.45, node: <Terraces base={on(K.back)} sc={M(K.back)} seed={91} power={0} snow={1} frame={c.frame} shade={0.55} x0={-900} x1={2900} />},
+      {depth: 0.45, node: <Terraces base={on(K.back)} sc={M(K.back)} seed={91} power={0.75} snow={1} frame={c.frame} shade={0.55} x0={-900} x1={2900} />},
       {
         depth: 1,
         node: (
           <g>
-            <Terraces base={on(K.house)} sc={M(K.house)} seed={17} power={0} snow={1} frame={c.frame} low />
+            <Terraces base={on(K.house)} sc={M(K.house)} seed={17} power={0.75} snow={1} frame={c.frame} low />
             <StreetFloor snow />
             {LAMPS.map((x) => (
-              <Lamp key={x} x={x} base={on(K.lamp)} sc={M(K.lamp)} on={false} frame={c.frame} snow={1} />
+              <Lamp key={x} x={x} base={on(K.lamp)} sc={M(K.lamp)} on frame={c.frame} snow={1} />
             ))}
             <Car x={1500} base={on(K.farCar)} sc={M(K.farCar)} col="#5E5A6E" snow={1.3} />
             <Car x={300} base={on(K.nearCar)} sc={M(K.nearCar)} col="#C2464F" snow={1.2} />
@@ -481,9 +482,10 @@ const PawPrints: React.FC<{from: number; to: number; base: number}> = ({from, to
       const y = base + (i % 2 ? 10 : -6);
       return (
         <g key={i} transform={`translate(${x},${y})`} opacity={0.8}>
-          <ellipse cx={0} cy={0} rx={9} ry={6} fill="#9DB0CA" />
-          {[-8, 0, 8].map((dx) => (
-            <circle key={dx} cx={dx + 6} cy={-8} r={3} fill="#9DB0CA" />
+          <ellipse cx={0} cy={0} rx={8} ry={6} fill="#9DB0CA" />
+          {/* toes ahead of the pad, in the direction of travel (+x, toward the metro grate) */}
+          {[-1, 0, 1].map((k) => (
+            <circle key={k} cx={12 - Math.abs(k) * 2} cy={k * 5} r={3} fill="#9DB0CA" />
           ))}
         </g>
       );

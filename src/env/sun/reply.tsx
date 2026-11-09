@@ -6,12 +6,12 @@ import React from 'react';
  *   1–10   the count Mr. Ito started (1, 2, 3), carried on to ten: "we understood you"
  *   …      a builder, and beside it, small, a human (they know our shape from our broadcasts)
  *   …      their star with its planets, one raised: home
- *   …      the shell around our Sun, the beam rising from it to their star; Earth raised beside it
+ *   …      a dotted path from their star to our Sun, their ship parked beside our Sun (in its shell); Earth raised to the right
  *   …      an empty square: "your turn"
  */
 export const COLS = 23;
 export const ROWS = 73;
-type Cell = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0 off · 1 count · 2 builder · 3 human · 4 their system · 5 shell/beam · 6 earth/empty-square
+type Cell = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0 off · 1 count · 2 builder/ship/path · 3 human · 4 their system · 5 sun in shell · 6 earth/empty-square
 const build = (): Cell[][] => {
   const g: Cell[][] = Array.from({length: ROWS}, () => Array(COLS).fill(0) as Cell[]);
   const set = (x: number, y: number, v: Cell) => {
@@ -47,8 +47,8 @@ const build = (): Cell[][] => {
   // their system (rows 38–41): the star, then six planets; the fourth raised
   for (const [dx, dy] of [[0, 0], [1, 0], [0, 1], [1, 1], [-1, 0], [0, -1], [2, 1], [1, 2]]) set(2 + dx, 39 + dy, 4);
   [6, 9, 12, 15, 18, 21].forEach((x, i) => set(x, i === 3 ? 38 : 40, 4));
-  // the beam: from the shell straight up to their system
-  for (let y = 42; y <= 48; y++) set(15, y, 5);
+  // the journey: a dotted path from their system down to our Sun
+  for (let y = 42; y <= 48; y += 2) set(4 + Math.round((y - 42) * 0.5), y, 2);
   // our Sun inside the shell (rows 49–57, centred x = 15), Earth raised to the right
   const sx = 15;
   const sy = 53;
@@ -57,7 +57,11 @@ const build = (): Cell[][] => {
   set(sx + 1, sy, 5);
   set(sx, sy + 1, 5);
   set(sx + 1, sy + 1, 5);
-  set(4, 51, 6);
+  // their ship, parked beside our Sun: a sail (triangle) on a short hull, left of the shell
+  for (let r = 0; r <= 4; r++) for (let x = 6; x <= 6 + r; x++) set(x, 50 + r, 2);
+  for (let x = 5; x <= 11; x++) set(x, 55, 2);
+  // Earth, raised to the right of the Sun
+  set(22, 51, 6);
   // the empty square: your turn (rows 61–71)
   for (let i = 0; i <= 10; i++) {
     set(6 + i, 61, 6);

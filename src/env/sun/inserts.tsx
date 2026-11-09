@@ -46,6 +46,46 @@ export const CloseupScene: React.FC = () => {
     </AbsoluteFill>
   );
 
+  if (v === 'phone' && (c.p.mode === 'text' || c.p.mode === 'alert')) {
+    // a message on Kai's phone: a text from Mum, or the government emergency alert. Lines are pre-wrapped.
+    const alert = c.p.mode === 'alert';
+    const lines = (c.p.lines ?? []) as string[];
+    const shown = interpolate(t, [0.3, 0.9], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+    return wrap(
+      '#0A0E22',
+      <g>
+        <Bokeh frame={f} cols={['#FFD58A', '#6FA8FF', '#FFB25A']} seed={5} />
+        <path d="M700,1200 Q680,860 760,760 L1160,760 Q1240,860 1220,1200 Z" fill="#A06A44" stroke={INK} strokeWidth={8} />
+        <rect x={680} y={110} width={560} height={940} rx={64} fill="#1A1E2A" stroke={INK} strokeWidth={10} />
+        <rect x={712} y={150} width={496} height={860} rx={40} fill={alert ? '#F4EFE6' : '#EAF1FB'} />
+        {/* status bar: full signal (the network works) */}
+        {[0, 1, 2, 3].map((i) => (
+          <rect key={i} x={750 + i * 20} y={196 - i * 9} width={13} height={18 + i * 9} rx={3} fill="#1A1E2A" />
+        ))}
+        <text x={1170} y={212} textAnchor="end" fontFamily={fonts.ui} fontWeight={700} fontSize={30} fill="#1A1E2A">{(c.p.clock as string) ?? '7:02'}</text>
+        {alert ? (
+          <g>
+            <rect x={740} y={260} width={440} height={96} rx={18} fill="#D9443A" />
+            <text x={960} y={322} textAnchor="middle" fontFamily={fonts.ui} fontWeight={900} fontSize={40} fill="#FFFFFF">EMERGENCY ALERT</text>
+          </g>
+        ) : (
+          <g>
+            <circle cx={960} cy={300} r={44} fill="#E07A5F" stroke={INK} strokeWidth={4} />
+            <text x={960} y={316} textAnchor="middle" fontFamily={fonts.ui} fontWeight={900} fontSize={40} fill="#FFFFFF">M</text>
+            <text x={960} y={392} textAnchor="middle" fontFamily={fonts.ui} fontWeight={800} fontSize={40} fill="#1A1E2A">{(c.p.from as string) ?? 'Mum'}</text>
+          </g>
+        )}
+        <g opacity={shown} transform={`translate(0,${(1 - shown) * 30})`}>
+          <rect x={738} y={440} width={444} height={70 + lines.length * 52} rx={30} fill={alert ? '#FFFFFF' : '#FFFFFF'} stroke="#C9D3E6" strokeWidth={3} />
+          {lines.map((ln, i) => (
+            <text key={i} x={762} y={500 + i * 52} fontFamily={fonts.ui} fontWeight={600} fontSize={33} fill="#1A1E2A">{ln}</text>
+          ))}
+        </g>
+        <Glow x={960} y={600} r={600} color="#DCEBFF" opacity={0.22} />
+      </g>,
+    );
+  }
+
   if (v === 'phone') {
     const bars = Math.max(0, 4 - Math.floor(t / 0.3));
     return wrap(
@@ -494,7 +534,8 @@ export const CloseupScene: React.FC = () => {
           </radialGradient>
         </defs>
         {/* the fish, under the ice */}
-        <g transform={`translate(${fx},${600 + Math.sin(t * 2.2) * 26}) scale(1.6)`}>
+        {/* mirrored so the head leads: it swims left to right, head first */}
+        <g transform={`translate(${fx},${600 + Math.sin(t * 2.2) * 26}) scale(-1.6,1.6)`}>
           <path d={`M-90,0 Q-30,-46 50,-10 L96,-34 L86,0 L96,34 L50,10 Q-30,46 -90,0 Z`} fill="#E07A5F" stroke={INK} strokeWidth={4} transform={`rotate(${Math.sin(t * 6) * 3})`} />
           <circle cx={-60} cy={-6} r={6} fill={INK} />
           <path d="M-20,-24 q10,24 0,48" stroke={INK} strokeWidth={3} fill="none" opacity={0.6} />
@@ -574,11 +615,49 @@ export const CloseupScene: React.FC = () => {
     );
   }
 
+  if (v === 'heater') {
+    // the station's air heater: a big grille whose orange glow fades as frost creeps over it (or returns: p.back)
+    const k = c.p.back ? clamp((t - 0.4) / 1.6) : 1 - clamp((t - 0.6) / 2.0);
+    return wrap(
+      '#0A0E18',
+      <g>
+        <rect x={0} y={0} width={W} height={H} fill="#5E6676" />
+        <rect x={360} y={180} width={1200} height={720} rx={30} fill="#3A3F4A" stroke={INK} strokeWidth={10} />
+        {Array.from({length: 10}, (_, i) => (
+          <rect key={i} x={420} y={220 + i * 66} width={1080} height={30} rx={12} fill="#20242C" stroke={INK} strokeWidth={4} />
+        ))}
+        {Array.from({length: 10}, (_, i) => (
+          <rect key={i} x={440} y={226 + i * 66} width={1040} height={18} rx={9} fill="#FF7A2E" opacity={0.15 + 0.85 * k} />
+        ))}
+        <Glow x={960} y={540} r={700} color="#FF8A3A" opacity={0.45 * k} />
+        <text x={960} y={960} textAnchor="middle" fontFamily={fonts.ui} fontWeight={900} fontSize={44} fill="#E8ECF5" letterSpacing={6}>STATION AIR HEATER 2</text>
+        <g opacity={(1 - k) * 0.9}>
+          <Frost amount={0.7} w={W} h={H} seed={14} />
+        </g>
+      </g>,
+    );
+  }
+
   if (v === 'pulses') {
     // the receiver's screen: pulses arriving, and a counter that will not stop
     const n0 = Number(c.p.from ?? 3);
     const n1 = Number(c.p.to ?? 1679);
     const n = Math.floor(n0 + (n1 - n0) * clamp(t / Math.max(1, c.dur - 0.4)));
+    if (n1 <= 10) {
+      // a handful of pulses (the reply to Mira): flat line, then each pulse arrives on its own near the end
+      const times = Array.from({length: n1}, (_, k) => c.dur - 0.8 * (n1 - k) - 0.3);
+      const arrived = times.filter((tt) => t >= tt).length;
+      return wrap(
+        '#03060A',
+        <g>
+          <rect x={0} y={0} width={W} height={H} fill="#06120C" />
+          {Array.from({length: 14}, (_, k) => <path key={k} d={`M0,${k * 80} L${W},${k * 80}`} stroke="#0E2A1C" strokeWidth={2} />)}
+          <path d={`M0,600 L${W},600`} stroke="#5BFF8A" strokeWidth={5} />
+          {times.map((tt, k) => (t >= tt ? <path key={k} d={`M${560 + k * 400},600 L${560 + k * 400},380 L${640 + k * 400},380 L${640 + k * 400},600`} stroke="#5BFF8A" strokeWidth={6} fill="none" /> : null))}
+          <text x={960} y={860} textAnchor="middle" fontFamily={fonts.mono} fontWeight={700} fontSize={110} fill="#5BFF8A">{arrived}</text>
+        </g>,
+      );
+    }
     return wrap(
       '#03060A',
       <g>
@@ -702,7 +781,8 @@ export const CloseupScene: React.FC = () => {
           <g mask="url(#spotMask)">
             <rect x={0} y={0} width={W} height={H} fill="#E6EEF8" />
             {Array.from({length: 9}, (_, i) => (
-              <g key={i} transform={`translate(${200 + i * 200},${600 + (i % 2 ? 70 : -70) - i * 30}) rotate(-75)`}>
+              // toes point along the trail (left to right, toward the metro): the dog walked this way
+              <g key={i} transform={`translate(${200 + i * 200},${600 + (i % 2 ? 70 : -70) - i * 30}) rotate(81)`}>
                 <ellipse cx={0} cy={0} rx={30} ry={24} fill="#9DB0CA" />
                 {[-24, -8, 8, 24].map((dx) => (
                   <ellipse key={dx} cx={dx} cy={-34} rx={9} ry={12} fill="#9DB0CA" />

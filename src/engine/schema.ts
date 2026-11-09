@@ -121,5 +121,29 @@ export type Episode = {
   fps: number;
   /** 'cinema' = narrated File format: Kokoro voice, cinematic score, letterbox and transitions. */
   style?: 'cinema';
+  /** Average-shot pacing gate in seconds (default 4.0 for narrated files). */
+  pacing?: number;
+  /** The episode's world rules (docs/00 S3/S6), checked against every shot by scripts/lint-episode.ts. */
+  world?: WorldRules;
+  /** Words that give the story away: never in the title, alternates, thumbnail text, logline, tags or pinned comment. */
+  spoilers?: string[];
+  /** The episode's world model + question bank (docs/00 S3–S4), checked by scripts/check-episode.ts. */
+  questionBank?: string;
   shots: Shot[];
+};
+
+/** World-state rules: facts that must hold in every scene, written as things that may not appear. */
+export type WorldRules = {
+  /** One-line statements of the world (shown in reports), e.g. 'power works all year'. */
+  facts: string[];
+  /** Regular expressions (case-insensitive) no spoken line may match, each with the fact it protects. */
+  banLines?: {re: string; why: string; except?: string[]}[];
+  /** Props no cast member may hold or leave as an item (optionally only for some characters / outside some shots). */
+  banProps?: {prop: string; who?: string[]; why: string; except?: string[]}[];
+  /** Sound effects allowed only in the listed shots. */
+  onlySfx?: {sfx: string; in: string[]; why: string}[];
+  /** Set variants (or set props) that contradict the world. */
+  banSets?: {set: string; v?: string; prop?: string; why: string}[];
+  /** A character who may not appear before (or after) a given shot. */
+  presence?: {who: string; from?: string; until?: string; exceptSets?: string[]; why: string}[];
 };

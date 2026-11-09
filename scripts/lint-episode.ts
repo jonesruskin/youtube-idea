@@ -63,7 +63,10 @@ if (episode.style === 'cinema') {
   const n = story.length;
   const avg = story.reduce((a, s) => a + s.duration, 0) / n;
   cinemaReport.push(`avg shot ${avg.toFixed(2)}s`);
-  if (avg > 3.7) errors.push(`Average shot is ${avg.toFixed(2)}s — the genre cuts every ~3s (gate 3.7s).`);
+  // Narrated story files carry complete, explanatory lines (standards D1–D3), so they may run a little longer per
+  // shot than clipped dialogue; no single shot may hold more than one long line (lint warns at 7 s; split those).
+  const gate = (episode as {pacing?: number}).pacing ?? 4.0;
+  if (avg > gate) errors.push(`Average shot is ${avg.toFixed(2)}s (gate ${gate}s): split the longest shots.`);
   // a long shot must have acting or a camera move
   for (const s of tl.shots) {
     const p = (s.props ?? {}) as any;
@@ -402,6 +405,54 @@ if (episode.style === 'cinema') {
     }
     if (minGap < 0.95) errors.push(`Blinks: two blinks start ${minGap.toFixed(2)} s apart; anything under 1 s reads as a twitch.`);
   }
+  // ── world state (docs/00 S3/S6): the episode's declared world rules, checked against every shot ──
+  {
+    const W = episode.world;
+    if (W) {
+      const order = tl.shots.map((x: any) => x.id);
+      const idx = (id?: string) => (id ? order.indexOf(id) : -1);
+      for (const [i, x] of (tl.shots as any[]).entries()) {
+        const p = x.props ?? {};
+        for (const rule of W.banLines ?? []) {
+          if (rule.except?.includes(x.id)) continue;
+          const re = new RegExp(rule.re, 'i');
+          for (const l of x.lines ?? []) if (re.test(l.text)) errors.push(`World: "${x.id}" says "${l.text}", but ${rule.why}.`);
+        }
+        for (const rule of W.banProps ?? []) {
+          if (rule.except?.includes(x.id)) continue;
+          for (const cm of (p.cast ?? []) as any[]) {
+            if (rule.who && !rule.who.includes(cm.who)) continue;
+            if (cm.hold === rule.prop || cm.holdL === rule.prop) errors.push(`World: ${cm.who} holds a ${rule.prop} in "${x.id}", but ${rule.why}.`);
+          }
+          if (!rule.who) for (const it of (p.items ?? []) as any[]) if (it.prop === rule.prop) errors.push(`World: a ${rule.prop} lies in "${x.id}", but ${rule.why}.`);
+          if (rule.prop === 'ham' && p.ham && !(rule.except ?? []).includes(x.id) && (rule.who ?? []).length === 0) errors.push(`World: "${x.id}" shows the ham radio, but ${rule.why}.`);
+        }
+        for (const rule of W.onlySfx ?? []) {
+          if (x.sfx === rule.sfx && !rule.in.includes(x.id)) errors.push(`World: "${x.id}" plays ${rule.sfx}, but ${rule.why}.`);
+          if ((x.beats ?? []).includes(rule.sfx) && !rule.in.includes(x.id)) errors.push(`World: "${x.id}" has a ${rule.sfx} beat, but ${rule.why}.`);
+        }
+        for (const rule of W.banSets ?? []) {
+          if (p.set !== rule.set && x.scene !== rule.set) continue;
+          if (rule.v && p.v !== rule.v && (p.props?.v ?? undefined) !== rule.v) continue;
+          if (rule.prop && p[rule.prop] === undefined) continue;
+          errors.push(`World: "${x.id}" uses ${rule.set}${rule.v ? ` · ${rule.v}` : ''}${rule.prop ? ` · ${rule.prop}` : ''}, but ${rule.why}.`);
+        }
+        for (const rule of W.presence ?? []) {
+          // in person only: a voice on a phone call is not presence
+          const here = ((p.cast ?? []) as any[]).some((cm) => cm.who === rule.who);
+          if (!here || (rule.exceptSets ?? []).includes(p.set)) continue;
+          if (rule.from && i < idx(rule.from)) errors.push(`World: ${rule.who} appears in "${x.id}" before "${rule.from}", but ${rule.why}.`);
+          if (rule.until && i > idx(rule.until)) errors.push(`World: ${rule.who} appears in "${x.id}" after "${rule.until}", but ${rule.why}.`);
+        }
+      }
+    }
+  }
+  // ── dialogue (docs/00 D2): no clipped clock times or jargon numbers ──
+  for (const x of tl.shots as any[]) {
+    for (const l of x.lines ?? []) {
+      if (/\b(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)-oh-(one|two|three|four|five|six|seven|eight|nine)\b/i.test(l.text)) errors.push(`Dialogue: "${x.id}" clips a time ("${l.text}"); say "four minutes past seven".`);
+    }
+  }
   // ── timing: every act, item and prop time that names a line (lN) must name a line the shot has ──
   for (const s of tl.shots as any[]) {
     const n = (s.lines ?? []).length;
@@ -451,7 +502,7 @@ if (episode.style === 'cinema') {
         if (!cast.some((c) => c.who === who || c.speaker === l.speaker)) errors.push(`Staging: ${l.speaker} speaks in "${s.id}" but is not in the shot.`);
       }
       const key = `${s.thread ?? ''}:${day4}:${p.set}`;
-      if (key !== runKey) {
+      if (key !== runKey || s.timeJump) {
         runKey = key;
         side = new Map();
       }

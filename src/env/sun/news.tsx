@@ -23,7 +23,8 @@ import {ReplyPicture} from './reply';
  */
 const INK = '#0B1026';
 type Kind =
-  | 'crowd' | 'sleep' | 'airport' | 'market' | 'prayer' | 'protest' | 'radar' | 'refuge' | 'rooftops' | 'sunrise' | 'grid' | 'beach' | 'field' | 'bus';
+  | 'crowd' | 'sleep' | 'airport' | 'market' | 'prayer' | 'protest' | 'radar' | 'refuge' | 'rooftops' | 'sunrise' | 'grid' | 'beach' | 'field' | 'bus'
+  | 'power' | 'train' | 'homeoffice' | 'farm' | 'classroom';
 
 const skyline = (seed: number, base: number, col: string, lit: number) =>
   Array.from({length: 12}, (_, i) => {
@@ -178,11 +179,97 @@ const Feed: React.FC<{kind: Kind; frame: number; t: number}> = ({kind, frame, t}
           {people(14, 460, 5, false)}
         </g>
       );
+    case 'power':
+      // a power station at night: cooling towers steaming, every window lit (coal, gas and nuclear keep running)
+      return (
+        <g>
+          {night()}
+          {skyline(23, 470, '#141A32', 0.8)}
+          {[260, 520].map((x, i) => (
+            <g key={x}>
+              <path d={`M${x - 90},470 Q${x - 60},330 ${x - 70},230 L${x + 70},230 Q${x + 60},330 ${x + 90},470 Z`} fill="#8C93A6" stroke={INK} strokeWidth={4} />
+              {[0, 1, 2].map((k) => (
+                <circle key={k} cx={x + Math.sin(frame * 0.03 + k + i) * 12} cy={200 - k * 50 - ((frame * 0.8 + k * 30) % 40)} r={46 + k * 14} fill="#E6EAF2" opacity={0.5 - k * 0.12} />
+              ))}
+            </g>
+          ))}
+          <rect x={660} y={360} width={240} height={110} fill="#5A6070" stroke={INK} strokeWidth={4} />
+          {Array.from({length: 6}, (_, k) => <rect key={k} x={680 + k * 36} y={384} width={22} height={26} fill="#FFD27A" />)}
+          <path d="M640,470 L640,250 M900,470 L900,250" stroke="#C9CED6" strokeWidth={6} />
+        </g>
+      );
+    case 'train': {
+      // an electric freight train: pantograph sparks, containers of food and fuel
+      const x0 = -300 + ((t * 160) % 1400);
+      return (
+        <g>
+          {night()}
+          <rect y={420} width={960} height={120} fill="#C8D2E0" />
+          <path d="M0,300 L960,300" stroke="#5A5E6A" strokeWidth={3} />
+          <path d="M0,440 L960,440" stroke="#5A5E6A" strokeWidth={6} />
+          <g transform={`translate(${x0},0)`}>
+            <rect x={0} y={330} width={200} height={100} rx={10} fill="#C2464F" stroke={INK} strokeWidth={4} />
+            <rect x={150} y={345} width={36} height={30} fill="#FFE9A8" />
+            <path d="M80,330 L110,300 L140,330" stroke="#1A1E2A" strokeWidth={4} fill="none" />
+            <circle cx={110} cy={300} r={8 + 6 * Math.max(0, Math.sin(frame * 1.7))} fill="#BFE8FF" opacity={0.8} />
+            {[0, 1, 2].map((k) => (
+              <g key={k}>
+                <rect x={-230 - k * 230} y={350} width={210} height={80} fill={['#3E7CB1', '#E9C46A', '#3C8D6E'][k]} stroke={INK} strokeWidth={4} />
+                <text x={-125 - k * 230} y={400} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={26} fill="#0B1026">{['FOOD', 'FUEL', 'FOOD'][k]}</text>
+              </g>
+            ))}
+          </g>
+        </g>
+      );
+    }
+    case 'homeoffice':
+      // working from home: a lit window, a person at a laptop in a coat
+      return (
+        <g>
+          <rect width={960} height={540} fill="#3A3048" />
+          <rect x={0} y={420} width={960} height={120} fill="#5A3E2A" />
+          <rect x={300} y={330} width={360} height={20} fill="#7A4E30" stroke={INK} strokeWidth={3} />
+          <path d="M330,350 L330,440 M630,350 L630,440" stroke={INK} strokeWidth={8} />
+          <rect x={410} y={250} width={150} height={84} rx={6} fill="#1A1E2A" stroke={INK} strokeWidth={4} />
+          <rect x={420} y={258} width={130} height={66} fill="#8FC2F0" />
+          <circle cx={485} cy={220} r={34} fill="#C2864F" stroke={INK} strokeWidth={3} transform="translate(-170,0)" />
+          <path d="M260,330 Q315,250 370,330 Z" fill="#3E7CB1" stroke={INK} strokeWidth={3} />
+          <circle cx={485} cy={292} r={70} fill="#BFE8FF" opacity={0.12} />
+          <rect x={700} y={140} width={180} height={200} fill="#0C1430" stroke="#E9DCC6" strokeWidth={10} />
+        </g>
+      );
+    case 'farm':
+      return (
+        <g>
+          <rect width={960} height={540} fill="#1E1A28" />
+          {[0, 1, 2].map((row) => (
+            <g key={row}>
+              <rect x={0} y={190 + row * 120} width={960} height={10} fill="#5A5E6A" />
+              <rect x={0} y={110 + row * 120} width={960} height={8} fill="#FF5FD2" />
+              {Array.from({length: 16}, (_, k) => (
+                <path key={k} d={`M${30 + k * 60},${190 + row * 120} q-14,-20 -4,-34 q4,18 4,34 q4,-22 14,-32 q2,16 -14,32`} fill={['#5BBF6A', '#7FD27A', '#4EA85C'][(k + row) % 3]} stroke={INK} strokeWidth={2} />
+              ))}
+            </g>
+          ))}
+          <rect width={960} height={540} fill="#FF5FD2" opacity={0.08} />
+        </g>
+      );
+    case 'classroom':
+      return (
+        <g>
+          <rect width={960} height={540} fill="#8C9AAE" />
+          <rect x={60} y={80} width={420} height={220} fill="#2F4A3A" stroke="#7A4E30" strokeWidth={10} />
+          <circle cx={200} cy={190} r={50} fill="none" stroke="#FFE7A6" strokeWidth={6} />
+          {Array.from({length: 8}, (_, k) => <path key={k} d={`M200,190 L${200 + 80 * Math.cos(k * 0.785)},${190 + 80 * Math.sin(k * 0.785)}`} stroke="#FFE7A6" strokeWidth={4} />)}
+          {people(7, 500, 9, false, false)}
+          <rect width={960} height={540} fill="#FFE9C0" opacity={0.1} />
+        </g>
+      );
     case 'rooftops':
       return (
         <g>
           {night()}
-          {skyline(41, 460, '#161C36', 0)}
+          {skyline(41, 460, '#161C36', 0.6)}
           {people(18, 460, 13, true, true)}
         </g>
       );
@@ -382,6 +469,23 @@ export const NewsScene: React.FC = () => {
               <text x={star[0] + 50} y={star[1] + 36} fontFamily={fonts.mono} fontSize={28} fill="#FFD08A">21 LIGHT-YEARS</text>
             </g>
           )}
+          {p.ship && draw >= 1 && (() => {
+            // something inside the beam, coming toward us and slowing: a glowing speck partway along it
+            const on = Math.min(1, Math.max(0, (c.t - (Number(p.shipAt) || 0.6)) / 0.6));
+            const sx = star[0] - 200 + 200 * 0.6;
+            const sy = star[1] + 600 - 600 * 0.6;
+            return (
+              <g opacity={on}>
+                <circle cx={sx} cy={sy} r={34 + 6 * Math.sin(c.frame * 0.3)} fill="#FFF3C0" opacity={0.25} />
+                <circle cx={sx} cy={sy} r={9} fill="#FFFFFF" />
+                <circle cx={sx} cy={sy} r={58} fill="none" stroke="#7FD8FF" strokeWidth={4} strokeDasharray="10 8" />
+                <path d={`M${sx - 70},${sy - 40} L${sx - 70},${sy + 70}`} stroke="#7FD8FF" strokeWidth={6} markerEnd="none" />
+                <path d={`M${sx - 86},${sy + 50} L${sx - 70},${sy + 74} L${sx - 54},${sy + 50}`} stroke="#7FD8FF" strokeWidth={6} fill="none" />
+                <text x={sx - 100} y={sy + 6} textAnchor="end" fontFamily={fonts.display} fontWeight={900} fontSize={38} fill="#FFFFFF">SOMETHING INSIDE</text>
+                <text x={sx - 100} y={sy + 46} textAnchor="end" fontFamily={fonts.mono} fontSize={28} fill="#7FD8FF">COMING THIS WAY · SLOWING</text>
+              </g>
+            );
+          })()}
         </Broadcast>
       </AbsoluteFill>
     );
