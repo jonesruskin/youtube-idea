@@ -116,8 +116,14 @@ export const SeaScene: React.FC = () => {
             <path d="M80,-10 L560,-90" stroke="#C9963A" strokeWidth={34} strokeLinecap="round" />
             <path d="M80,-10 L560,-90" stroke="#E8B860" strokeWidth={10} strokeLinecap="round" opacity={0.6} />
             <ellipse cx={580} cy={-96} rx={70} ry={40} fill="#141414" stroke={INK} strokeWidth={6} />
-            {/* finger */}
-            <path d="M540,-150 Q600,-200 700,-170 L760,-140 Q680,-120 610,-118 Z" fill="#B57E56" stroke={INK} strokeWidth={6} />
+            {/* Lola's hand: index finger and thumb on the knob, the wrist coming in from the right */}
+            <g transform="translate(580,-130)">
+              <path d="M40,-30 Q120,-70 260,-40 L300,30 Q180,50 70,30 Z" fill="#B57E56" stroke={INK} strokeWidth={6} strokeLinejoin="round" />
+              <path d="M60,-10 Q10,-20 -20,10 Q-30,30 -10,36 Q30,30 70,20" fill="#B57E56" stroke={INK} strokeWidth={6} strokeLinejoin="round" />
+              <path d="M70,24 Q20,52 0,60 Q-14,64 -10,74 Q30,74 90,40" fill="#A86E48" stroke={INK} strokeWidth={6} strokeLinejoin="round" />
+              <path d="M150,-40 Q160,-10 150,20 M200,-44 Q210,-14 200,16" stroke="#93623E" strokeWidth={4} fill="none" />
+              <rect x={250} y={-50} width={120} height={90} rx={30} fill="#7A3A4A" stroke={INK} strokeWidth={6} />
+            </g>
           </g>
           <circle cx={80} cy={-10} r={20} fill="#C9963A" stroke={INK} strokeWidth={5} />
           {down && <circle cx={360} cy={-60} r={160} fill="#FFE2A0" opacity={0.08} />}
@@ -299,7 +305,7 @@ export const SeaScene: React.FC = () => {
       <Frame frame={frame}>
         <rect x={-200} y={0} width={2400} height={H} fill="#0B1230" />
         <path d="M-200,520 L760,520 L700,1200 L-200,1200 Z" fill="#DCE8F4" stroke={INK} strokeWidth={5} />
-        <Label x={300} y={620} t="FROZEN LAND · −30°C" s={38} c="#2A4A7A" />
+        <Label x={300} y={620} t="FROZEN LAND · −30°C" s={38} c="#FFFFFF" />
         <rect x={740} y={620} width={1400} height={600} fill="#1E6FB0" />
         {Array.from({length: 8}, (_, i) => (
           <path key={i} d={`M${760 + i * 160},${640 + (i % 2) * 20} q40,-10 80,0`} stroke="#7FC8F8" strokeWidth={4} fill="none" />
@@ -418,7 +424,7 @@ export const SeaScene: React.FC = () => {
           {/* the warm sea glow, the cold land creeping in from the north-west */}
           <circle cx={1120} cy={560} r={600} fill="#FF9A5A" opacity={0.22} />
           <path d={`M-200,0 L${700 + 200 * k},0 Q${500 + 160 * k},${260} -200,${380 + 220 * k} Z`} fill="#DCE8F4" stroke={INK} strokeWidth={5} />
-          <Label x={260} y={140} t="ASIA · FROZEN" s={36} c="#2A4A7A" />
+          <Label x={260} y={140} t="ASIA · FROZEN" s={36} c="#FFFFFF" />
           <g transform="translate(860,140) scale(560,820)">
             {PH_PATHS.map((d, i) => (
               <path key={i} d={d} fill="#E9D7A8" stroke={INK} strokeWidth={0.004} />
@@ -434,7 +440,7 @@ export const SeaScene: React.FC = () => {
         {/* left: the whole sky, a tall column */}
         <rect x={420} y={120} width={300} height={700} fill="#9FD8FF" opacity={0.35} stroke="#9FD8FF" strokeWidth={4} />
         <Label x={570} y={100} t="ALL THE AIR ABOVE" s={34} />
-        <Label x={570} y={480} t="100 KM" s={40} c="#0B1026" />
+        <Label x={570} y={480} t="100 KM" s={40} c="#FFFFFF" />
         {/* right: a thin slice of sea */}
         <rect x={1200} y={760} width={300} height={60} fill="#1E6FB0" stroke="#7FC8F8" strokeWidth={4} />
         <Label x={1350} y={730} t="TOP 3 M OF SEA" s={34} />
@@ -521,7 +527,7 @@ export const SeaScene: React.FC = () => {
   // ── the Perseids: Earth's orbit crosses a comet's dust river on 12 August ──
   if (v === 'perseids') {
     const k = clamp(t / Math.max(2, dur - 0.5));
-    const ang = -Math.PI * 0.62 + k * 0.5;
+    const ang = -Math.PI * 0.742 - 0.55 * (1 - k); // ends where the dust river crosses the orbit (≈ x 600, y 300)
     const ex = 960 + Math.cos(ang) * 520;
     const ey = 560 + Math.sin(ang) * 360;
     return (
@@ -543,7 +549,7 @@ export const SeaScene: React.FC = () => {
         <Label x={1500} y={160} t="DUST FROM COMET SWIFT–TUTTLE" s={30} c="#E8C8FF" />
         <circle cx={ex} cy={ey} r={30} fill="#1A4A7A" stroke="#9FD8FF" strokeWidth={4} />
         <Label x={ex - 40} y={ey - 50} t="EARTH" s={30} a="end" />
-        <Label x={720} y={250} t="12 AUGUST" s={56} c="#FFD27A" o={clamp(k * 2 - 0.4)} />
+        <Label x={470} y={240} t="12 AUGUST" s={56} c="#FFD27A" o={clamp(k * 2 - 0.6)} />
       </Frame>
     );
   }
@@ -666,7 +672,7 @@ export const SeaScene: React.FC = () => {
     const k = clamp(t / Math.max(2, dur - 0.6));
     const lines = counts
       ? ['11 PM   ||||| |', ' 2 AM   ||||| ||||| |', ' 4 AM   ||||| ||||| |||||', ' 6 AM   ||||| ||||| ||||| ||||']
-      : ['R . . O S . . A M I . . .', 'R O S A   A M I H A N', '1 7  5 0  N   1 2 7  1 0  E', 'R U D D E R  G O N E', 'A L L  S A F E'];
+      : ['R . . OS . . AMI . . .', 'ROSA · AMIHAN', '17 50 N · 127 10 E', 'RUDDER GONE', 'ALL SAFE'];
     const from = (p.from as number) ?? 0;
     const to = (p.to as number) ?? 1;
     const prog = counts ? k : from + (to - from) * k;
@@ -687,7 +693,7 @@ export const SeaScene: React.FC = () => {
             if (show <= 0) return null;
             const txt = l.slice(0, Math.ceil(l.length * show));
             return (
-              <text key={i} x={170} y={190 + i * 130} fontFamily="'Courier Prime', 'Courier New', monospace" fontWeight={700} fontSize={counts ? 56 : 64} fill={i === lines.length - 1 && !counts ? '#C2464F' : '#1F2A44'}>
+              <text key={i} x={170} y={190 + i * 130} fontFamily="'Courier Prime', 'Courier New', monospace" fontWeight={700} letterSpacing={counts ? 0 : 10} fontSize={counts ? 56 : 64} fill={i === lines.length - 1 && !counts ? '#C2464F' : '#1F2A44'}>
                 {txt}
               </text>
             );

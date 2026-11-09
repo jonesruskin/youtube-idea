@@ -179,7 +179,7 @@ At most two may be OPEN. `scripts/check-episode.ts` checks this.
 ### E. Food and water
 68. Does the ship run out of food? Food for two months, rationed (ship-food)
 69. How does the building eat underground? Shared rice from one pot (basement-warm, basement)
-70. Does Manila get snow? No, frost and cold (no-coats, reveal-roof)
+70. Does Manila get snow? Almost none: frost, and by Day 365 a thick white rime on every roof (reveal-roof, bus-wait)
 
 ### F. Health and safety
 71. How do people stay warm with no coats? Towels and sheets, then the car park (no-coats, basement)

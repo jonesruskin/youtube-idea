@@ -824,7 +824,6 @@ const shots: Shot[] = [
   sh('sun-back', stage('montage', 'bus', push(1.2, 1.3, 960, 700), [c(LA, 760, 960, {facing: 'right', outfit: 'cold', breath: true, pose: 'lookUp', expr: 'focused'}, 1.4), c(TO, 1000, 960, {facing: 'right', outfit: 'cold', breath: true, pose: 'lookUp', expr: 'awe'}, 1.4), c(RS, 1200, 960, {facing: 'left', outfit: 'cold', breath: true, pose: 'lookUp', expr: 'awe'}, 1.4)], [{at: 0.8, who: TO, pose: 'cheer', expr: 'laugh'}, {at: 0.9, who: RS, expr: 'laugh'}, {at: 1.0, who: LA, expr: 'smile'}], {dark: 0, sunAt: 0.3, noBus: true, frozen: true}), {
     dev: 'the Sun comes back',
     hud: {place: 'MANILA', time: '1:52 PM'},
-    letterbox: true,
     beats: ['heart'],
     cue: 'triumph',
     min: 2.6,
@@ -832,12 +831,10 @@ const shots: Shot[] = [
     lines: [T('There it is!')],
   }),
   sh('there-you-are', stage('montage', 'bus', push(2.0, 2.15, 800, 600), [c(LA, 760, 960, {facing: 'right', outfit: 'cold', breath: true, pose: 'lookUp', expr: 'smile'}, 1.4), c(TO, 1000, 960, {facing: 'right', outfit: 'cold', breath: true, pose: 'cheer', expr: 'laugh'}, 1.4), c(RS, 1200, 960, {facing: 'left', outfit: 'cold', breath: true, pose: 'lookUp', expr: 'laugh'}, 1.4)], [], {dark: 0, sunAt: 0, noBus: true, frozen: true}), {
-    letterbox: true,
     action: 'Lola squints up at the Sun, like an old friend who is late.',
     lines: [LO('Ah. There you are.', 0.6)],
   }),
   sh('why-back', stage('montage', 'bus', push(1.1, 1.2, 960, 640), [c(LA, 760, 960, {facing: 'right', outfit: 'cold', pose: 'lookUp', expr: 'smile'}, 1.4), c(TO, 1000, 960, {facing: 'right', outfit: 'cold', pose: 'hug', expr: 'smile'}, 1.4), c(RS, 1080, 960, {facing: 'left', outfit: 'cold', pose: 'hug', expr: 'smile'}, 1.4)], [], {dark: 0, sunAt: 0, noBus: true, frozen: true}), {
-    letterbox: true,
     action: 'The three of them in the sunlight at the frozen bus stop.',
     lines: [N('Why it went out, and why it came back, is someone else’s story.')],
   }),
