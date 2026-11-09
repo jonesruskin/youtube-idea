@@ -540,9 +540,9 @@ export const CloseupScene: React.FC = () => {
           <circle cx={-60} cy={-6} r={6} fill={INK} />
           <path d="M-20,-24 q10,24 0,48" stroke={INK} strokeWidth={3} fill="none" opacity={0.6} />
         </g>
-        {/* the ice skin: a pale translucent layer with cracks */}
-        <rect x={0} y={0} width={W} height={H} fill="#DDEFFF" opacity={0.26} />
-        {Array.from({length: 18}, (_, k) => (
+        {/* the ice skin: a pale translucent layer with cracks (not on Day 1: the sea is still too warm to freeze) */}
+        {!c.p.noIce && <rect x={0} y={0} width={W} height={H} fill="#DDEFFF" opacity={0.26} />}
+        {!c.p.noIce && Array.from({length: 18}, (_, k) => (
           <path key={k} d={`M${(k * 211) % W},${(k * 137) % H} l${60 + (k % 4) * 30},${-20 + (k % 3) * 25} l${40 + (k % 5) * 18},${30 - (k % 2) * 50}`} stroke="#F4FBFF" strokeWidth={3} fill="none" opacity={0.6} />
         ))}
         <rect x={0} y={0} width={W} height={H} fill="url(#fishBeam)" />

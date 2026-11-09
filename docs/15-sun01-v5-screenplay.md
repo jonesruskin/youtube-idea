@@ -77,7 +77,7 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | still-there | ~ | | Kai: "So the Sun's still there. We just can't see it." |
 | where-is-it | ~ | | Mira: "Then why is it dark?" |
 | in-front | = | | N: "The Sun hadn't gone anywhere. Something was in front of it." |
-| fish | ~ | A fish (head first) glides under thin new ice. | Mira: "The sea's freezing over, but the fish don't mind!" |
+| fish | ~ | A fish (head first) glides through dark water in the torch beam (no ice yet: +8 °C). | Mira: "The fish haven't even noticed!" |
 | press | = | DAY 2. | Anchor: "Infrared telescopes have found something around the Sun." |
 | press-sci | = | | Scientist: "It's warm. It's round. And it's twice as wide as the Sun." |
 | shell-reveal | = | | N: "There was something around the Sun." |
@@ -89,7 +89,7 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | aurora | ~ | DAY 3. | News: "A solar storm that left the Sun before it went dark is reaching Earth tonight." |
 | goodbye | = | | Mira: "It's saying goodbye." |
 | obs-room-2 / obs-chart | = | 1983: three plates, lines meet at one star; he writes 21. | — |
-| freeze | ~ (was grid-fail) | DAY 7. The city from above, windows lit, frost rolling over the rooftops; a −30 °C readout. | N: "By Day 7, it was thirty below. The pipes in our building froze and burst, and the radiators went cold." |
+| freeze | ~ (was grid-fail) | DAY 7. The city from above, windows lit, frost rolling over the rooftops; a −20 °C readout. | N: "By Day 7, it was twenty below." Then pipes-burst: N: "The pipes in our building froze and burst, and the radiators went cold." |
 | world-ice | ~ (was grid-world) | Earth from orbit: ice spreading, the cities' lights still on. | N: "All over the world, heating was never built for cold like this." |
 | seal-room | ~ | Blankets on the windows; a small electric heater glowing. | N: "Mr. Ito showed us how to keep one room warm." |
 | candles | ~ | The warm room, lamp and heater on (no candles). | N: "That night, Kai pretended he wasn't scared." |

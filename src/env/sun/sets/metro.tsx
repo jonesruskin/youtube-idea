@@ -269,8 +269,17 @@ const StationScreen: React.FC<{c: SetCtx}> = ({c}) => {
       <circle cx={160} cy={-70} r={7} fill="#FFFFFF" />
       <circle cx={160} cy={-70} r={26} fill="none" stroke="#FF5A3A" strokeWidth={4} opacity={draw} />
       <text x={160} y={-112} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={26} fill="#FFD08A" opacity={draw}>HD 219134</text>
+      {c.p.ship && draw >= 1 && (
+        // something inside the beam, slowing (Day 300)
+        <g>
+          <circle cx={16} cy={-20} r={20 + 4 * Math.sin(c.frame * 0.3)} fill="#FFF3C0" opacity={0.3} />
+          <circle cx={16} cy={-20} r={6} fill="#FFFFFF" />
+          <circle cx={16} cy={-20} r={32} fill="none" stroke="#7FD8FF" strokeWidth={3} strokeDasharray="8 6" />
+          <text x={-24} y={-14} textAnchor="end" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={22} fill="#7FD8FF">SOMETHING INSIDE</text>
+        </g>
+      )}
       <rect x={-312} y={160} width={624} height={42} fill="#C2464F" />
-      <text x={-296} y={190} fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={26} fill="#FFFFFF">BEAM DETECTED LEAVING THE SHELL</text>
+      <text x={-296} y={190} fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={26} fill="#FFFFFF">{c.p.ship ? 'SOMETHING IN THE BEAM · SLOWING' : 'BEAM DETECTED LEAVING THE SHELL'}</text>
     </g>
   );
 };
@@ -322,9 +331,10 @@ const Workshop: React.FC<{c: SetCtx}> = ({c}) => (
           <path d="M1170,712 L1250,640" stroke="#2A2E3A" strokeWidth={10} strokeLinecap="round" />
           <circle cx={1166} cy={716} r={6} fill="#FF7A2E" opacity={0.7 + 0.3 * Math.sin(c.frame * 0.9)} />
           <path d={`M1164,708 q${-10 + Math.sin(c.frame * 0.1) * 8},-40 ${4},-80 q${10},-30 ${-6},-60`} stroke="#C9CED6" strokeWidth={3} fill="none" opacity={0.45} />
-          {/* a candle stub burning down as the weeks pass */}
-          <rect x={640} y={715 - 70 * (1 - burn * 0.8)} width={22} height={70 * (1 - burn * 0.8)} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
-          <path d={`M651,${708 - 70 * (1 - burn * 0.8)} q-6,-10 0,-20 q6,10 0,20`} fill="#FFB25A" />
+          {/* an electric desk lamp (the power works all year) */}
+          <rect x={620} y={706} width={60} height={10} rx={3} fill="#3A3F48" stroke={INK} strokeWidth={3} data-weeks={burn} />
+          <path d="M650,706 L640,650 L690,626" stroke="#3A3F48" strokeWidth={7} fill="none" strokeLinecap="round" />
+          <path d="M680,612 L716,632 L700,652 Z" fill="#E9C46A" stroke={INK} strokeWidth={3} />
         </g>
       );
     })()}

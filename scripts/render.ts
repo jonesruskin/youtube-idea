@@ -96,7 +96,7 @@ if (!cinema) {
   if (!existsSync(wav)) {
     // Same placement as Episode.tsx (score at 0, each line in its Sequence), mixed directly: seconds, not hours.
     const tlPath = join(ROOT, 'out', `${id}-timeline.json`);
-    writeFileSync(tlPath, execSync(`npx tsx scripts/export-timeline.ts ${id}`, {cwd: ROOT}));
+    writeFileSync(tlPath, execSync(`npx tsx scripts/export-timeline.ts ${id}`, {cwd: ROOT, maxBuffer: 256 * 1024 * 1024}));
     const part = wav.replace(/\.wav$/, '.part.wav');
     run(`python3 scripts/mix_audio.py "${tlPath}" public/voice/${id}.json public/audio/${id}-score.wav "${part}" ${total / composition.fps}`);
     renameSync(part, wav);
@@ -114,7 +114,7 @@ if (cinema) {
   // Master: flat gain to −14 LUFS, then an 4×-oversampled limiter at −2 dBFS that only catches transient peaks
   // (true peak lands ≈ −1.5 dBTP after AAC). Unlike loudnorm's dynamic fallback, this keeps the film's dynamics.
   const r = (p: string) => join(rel, p);
-  const meas = execSync(`ffmpeg -hide_banner -i "${raw}" -map 0:a -af ebur128 -f null - 2>&1`, {cwd: ROOT}).toString();
+  const meas = execSync(`ffmpeg -hide_banner -i "${raw}" -map 0:a -af ebur128=framelog=quiet -f null - 2>&1`, {cwd: ROOT, maxBuffer: 256 * 1024 * 1024}).toString();
   const inI = Number([...meas.matchAll(/I:\s+(-?[\d.]+) LUFS/g)].pop()![1]);
   const gain = (-14 - inI + 0.6).toFixed(2); // +0.6 dB compensates what the limiter shaves off
   const chain = `aresample=192000,volume=${gain}dB,alimiter=limit=0.794:attack=0.5:release=40:level=disabled,aresample=48000`;

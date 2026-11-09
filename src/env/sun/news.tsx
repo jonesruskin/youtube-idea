@@ -58,7 +58,7 @@ const people = (n: number, y: number, seed: number, phones = true, up = true) =>
   });
 
 /** One live feed, drawn in a 960×540 box. */
-const Feed: React.FC<{kind: Kind; frame: number; t: number}> = ({kind, frame, t}) => {
+const Feed: React.FC<{kind: Kind; frame: number; t: number; signs?: [string, string]}> = ({kind, frame, t, signs}) => {
   const night = (top = '#02030C', bot = '#141C40') => (
     <g>
       <defs>
@@ -127,6 +127,8 @@ const Feed: React.FC<{kind: Kind; frame: number; t: number}> = ({kind, frame, t}
       return (
         <g>
           {night('#0A0610', '#2A1830')}
+          {/* raised so the candles sit inside the panel's crop */}
+          <g transform="translate(0,-90)">
           <path d="M380,420 L380,200 L480,120 L580,200 L580,420 Z" fill="#2A2238" stroke={INK} strokeWidth={3} />
           <rect y={420} width={960} height={120} fill="#1E1A26" />
           {Array.from({length: 40}, (_, i) => (
@@ -135,6 +137,7 @@ const Feed: React.FC<{kind: Kind; frame: number; t: number}> = ({kind, frame, t}
               <circle cx={30 + i * 23} cy={480 + (i % 3) * 14} r={4} fill="#FFE2A0" />
             </g>
           ))}
+          </g>
         </g>
       );
     case 'protest':
@@ -144,7 +147,8 @@ const Feed: React.FC<{kind: Kind; frame: number; t: number}> = ({kind, frame, t}
           {skyline(23, 380, '#1C2342', 0.6)}
           <rect y={380} width={960} height={160} fill="#2A2E3A" />
           {people(22, 490, 9, false)}
-          {[{x: 160, s: 'WHAT DO THEY WANT?'}, {x: 560, s: 'GIVE IT BACK'}].map(({x, s}, i) => (
+          {/* placards fit the moment: generic on Day 0–2, the reply question only on Day 365 (panel.signs) */}
+          {[{x: 160, s: (signs ?? ['WHY?', 'TELL US THE TRUTH'])[0]}, {x: 560, s: (signs ?? ['WHY?', 'TELL US THE TRUTH'])[1]}].map(({x, s}, i) => (
             <g key={s} transform={`translate(${x},${330 + Math.sin(frame * 0.2 + i) * 6})`}>
               <path d={`M110,40 L110,130`} stroke="#5A3822" strokeWidth={6} />
               <rect x={0} y={0} width={240} height={60} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
@@ -200,7 +204,8 @@ const Feed: React.FC<{kind: Kind; frame: number; t: number}> = ({kind, frame, t}
       );
     case 'train': {
       // an electric freight train: pantograph sparks, containers of food and fuel
-      const x0 = -300 + ((t * 160) % 1400);
+      // always in frame: the engine crosses from x 300 to 820 while its containers trail behind it
+      const x0 = 300 + Math.min(520, t * 110);
       return (
         <g>
           {night()}
@@ -357,7 +362,7 @@ export const NewsScene: React.FC = () => {
     />
   );
   if (v === 'world') {
-    const panels = (p.panels ?? []) as {place: string; time: string; kind: Kind}[];
+    const panels = (p.panels ?? []) as {place: string; time: string; kind: Kind; signs?: [string, string]}[];
     return (
       <AbsoluteFill>
         <Broadcast headline={p.headline} ticker={p.ticker} frame={c.frame} live={!p.plain}>
@@ -379,7 +384,7 @@ export const NewsScene: React.FC = () => {
                       const dy = rep ? (rep % 2 === 1 ? 18 : -18) : 0;
                       return (
                         <g transform={`translate(${480 + dx},${270 + dy}) scale(${z}) translate(-480,-270)`}>
-                          <Feed kind={pn.kind} frame={c.frame + rep * 37} t={c.t} />
+                          <Feed kind={pn.kind} frame={c.frame + rep * 37} t={c.t} signs={pn.signs} />
                         </g>
                       );
                     })()}

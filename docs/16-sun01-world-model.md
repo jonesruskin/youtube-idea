@@ -40,7 +40,7 @@ marked **OPEN (series)** on purpose. Only two questions may stay open.
 | Light travel | Sun→Earth 8 min 20 s. Venus (near the far side of the Sun, low in the east) goes dark 12 min later (7:04). Jupiter about 72 min later (8:04) | mirror, ito-predict, venus-out, jupiter-predict |
 | Gravity | The Sun is still there: tides keep their solar part. A vanished Sun would cut the next high tide by about a third | if-dead, a-third, gauge, still-there |
 | Shell physics | Absorbing and refocusing the light warms the shell slightly, so infrared telescopes see it on Day 2. Edge-on (open), it was nearly invisible except as lines in eclipse photos | press, press-sci, photo1919, blinds |
-| Cold | City at −30 °C by Day 7, −50 °C by Day 100, about −70 °C on Day 365. A few metres underground stays about +10 °C all year. The deep ocean never freezes; only a skin of sea ice forms (Day 1, harbour) | freeze, ground-heat, fish, day100, surface |
+| Cold | City at about +8 °C on Day 1, −20 °C by Day 7, −50 °C by Day 100, about −70 °C on Day 365. A few metres underground stays about +10 °C all year. The sea holds its heat for months (the fish on Day 1 haven't noticed); the deep ocean never freezes | freeze, ground-heat, fish, day100, surface |
 | Snow | One heavy snowfall in the first week as the wet air freezes out (the Day 7 storm). Almost none after that: nothing evaporates, so the air turns bone-dry. Streets are frosted and icy, **never "buried in snow"** | biscuit-bolts, later street shots |
 | Electricity | Keeps running all year on coal, gas, nuclear and hydro (dams still hold their water); only solar fails. Lights, lifts, phones, TV and internet work | lights-work, alert, world montage |
 | Heating | Radiators fail when a building's water pipes freeze and burst (Day 7). Electric heaters warm one room. Cities open metro stations as warm shelters | freeze, seal-room, refuges |
@@ -108,9 +108,9 @@ marked **OPEN (series)** on purpose. Only two questions may stay open.
 35. Why does Jupiter go out an hour later? Much farther away. (jupiter-predict)
 36. Why is the tide a third smaller without the Sun? The Sun supplies about a third of the tide. (a-third)
 37. Why an aurora on Day 3? A solar storm already on its way before the shell closed. (aurora)
-38. Why does a sea skin freeze but the fish live? Ice floats; the water underneath stays liquid. (fish)
+38. Why are the fish fine on Day 1? Water holds far more heat than air; the sea cools months more slowly. (fish)
 39. Why is underground warm? Ground heat: about 10 °C a few metres down. (ground-heat)
-40. How cold does it get? −30 °C by Day 7, −50 °C by Day 100, −70 °C on Day 365. (freeze, day100-cold, day365)
+40. How cold does it get? −20 °C by Day 7, −50 °C by Day 100, −70 °C on Day 365. (freeze, day100-cold, day365)
 41. Why is it summer clothes on Day 0? It was summer. (kitchen-morning, day1-rush)
 42. Why stars at breakfast? With the Sun dark, the day sky is a night sky. (stars-at-breakfast)
 43. Why can people stand on the surface on Day 365? Full arctic gear (people work at −70 °C in Antarctica). (day365)

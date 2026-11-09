@@ -698,11 +698,11 @@ const shots: Shot[] = [
     action: 'The two of them, tiny at the edge of the freezing harbour, staring at where the Sun should be.',
     lines: [N("The Sun hadn't gone anywhere. Something was in front of it.", 0.5)],
   }),
-  sh('fish', sc('closeup', {v: 'fishIce'}), {
-    science: {text: 'Ice floats and insulates the water below it, so seas freeze from the top and stay liquid underneath for a very long time.', source: 'National Snow and Ice Data Center, ‘All About Sea Ice’'},
+  sh('fish', sc('closeup', {v: 'fishIce', noIce: true}), {
+    science: {text: 'Water holds far more heat than air, so the sea cools months more slowly than the land; even when ice forms later, it floats and keeps the water below it liquid.', source: 'National Snow and Ice Data Center, ‘All About Sea Ice’; NOAA, ‘Ocean heat content’'},
     beats: ['heart', 'laugh'],
-    action: 'Mira’s mitten points down through a thin skin of new ice: under it, a fish glides past in the torch beam.',
-    lines: [M("The sea's freezing over, but the fish don't mind!")],
+    action: 'Mira’s mitten points down at the dark water: a fish glides past in the torch beam, unbothered.',
+    lines: [M("The fish haven't even noticed!")],
   }),
 
   // ══ DAY 2 · the world finds it ═══════════════════════════════════════════════════════════════
@@ -807,12 +807,12 @@ const shots: Shot[] = [
   sh('freeze', sc('city', {v: 'freeze'}), {
     science: {text: 'Estimates for a sunless Earth: around −18 °C average after a week, around −73 °C after a year.', source: 'Live Science, ‘What would happen if the sun disappeared?’'},
     chapter: 'Day 7',
-    hud: {day: 7, temp: -30},
+    hud: {day: 7, temp: -20},
     cue: 'tension',
     transition: 'fade',
     dev: 'the cold arrives: pipes freeze and radiators die, though the power stays on',
     action: 'Day 7. The city from above, every window still lit, frost rolling over the rooftops.',
-    lines: [N('By Day 7, it was thirty below.')],
+    lines: [N('By Day 7, it was twenty below.')],
   }),
   sh('pipes-burst', sc('closeup', {v: 'pipe'}), {
     dev: 'the building’s pipes freeze and burst; radiators go cold (power still on)',
@@ -921,7 +921,7 @@ const shots: Shot[] = [
   // ══ DAY 8 · the call, the vent ══════════════════════════════════════════════════════════════
   sh('hosp-biscuit', stage('hospital', 'lit', push(2.3, 2.5, 1470, 600), [c(MU, 1480, 930, {facing: 'left', pose: 'hold', hold: 'phoneLit', expr: 'focused'})], [{at: 'l0+1.4', who: MU, expr: 'smile'}]), {
     chapter: 'Day 8',
-    hud: {day: 8, temp: -32, time: '7:00 PM'},
+    hud: {day: 8, temp: -22, time: '7:00 PM'},
     cue: 'warm',
     transition: 'fade',
     action: 'Day 8, seven in the evening. Mum on the nightly video call, in the same scrubs, more tired.',
@@ -1357,11 +1357,11 @@ const shots: Shot[] = [
     c(MI, 880, 900, {outfit: 'cold', facing: 'back'}),
     c(IT, 1060, 900, {outfit: 'cold', facing: 'back'}),
     c('extra:37', 1250, 900, {outfit: 'cold', facing: 'back'}),
-  ], [{at: 'l0+1.2', who: IT, facing: 'front', expr: 'scared'}], {screen: true, clinic: true}), {
+  ], [{at: 'l0+1.2', who: IT, facing: 'front', expr: 'scared'}], {screen: true, ship: true, clinic: true}), {
     action: 'The station crowd, from behind, watching the big screen over the platform: a glowing speck inside the beam. Ito slowly turns around.',
     lines: [AN("And there's something inside it, coming toward us and slowing down.", 0.4)],
   }),
-  sh('twenty-one', stage('metro', 'city', dutch(2.8, 3.3, 1060, 560, -5), [c(Y, 760, 900, {outfit: 'cold', facing: 'back'}), c(MI, 880, 900, {outfit: 'cold', facing: 'back'}), c(IT, 1060, 900, {outfit: 'cold', facing: 'front', expr: 'scared'})], [{at: 'l0+0.9', who: IT, look: [0, 0.8]}], {screen: true}), {
+  sh('twenty-one', stage('metro', 'city', dutch(2.8, 3.3, 1060, 560, -5), [c(Y, 760, 900, {outfit: 'cold', facing: 'back'}), c(MI, 880, 900, {outfit: 'cold', facing: 'back'}), c(IT, 1060, 900, {outfit: 'cold', facing: 'front', expr: 'scared'})], [{at: 'l0+0.9', who: IT, look: [0, 0.8]}], {screen: true, ship: true}), {
     cue: 'shellSting',
     twist: 5,
     sfx: 'impact',
@@ -1678,8 +1678,8 @@ const shots: Shot[] = [
   }),
   sh('arguing', sc('news', {v: 'world', plain: true, panels: [
     {place: 'NEW YORK · UN', time: '1:44 AM', kind: 'crowd'},
-    {place: 'BEIJING', time: '1:44 PM', kind: 'protest'},
-    {place: 'BRASÍLIA', time: '2:44 AM', kind: 'protest'},
+    {place: 'BEIJING', time: '1:44 PM', kind: 'protest', signs: ['WHO SPEAKS FOR EARTH?', 'SAY HELLO']},
+    {place: 'BRASÍLIA', time: '2:44 AM', kind: 'protest', signs: ['WHAT DO WE SAY?', 'ANSWER THEM']},
     {place: 'GENEVA', time: '7:44 AM', kind: 'crowd'},
   ]}), {
     dev: 'the world received the same picture; governments argue',
