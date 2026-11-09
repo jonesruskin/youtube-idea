@@ -107,7 +107,7 @@ const EAR_DOWN: Item = {prop: 'ear', x: 1215, y: 935, rot: -8};
 const SURF = (o: {you?: object; mira?: object; mum?: object; ito?: object} = {}) => [
   c(Y, 800, 940, {...COLD, hoodUp: true, facing: 'right', ...o.you}),
   c(MI, 920, 940, {...COLD, facing: 'right', ...o.mira}),
-  c(MU, 1040, 940, {outfit: 'cold', breath: true, facing: 'right', ...o.mum}),
+  c(MU, 1040, 940, {outfit: 'cold', breath: true, facing: 'front', ...o.mum}),
   c(IT, 1280, 940, {...COLD, facing: 'left', hold: 'ear', ...o.ito}),
   c(B, 680, 940, {pose: 'sit'}),
 ];
@@ -690,7 +690,7 @@ const shots: Shot[] = [
     action: 'Kai stares at the tide table, then up.',
     lines: [K("So the Sun's still there. We just can't see it.")],
   }),
-  sh('where-is-it', stage('harbor', 'freeze', push(2.5, 2.7, 610, 650), [c(Y, 700, 940, {...COLD, hold: 'torch', pose: 'hold', holdL: 'tideTable', facing: 'right'}), c(MI, 580, 940, {...COLD, facing: 'front', expr: 'worried', pose: 'lookUp'})], [{at: 'l0+0.6', who: MI, look: [0, -1]}]), {
+  sh('where-is-it', stage('harbor', 'freeze', push(2.5, 2.7, 610, 650), [c(Y, 700, 940, {...COLD, hold: 'torch', pose: 'hold', holdL: 'tideTable', facing: 'right'}), c(MI, 580, 940, {...COLD, facing: 'front', expr: 'worried', pose: 'lookUp'})], [{at: 'l0+0.6', who: MI, look: [0, -1]}, {at: 'l0+0.1', who: Y, facing: 'left'}]), {
     action: 'Mira looks up at the black sky.',
     lines: [M('Then why is it dark?', 0.3)],
   }),
@@ -867,12 +867,12 @@ const shots: Shot[] = [
     action: 'The torch finds door 3B: firelight flickering underneath, smoke pouring out.',
     lines: [I("Next door's heating is off too. They're burning furniture, indoors!")],
   }),
-  sh('invisible', stage('stairs', 'smoke', dutch(2.6, 3.0, 800, 600, 6), [c(Y, 1000, 940, {...COLD, hold: 'torch', pose: 'torch', facing: 'right', expr: 'scared'}), c(IT, 800, 940, {...COLD, facing: 'front', expr: 'determined'})], [{at: 'l0+1.6', who: IT, look: [-0.6, 0.4]}]), {
+  sh('invisible', stage('stairs', 'smoke', dutch(2.6, 3.0, 800, 600, 6), [c(Y, 1000, 940, {...COLD, hold: 'torch', pose: 'torch', facing: 'right', expr: 'scared'}), c(IT, 800, 940, {...COLD, facing: 'front', expr: 'determined'})], [{at: 'l0+1.6', who: IT, look: [-0.6, 0.4]}, {at: 'l0+0.1', who: Y, facing: 'left'}]), {
     science: {text: 'Burning fuel indoors produces carbon monoxide, which is colourless and odourless; it is a leading cause of winter poisonings.', source: 'US CDC, ‘Carbon Monoxide Poisoning’'},
     action: 'Ito, in the smoke, suddenly very loud.',
     lines: [I('Everyone out!', 0, 'point')],
   }),
-  sh('invisible-2', stage('stairs', 'smoke', push(1.7, 1.85, 900, 620), [c(Y, 1000, 940, {...COLD, hold: 'torch', pose: 'torch', facing: 'right', expr: 'scared'}), c(IT, 800, 940, {...COLD, facing: 'front', expr: 'worried'})], [{at: 'l0+1.2', who: IT, look: [-0.6, 0.4]}]), {
+  sh('invisible-2', stage('stairs', 'smoke', push(1.7, 1.85, 900, 620), [c(Y, 1000, 940, {...COLD, hold: 'torch', pose: 'torch', facing: 'left', expr: 'scared'}), c(IT, 800, 940, {...COLD, facing: 'front', expr: 'worried'})], [{at: 'l0+1.2', who: IT, look: [-0.6, 0.4]}]), {
     callout: {text: 'CARBON MONOXIDE', at: 'l0+0.9'},
     action: 'Closer on Ito, urgent, explaining as he herds them toward the stairs.',
     lines: [I("A fire indoors makes carbon monoxide. You can't see it or smell it, and it kills.")],
@@ -1071,18 +1071,18 @@ const shots: Shot[] = [
     action: 'More feeds: home offices, a school in a shelter, farms under lamps, freight trains.',
     lines: [N('Anyone who could work from home did. Everyone else worked underground.')],
   }),
-  sh('farm', stage('metro', 'farm', move([1.2, 900, 600], [1.32, 1180, 600]), [
+  sh('farm', stage('metro', 'farm', move([1.15, 990, 600], [1.2, 1000, 590]), [
     c('extra:35', 700, 900, {outfit: 'cold', pose: 'pour', facing: 'right'}),
     c('extra:36', 1000, 900, {outfit: 'cold', pose: 'carry', facing: 'left'}),
-    c('extra:305', 1320, 900, {outfit: 'cold', pose: 'hold', hold: 'treats', facing: 'right', expr: 'angry'}),
-    c('extra:38', 1500, 900, {outfit: 'cold', pose: 'shrug', facing: 'left', expr: 'focused'}),
+    c('extra:305', 1440, 900, {outfit: 'cold', pose: 'hold', hold: 'treats', facing: 'right', expr: 'angry'}),
+    c('extra:38', 1240, 900, {outfit: 'cold', pose: 'shrug', facing: 'left', expr: 'focused'}),
   ], [{at: 0.4, who: 'extra:35', loop: 'stir', dur: 2}]), {
     dev: 'food: lettuce (fast), potatoes, mushrooms (no light)',
     action: 'A disused tunnel turned farm: racks of lettuce and potatoes under pink lamps, and crates of mushrooms on an unlit shelf. Labels on every rack.',
     lines: [N("We grew lettuce, because it's ready in a month. Potatoes. And mushrooms, which don't need any light.")],
   }),
-  sh('sick-of-lettuce', stage('metro', 'farm', push(2.4, 2.7, 1500, 640), [
-    c('extra:305', 1320, 900, {outfit: 'cold', pose: 'think', facing: 'right', expr: 'angry'}),
+  sh('sick-of-lettuce', stage('metro', 'farm', push(1.45, 1.55, 1460, 610), [
+    c('extra:305', 1440, 900, {outfit: 'cold', pose: 'think', facing: 'right', expr: 'angry'}),
   ], [{at: 'l0+0.4', who: 'extra:305', loop: 'shake', dur: 1.2}]), {
     beats: ['laugh'],
     action: 'A small kid glares at the chalk menu: lettuce, potatoes, lettuce, mushrooms, …lettuce.',
@@ -1164,6 +1164,7 @@ const shots: Shot[] = [
     {at: 1.3, who: MU, put: 'floor', prop: 'bag'},
     {at: 0.4, who: MI, to: 1080, gait: 'run', dur: 0.9, expr: 'laugh'},
     {at: 0.6, who: Y, to: 1330, gait: 'run', dur: 1.3, expr: 'laugh'},
+    {at: 1.95, who: Y, facing: 'left'},
     {at: 1.4, who: MI, pose: 'hug'},
     {at: 2.0, who: MU, pose: 'hug'},
   ], {clinic: true, items: [{prop: 'bag', x: 1250, y: 862, from: 1.7}]}), {
@@ -1754,7 +1755,7 @@ const shots: Shot[] = [
     action: 'All over the world, people on rooftops in the dark, looking up at the same patch of sky.',
     lines: [N('The whole world was watching the same patch of sky.')],
   }),
-  sh('countdown-mum', stage('surface', 'milky', push(2.1, 2.3, 1000, 660), SURF367({mira: {hold: 'sunDrawing', expr: 'worried'}, mum: {expr: 'smile'}}), [{at: 'l1+0.2', who: MU, pose: 'hug'}], {transmitter: 1380, items: [EAR_DOWN]}), {
+  sh('countdown-mum', stage('surface', 'milky', push(2.1, 2.3, 1000, 660), SURF367({mira: {hold: 'sunDrawing', expr: 'worried'}, mum: {expr: 'smile'}}), [{at: 'l1+0.2', who: MU, pose: 'hug', facing: 'left'}], {transmitter: 1380, items: [EAR_DOWN]}), {
     timer: {from: 62, to: 57},
     beats: ['heart'],
     action: 'Mira, scared. Mum pulls her in.',

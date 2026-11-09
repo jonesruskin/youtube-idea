@@ -8,8 +8,9 @@ import type {Episode as EpisodeData, Shot} from './schema';
 import {ShotProvider} from './shot-context';
 import {buildTimeline, toFrames, type TimedShot, type VoiceMap} from './timeline';
 import {EPISODES} from '../episodes';
+import {TextAudit} from './TextAudit';
 
-export type EpisodeProps = {episodeId: string; voice: VoiceMap; hasScore: boolean};
+export type EpisodeProps = {episodeId: string; voice: VoiceMap; hasScore: boolean; audit?: boolean};
 
 /** Whip-pan length in frames. The outgoing shot is held this much longer and slides out as the new one slides in. */
 const WHIP = 9;
@@ -206,13 +207,13 @@ const Letterbox: React.FC<{shots: TimedShot[]; fps: number}> = ({shots, fps}) =>
   const h = 138 * Easing.inOut(Easing.cubic)(v);
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
-      <div style={{position: 'absolute', left: 0, right: 0, top: 0, height: h, background: '#000'}} />
-      <div style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: h, background: '#000'}} />
+      <div data-letterbox style={{position: 'absolute', left: 0, right: 0, top: 0, height: h, background: '#000'}} />
+      <div data-letterbox style={{position: 'absolute', left: 0, right: 0, bottom: 0, height: h, background: '#000'}} />
     </AbsoluteFill>
   );
 };
 
-export const Episode: React.FC<EpisodeProps> = ({episodeId, voice, hasScore}) => {
+export const Episode: React.FC<EpisodeProps> = ({episodeId, voice, hasScore, audit}) => {
   const ep: EpisodeData = EPISODES[episodeId];
   const tl = buildTimeline(ep, voice);
   // the last Day shown before each shot (flash-forwards don't count), for the year bar
@@ -236,6 +237,7 @@ export const Episode: React.FC<EpisodeProps> = ({episodeId, voice, hasScore}) =>
       })}
       <Finish />
       {ep.style === 'cinema' && <Letterbox shots={tl.shots} fps={ep.fps} />}
+      {audit && <TextAudit />}
       {hasScore && <Audio src={staticFile(`audio/${episodeId}-score.wav`)} />}
       {tl.lines
         .filter((l) => l.audio)

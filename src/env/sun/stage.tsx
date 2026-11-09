@@ -63,7 +63,7 @@ export const Stage: React.FC = () => {
             .filter((l) => !l.front)
             .map((l, i) => (
               <Plane key={`b${i}`} depth={l.depth} blur={l.blur}>
-                {l.node}
+                <g data-text="set">{l.node}</g>
               </Plane>
             ))}
           <Plane depth={1}>
@@ -75,7 +75,7 @@ export const Stage: React.FC = () => {
             .filter((l) => l.front)
             .map((l, i) => (
               <Plane key={`f${i}`} depth={l.depth} blur={l.blur}>
-                {l.node}
+                <g data-text="set">{l.node}</g>
               </Plane>
             ))}
           <ScreenPlane>{def.grade?.(c)}</ScreenPlane>

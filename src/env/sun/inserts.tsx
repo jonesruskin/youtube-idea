@@ -416,11 +416,12 @@ export const CloseupScene: React.FC = () => {
           <text x={600} y={170} fontFamily={fonts.mono} fontSize={30} fill="#2A2A2A">
             NATIONAL ASTRONOMY COUNCIL
           </text>
-          <text x={600} y={260} fontFamily={fonts.mono} fontSize={26} fill="#2A2A2A">
+          {/* data-text="set": the thumb hides the name on purpose until the reveal (the text audit allows it) */}
+          <text data-text={c.p.showName ? undefined : 'set'} x={600} y={260} fontFamily={fonts.mono} fontSize={26} fill="#2A2A2A">
             Dear Dr. Ito,
           </text>
           {['We have reviewed your proposal concerning', '"artificial structures" in the solar corona.', '', 'The Council cannot support further', 'observations, nor any transmission.', '', 'We would gently suggest a rest.'].map((l, k) => (
-            <text key={k} x={600} y={330 + k * 48} fontFamily={fonts.mono} fontSize={26} fill="#2A2A2A">
+            <text key={k} x={c.p.showName ? 600 : 720} y={(c.p.showName ? 330 : 400) + k * 46} fontFamily={fonts.mono} fontSize={c.p.showName ? 26 : 24} fill="#2A2A2A">
               {l}
             </text>
           ))}
@@ -497,23 +498,26 @@ export const CloseupScene: React.FC = () => {
         )}
         {/* the painted gauge board, metres */}
         <rect x={820} y={60} width={280} height={1000} fill="#F4EFE6" stroke={INK} strokeWidth={8} />
-        {Array.from({length: 11}, (_, k) => (
+        {Array.from({length: 10}, (_, k) => (
           <g key={k}>
             <rect x={820} y={60 + k * 100} width={k % 2 ? 140 : 280} height={14} fill="#C2464F" />
-            <text x={1120} y={78 + k * 100} fontFamily={fonts.mono} fontWeight={700} fontSize={44} fill="#F4EFE6">
-              {(6 - k * 0.4).toFixed(1)}
-            </text>
           </g>
         ))}
         {/* the water settles, and sits exactly on the line Mr. Ito predicted from his tide table */}
         <rect x={0} y={level} width={W} height={H - level} fill="#1E4A6E" opacity={0.85} />
+        {/* the numbers stay readable: painted over the water, the drowned ones tinted as if seen through it */}
+        {Array.from({length: 10}, (_, k) => (
+          <text key={k} x={1120} y={78 + k * 100} fontFamily={fonts.mono} fontWeight={700} fontSize={44} fill={78 + k * 100 - 16 > level ? '#A9C8E0' : '#F4EFE6'} opacity={78 + k * 100 - 16 > level ? 0.8 : 1}>
+            {(6 - k * 0.4).toFixed(1)}
+          </text>
+        ))}
         <path d={`M0,${level} q60,-10 120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0 t120,0`} stroke="#9FD8FF" strokeWidth={6} fill="none" />
         <path d={`M700,560 L1240,560`} stroke="#FFD27A" strokeWidth={8} strokeDasharray="24 12" />
         <g transform="translate(250,470) rotate(-3)" opacity={clamp((t - 0.3) / 0.4)}>
-          <rect x={0} y={0} width={380} height={130} rx={8} fill="#FBF6EA" stroke={INK} strokeWidth={5} />
-          <text x={22} y={50} fontFamily={fonts.mono} fontSize={28} fill="#2A2A2A">TIDE TABLE · 10:40</text>
-          <text x={22} y={104} fontFamily="'Caveat', 'Comic Sans MS', cursive" fontWeight={700} fontSize={54} fill="#C2464F">predicted 4.0 m</text>
-          <path d="M380,90 L450,90" stroke="#FFD27A" strokeWidth={6} />
+          <rect x={0} y={0} width={420} height={150} rx={8} fill="#FBF6EA" stroke={INK} strokeWidth={5} />
+          <text x={22} y={48} fontFamily={fonts.mono} fontSize={28} fill="#2A2A2A">TIDE TABLE · 10:40</text>
+          <text x={22} y={124} fontFamily="'Caveat', 'Comic Sans MS', cursive" fontWeight={700} fontSize={50} fill="#C2464F">predicted 4.0 m</text>
+          <path d="M420,96 L470,96" stroke="#FFD27A" strokeWidth={6} />
         </g>
         <Frost amount={0.25} w={W} h={H} seed={9} />
       </g>,

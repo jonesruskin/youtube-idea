@@ -105,11 +105,11 @@ const Feed: React.FC<{kind: Kind; frame: number; t: number; signs?: [string, str
               <path d="M-20,-30 L40,-90 L60,-90 L30,-30 Z" fill="#B8BEC6" stroke={INK} strokeWidth={3} />
             </g>
           ))}
-          <rect x={300} y={60} width={360} height={160} rx={8} fill="#111" stroke="#444" strokeWidth={4} />
+          <rect x={560} y={110} width={360} height={160} rx={8} fill="#111" stroke="#444" strokeWidth={4} />
           {['FLIGHT 212', 'FLIGHT 087', 'FLIGHT 440'].map((f, i) => (
             <g key={f}>
-              <text x={320} y={110 + i * 42} fontFamily={fonts.mono} fontSize={24} fill="#FFD27A">{f}</text>
-              <text x={640} y={110 + i * 42} textAnchor="end" fontFamily={fonts.mono} fontSize={24} fill="#FF5A4A" opacity={0.6 + 0.4 * Math.sin(frame * 0.3 + i)}>CANCELLED</text>
+              <text x={580} y={160 + i * 42} fontFamily={fonts.mono} fontSize={24} fill="#FFD27A">{f}</text>
+              <text x={900} y={160 + i * 42} textAnchor="end" fontFamily={fonts.mono} fontSize={24} fill="#FF5A4A" opacity={0.6 + 0.4 * Math.sin(frame * 0.3 + i)}>CANCELLED</text>
             </g>
           ))}
         </g>
@@ -119,8 +119,8 @@ const Feed: React.FC<{kind: Kind; frame: number; t: number; signs?: [string, str
         <g>
           <rect width={960} height={540} fill="#0E1426" />
           <path d={`M40,${120} ${Array.from({length: 24}, (_, i) => `L${40 + i * 38},${120 + i * 14 + Math.sin(i * 1.7) * 18}`).join(' ')}`} stroke="#FF5A4A" strokeWidth={6} fill="none" />
-          <text x={60} y={470} fontFamily={fonts.display} fontWeight={900} fontSize={64} fill="#FF5A4A">−31%</text>
-          <text x={60} y={510} fontFamily={fonts.mono} fontSize={24} fill="#C9D6F0">ALL MARKETS SUSPENDED</text>
+          <text x={60} y={392} fontFamily={fonts.display} fontWeight={900} fontSize={64} fill="#FF5A4A">−31%</text>
+          <text x={60} y={432} fontFamily={fonts.mono} fontSize={24} fill="#C9D6F0">ALL MARKETS SUSPENDED</text>
         </g>
       );
     case 'prayer':
@@ -220,7 +220,7 @@ const Feed: React.FC<{kind: Kind; frame: number; t: number; signs?: [string, str
             {[0, 1, 2].map((k) => (
               <g key={k}>
                 <rect x={-230 - k * 230} y={350} width={210} height={80} fill={['#3E7CB1', '#E9C46A', '#3C8D6E'][k]} stroke={INK} strokeWidth={4} />
-                <text x={-125 - k * 230} y={400} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={26} fill="#0B1026">{['FOOD', 'FUEL', 'FOOD'][k]}</text>
+                <text data-text="set" x={-125 - k * 230} y={400} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={26} fill="#0B1026">{['FOOD', 'FUEL', 'FOOD'][k]}</text>
               </g>
             ))}
           </g>
@@ -336,7 +336,7 @@ const Broadcast: React.FC<{headline?: string; ticker?: string; frame: number; ch
     {ticker && (
       <g>
         <rect x={0} y={980} width={1920} height={60} fill="#0B1026" />
-        <text x={1920 - ((frame * 6) % 3800)} y={1020} fontFamily={fonts.ui} fontWeight={700} fontSize={30} fill="#E9EEF8">
+        <text data-text="scroll" x={1920 - ((frame * 6) % 3800)} y={1020} fontFamily={fonts.ui} fontWeight={700} fontSize={30} fill="#E9EEF8">
           {`${ticker}   •   ${ticker}`}
         </text>
       </g>

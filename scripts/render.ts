@@ -52,7 +52,40 @@ const progress = (label: string) => {
 
 if (!cinema) {
   await renderMedia({...common, codec: 'h264', crf, audioBitrate: '320k', outputLocation: raw, onProgress: progress('render')});
-} else {
+}
+// What the picture depends on (script, voiced timings, engine) but not the score: lets an audio-only change remix.
+const pictureStamp = () => {
+  const h = createHash('sha256');
+  h.update(readFileSync(join(epDir, 'script.ts')));
+  const vj = join(ROOT, 'public', 'voice', `${id}.json`);
+  if (existsSync(vj)) h.update(readFileSync(vj));
+  h.update(execSync('git rev-parse HEAD:src && git diff HEAD -- src', {cwd: ROOT}).toString());
+  h.update(`${crf}:${composition.durationInFrames}:${composition.fps}`);
+  return h.digest('hex');
+};
+const picFile = join(rel, '.picture');
+const mixWav = (wav: string) => {
+  // Same placement as Episode.tsx (score at 0, each line in its Sequence), mixed directly: seconds, not hours.
+  const tlPath = join(ROOT, 'out', `${id}-timeline.json`);
+  writeFileSync(tlPath, execSync(`npx tsx scripts/export-timeline.ts ${id}`, {cwd: ROOT, maxBuffer: 256 * 1024 * 1024}));
+  const part = wav.replace(/\.wav$/, '.part.wav');
+  run(`python3 scripts/mix_audio.py "${tlPath}" public/voice/${id}.json public/audio/${id}-score.wav "${part}" ${composition.durationInFrames / composition.fps}`);
+  renameSync(part, wav);
+};
+const master0 = join(rel, `${id}-master.mp4`);
+if (cinema && process.env.REMIX) {
+  // Audio-only pass (score or mix changed, picture didn't): reuse the master's video stream bit for bit, remix the
+  // sound and re-master. Refused unless the master was built from exactly this picture (release/.picture).
+  if (!existsSync(master0) || !existsSync(picFile) || readFileSync(picFile, 'utf8').trim() !== pictureStamp())
+    throw new Error('REMIX refused: the picture changed since the master was rendered (or no .picture stamp) → full render');
+  const wav = join(ROOT, 'out', `${id}-remix.wav`);
+  mixWav(wav);
+  run(`ffmpeg -v error -y -i "${master0}" -i "${wav}" -map 0:v -map 1:a -c:v copy -c:a pcm_s24le "${raw}"`);
+  unlinkSync(wav);
+  const frames = parseInt(execSync(`ffprobe -v error -count_packets -select_streams v:0 -show_entries stream=nb_read_packets -of csv=p=0 "${raw}"`).toString());
+  if (frames !== composition.durationInFrames) throw new Error(`remix video has ${frames} frames, expected ${composition.durationInFrames}`);
+  console.log(`remix: picture reused (${frames} frames), sound rebuilt ✔`);
+} else if (cinema) {
   // Resumable render: muted video in 60 s chunks + one audio pass, joined losslessly.
   // A container restart costs at most one chunk; re-run the same command to resume.
   const dir = join(ROOT, 'out', process.env.FRAMES ? 'chunks-dev' : 'chunks');
@@ -93,14 +126,7 @@ if (!cinema) {
     console.log(`chunk ${i + 1}/${n} done (frames ${a}–${b})`);
   }
   const wav = join(dir, `${id}-audio.wav`);
-  if (!existsSync(wav)) {
-    // Same placement as Episode.tsx (score at 0, each line in its Sequence), mixed directly: seconds, not hours.
-    const tlPath = join(ROOT, 'out', `${id}-timeline.json`);
-    writeFileSync(tlPath, execSync(`npx tsx scripts/export-timeline.ts ${id}`, {cwd: ROOT, maxBuffer: 256 * 1024 * 1024}));
-    const part = wav.replace(/\.wav$/, '.part.wav');
-    run(`python3 scripts/mix_audio.py "${tlPath}" public/voice/${id}.json public/audio/${id}-score.wav "${part}" ${total / composition.fps}`);
-    renameSync(part, wav);
-  }
+  if (!existsSync(wav)) mixWav(wav);
   const list = join(dir, 'list.txt');
   writeFileSync(list, files.map((f) => `file '${f}'`).join('\n') + '\n');
   run(`ffmpeg -v error -y -f concat -safe 0 -i "${list}" -i "${wav}" -map 0:v -map 1:a -c:v copy -c:a pcm_s24le -t ${end / composition.fps} "${raw}"`);
@@ -127,6 +153,7 @@ if (cinema) {
     if (tp <= -1.2) break;
   }
   unlinkSync(raw);
+  if (!process.env.FRAMES) writeFileSync(picFile, pictureStamp() + '\n'); // the master now holds this picture
   // The master stays (Git LFS); a ~90 MB web copy sits beside it for quick viewing.
   const hq = r(`${id}-master.mp4`);
   const mb = statSync(hq).size / 1e6;

@@ -8,7 +8,7 @@ import numpy as np
 import soundfile as sf
 from scipy.signal import resample_poly
 
-TARGET = 9.0  # dB of voice over music we want on every line (the gate is 6; the average gate is 10)
+TARGET = 11.0  # dB of voice over music we want on every line (gates: worst ≥ 6, average ≥ 10; aim above both)
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 tl = json.load(open(sys.argv[1]))
 ep = tl["id"]

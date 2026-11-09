@@ -188,7 +188,7 @@ const Farm: React.FC<{c: SetCtx}> = ({c}) => (
             )}
           </g>
         ))}
-        <g transform={`translate(1060,${520 + row * 130 + 36})`}>
+        <g data-text="info" transform={`translate(210,${520 + row * 130 + 64})`}>
           <rect x={-10} y={-24} width={row === 2 ? 330 : 250} height={34} rx={6} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
           <text x={4} y={2} fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={24} fill="#1A1E2A">
             {['LETTUCE · 30 DAYS', 'POTATOES', 'MUSHROOMS · NO LIGHT'][row]}
@@ -197,7 +197,7 @@ const Farm: React.FC<{c: SetCtx}> = ({c}) => (
       </g>
     ))}
     {/* the canteen menu, chalked by someone who has given up */}
-    <g transform="translate(1660,560) rotate(2)">
+    <g data-text="info" transform="translate(1600,560) rotate(2)">
       <rect x={-150} y={-190} width={300} height={330} rx={8} fill="#2F4A3A" stroke="#7A4E30" strokeWidth={12} />
       <text x={0} y={-140} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={34} fill="#FFE7A6">MENU</text>
       {['MON  lettuce', 'TUE  potatoes', 'WED  lettuce', 'THU  mushrooms', 'FRI  ...lettuce'].map((t, k) => (
@@ -205,7 +205,7 @@ const Farm: React.FC<{c: SetCtx}> = ({c}) => (
       ))}
     </g>
     {/* harvest crates on the platform */}
-    {[260, 420].map((x, i) => (
+    {[600, 760].map((x, i) => (
       <g key={x} transform={`translate(${x},900)`}>
         <rect x={-70} y={-70} width={140} height={70} fill="#A86E42" stroke={INK} strokeWidth={4} />
         {[0, 1, 2].map((k) => (

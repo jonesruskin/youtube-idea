@@ -23,7 +23,8 @@ export const Callout: React.FC = () => {
   const pop = interpolate(k, [0, 0.12, 0.24], [0.4, 1.12, 1], {extrapolateRight: 'clamp', easing: Easing.out(Easing.quad)});
   const out = interpolate(k, [hold, hold + 0.25], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   if (out <= 0) return null;
-  const y = POS[c.pos ?? 'low'];
+  // letterboxed shots: keep the callout clear of the bars (the bottom bar starts at y 942)
+  const y = c.pos === 'low' || !c.pos ? (shot.letterbox ? 790 : POS.low) : POS[c.pos];
   const x = c.pos === 'left' ? 520 : c.pos === 'right' ? 1400 : 960;
   const size = c.text.length > 12 ? 92 : c.text.length > 7 ? 120 : 150;
   const tilt = (c.text.length % 2 ? -1 : 1) * 2;
@@ -75,7 +76,7 @@ export const DayTag: React.FC<{prevDay?: number}> = ({prevDay = 0}) => {
   const {shot, t} = useShot();
   const hh = shot.hud;
   if (!hh) return null;
-  if ('place' in hh) return <PlaceTag place={hh.place} time={hh.time} t={t} dur={shot.duration} />;
+  if ('place' in hh) return <PlaceTag place={hh.place} time={hh.time} t={t} dur={shot.duration} top={shot.letterbox ? 220 : 150} />;
   const h = hh;
   const inK = interpolate(t, [0.05, 0.45], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic)});
   const outK = interpolate(t, [Math.min(3.6, shot.duration - 0.3), Math.min(3.9, shot.duration)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
@@ -87,7 +88,7 @@ export const DayTag: React.FC<{prevDay?: number}> = ({prevDay = 0}) => {
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
       <svg viewBox="0 0 1920 1080" width="100%" height="100%">
-        <g transform={`translate(${-60 + 150 * inK},${shot.letterbox ? 220 : 150})`} opacity={inK * outK}>
+        <g transform={`translate(${-60 + 150 * inK},${shot.letterbox ? 220 : shot.scene === 'news' ? 250 : 150})`} opacity={inK * outK}>
           <rect x={-20} y={-74} width={10} height={186} fill={cold ? '#9FD8FF' : '#FFB25A'} />
           <text x={10} y={-10} fontFamily={fonts.display} fontWeight={900} fontSize={84} fill="#FFF6E0" stroke="#0B1026" strokeWidth={10} paintOrder="stroke" letterSpacing={3}>
             DAY {h.day}
@@ -108,13 +109,13 @@ export const DayTag: React.FC<{prevDay?: number}> = ({prevDay = 0}) => {
 };
 
 /** "SYDNEY · 3:51 PM": where and when, for the world's last ordinary minute. */
-const PlaceTag: React.FC<{place: string; time: string; t: number; dur: number}> = ({place, time, t, dur}) => {
+const PlaceTag: React.FC<{place: string; time: string; t: number; dur: number; top: number}> = ({place, time, t, dur, top}) => {
   const inK = interpolate(t, [0.05, 0.4], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic)});
   const outK = interpolate(t, [dur - 0.25, dur], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
       <svg viewBox="0 0 1920 1080" width="100%" height="100%">
-        <g transform={`translate(${-60 + 150 * inK},150)`} opacity={inK * outK}>
+        <g transform={`translate(${-60 + 150 * inK},${top})`} opacity={inK * outK}>
           {/* soft backing card: keeps the tag clean over busy sets (a curtain rod read as a strikethrough) */}
           <rect x={-10} y={-78} width={Math.max(place.length * 64, time.length * 30) + 84} height={152} rx={10} fill="#0B1026" opacity={0.9} />
           <rect x={-20} y={-66} width={10} height={130} fill="#FFB25A" />

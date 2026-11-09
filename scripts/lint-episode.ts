@@ -526,6 +526,64 @@ if (episode.style === 'cinema') {
         }
     }
   }
+  // ── v5.2 facing gate (CEO: Kai ran to Mum and stopped with his back to her). Replays every walk: a walk turns
+  // the walker toward where they went, so the arrival must turn them to the person they came to. Checked: a hug faces
+  // the person hugged; at every line the speaker and the family listeners near them face each other; nobody arrives
+  // next to a family member and stands with their back to them. ──
+  {
+    const SPK = SPK_CAST;
+    const at = (s: any, a: any) => {
+      const m = /^l(\d+)([+-][\d.]+)?$/.exec(String(a.at));
+      if (!m) return Number(a.at) || 0;
+      const tlL = s.timedLines?.[Number(m[1])];
+      return (tlL ? tlL.startInShot : 0) + Number(m[2] ?? 0);
+    };
+    const faces = (f: string, from: number, to: number) => f === 'front' || f === 'back' || (f === 'right' ? to > from - 20 : to < from + 20);
+    for (const s of tl.shots as any[]) {
+      if (s.scene !== 'stage') continue;
+      const p = s.props ?? {};
+      const cast0 = ((p.cast ?? []) as any[]).filter((c) => !String(c.who).startsWith('biscuit') && (c.opacity ?? 1) > 0.2);
+      const acts = ((p.acts ?? []) as any[]).map((a) => ({...a, t: at(s, a)})).sort((a, b) => a.t - b.t);
+      const stateAt = (t: number) => {
+        const st = cast0.map((c) => ({who: c.who, x: c.x, facing: (c.facing ?? 'front') as string, pose: c.pose as string | undefined, arrived: false}));
+        for (const a of acts) {
+          if (a.t > t) break;
+          const c = st.find((x) => x.who === a.who);
+          if (!c) continue;
+          if (a.to !== undefined) {
+            const tx = Array.isArray(a.to) ? a.to[0] : a.to;
+            if (!a.facing && Math.abs(tx - c.x) > 4) c.facing = tx > c.x ? 'right' : 'left';
+            c.x = tx;
+            c.arrived = true;
+          }
+          if (a.facing) c.facing = a.facing;
+          if (a.pose !== undefined) c.pose = a.pose;
+        }
+        return st;
+      };
+      const fam = (st: ReturnType<typeof stateAt>) => st.filter((c) => MAIN_CAST.includes(c.who));
+      const end = stateAt(1e9);
+      for (const c of fam(end)) {
+        const others = fam(end).filter((o) => o !== c).sort((a, b) => Math.abs(a.x - c.x) - Math.abs(b.x - c.x));
+        const near = others[0];
+        if (!near) continue;
+        if (c.pose === 'hug' && !faces(c.facing, c.x, near.x)) errors.push(`Facing: ${c.who} hugs ${near.who} with their back to them in "${s.id}".`);
+        else if (c.arrived && Math.abs(near.x - c.x) < 260 && !faces(c.facing, c.x, near.x) && c.facing !== near.facing && !others.some((o) => Math.abs(o.x - c.x) < 420 && faces(c.facing, c.x, o.x)))
+          errors.push(`Facing: ${c.who} arrives next to ${near.who} and stands with their back to them in "${s.id}" (add facing to the arrival).`);
+      }
+      for (const l of s.timedLines ?? []) {
+        const sw = SPK[l.speaker];
+        if (!sw || sw === '*') continue;
+        const st = stateAt(l.startInShot + 0.3);
+        const sp = st.find((c) => c.who === sw);
+        if (!sp) continue;
+        const listeners = fam(st).filter((c) => c !== sp && Math.abs(c.x - sp.x) < 520);
+        // side by side, both turned to the same thing (the sunrise, a screen) is shared attention, not a turned back
+        for (const c of listeners) if (!faces(c.facing, c.x, sp.x) && c.facing !== sp.facing) errors.push(`Facing: ${c.who} has their back to ${sp.who} while ${l.speaker} talks in "${s.id}".`);
+        if (listeners.length && !listeners.some((c) => faces(sp.facing, sp.x, c.x) || c.facing === sp.facing)) errors.push(`Facing: ${l.speaker} talks with their back to everyone near them in "${s.id}".`);
+      }
+    }
+  }
   // scale: everyone on the same floor line shares one depth (heights come from the chart, never per shot)
   for (const s of tl.shots) {
     const cast = ((s.props as any)?.cast ?? []) as any[];
