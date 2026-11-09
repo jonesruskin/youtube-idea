@@ -188,7 +188,7 @@ const Farm: React.FC<{c: SetCtx}> = ({c}) => (
             )}
           </g>
         ))}
-        <g transform={`translate(${620 + row * 60},${520 + row * 130 + 36})`}>
+        <g transform={`translate(1060,${520 + row * 130 + 36})`}>
           <rect x={-10} y={-24} width={row === 2 ? 330 : 250} height={34} rx={6} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
           <text x={4} y={2} fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={24} fill="#1A1E2A">
             {['LETTUCE · 30 DAYS', 'POTATOES', 'MUSHROOMS · NO LIGHT'][row]}
