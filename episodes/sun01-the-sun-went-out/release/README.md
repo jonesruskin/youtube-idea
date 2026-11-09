@@ -11,7 +11,7 @@ Everything needed to publish this episode. Big files are stored with Git LFS (`g
 | `metadata.md` | title, Test & Compare alternates, description with chapters and sources, tags, pinned comment, mid-rolls, end screen |
 | `thumbnail-a/b/c.png` | three spoiler-free thumbnails for Test & Compare |
 
-- **Runtime:** 15:03
+- **Runtime:** 15:02
 - **Voice:** Kokoro-82M, free local voices (placeholder: to be replaced with ElevenLabs once the picture is approved)
 - **Music and sound:** synthesised score and sound design (scripts/score_cinema.py)
-- **Built from:** commit `41b5ebc`
+- **Built from:** commit `b2c9930`
