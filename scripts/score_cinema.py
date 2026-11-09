@@ -564,6 +564,14 @@ def amb_key(sh, prev):
             "deck": "harbour",
             "coastguard": "room",
             "pier": "harbour",
+            # File 002 (vol02)
+            "villa": "room",
+            "backyard": "morning",
+            "creek": "field",
+            "busroute": "wind_lo" if v == "night" else "street",
+            "ops": "room",
+            "hall": "room",
+            "classroom": "room",
         }.get(st, prev)
     if sc_ in ("closeup",):
         return prev
@@ -697,6 +705,28 @@ def sun02_sfx(mix, tl, shots):
     if "storm" in shots:
         st = shots["storm"]
         mix.add("fx", st["start"], wind(st["end"] - st["start"] + 6, 1.6, 1.2), 0.9)
+
+def vol02_sfx(mix, tl, shots):
+    """File 002 (vol02): quake rumbles, the gas meter beeping, the bus scrape, the eruption roar."""
+    for sid in ("quake-school", "drop-cover"):
+        if sid in shots:
+            mix.add("fx", shots[sid]["start"], wind(2.5, 1.8, 1.6), 0.9)
+            mix.add("hits", shots[sid]["start"] + 0.1, boom(0.6, 2), 0.7)
+    if "gas-team" in shots:
+        g = shots["gas-team"]
+        t = g["start"] + 0.3
+        while t < g["end"] - 0.2:
+            mix.add("fx", t, beep(1800, 0.08, 0.7), 0.5)
+            t += 0.45
+    if "bus-scrape" in shots:
+        mix.add("fx", shots["bus-scrape"]["start"] + 1.3, static(0.8, 1.6), 0.8)
+    if "eruption" in shots:
+        e = shots["eruption"]
+        mix.add("fx", e["start"] + 0.4, wind(e["end"] - e["start"] + 4, 2.0, 1.8), 0.9)
+    for sh in tl["shots"]:
+        if (sh.get("props") or {}).get("v") in ("alert",) and sh["scene"] == "vol":
+            for k in range(3):
+                mix.add("fx", sh["start"] + 0.2 + k * 0.35, beep(1046, 0.22, 0.9), 0.7)
 
 def render(tl):
     dur = tl["duration"]
@@ -1027,6 +1057,8 @@ def render(tl):
 
     if tl["id"] == "sun02":
         sun02_sfx(mix, tl, shots)
+    if tl["id"] == "vol02":
+        vol02_sfx(mix, tl, shots)
     print(f"ambience: {add_ambience(mix, tl)} beds", flush=True)
     # per-shot sound effects and whip transitions
     for sh in tl["shots"]:
@@ -1051,6 +1083,9 @@ def render(tl):
             mix.add("fx", t0, ice_crack(1.0), 0.8)
         elif fx == "static":
             mix.add("fx", t0, static(min(3.0, sh["end"] - t0), 1.2), 1.0)
+        elif fx == "thunder":
+            mix.add("hits", t0 + 0.05, boom(1.0, 6), 1.1)
+            mix.add("fx", t0, wind(3.0, 1.6, 1.4), 0.9)
         elif fx == "stamp":
             for k in range(3):
                 mix.add("hits", t0 + 0.1 + k * 0.28, taiko(0.8), 0.9)

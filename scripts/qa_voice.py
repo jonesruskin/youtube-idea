@@ -52,6 +52,11 @@ def wer(ref, hyp):
     return d[-1][-1] / max(1, len(ref))
 
 bad = 0
+# Non-English proper names the English ASR model cannot spell (Māori place and people's words, etc.). Lines that
+# contain them are left out of the WER average and listed for a listening check instead (docs/00 Q3).
+ASR_NAMES = {"vol02": ["kōwhai", "mana whenua", "rangitoto", "motutapu"]}
+names = [n.lower() for n in ASR_NAMES.get(ep, [])]
+by_ear = []
 total_ref = total_err = 0
 for key, v in vmap.items():
     if key not in text:
@@ -64,10 +69,14 @@ for key, v in vmap.items():
     hyp = " ".join(s.text for s in segs).strip()
     r, h = norm(text[key]), norm(hyp)
     e = wer(r, h)
+    if any(n in text[key].lower() for n in names):
+        by_ear.append(f"{key}: {hyp}")
+        print(f"♪ {e:5.2f} {key:<24} | {hyp}   (proper name: check by ear)")
+        continue
     total_ref += len(r)
     total_err += e * len(r)
     flag = "✖" if e > 0.15 else "·"
     if e > 0.15:
         bad += 1
     print(f"{flag} {e:5.2f} {key:<24} | {hyp}")
-print(f"\nOverall WER {total_err / max(1, total_ref):.3f}; {bad} line(s) above 0.15")
+print(f"\nOverall WER {total_err / max(1, total_ref):.3f}; {bad} line(s) above 0.15; {len(by_ear)} line(s) with proper names left for a listening check")

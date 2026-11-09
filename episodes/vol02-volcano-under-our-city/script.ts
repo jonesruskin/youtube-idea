@@ -118,7 +118,7 @@ const shots: Shot[] = [
     science: {text: 'Auckland sits on a volcanic field of about 53 volcanoes; each erupted once (except Rangitoto), so the next eruption will most likely open at a brand-new site.', source: 'Hayward, ‘Volcanoes of Auckland’ (Auckland University Press, 2019)'},
     beats: ['wow'],
     action: 'A map of Auckland: one by one, about fifty volcano dots light up across the city, harbour to harbour.',
-    lines: [N('Auckland is built on about fifty volcanoes. Almost every one erupted just once, each in a new place.')],
+    lines: [N('Auckland is built on about fifty volcanoes. Almost all of them erupted just once, each in a new place.')],
   }),
   sh('nobody-knew', vol('field', {question: true}), {
     dev: 'nobody knows where it will open',
@@ -313,7 +313,7 @@ const shots: Shot[] = [
     timeJump: true,
     beats: ['heart'],
     action: 'One in the morning. Ana asleep in the armchair by the window, the phone buzzing in her hand.',
-    lines: [MP("Ana? The gas team found it. You were right, love. Pack a bag.", 0.4)],
+    lines: [MP("Ana? The gas team found it. You were right. Pack a bag, love.", 0.4)],
   }),
 
   // ══ WEDNESDAY ═════════════════════════════════════════════════════════════════════════════════════
@@ -464,7 +464,7 @@ const shots: Shot[] = [
     beats: ['wow'],
     dev: 'Rangitoto: the last one, 600 years ago',
     action: 'Time-lapse: the sea bubbles, an island rises, lava fountains build a wide gentle cone; centuries roll; it turns green with forest; ferries and picnickers.',
-    lines: [N('Rangitoto rose straight out of the sea. Today it is covered in forest, and families climb it on Sundays.')],
+    lines: [N('Rangitoto rose straight out of the sea. Today it is covered in forest, and families walk up it on Sundays.')],
   }),
   sh('quiet', stage('hall', 'night', push(1.6, 1.75, 1100, 600), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'sleepy'}), c(LL, 1180, 940, {pose: 'lie', facing: 'left', outfit: 'cold', expr: 'sleepy'}), c(MM, 1300, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', expr: 'sleepy'})], [{at: 1.2, who: AA, look: [0.6, -0.6]}], {clock: '11:51'}), {
     cue: 'silence',
@@ -509,7 +509,7 @@ const shots: Shot[] = [
   }),
   sh('window', stage('hall', 'glow', push(1.5, 1.65, 1000, 560), [c(AA, 900, 940, {facing: 'back', outfit: 'cold', expr: 'awe'}), c(LL, 1020, 940, {facing: 'back', outfit: 'cold', expr: 'alert'}), c(MM, 1160, 940, {facing: 'back', expr: 'focused'}), c(DD, 1320, 940, {facing: 'back', expr: 'focused'})], [{at: 'l0+0.4', who: LL, facing: 'right', look: [1, -0.3]}]), {
     action: 'The family at the high windows, silhouetted against an orange glow on the horizon. Dad is back. Lui tugs Mum’s sleeve.',
-    lines: [LU('Is that our park?')],
+    lines: [LU('Is that the park near our house?')],
   }),
   sh('our-street', stage('hall', 'glow', push(2.4, 2.6, 1100, 540), [c(AA, 900, 940, {facing: 'right', outfit: 'cold', expr: 'alert'}), c(LL, 1020, 940, {facing: 'right', outfit: 'cold', expr: 'alert'}), c(MM, 1160, 940, {facing: 'left', expr: 'sad'}), c(DD, 1320, 940, {facing: 'left', expr: 'sad'})], [{at: 0.4, who: AA, expr: 'sad'}, {at: 0.5, who: LL, expr: 'worried'}, {at: 'l0+1.6', who: DD, look: [-1, 0.3]}, {at: 'l0+1.8', who: AA, look: [1, -0.2]}]), {
     beats: ['heart'],
@@ -603,7 +603,7 @@ export const vol02: Episode = {
   file: 'FILE 002',
   title: 'A Volcano Started Growing Under Our City',
   youtubeTitle: 'There Are 53 Volcanoes Under This City. Then a New One Woke Up',
-  titleAlternates: ['A Volcano Started Growing Under Our City. We Had 4 Days', 'My Mum Studies Volcanoes. Then One Started Under Our Street'],
+  titleAlternates: ['A Volcano Started Growing Under Our City. We Had 4 Days', 'My Mum Studies Volcanoes. Then One Woke Up Under Our City'],
   thumbnailText: 'IT’S UNDER US',
   commentPrompt: 'If you had twenty minutes to leave, what would you take?',
   logline:
