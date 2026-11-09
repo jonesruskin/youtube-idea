@@ -1,4 +1,4 @@
-import type {Shot} from './schema';
+import type {Line, Shot} from './schema';
 import {line} from './delivery';
 
 /**
@@ -15,6 +15,19 @@ import {line} from './delivery';
  */
 type Cast = {who: string; x: number; y: number; depth: number; [k: string]: unknown};
 type Act = {at: number | string; who: string; [k: string]: unknown};
+
+/** Items in setup j: those timed to line j appear on cue ('l0±s'), earlier ones are already there, later ones not yet;
+ *  an item that leaves (until) on line j leaves on cue, before j it is gone. Seconds-timed items: present, never leaving. */
+const itemsFor = (items: unknown, j: number) =>
+  ((items ?? []) as {from?: unknown; until?: unknown}[]).flatMap((it) => {
+    const f = lineOf(it.from);
+    const u = lineOf(it.until);
+    if (f && f.k > j) return [];
+    if (u && u.k < j) return [];
+    if (j === 0) return [{...it, ...(f ? {from: f.k === 0 ? `l0${f.off}` : undefined} : {}), ...(u ? {until: u.k === 0 ? `l0${u.off}` : undefined} : {})}];
+    if (!u && it.until !== undefined) return [];
+    return [{...it, from: f && f.k === j ? `l0${f.off}` : undefined, until: u && u.k === j ? `l0${u.off}` : undefined}];
+  });
 
 const lineOf = (at: unknown) => {
   const m = /^l(\d+)([+-][\d.]+)?$/.exec(String(at));
@@ -37,25 +50,32 @@ const applyActs = (cast: Cast[], acts: Act[]) => {
   return out;
 };
 
-/** Split a long narration line at the sentence boundary nearest its middle (only lines of 13+ words, 2+ sentences).
- *  Works on the marked-up delivery (`say`) when there is one, so stress and beats survive the split. */
-const splitSentences = (shots: Shot[], minWords = 13): Shot[] =>
+/** Split a long line at the sentence boundary nearest its middle: narration of 13+ words, or (v5.2) a character's line
+ *  of 9+ words, when it has 2+ sentences. A character's second sentence then plays on a tighter setup on the speaker
+ *  (the editor's cut-in mid-speech). Works on the marked-up delivery (`say`), so stress and beats survive the split. */
+const splitSentences = (shots: Shot[], characters: boolean): Shot[] =>
   shots.map((s) => {
     const lines = s.lines ?? [];
-    if (lines.length !== 1 || lines[0].speaker !== 'NARRATOR' || s.scene === 'end' || s.scene === 'title') return s;
+    if (lines.length !== 1 || s.scene === 'end' || s.scene === 'title') return s;
     const l0 = lines[0];
-    if (l0.text.split(/\s+/).length < minWords) return s;
+    const narr = l0.speaker === 'NARRATOR';
+    if (!narr && !characters) return s;
+    // never split a character's line in a shot where props change hands or appear on cue: those acts are timed
+    // into the line, and a cut in the middle would lose them (the narration split keeps acts in its first setup)
+    const pp = (s.props ?? {}) as {acts?: Record<string, unknown>[]; items?: Record<string, unknown>[]};
+    if (!narr && ((pp.acts ?? []).some((x) => x.give !== undefined || x.take !== undefined || x.put !== undefined || x.prop !== undefined) || (pp.items ?? []).some((x) => x.from !== undefined || x.until !== undefined))) return s;
+    if (l0.text.split(/\s+/).length < (narr ? 13 : 9)) return s;
     const raw = l0.say ?? l0.text;
     const cuts = [...raw.matchAll(/[.!?…]\*?(?=\s+(?:\/{1,2}\s+)?\*?[A-Z])/g)].map((m) => (m.index ?? 0) + m[0].length);
     if (!cuts.length) return s;
     const mid = raw.length / 2;
     const at = cuts.reduce((b, c) => (Math.abs(c - mid) < Math.abs(b - mid) ? c : b), cuts[0]);
-    const part = (r: string, pause?: number) => line(l0.speaker, `${l0.feel ? `(${l0.feel}) ` : ''}${r.replace(/^\s*\/{1,2}\s+/, '').trim()}`, pause, l0.g);
-    return {...s, lines: [part(raw.slice(0, at)), part(raw.slice(at), l0.pause)]} as Shot;
+    const part = (r: string, pause?: number, g?: Line['g']) => line(l0.speaker, `${l0.feel ? `(${l0.feel}) ` : ''}${r.replace(/^\s*\/{1,2}\s+/, '').trim()}`, pause, g);
+    return {...s, lines: [part(raw.slice(0, at), undefined, l0.g), part(raw.slice(at), l0.pause)]} as Shot;
   });
 
-export const autoSplit = (shots0: Shot[], speakerCast: Record<string, string>, skip: string[] = [], opts: {sentences?: boolean} = {}): Shot[] => {
-  const shots = opts.sentences ? splitSentences(shots0) : shots0;
+export const autoSplit = (shots0: Shot[], speakerCast: Record<string, string>, skip: string[] = [], opts: {sentences?: boolean; characters?: boolean} = {}): Shot[] => {
+  const shots = opts.sentences ? splitSentences(shots0, !!opts.characters) : shots0;
   const out: Shot[] = [];
   for (const s of shots) {
     const p = (s.props ?? {}) as Record<string, any>;
@@ -86,7 +106,7 @@ export const autoSplit = (shots0: Shot[], speakerCast: Record<string, string>, s
           return l ? {...a, at: `l0${l.off}`} : a;
         });
       if (k === 0) {
-        out.push({...s, lines: [line], props: {...p, cast, acts: mine}} as Shot);
+        out.push({...s, lines: [line], props: {...p, cast, acts: mine, ...(p.items ? {items: itemsFor(p.items, 0)} : {})}} as Shot);
       } else {
         const who = speakerCast[line.speaker];
         const sp = cast.find((c) => c.who === who);
@@ -96,7 +116,7 @@ export const autoSplit = (shots0: Shot[], speakerCast: Record<string, string>, s
         out.push({
           id: `${s.id}~${k + 1}`,
           scene: 'stage',
-          props: {...p, cast, acts: mine, cam: [[0, z, x, y], [1, z * 1.14, x, y]], items: ((p.items ?? []) as {until?: unknown}[]).filter((it) => it.until === undefined).map((it) => ({...it, from: undefined}))},
+          props: {...p, cast, acts: mine, cam: [[0, z, x, y], [1, z * 1.14, x, y]], items: itemsFor(p.items, k)},
           lines: [line],
           action: `Reverse: ${line.speaker.toLowerCase()} answers.`,
           ...(s.letterbox ? {letterbox: true} : {}),

@@ -192,7 +192,7 @@ export const rawShots: Shot[] = [
     hud: {place: 'SCHOOL', time: 'TUESDAY · 10:00 AM'},
     dev: 'what a volcanic field is',
     action: 'A classroom. The teacher at a whiteboard covered in volcano dots. Ana at her desk with her notebook open.',
-    lines: [TE("(calm) Nearly every volcano in Auckland is a one-off. / It erupts *once*, and then never again.")],
+    lines: [TE("(calm) Nearly every volcano in Auckland is a *one-off*. / It erupts *once*, and then never again.")],
   }),
   sh('lesson-q', stage('classroom', '', push(2.0, 2.15, 900, 600), [c('teacher', 1500, 930, {facing: 'left', expr: 'focused'}), c(AA, 760, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', outfit: 'home', expr: 'focused'}), c('extra:301', 560, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', outfit: 'home', expr: 'uneasy'}), c('extra:308', 960, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', outfit: 'home'})], [{at: 'l0+0.2', who: 'extra:308', look: [-1, 0]}]), {
     dev: 'the next one could open under a house',
@@ -213,7 +213,7 @@ export const rawShots: Shot[] = [
     action: 'The back garden after school. Lui kneels by the little pond at the bottom of the sloping lawn. Two goldfish float on the surface.',
     lines: [LU("(scared) Ana! / Goldie and Spot aren't *moving*!")],
   }),
-  sh('pond-low', stage('backyard', 'dead', push(2.2, 2.35, 1060, 660), [c(LL, 1080, 950, {pose: 'kneel', facing: 'right', expr: 'sad'}), c(AA, 940, 930, {facing: 'right', outfit: 'cold', expr: 'sad'})], [{at: 'l0+2.6', who: AA, expr: 'focused'}, {at: 'l0+0.4', who: AA, look: [0.6, 0.6]}, {at: 'l0+1.8', who: AA, look: [-0.6, -0.2]}]), {
+  sh('pond-low', stage('backyard', 'dead', push(2.2, 2.35, 1060, 660), [c(LL, 1080, 950, {pose: 'kneel', facing: 'right', expr: 'sad'}), c(AA, 940, 930, {facing: 'right', outfit: 'cold', expr: 'sad'})], [{at: 'l0+0.4', who: AA, look: [0.6, 0.6]}, {at: 'l0+1.8', who: AA, look: [-0.6, -0.2]}]), {
     action: 'Ana kneels beside him and looks up the slope: the pond sits in the lowest dip of the garden.',
     lines: [A("(sad) Oh, Lui. I'm sorry. / They were fine this morning. // And the pond's right at the *bottom* of the garden.")],
   }),
@@ -228,7 +228,7 @@ export const rawShots: Shot[] = [
   sh('dinner-tue', stage('villa', 'night', push(1.8, 1.95, 1640, 600), TABLE({ana: {expr: 'focused'}, lui: {expr: 'sad'}, dad: {expr: 'uneasy'}}), [{at: 'l0+0.4', who: DD, look: [-1, 0]}, {at: 'l0+2.2', who: AA, expr: 'alert'}], {emptyChair: 1640}), {
     hud: {place: 'AUCKLAND', time: 'TUESDAY · 7:00 PM'},
     action: 'Dinner. Dad, puzzled.',
-    lines: [SI("(dry) There's a new bump on Kōwhai Street. / My bus scraped right *over* it.")],
+    lines: [SI("(dry) There's a *new* bump on Kōwhai Street. / My bus scraped right *over* it.")],
   }),
   sh('ana-stops', stage('villa', 'night', push(2.4, 2.6, 1500, 580), TABLE({ana: {expr: 'alert'}, lui: {expr: 'sad'}, dad: {expr: 'uneasy'}}), [{at: 0.6, who: AA, look: [-0.2, 0.6]}]), {
     dev: 'Ana connects the clues',
@@ -277,7 +277,7 @@ export const rawShots: Shot[] = [
   sh('mum-busy', stage('ops', 'night', push(2.2, 2.35, 1260, 560), OPS({mele: {hold: 'phoneLit', pose: 'hold', expr: 'worried'}}), [{at: 'l0+0.3', who: MM, look: [0.6, 0.4]}]), {
     hud: {place: 'VOLCANO MONITORING CENTRE', time: 'TUESDAY · 8:15 PM'},
     action: 'Mum at the centre, exhausted, screens everywhere.',
-    lines: [ME("(tired) Ana, love, I'm *really* busy. / Can it wait until tomorrow?")],
+    lines: [ME("(tired) Ana, love, I'm *really* busy. / Can it wait until *tomorrow*?")],
   }),
   sh('ana-insists', stage('villa', 'night', push(2.4, 2.55, 900, 560), [c(AA, 900, 930, {facing: 'right', hold: 'phoneLit', pose: 'hold', outfit: 'home', expr: 'determined'})], [{at: 'l0+0.4', who: AA, look: [0.8, 0.1]}], {window: true}), {
     action: 'Ana, steady.',
@@ -301,7 +301,7 @@ export const rawShots: Shot[] = [
   }),
   sh('send-team', stage('ops', 'night', push(2.2, 2.35, 1260, 540), OPS({mele: {expr: 'determined', hold: 'phoneLit', pose: 'hold'}, col: {expr: 'focused'}}), [{at: 'l0+0.2', who: MM, pose: 'point'}]), {
     action: 'Mum, already moving.',
-    lines: [ME("(urgent) Send the gas team to Kōwhai Street. / Right *now*.", 0, 'point')],
+    lines: [ME("(urgent) Send the gas team / to Kōwhai Street. / Right *now*.", 0, 'point')],
   }),
   sh('gas-team', stage('busroute', 'night', push(1.4, 1.55, 1300, 600), [c('extra:65', 1200, 940, {facing: 'right', hold: 'meter', pose: 'hold', expr: 'focused'}), c('extra:67', 1400, 940, {facing: 'left', expr: 'alert'})], [{at: 0.6, who: 'extra:67', look: [-1, 0.4]}, {at: 1.4, who: 'extra:65', loop: 'nod', dur: 0.8}], {hump: true, beacon: true}), {
     hud: {place: 'KŌWHAI STREET', time: 'TUESDAY · 11:50 PM'},
@@ -347,7 +347,7 @@ export const rawShots: Shot[] = [
     dev: 'Ana uses what she learned: gas sinks',
     beats: ['heart'],
     action: 'Next door, old Mrs. Kaur is lifting the hatch to her cellar under the house: her cat has run down there. Ana sprints over.',
-    lines: [A("(urgent) Mrs. Kaur, don't go down there! / The gas sinks into *low* places.")],
+    lines: [A("(urgent) Mrs. Kaur, *don't* go down there! / The gas sinks into *low* places.")],
   }),
   sh('cat-out', stage('busroute', 'evac', push(2.0, 2.15, 640, 600), [c('kaur', 560, 940, {facing: 'right', expr: 'surprised', hold: 'catbox', pose: 'hold'}), c(AA, 700, 940, {facing: 'left', outfit: 'cold', expr: 'smile'})], [{at: 'l0+0.4', who: 'kaur', expr: 'relieved'}], {hatch: true}), {
     action: 'Ana props the hatch open, shakes a box of cat biscuits, and the cat strolls out into its carrier.',
@@ -361,7 +361,7 @@ export const rawShots: Shot[] = [
     dev: 'Dad drives the neighbours out',
     beats: ['laugh'],
     action: 'Dad’s bus at the kerb, doors open. Neighbours queue with bags; old Mrs. Kaur with a cat in a carrier. Ana and Lui behind her.',
-    lines: [SI("(warm) On you get, Mrs. Kaur. / Your cat rides *free* today.")],
+    lines: [SI("(warm) On you *get*, Mrs. Kaur. / Your cat rides *free* today.")],
   }),
   sh('last-look', stage('busroute', 'evac', push(2.0, 2.2, 900, 560), [c(AA, 900, 940, {facing: 'left', outfit: 'cold', expr: 'sad'}), c(DD, 1180, 940, {facing: 'left', expr: 'determined'}), c(LL, 640, 940, {facing: 'right', outfit: 'cold', expr: 'sad'})], [{at: 0.8, who: AA, look: [-1, -0.2]}]), {
     action: 'Ana stops at the bus door and looks back down the street at their villa and the park beyond it.',
@@ -397,19 +397,19 @@ export const rawShots: Shot[] = [
   }),
   sh('dad-again', stage('hall', '', push(1.9, 2.05, 1120, 560), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'focused'}), c(LL, 1180, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', outfit: 'cold', expr: 'uneasy'}), c(DD, 1340, 940, {facing: 'left', expr: 'worried'})], [{at: 'l0+0.3', who: DD, look: [-1, 0.3]}, {at: 'l0+2.4', who: AA, loop: 'nod', dur: 0.8}]), {
     action: 'Dad crouches by them for a moment, keys in hand.',
-    lines: [SI("(tender) I'm going back for another load. / Look after your brother for me.")],
+    lines: [SI("(tender) I'm going back for *another* load. / Look after your brother / for *me*.")],
   }),
   sh('what-if', stage('hall', 'night', push(2.0, 2.15, 1100, 580), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'worried', hold: 'phoneLit', }), c(LL, 1180, 940, {pose: 'lie', facing: 'left', outfit: 'cold', expr: 'sleepy'})], [{at: 'l0+0.4', who: AA, look: [0.6, 0.6]}]), {
     dev: 'what if she is wrong?',
     hud: {place: 'EVACUATION CENTRE', time: 'WEDNESDAY · 10:00 PM'},
     timeJump: true,
     action: 'Late. Lui asleep. Ana on the phone, quiet so as not to wake him.',
-    lines: [A("(scared) Mum, what if I'm *wrong*? / Forty thousand people left because of my map.")],
+    lines: [A("(scared) Mum, what if I'm *wrong*? / Forty thousand people left / because of *my* map.")],
   }),
   sh('then-home', stage('ops', 'night', push(2.2, 2.35, 1280, 560), OPS({mele: {hold: 'phoneLit', pose: 'hold', expr: 'smile'}}), [{at: 'l0+0.4', who: MM, look: [-1, 0.2]}]), {
     hud: {place: 'VOLCANO MONITORING CENTRE', time: 'WEDNESDAY · 10:01 PM'},
     action: 'Mum, at her desk, softly.',
-    lines: [ME("(tender) Then they go home on Friday, a bit grumpy. / Being wrong *that* way is fine, love.")],
+    lines: [ME("(tender) Then they go home on Friday, / a bit *grumpy*. / Being wrong *that* way is fine, love.")],
   }),
 
   // ══ THURSDAY ══════════════════════════════════════════════════════════════════════════════════════
@@ -425,7 +425,7 @@ export const rawShots: Shot[] = [
   sh('very-close', stage('ops', '', push(2.0, 2.15, 1260, 560), OPS({mele: {expr: 'focused', hold: 'phoneLit', pose: 'hold'}}), [{at: 0.3, who: MM, expr: 'worried'}, {at: 'l0+0.4', who: MM, look: [-1, 0]}]), {
     hud: {place: 'VOLCANO MONITORING CENTRE', time: 'THURSDAY · 2:10 PM'},
     action: 'Mum on the phone at the centre, the earthquake screens almost solid.',
-    lines: [ME("(urgent) It's less than a kilometre down now. / Keep *everyone* out of the zone.")],
+    lines: [ME("(urgent) It's less than a *kilometre* down now. / Keep *everyone* out of the zone.")],
   }),
   sh('hourly', vol('notebook', {mode: 'log'}), {
     beats: ['loop'],
@@ -445,11 +445,11 @@ export const rawShots: Shot[] = [
     beats: ['heart'],
     dev: 'Mum, for the first time in four days',
     action: 'Thursday evening. Mum walks in, still in her lanyard, and hugs Ana hard.',
-    lines: [ME("(proud) Everyone in the zone is out. / Your map did that. // I'm so *proud* of you.", 0.4)],
+    lines: [ME("(proud) *Everyone* in the zone is out. / Your map did that. // I'm so *proud* of you.", 0.4)],
   }),
   sh('credit', stage('hall', 'night', push(2.2, 2.35, 1140, 560), [c(AA, 1080, 940, {facing: 'right', outfit: 'cold', expr: 'smile'}), c(LL, 1180, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', outfit: 'cold', expr: 'sleepy'}), c(MM, 1260, 940, {facing: 'left', expr: 'smile'})], [{at: 'l0+0.6', who: LL, expr: 'smile'}, {at: 'l0+0.8', who: AA, look: [0.4, 0.4]}]), {
     action: 'Ana looks at her brother.',
-    lines: [A("(warm) Lui found the *fish*. / And Dad found the bump.")],
+    lines: [A("(warm) Lui found the *fish*. / And Dad found the *bump*.")],
   }),
   sh('footprints-tell', stage('hall', 'night', push(2.4, 2.55, 1180, 560), [c(AA, 1080, 940, {facing: 'right', outfit: 'cold', expr: 'focused'}), c(LL, 1180, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', outfit: 'cold', expr: 'sleepy'}), c(MM, 1260, 940, {facing: 'left', expr: 'focused'})], [{at: 'l0+0.4', who: MM, look: [-1, 0.2]}]), {
     action: 'Mum sits with them on the bench.',
@@ -636,5 +636,5 @@ export const vol02: Episode = {
   costumeByDay: false,
   noAngry: ['ana', 'lui', 'sione', 'mele'],
   dialogueLedger: 'episodes/vol02-volcano-under-our-city/dialogue-review.md',
-  shots: autoSplit(rawShots, {ANA: 'ana', LUI: 'lui', SIONE: 'sione', MELE: 'mele', TEACHER: 'teacher', COLLEAGUE: 'extra:64', JAZ: 'extra:308'}, [], {sentences: true}),
+  shots: autoSplit(rawShots, {ANA: 'ana', LUI: 'lui', SIONE: 'sione', MELE: 'mele', TEACHER: 'teacher', COLLEAGUE: 'extra:64', JAZ: 'extra:308'}, [], {sentences: true, characters: true}),
 };

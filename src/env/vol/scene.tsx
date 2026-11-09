@@ -171,7 +171,7 @@ export const VolScene: React.FC = () => {
     return (
       <Frame frame={frame}>
         <Map frame={frame} dots={dots} />
-        <Label x={960} y={1010} t={`${Math.round(dots * 52) + (dots >= 1 ? 1 : 0)} VOLCANOES · EACH ERUPTED ONCE`} s={40} c="#FFD27A" />
+        <Label x={960} y={985} t={`${Math.round(dots * 52) + (dots >= 1 ? 1 : 0)} VOLCANOES · EACH ERUPTED ONCE`} s={40} c="#FFD27A" />
         {p.question && (
           <g transform={`translate(${700 + Math.sin(t * 0.8) * 300},${700 + Math.cos(t * 0.6) * 80})`}>
             <circle r={90} fill="#FFFFFF" opacity={0.15} />
@@ -230,7 +230,7 @@ export const VolScene: React.FC = () => {
               </text>
               {/* hand-drawn streets */}
               <path d="M100,500 L1160,500 M640,140 L640,860 M300,140 L300,860 M980,140 L980,860" stroke="#7A8AA8" strokeWidth={10} strokeLinecap="round" />
-              <text x={1000} y={490} fontFamily="'Caveat', cursive" fontWeight={700} fontSize={36} fill="#3A3442">
+              <text x={110} y={490} fontFamily="'Caveat', cursive" fontWeight={700} fontSize={36} fill="#3A3442">
                 Kōwhai St
               </text>
               <rect x={600} y={420} width={60} height={60} fill="#E07A5F" stroke={INK} strokeWidth={3} />
@@ -242,9 +242,9 @@ export const VolScene: React.FC = () => {
                 park
               </text>
               {[
-                [420, 300, '★ creek 19°', 0.15],
-                [700, 620, '🐟 pond', 0.35],
-                [940, 470, '🚌 bump', 0.55],
+                [420, 300, 'creek 19°', 0.15],
+                [700, 620, 'fish died', 0.35],
+                [940, 470, 'bus bump', 0.55],
               ].map(([x, y, l, at], i) => (
                 <g key={i} opacity={clamp((k - (at as number)) * 6)}>
                   <circle cx={x as number} cy={y as number} r={18} fill="#C2464F" />
@@ -289,7 +289,7 @@ export const VolScene: React.FC = () => {
             <path d={`M1300,560 Q1450,${560 + 70} 1600,560`} fill="#B8C8D8" opacity={0.5 + 0.2 * Math.sin(frame * 0.1)} />
             <Label x={1450} y={520} t="GAS SINKS INTO THE HOLLOW" s={30} />
             <Label x={420} y={520} t="CREEK FIZZES" s={30} />
-            <Label x={960} y={1050} t="CO₂ · HEAVIER THAN AIR" s={34} c="#FFD27A" />
+            <Label x={960} y={960} t="CO₂ · HEAVIER THAN AIR" s={34} c="#FFD27A" />
           </g>
         )}
         {up && (
@@ -412,9 +412,9 @@ export const VolScene: React.FC = () => {
         <circle cx={960} cy={540} r={rr} fill="none" stroke="#E8E0D8" strokeWidth={14} />
         <circle cx={960} cy={540} r={60} fill="#FF6A2A" />
         <circle cx={960} cy={540} r={500} fill="none" stroke="#FF5A4A" strokeWidth={6} strokeDasharray="22 14" />
-        <Label x={960} y={60} t="EVACUATION LINE" s={34} c="#FFB0A0" />
-        {!empty && <Label x={960} y={1040} t="STEAM EXPLOSION · ASH AND ROCK RACE OUT ACROSS THE GROUND" s={32} c="#FFD27A" />}
-        {empty && <Label x={960} y={1040} t="INSIDE THE ZONE: NO ONE" s={44} c="#FFFFFF" />}
+        <Label x={960} y={120} t="EVACUATION LINE" s={34} c="#FFB0A0" />
+        {!empty && <Label x={960} y={960} t="STEAM EXPLOSION · ASH AND ROCK RACE OUT ACROSS THE GROUND" s={32} c="#FFD27A" />}
+        {empty && <Label x={960} y={960} t="INSIDE THE ZONE: NO ONE" s={44} c="#FFFFFF" />}
       </Frame>
     );
   }
@@ -444,7 +444,7 @@ export const VolScene: React.FC = () => {
           return <ellipse key={i} cx={1560 + (i % 3) * 40 + Math.sin(frame * 0.05 + i) * 20} cy={y} rx={70 + (520 - y) * 0.2} ry={40 + (520 - y) * 0.1} fill="#F4F4F4" opacity={0.55 * (y / 520)} />;
         })}
         <path d="M1440,560 l40,30 l-20,40 l50,30 M1760,520 l-30,40 l40,30" stroke="#2A2A2A" strokeWidth={6} fill="none" />
-        <Label x={650} y={1000} t="POLICE DRONE · EVACUATION ZONE · NO ONE LEFT" s={34} />
+        <Label x={650} y={985} t="POLICE DRONE · EVACUATION ZONE · NO ONE LEFT" s={34} />
         <Label x={1610} y={710} t="DUCK POND · STEAMING" s={30} c="#FFD27A" />
       </Frame>
     );
@@ -470,7 +470,7 @@ export const VolScene: React.FC = () => {
         {Array.from({length: 24}, (_, i) => (
           <rect key={i} x={i * 84} y={900 - ((i * 37) % 60)} width={70} height={200} fill={night ? '#1A2040' : '#6A7480'} stroke={INK} strokeWidth={2} />
         ))}
-        <Label x={960} y={1030} t={`WEEK ${Math.min(9, 1 + Math.floor(k * 9))}`} s={44} c="#FFD27A" />
+        <Label x={960} y={985} t={`WEEK ${Math.min(9, 1 + Math.floor(k * 9))}`} s={44} c="#FFD27A" />
       </Frame>
     );
   }
@@ -507,7 +507,7 @@ export const VolScene: React.FC = () => {
             </g>
           );
         })}
-        <Label x={960} y={1040} t="ALL LANES · OUT OF THE ZONE" s={40} c="#FFD27A" />
+        <Label x={960} y={985} t="ALL LANES · OUT OF THE ZONE" s={40} c="#FFD27A" />
       </Frame>
     );
   }
@@ -527,7 +527,7 @@ export const VolScene: React.FC = () => {
         <path d={`M${960 - 700 * g},700 Q960,${700 - 320 * g} ${960 + 700 * g},700 Z`} fill={forest > 0 ? `rgb(${Math.round(60 - 20 * forest)},${Math.round(70 + 60 * forest)},60)` : '#3A3238'} stroke={INK} strokeWidth={5} />
         {g > 0.2 && forest < 0.3 && <path d={`M960,${700 - 320 * g} q-10,-120 0,-200`} stroke="#FF8A2A" strokeWidth={24} opacity={0.8} />}
         {forest > 0.6 && <path d="M200,760 l140,0 l-20,24 l-100,0 Z" fill="#F4F4F0" stroke={INK} strokeWidth={3} />}
-        <Label x={960} y={1000} t="RANGITOTO · THE YOUNGEST · ABOUT 600 YEARS OLD" s={34} o={forest > 0.6 ? 1 : 0} />
+        <Label x={960} y={985} t="RANGITOTO · THE YOUNGEST · ABOUT 600 YEARS OLD" s={34} o={forest > 0.6 ? 1 : 0} />
         <Label x={1700} y={120} t={forest > 0 ? 'TODAY' : 'ABOUT 1450'} s={44} c="#FFD27A" />
       </Frame>
     );
@@ -576,7 +576,7 @@ export const VolScene: React.FC = () => {
           const y = (r() * H + frame * (1 + r())) % H;
           return <circle key={i} cx={x} cy={y} r={2 + r() * 3} fill="#E0DCD4" opacity={0.8} />;
         })}
-        <Label x={960} y={1010} t="AIRPORT CLOSED · WEAR A MASK OUTDOORS" s={40} />
+        <Label x={960} y={985} t="AIRPORT CLOSED · WEAR A MASK OUTDOORS" s={40} />
       </Frame>
     );
   }

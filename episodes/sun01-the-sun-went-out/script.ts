@@ -1,5 +1,6 @@
 import type {Line, Shot, Episode} from '../../src/engine/schema';
 import {line} from '../../src/engine/delivery';
+import {autoSplit} from '../../src/engine/autosplit';
 
 /**
  * THE BLINK FILES · File 001 — "The Sun Went Out" (v4)
@@ -268,7 +269,7 @@ const shots: Shot[] = [
   ], [{at: 0.4, who: Y, pose: 'stand', to: 1060, dur: 0.8, facing: 'right'}, {at: 'l0+0.4', who: MI, look: [1, -0.3]}], {frosty: false, doorOpen: true}), {
     dev: 'Mr. Ito arrives, already prepared: Mum phoned him from the hospital',
     action: 'Kai holds the door open on Mr. Ito from upstairs: fully dressed, shoes on, a torch in one hand and a packed canvas bag in the other.',
-    lines: [I("(calm) Good morning, you two. Your mum just phoned from the hospital. / She's *all right*. / You're with me today.")],
+    lines: [I("(calm) Good morning, you two. Your mum just phoned from the *hospital*. / She's *all right*. / You're with me today.")],
   }),
   sh('shoes-on', stage('apartment', 'door', push(1.7, 1.9, 1250, 600), [
     c(MI, 860, 930, {facing: 'right', expr: 'uneasy'}),
@@ -382,7 +383,7 @@ const shots: Shot[] = [
     beats: ['laugh'],
     dev: 'they take the telescope up to the roof',
     action: 'The stairwell, sixth floor. Ito climbs ahead with the torch. Kai hauls the heavy telescope case, puffing. Mira skips behind.',
-    lines: [N("(amused) The lift was full of neighbours, so Kai carried it up six floors. / He complained about *every* one.")],
+    lines: [N("(amused) The lift was full of neighbours, so Kai carried it up *six* floors. / He complained about *every* one.")],
   }),
   sh('roof-arrive', stage('roof', 'night', move([1.0, 960, 560], [1.1, 1000, 590]), [
     c(Y, 760, 900, {pose: 'carry', hold: 'tubeCase', facing: 'right', expr: 'focused'}),
@@ -422,7 +423,7 @@ const shots: Shot[] = [
   sh('ito-predict', stage('roof', 'night', push(2.6, 3.0, 1130, 560), [c(MI, 880, 900, {facing: 'right'}), c(IT, 1150, 900, {pose: 'think', outfit: 'home', facing: 'left', expr: 'focused'})], [{at: 'l0+1.2', who: IT, look: [0.2, 0.7]}], {items: ROOF_ITEMS}), {
     dev: 'Ito predicts Venus will go dark',
     action: 'Ito, eyes on his watch.',
-    lines: [I("(worried) If something's happened to the Sun *itself*, / Venus will go dark too. / At four minutes past seven.")],
+    lines: [I("(worried) If something's happened to the Sun *itself*, / Venus will go dark too. / At four minutes past *seven*.")],
   }),
   sh('the-wait', stage('roof', 'night', move([1.2, 900, 620], [1.3, 960, 640]), [
     c(Y, 760, 900, {pose: 'sit', facing: 'right'}),
@@ -573,7 +574,7 @@ const shots: Shot[] = [
   sh('theyll-learn', stage('market', 'grab', push(2.4, 2.6, 1200, 640), [c(IT, 1200, 940, {facing: 'left', holdL: 'bag', expr: 'neutral'})], [{at: 'l0+1.4', who: IT, look: [0.6, 0.4]}]), {
     beats: ['laugh'],
     action: 'Ito watches the fight, deadpan, and turns back to Kai’s trolley of rice, tins and seed packets.',
-    lines: [I("(dry) Heat won't be the hard part. / *Food* will. / Nothing grows without the Sun.")],
+    lines: [I("(dry) Heat won't be the hard part. / *Food* will. / Nothing *grows* without the Sun.")],
   }),
 
   // ── Mum: 7 PM, St Anne's, across the river ──────────────────────────────────────────────────
@@ -651,7 +652,7 @@ const shots: Shot[] = [
   }),
   sh('if-dead', sc('diagram', {v: 'tide', step: 0}), {
     action: 'Diagram: the Moon tugs a bulge of ocean toward it. The hidden Sun tugs too.',
-    lines: [I("(calm) No. I don't think so. / If it had vanished, its pull on the sea would *vanish* too.")],
+    lines: [I("(calm) No. / I don't *think* so. / If it had vanished, its pull on the sea would *vanish* too.")],
   }),
   sh('a-third', sc('diagram', {v: 'tide', step: 1}), {
     science: {text: 'The Sun’s tide-raising force is about 46% of the Moon’s; at spring tide the two add up, so without the Sun the tidal range would fall by roughly a third.', source: 'NOAA Ocean Service, ‘Tides and Water Levels’ tutorial'},
@@ -689,7 +690,7 @@ const shots: Shot[] = [
   }),
   sh('still-there', stage('harbor', 'freeze', push(2.4, 2.6, 720, 620), [c(MI, 580, 940, {...COLD, facing: 'right'}), c(Y, 700, 940, {...COLD, hold: 'torch', pose: 'hold', holdL: 'tideTable', facing: 'right', expr: 'surprised'})], [{at: 'l0+0.8', who: Y, look: [0.4, -0.8]}]), {
     action: 'Kai stares at the tide table, then up.',
-    lines: [K("(relieved) So the Sun's still *there*. / We just can't see it.")],
+    lines: [K("(relieved) So the Sun's still *there*. / We just can't *see* it.")],
   }),
   sh('where-is-it', stage('harbor', 'freeze', push(2.5, 2.7, 610, 650), [c(Y, 700, 940, {...COLD, hold: 'torch', pose: 'hold', holdL: 'tideTable', facing: 'right'}), c(MI, 580, 940, {...COLD, facing: 'front', expr: 'worried', pose: 'lookUp'})], [{at: 'l0+0.6', who: MI, look: [0, -1]}, {at: 'l0+0.1', who: Y, facing: 'left'}]), {
     action: 'Mira looks up at the black sky.',
@@ -866,7 +867,7 @@ const shots: Shot[] = [
   }),
   sh('furniture', stage('stairs', 'smoke', push(1.6, 1.8, 900, 680), [c(IT, 760, 940, {...COLD, facing: 'right', expr: 'worried'}), c(Y, 900, 940, {...COLD, hold: 'torch', pose: 'torch', facing: 'right', expr: 'scared'})], [{at: 0.3, who: Y, to: 1000, dur: 1}]), {
     action: 'The torch finds door 3B: firelight flickering underneath, smoke pouring out.',
-    lines: [I("(shocked) Next door's heating is off too. / They're burning *furniture*. Indoors!")],
+    lines: [I("(shocked) Next door's heating is off *too*. / They're burning *furniture*. Indoors!")],
   }),
   sh('invisible', stage('stairs', 'smoke', dutch(2.6, 3.0, 800, 600, 6), [c(Y, 1000, 940, {...COLD, hold: 'torch', pose: 'torch', facing: 'right', expr: 'scared'}), c(IT, 800, 940, {...COLD, facing: 'front', expr: 'determined'})], [{at: 'l0+1.6', who: IT, look: [-0.6, 0.4]}, {at: 'l0+0.1', who: Y, facing: 'left'}]), {
     science: {text: 'Burning fuel indoors produces carbon monoxide, which is colourless and odourless; it is a leading cause of winter poisonings.', source: 'US CDC, ‘Carbon Monoxide Poisoning’'},
@@ -876,7 +877,7 @@ const shots: Shot[] = [
   sh('invisible-2', stage('stairs', 'smoke', push(1.7, 1.85, 900, 620), [c(Y, 1000, 940, {...COLD, hold: 'torch', pose: 'torch', facing: 'left', expr: 'scared'}), c(IT, 800, 940, {...COLD, facing: 'front', expr: 'worried'})], [{at: 'l0+1.2', who: IT, look: [-0.6, 0.4]}]), {
     callout: {text: 'CARBON MONOXIDE', at: 'l0+0.9'},
     action: 'Closer on Ito, urgent, explaining as he herds them toward the stairs.',
-    lines: [I("(urgent) A fire indoors makes carbon monoxide. / You can't see it, you can't smell it, / and it *kills*.")],
+    lines: [I("(urgent) A fire indoors makes *carbon monoxide*. / You can't see it, you can't smell it, / and it *kills*.")],
   }),
   sh('evacuate', stage('stairs', 'evac', move([1.2, 700, 600], [1.2, 1300, 640]), [
     c(IT, 120, 940, {...COLD, facing: 'right'}),
@@ -938,7 +939,7 @@ const shots: Shot[] = [
     cue: 'warm',
     transition: 'fade',
     action: 'Day 8, seven in the evening. Mum on the nightly video call, in the same scrubs, more tired.',
-    lines: [MUM("(tender) Mira, sweetheart, listen to me. / Biscuit is a *clever* dog.")],
+    lines: [MUM("(tender) Mira, sweetheart, / listen to me. / Biscuit is a *clever* dog.")],
   }),
   sh('warm-places', stage('apartment', 'warm', push(2.4, 2.6, 1100, 650), [c(MI, 1090, 930, {...COLD, facing: 'right', pose: 'hold', hold: 'phoneLit', expr: 'sad'})], [{at: 'l0+0.8', who: MI, expr: 'focused', look: [0.6, -0.3]}]), {
     action: 'In the warm room, Mira holds Kai’s phone in both hands, listening to Mum.',
@@ -1178,7 +1179,7 @@ const shots: Shot[] = [
   }),
   sh('mum-thanks', stage('metro', 'city', push(2.2, 2.4, 1290, 620), [c(MI, 1080, 900, {outfit: 'cold', facing: 'right', expr: 'smile'}), c(MU, 1200, 900, {outfit: 'cold', facing: 'right', expr: 'smile'}), c(Y, 1330, 900, {outfit: 'cold', facing: 'left', expr: 'smile'}), c(IT, 1520, 900, {outfit: 'cold', facing: 'left', expr: 'smile'})], [{at: 'l0+1.0', who: IT, look: [-1, 0.3]}], {clinic: true, items: [{prop: 'bag', x: 1250, y: 862}]}), {
     action: 'Mum turns to Ito, who has kept the children safe for a month.',
-    lines: [MUM("(grateful) Thank you. / For keeping them *alive*. / For looking after them, all this time.")],
+    lines: [MUM("(grateful) Thank you. / For keeping them *alive*. / For looking after them, / all this *time*.")],
   }),
   sh('they-kept-me', stage('metro', 'city', push(2.8, 3.0, 1450, 600), [c(MU, 1200, 900, {outfit: 'cold', facing: 'right', expr: 'smile'}), c(Y, 1330, 900, {outfit: 'cold', facing: 'left', expr: 'smile'}), c(IT, 1520, 900, {outfit: 'cold', facing: 'left', expr: 'smile'})], [{at: 'l0+0.8', who: IT, look: [-0.8, 0.6]}], {clinic: true, items: [{prop: 'bag', x: 1250, y: 862}]}), {
     beats: ['heart'],
@@ -1209,7 +1210,7 @@ const shots: Shot[] = [
     transition: 'fade',
     dev: 'Mira asks again',
     action: 'Day 40. Ito’s workbench in the station, his radio and his bag on it. Mira asks the question he would not answer.',
-    lines: [M("(determined) Mr. Ito, you never answered me. / Who *built* it?")],
+    lines: [M("(determined) Mr. Ito, you *never* answered me. / Who *built* it?")],
   }),
   sh('not-in-a-day', stage('metro', 'workshop', push(2.2, 2.4, 760, 620), [c(IT, 1060, 900, {outfit: 'cold', facing: 'left', expr: 'neutral'}), c(Y, 700, 900, {outfit: 'cold', facing: 'right', expr: 'worried'}), c(MI, 840, 900, {outfit: 'cold', facing: 'right', expr: 'determined'})], [{at: 'l0+0.8', who: MI, look: [1, -0.2]}], {parts: true, ham: true, items: [MIC_BENCH, BAG_BENCH]}), {
     action: 'Kai, backing her up.',
@@ -1233,7 +1234,7 @@ const shots: Shot[] = [
     science: {text: "Satellites have measured the Sun's total brightness continuously since 1978. It naturally varies by about 0.1% over the 11-year solar cycle, so a screen that blocked a hundred-thousandth of its light would be lost in the noise.", source: 'NASA, ‘Solar Irradiance Datasets’ (scdi.smce.nasa.gov/solar_data_access.html); G. Kopp, Living Reviews in Solar Physics (2025)'},
     beats: ['wow'],
     action: 'A window blind with its slats open, sunlight streaming through. Beside it, the Sun in a ring of the same slats, edge-on, light pouring between them.',
-    lines: [I("(calm) It was *always* there. / Edge-on, like the slats of a blind.")],
+    lines: [I("(calm) It was *always* there. / Edge-on, / like the slats of a *blind*.")],
   }),
   sh('closed-them', sc('diagram', {v: 'blinds', step: 1}), {
     twist: 4,
@@ -1621,14 +1622,14 @@ const shots: Shot[] = [
     beats: ['wow'],
     dev: 'why the whole Sun, and why a year: it is a brake',
     action: 'Diagram: their ship with a huge sail, arriving at almost light speed; the beam of all the Sun’s light pushing on the sail from the front; the speed bar falling to zero over twelve months.',
-    lines: [I("(calm) Something that fast can't stop by itself. / It needs a push from the front. / Only a *whole* star pushes that hard.")],
+    lines: [I("(calm) Something that fast can't stop by *itself*. / It needs a push from the front. / Only a *whole* star pushes that hard.")],
   }),
   sh('who-built', sc('space', {v: 'shellOrbit'}), {
     letterbox: true,
     beats: ['wow'],
     dev: 'who built the shell, and why',
     action: 'The shell around the Sun, slowly turning.',
-    lines: [I("(awed) They built that shell long ago, as a harbour, so one day they could stop here. / *How*, nobody knows.")],
+    lines: [I("(awed) They built that shell long ago, as a *harbour*, / so one day they could stop here. / *How*, nobody knows.")],
   }),
   sh('now-stopped', stage('surface', 'milky', push(2.6, 2.8, 1275, 610), SURF({ito: {pose: 'holdBoth', expr: 'focused'}}), [{at: 'l0+0.8', who: IT, look: [0.8, -0.6]}], {transmitter: 1380}), {
     dev: 'when they stop, the Sun comes back',
@@ -1637,13 +1638,13 @@ const shots: Shot[] = [
   }),
   sh('minutes-left', stage('surface', 'milky', push(1.9, 2.1, 1120, 620), SURF({ito: {pose: 'holdBoth', expr: 'focused'}}), [{at: 'l0+0.8', who: IT, look: [0.8, -0.6]}], {transmitter: 1380}), {
     action: 'Ito turns back to the family.',
-    lines: [I("(hopeful) In a few minutes they'll have stopped. / And they won't need it any *more*.")],
+    lines: [I("(hopeful) In a few minutes / they'll have *stopped*. / And they won't need it any *more*.")],
   }),
   sh('bag-payoff', stage('surface', 'milky', push(2.8, 3.0, 1275, 610), SURF({ito: {pose: 'holdBoth', expr: 'sad'}}), [{at: 'l0+0.6', who: IT, look: [-0.6, 0.4]}], {transmitter: 1380}), {
     beats: ['heart'],
     dev: 'why his bag was always packed',
     action: 'Ito, quietly.',
-    lines: [I("(guilty) I knew they might come, any year now. / That's why my bag was *packed*.", 0.4)],
+    lines: [I("(guilty) I knew they might come, / any year *now*. / That's why my bag was *packed*.", 0.4)],
   }),
   sh('warn', stage('surface', 'milky', push(2.0, 2.2, 1100, 630), SURF({mira: {facing: 'right', expr: 'worried'}, ito: {pose: 'holdBoth', expr: 'sad'}}), [{at: 'l0+0.4', who: MI, look: [1, -0.3]}], {transmitter: 1380}), {
     dev: 'why nobody warned us',
@@ -1656,7 +1657,7 @@ const shots: Shot[] = [
   }),
   sh('warn-answer-2', stage('surface', 'milky', push(1.9, 2.1, 1120, 630), SURF({mira: {facing: 'right', expr: 'worried'}, ito: {pose: 'holdBoth', expr: 'sad'}}), [{at: 'l0', who: IT, look: [-1, 0.2]}], {transmitter: 1380}), {
     action: 'Wider: Mira takes that in; Mum puts a hand on her shoulder.',
-    lines: [I("(tender) They were almost that fast. / It would have arrived *with* them.", 0.4)],
+    lines: [I("(tender) They were *almost* that fast. / It would have arrived *with* them.", 0.4)],
   }),
   sh('hurt-us', stage('surface', 'milky', push(2.8, 3.0, 950, 640), SURF({mira: {expr: 'sad', facing: 'right'}}), [{at: 'l0+1.2', who: MI, look: [1, -0.3]}], {transmitter: 1380}), {
     action: 'Mira asks the hardest question.',
@@ -1989,7 +1990,7 @@ const DIRECT: Record<string, Partial<Record<'you' | 'mira' | 'ito' | 'mum', Face
   '1679': {you: 'alert', mira: 'focused', mum: 'uneasy', ito: 'focused'},
   'a-lot': {you: 'neutral', mira: 'focused', mum: 'focused', ito: 'focused'},
   primes: {you: 'neutral', mira: 'focused', mum: 'focused', ito: 'focused'},
-  'a-picture': {you: 'neutral', mira: 'focused', mum: 'focused', ito: 'focused'},
+  'a-picture': {you: 'focused', mira: 'focused', mum: 'focused', ito: 'focused'},
   'what-is-it': {you: 'alert', mira: 'alert', mum: 'alert', ito: 'sad'},
   'a-reply': {you: 'alert', mira: 'worried', mum: 'worried', ito: 'sad'},
   'to-who': {you: 'worried', mira: 'worried', mum: 'worried', ito: 'sad'},
@@ -2115,5 +2116,6 @@ export const sun01: Episode = {
   pinnedComment: "Did you catch the clue in the first ten seconds? 👀 (No spoilers in the replies, please, for people still watching!)\n\nIf the Sun went out tomorrow, what's the first thing you'd do? 👇",
   fps: 30,
   style: 'cinema',
-  shots,
+  // v5.2 pacing: the performed lines run longer, so dialogue plays shot / reverse and long narration gets two setups
+  shots: autoSplit(shots, {KAI: 'you', MIRA: 'mira', ITO: 'ito', MUM: 'mum'}, [], {sentences: true, characters: true}),
 };

@@ -76,7 +76,7 @@ export const DayTag: React.FC<{prevDay?: number}> = ({prevDay = 0}) => {
   const {shot, t} = useShot();
   const hh = shot.hud;
   if (!hh) return null;
-  if ('place' in hh) return <PlaceTag place={hh.place} time={hh.time} t={t} dur={shot.duration} top={shot.letterbox ? 220 : 150} />;
+  if ('place' in hh) return <PlaceTag place={hh.place} time={hh.time} t={t} dur={shot.duration} top={shot.letterbox ? 220 : shot.scene === 'news' ? 250 : 150} />;
   const h = hh;
   const inK = interpolate(t, [0.05, 0.45], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic)});
   const outK = interpolate(t, [Math.min(3.6, shot.duration - 0.3), Math.min(3.9, shot.duration)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});

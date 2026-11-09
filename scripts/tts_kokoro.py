@@ -92,7 +92,7 @@ def ffmpeg_fx(audio, fx):
     return out
 
 # Delivery marks (src/engine/delivery.ts): *stress*, " / " beat, " // " long beat. Bump to re-voice everything.
-DELIVERY_VERSION = 3
+DELIVERY_VERSION = 4
 STRESS = re.compile(r"\*([^*]+)\*")
 BEATS = {"/": 0.24, "//": 0.6}  # plus ≈0.11 s of phrase edges
 
@@ -103,6 +103,9 @@ def segments(say):
     for i in range(0, len(parts), 2):
         seg = parts[i].strip()
         beat = BEATS.get(parts[i + 1], 0) if i + 1 < len(parts) else 0
+        # after a full stop Kokoro already pauses: a short beat there only adds a breath
+        if beat == BEATS["/"] and re.search(r"[.!?…]\*?$", seg):
+            beat = 0.08
         if seg:
             out.append((seg, beat))
         elif out:
