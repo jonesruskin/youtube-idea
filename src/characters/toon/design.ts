@@ -34,7 +34,7 @@ export type ToonDesign = {
   watch?: boolean;
 };
 
-export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'tomas' | 'lola' | 'rosa' | 'captain' | 'officer' | 'ana' | 'lui' | 'sione' | 'mele' | 'teacher', ToonDesign> = {
+export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'tomas' | 'lola' | 'rosa' | 'captain' | 'officer' | 'ana' | 'lui' | 'sione' | 'mele' | 'teacher' | 'kaur', ToonDesign> = {
   you: {
     id: 'you',
     height: 1,
@@ -314,6 +314,21 @@ export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum'
     outfits: {home: ['#3C8D6E', '#2E6E56', '#4A5568', '#2A2A2A'], cold: ['#3C8D6E', '#2E6E56', '#4A5568', '#2A2A2A']},
     rim: '#9FD8FF',
     speaker: 'TEACHER',
+  },
+  // Mrs. Kaur, 79: the Tupous' neighbour; small, grey plait, purple cardigan over a long kurta, and a cat
+  kaur: {
+    id: 'kaur',
+    height: 0.82,
+    head: 0.2,
+    build: 0.95,
+    skin: '#B57E56',
+    skinShade: '#93623E',
+    hair: 'bun',
+    hairColor: '#D8D6DC',
+    glasses: true,
+    elder: true,
+    outfits: {home: ['#8E6BBF', '#6D4F9A', '#D9A441', '#2A2A2A'], cold: ['#8E6BBF', '#6D4F9A', '#D9A441', '#2A2A2A']},
+    rim: '#FFB58A',
   },
 };
 

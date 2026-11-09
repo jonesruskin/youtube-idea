@@ -101,9 +101,9 @@ registerSet('villa', {
               </g>
             ))}
             {c.v === 'packing' && <rect x={1210} y={330} width={130} height={110} fill="none" stroke="#C9B89A" strokeWidth={4} strokeDasharray="8 6" />}
-            {/* dining table (chairs drawn under sitters) and the empty chair */}
-            <rect x={1300} y={760} width={500} height={20} rx={4} fill="#8A6A4A" stroke={INK} strokeWidth={5} />
-            <path d="M1320,780 L1320,930 M1780,780 L1780,930" stroke="#6E5236" strokeWidth={12} />
+            {/* dining table (chairs drawn under sitters) and the empty chair; drawn in front instead when people shelter under it */}
+            {!c.p.underTable && <rect x={1300} y={760} width={500} height={20} rx={4} fill="#8A6A4A" stroke={INK} strokeWidth={5} />}
+            {!c.p.underTable && <path d="M1320,780 L1320,930 M1780,780 L1780,930" stroke="#6E5236" strokeWidth={12} />}
             {[1380, 1520, 1700].map((bx) => (
               <ellipse key={bx} cx={bx} cy={752} rx={40} ry={10} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
             ))}
@@ -131,8 +131,23 @@ registerSet('villa', {
           </g>
         ),
       },
+      ...(c.p.underTable
+        ? [
+            {
+              depth: 1,
+              front: true,
+              node: (
+                <g>
+                  <rect x={1290} y={770} width={520} height={24} rx={4} fill="#8A6A4A" stroke={INK} strokeWidth={5} />
+                  <path d="M1310,794 L1310,930 M1790,794 L1790,930" stroke="#6E5236" strokeWidth={14} />
+                </g>
+              ),
+            },
+          ]
+        : []),
     ];
   },
+  // (the front table for 'drop, cover, hold' is a front layer, added below)
   light: (c) => <Glow x={1500} y={150} r={900} color="#FFE7C2" opacity={c.v === 'night' || c.v === 'packing' ? 0.2 : 0.12} />,
   grade: (c) => (
     <g>
@@ -365,6 +380,13 @@ registerSet('busroute', {
             ))}
             {busX !== null && <Bus x={busX} base={930} tilt={c.v === 'scrape' ? -2.5 * hp : 0} driver={c.p.driver} sparks={c.v === 'scrape' ? hp : 0} frame={c.frame} />}
             {c.v === 'evac' && <Bus x={1500} base={930} driver frame={c.frame} doorOpen />}
+            {/* Mrs. Kaur's cellar hatch, open beside her front steps */}
+            {c.p.hatch && (
+              <g transform="translate(470,860)">
+                <path d="M-60,0 L60,0 L50,-14 L-50,-14 Z" fill="#1A1410" stroke={INK} strokeWidth={4} />
+                <path d="M-60,-14 L-50,-110 L50,-110 L60,-14" fill="#8A6A4A" stroke={INK} strokeWidth={4} opacity={0.95} />
+              </g>
+            )}
             {c.p.beacon && (
               <g>
                 <rect x={1560} y={840} width={60} height={30} fill="#F28C28" />

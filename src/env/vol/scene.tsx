@@ -357,8 +357,22 @@ export const VolScene: React.FC = () => {
       <Frame frame={frame} bg="#03050F">
         <NightSky frame={frame} seed={44} top="#03050F" bottom="#141C3A" count={280} />
         {f > 0 && t < 0.9 && <rect x={0} y={0} width={W} height={H} fill="#FFF0D0" opacity={0.6 * (1 - (t - 0.3) / 0.6)} />}
-        {/* the column */}
-        <path d={`M900,860 Q${880 - col * 200},${860 - col * 500} ${760 - col * 300},${860 - col * 760} Q960,${860 - col * 900} ${1160 + col * 300},${860 - col * 760} Q${1040 + col * 200},${860 - col * 500} 1020,860 Z`} fill="#D8D0C8" stroke={INK} strokeWidth={4} opacity={col > 0 ? 1 : 0} />
+        {/* the column: billowing puffs of steam and ash, widening as they rise, lit orange from below */}
+        {col > 0 &&
+          Array.from({length: 26}, (_, n) => {
+            const q = n / 25;
+            if (q > col) return null;
+            const y = 860 - q * 780;
+            const r = 50 + q * 190;
+            const wob = Math.sin(frame * 0.05 + n * 1.7) * (10 + q * 30);
+            return (
+              <g key={n}>
+                <circle cx={960 + wob - r * 0.35} cy={y} r={r * 0.7} fill={q < 0.25 ? '#E8D8C8' : '#C8C0B8'} stroke={INK} strokeWidth={3} />
+                <circle cx={960 + wob + r * 0.35} cy={y - r * 0.15} r={r * 0.62} fill={q < 0.25 ? '#F0E4D4' : '#D4CCC4'} stroke={INK} strokeWidth={3} />
+              </g>
+            );
+          })}
+        {col > 0 && <ellipse cx={960} cy={840} rx={180} ry={60} fill="#FF8A3A" opacity={0.5} />}
         <ellipse cx={960} cy={860} rx={140} ry={30} fill="#FF7A2A" opacity={f} />
         {col > 0.3 && Math.sin(frame * 0.7) > 0.8 && <path d={`M${940 + Math.sin(frame) * 60},${860 - col * 500} l-30,90 l30,-10 l-30,110`} stroke="#FFF3A0" strokeWidth={6} fill="none" />}
         {/* the city in the foreground, lights of the zone dark */}
@@ -428,7 +442,7 @@ export const VolScene: React.FC = () => {
           return <ellipse key={i} cx={1560 + (i % 3) * 40 + Math.sin(frame * 0.05 + i) * 20} cy={y} rx={70 + (520 - y) * 0.2} ry={40 + (520 - y) * 0.1} fill="#F4F4F4" opacity={0.55 * (y / 520)} />;
         })}
         <path d="M1440,560 l40,30 l-20,40 l50,30 M1760,520 l-30,40 l40,30" stroke="#2A2A2A" strokeWidth={6} fill="none" />
-        <Label x={650} y={110} t="POLICE DRONE · EVACUATION ZONE · NO ONE LEFT" s={34} />
+        <Label x={650} y={1000} t="POLICE DRONE · EVACUATION ZONE · NO ONE LEFT" s={34} />
         <Label x={1610} y={710} t="DUCK POND · STEAMING" s={30} c="#FFD27A" />
       </Frame>
     );
@@ -460,23 +474,38 @@ export const VolScene: React.FC = () => {
   }
 
   if (v === 'motorway') {
+    // a motorway from above in perspective: all lanes flowing one way (away from camera = out of the zone)
+    const lanes = 4;
     return (
       <Frame frame={frame} bg="#5A6A5A">
         <rect x={0} y={0} width={W} height={H} fill="#6A7A5A" />
-        <path d="M-200,1080 L700,-100 L1220,-100 L2120,1080 Z" fill="#4A4E58" />
-        {Array.from({length: 5}, (_, i) => (
-          <path key={i} d={`M${-20 + i * 420},1080 L${780 + i * 90},-100`} stroke="#E9E4DA" strokeWidth={6} strokeDasharray="40 40" strokeDashoffset={-frame * 6} />
-        ))}
-        {Array.from({length: 40}, (_, i) => {
-          const lane = i % 4;
-          const prog = ((i * 0.13 + frame * 0.004) % 1);
-          const y = 1080 - prog * 1180;
-          const x = 140 + lane * 400 + (960 - (140 + lane * 400)) * prog * 0.55;
-          const bus = i % 7 === 0;
-          const sc = 1 - prog * 0.6;
-          return <rect key={i} x={x - 30 * sc} y={y} width={60 * sc} height={(bus ? 160 : 90) * sc} rx={8 * sc} fill={bus ? '#2E6EB5' : ['#C2464F', '#E9E4DA', '#E9C46A', '#3C8D6E'][i % 4]} stroke={INK} strokeWidth={2} />;
+        <path d="M-100,1080 L760,120 L1160,120 L2020,1080 Z" fill="#4A4E58" />
+        {Array.from({length: lanes - 1}, (_, i) => {
+          const f0 = (i + 1) / lanes;
+          return <path key={i} d={`M${-100 + 2120 * f0},1080 L${760 + 400 * f0},120`} stroke="#E9E4DA" strokeWidth={5} strokeDasharray="36 30" strokeDashoffset={frame * 5} />;
         })}
-        <Label x={960} y={1030} t="ALL LANES · OUT OF THE ZONE" s={40} c="#FFD27A" />
+        {Array.from({length: 28}, (_, i) => {
+          const lane = i % lanes;
+          const prog = (i * 0.137 + frame * 0.0035) % 1; // 0 near camera → 1 at the horizon
+          const y = 1060 - prog * 920;
+          const f0 = (lane + 0.5) / lanes;
+          const xNear = -100 + 2120 * f0;
+          const xFar = 760 + 400 * f0;
+          const x = xNear + (xFar - xNear) * prog;
+          const sc = 1 - prog * 0.8;
+          const bus = i % 9 === 0;
+          const w = 70 * sc;
+          const h = (bus ? 190 : 110) * sc;
+          return (
+            <g key={i}>
+              <rect x={x - w / 2} y={y - h} width={w} height={h} rx={10 * sc} fill={bus ? '#2E6EB5' : ['#C2464F', '#E9E4DA', '#E9C46A', '#3C8D6E', '#8E6BBF'][i % 5]} stroke={INK} strokeWidth={2} />
+              <rect x={x - w * 0.35} y={y - h * 0.8} width={w * 0.7} height={h * 0.25} fill="#2A3142" />
+              <rect x={x - w * 0.4} y={y - 6 * sc} width={w * 0.16} height={5 * sc} fill="#FF3A3A" />
+              <rect x={x + w * 0.24} y={y - 6 * sc} width={w * 0.16} height={5 * sc} fill="#FF3A3A" />
+            </g>
+          );
+        })}
+        <Label x={960} y={1040} t="ALL LANES · OUT OF THE ZONE" s={40} c="#FFD27A" />
       </Frame>
     );
   }
@@ -490,18 +519,14 @@ export const VolScene: React.FC = () => {
         <rect x={0} y={700} width={W} height={380} fill="#3E7CB1" />
         {g < 0.25 &&
           Array.from({length: 30}, (_, i) => {
-            const r = rnd(i + frame % 9);
+            const r = rnd(i + (frame % 9));
             return <circle key={i} cx={760 + r() * 400} cy={700 - r() * 40} r={6 + r() * 10} fill="#FFFFFF" opacity={0.7} />;
           })}
-        <path d={`M${960 - 700 * g},700 Q960,${700 - 320 * g} ${960 + 700 * g},700 Z`} fill={forest > 0 ? `rgb(${60 - 20 * forest},${70 + 60 * forest},${60})` : '#3A3238'} stroke={INK} strokeWidth={5} />
+        <path d={`M${960 - 700 * g},700 Q960,${700 - 320 * g} ${960 + 700 * g},700 Z`} fill={forest > 0 ? `rgb(${Math.round(60 - 20 * forest)},${Math.round(70 + 60 * forest)},60)` : '#3A3238'} stroke={INK} strokeWidth={5} />
         {g > 0.2 && forest < 0.3 && <path d={`M960,${700 - 320 * g} q-10,-120 0,-200`} stroke="#FF8A2A" strokeWidth={24} opacity={0.8} />}
-        {forest > 0.6 && (
-          <g>
-            <path d="M200,760 l140,0 l-20,24 l-100,0 Z" fill="#F4F4F0" stroke={INK} strokeWidth={3} />
-            <Label x={960} y={140} t="RANGITOTO · THE YOUNGEST · ABOUT 600 YEARS OLD" s={36} />
-          </g>
-        )}
-        <Label x={1700} y={1040} t={forest > 0 ? 'TODAY' : 'ABOUT 1450'} s={44} c="#FFD27A" />
+        {forest > 0.6 && <path d="M200,760 l140,0 l-20,24 l-100,0 Z" fill="#F4F4F0" stroke={INK} strokeWidth={3} />}
+        <Label x={960} y={1000} t="RANGITOTO · THE YOUNGEST · ABOUT 600 YEARS OLD" s={34} o={forest > 0.6 ? 1 : 0} />
+        <Label x={1700} y={120} t={forest > 0 ? 'TODAY' : 'ABOUT 1450'} s={44} c="#FFD27A" />
       </Frame>
     );
   }
@@ -516,12 +541,10 @@ export const VolScene: React.FC = () => {
           const y = 400 - ((frame * 0.8 + i * 70) % 220);
           return <ellipse key={i} cx={1100 + i * 30} cy={y} rx={60 + (400 - y) * 0.2} ry={30} fill="#F4F4F4" opacity={0.4 * (y / 400)} />;
         })}
-        {/* the top of a red letterbox sticking out of the ash */}
         <g transform="translate(700,640)">
           <rect x={-40} y={-40} width={80} height={40} rx={10} fill="#C2464F" stroke={INK} strokeWidth={4} />
           <rect x={-24} y={-26} width={48} height={8} fill="#2A2A2A" />
         </g>
-        {/* the safety fence and the two of them */}
         <rect x={0} y={820} width={W} height={260} fill="#6A7A5A" />
         {Array.from({length: 26}, (_, i) => (
           <line key={i} x1={i * 80} y1={760} x2={i * 80} y2={880} stroke="#C9CED6" strokeWidth={6} />
@@ -551,7 +574,7 @@ export const VolScene: React.FC = () => {
           const y = (r() * H + frame * (1 + r())) % H;
           return <circle key={i} cx={x} cy={y} r={2 + r() * 3} fill="#E0DCD4" opacity={0.8} />;
         })}
-        <Label x={960} y={140} t="AIRPORT CLOSED · WEAR A MASK OUTDOORS" s={40} />
+        <Label x={960} y={1010} t="AIRPORT CLOSED · WEAR A MASK OUTDOORS" s={40} />
       </Frame>
     );
   }

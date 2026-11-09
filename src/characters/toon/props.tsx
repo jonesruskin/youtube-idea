@@ -36,7 +36,8 @@ export type PropKind =
   | 'cable'
   | 'thermo'
   | 'meter'
-  | 'catbox';
+  | 'catbox'
+  | 'familyPhoto';
 
 /** Props drawn at the hand position (origin = hand centre). R = the holder's head radius. */
 export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({kind, R, frame}) => {
@@ -182,6 +183,18 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
           <rect x={-R * 0.22} y={-R * 0.4} width={R * 0.44} height={R * 0.6} rx={R * 0.08} fill="#F2C94C" stroke={ink} strokeWidth={sw * 0.6} />
           <rect x={-R * 0.15} y={-R * 0.32} width={R * 0.3} height={R * 0.18} fill="#1A2A1A" />
           <circle cx={0} cy={-R * 0.48} r={R * 0.07} fill={Math.sin(frame * 0.5) > 0 ? '#FF3A2A' : '#5A1A1A'} />
+        </g>
+      );
+    case 'familyPhoto':
+      // a framed photo of four people (mum, dad, two kids) on a beach
+      return (
+        <g>
+          <rect x={-R * 0.42} y={-R * 0.34} width={R * 0.84} height={R * 0.62} fill="#6E5236" stroke={ink} strokeWidth={sw * 0.6} />
+          <rect x={-R * 0.34} y={-R * 0.26} width={R * 0.68} height={R * 0.46} fill="#9FD0F0" />
+          <rect x={-R * 0.34} y={R * 0.06} width={R * 0.68} height={R * 0.14} fill="#E9D7A8" />
+          {[-0.22, -0.08, 0.06, 0.18].map((dx, i) => (
+            <circle key={i} cx={R * dx} cy={-R * (i > 1 ? 0.02 : 0.08)} r={R * (i > 1 ? 0.045 : 0.06)} fill="#9A6440" />
+          ))}
         </g>
       );
     case 'catbox':

@@ -86,7 +86,7 @@ const shots: Shot[] = [
     action: 'A bush creek behind a school: ferns, a footbridge. A class in raincoats taking readings. Ana kneels at the water with a thermometer and a notebook.',
     lines: [N('I was twelve. Every Monday, my class tested the creek behind our school.')],
   }),
-  sh('reading-mon', stage('creek', '', push(2.4, 2.6, 920, 600), [c(AA, 900, 940, {pose: 'kneel', facing: 'right', hold: 'thermo', outfit: 'cold', expr: 'focused'}), c('extra:308', 1100, 940, {facing: 'left', outfit: 'cold'})], [{at: 'l0+0.4', who: AA, look: [0.4, 0.6]}]), {
+  sh('reading-mon', stage('creek', '', push(2.4, 2.6, 920, 700), [c(AA, 900, 940, {pose: 'kneel', facing: 'right', hold: 'thermo', outfit: 'cold', expr: 'focused'}), c('extra:308', 1100, 940, {facing: 'left', outfit: 'cold'})], [{at: 'l0+0.4', who: AA, look: [0.4, 0.6]}]), {
     action: 'Close on Ana reading the thermometer.',
     lines: [A('Fourteen degrees. Same as always.')],
   }),
@@ -156,7 +156,7 @@ const shots: Shot[] = [
     action: 'Ana crouches to his height.',
     lines: [A('No. The city is huge, and your bed is tiny.')],
   }),
-  sh('drop-cover', stage('villa', 'night', dutch(1.4, 1.55, 1500, 640, 3), [c(DD, 1560, 930, {facing: 'left', expr: 'determined', pose: 'crouch'}), c(AA, 1460, 930, {facing: 'right', outfit: 'home', expr: 'alert', pose: 'crouch'}), c(LL, 1360, 930, {facing: 'right', expr: 'alert', pose: 'crouch'})], [{at: 0.3, who: LL, expr: 'scared'}, {at: 'l0+1.2', who: LL, expr: 'uneasy'}], {emptyChair: 1640}), {
+  sh('drop-cover', stage('villa', 'night', dutch(1.4, 1.55, 1500, 640, 3), [c(DD, 1660, 930, {facing: 'left', expr: 'determined', pose: 'crouch'}), c(AA, 1520, 930, {facing: 'right', outfit: 'home', expr: 'alert', pose: 'crouch'}), c(LL, 1400, 930, {facing: 'right', expr: 'alert', pose: 'crouch'})], [{at: 0.3, who: LL, expr: 'scared'}, {at: 'l0+1.2', who: LL, expr: 'uneasy'}], {underTable: true}), {
     sfx: 'impact',
     science: {text: 'In New Zealand the advice in an earthquake is Drop, Cover and Hold: get down, take cover under a sturdy table, hold on until the shaking stops.', source: 'NZ ShakeOut / National Emergency Management Agency'},
     action: 'A stronger jolt. The family drops under the dining table, Dad’s arm over the kids.',
@@ -172,7 +172,7 @@ const shots: Shot[] = [
   }),
 
   // ══ TUESDAY ═══════════════════════════════════════════════════════════════════════════════════════
-  sh('creek-tue', stage('creek', 'fizz', push(1.6, 1.75, 920, 600), [c(AA, 900, 940, {pose: 'kneel', facing: 'right', hold: 'thermo', outfit: 'cold', expr: 'focused'})], [{at: 0.8, who: AA, expr: 'surprised'}]), {
+  sh('creek-tue', stage('creek', 'fizz', push(1.6, 1.75, 920, 760), [c(AA, 900, 940, {pose: 'kneel', facing: 'right', hold: 'thermo', outfit: 'cold', expr: 'focused'})], [{at: 0.8, who: AA, expr: 'surprised'}]), {
     chapter: 'Tuesday',
     hud: {place: 'AUCKLAND', time: 'TUESDAY · 8:10 AM'},
     timeJump: true,
@@ -255,7 +255,7 @@ const shots: Shot[] = [
     action: 'Ana stands up from the table, notebook in hand.',
     lines: [A('Dad, can you drive me to the creek? I want to check it again.'), SI("Get your coat. I'll get the torch.", 0.3)],
   }),
-  sh('night-creek', stage('creek', 'fizz', push(1.7, 1.85, 920, 600), [c(AA, 900, 940, {pose: 'kneel', facing: 'right', hold: 'thermo', outfit: 'cold', expr: 'focused'}), c(DD, 1120, 940, {facing: 'left', hold: 'torch', pose: 'torch', expr: 'worried'})], [{at: 'l0+1.6', who: AA, look: [1, -0.4]}], {night: true}), {
+  sh('night-creek', stage('creek', 'fizz', push(1.7, 1.85, 960, 740), [c(AA, 900, 940, {pose: 'kneel', facing: 'right', hold: 'thermo', outfit: 'cold', expr: 'focused'}), c(DD, 1120, 940, {facing: 'left', hold: 'torch', pose: 'torch', expr: 'worried'})], [{at: 'l0+1.6', who: AA, look: [1, -0.4]}], {night: true}), {
     hud: {place: 'AUCKLAND', time: 'TUESDAY · 7:45 PM'},
     timeJump: true,
     beats: ['loop'],
@@ -292,7 +292,7 @@ const shots: Shot[] = [
     action: 'Mum stops. Turns slowly toward the map.',
     lines: [ME('Say that again. Slowly.', 0.6)],
   }),
-  sh('confirm', stage('ops', 'night', push(1.6, 1.75, 1100, 540), OPS({mele: {expr: 'focused', hold: 'phoneLit', pose: 'hold'}, col: {expr: 'surprised'}}), [{at: 'l0+0.3', who: MM, look: [1, 0]}], {gps: true}), {
+  sh('confirm', stage('ops', 'night', push(1.6, 1.75, 1450, 540), OPS({mele: {expr: 'focused', hold: 'phoneLit', pose: 'hold'}, col: {expr: 'surprised'}}), [{at: 'l0+0.3', who: MM, look: [1, 0]}], {gps: true}), {
     dev: 'the instruments confirm it',
     action: 'A colleague points at a screen: the graph of the nearest GPS station climbing steeply since the morning.',
     lines: [CO('The nearest GPS station has risen four centimetres since this morning.'), ME('We have a handful of instruments for a whole city. She just gave us three more.', 0.3)],
@@ -331,23 +331,23 @@ const shots: Shot[] = [
     action: 'The phone alert: EVACUATE NOW · Zone A · Leave within 2 hours. Take only what you need.',
     lines: [N('Every phone in the zone told us to leave.')],
   }),
-  sh('packing', stage('villa', 'packing', push(1.2, 1.35, 1100, 580), [c(DD, 1500, 930, {facing: 'left', expr: 'determined'}), c(AA, 1200, 930, {facing: 'right', outfit: 'cold', expr: 'worried'}), c(LL, 980, 930, {facing: 'right', outfit: 'cold', expr: 'sad'})], [{at: 'l0+0.3', who: DD, pose: 'point'}, {at: 'l0+1.8', who: DD, pose: 'stand'}], {items: [{prop: 'photo', x: 1275, y: 375}]}), {
+  sh('packing', stage('villa', 'packing', push(1.2, 1.35, 1100, 580), [c(DD, 1500, 930, {facing: 'left', expr: 'determined'}), c(AA, 1200, 930, {facing: 'right', outfit: 'cold', expr: 'worried'}), c(LL, 980, 930, {facing: 'right', outfit: 'cold', expr: 'sad'})], [{at: 'l0+0.3', who: DD, pose: 'point'}, {at: 'l0+1.8', who: DD, pose: 'stand'}], {items: [{prop: 'familyPhoto', x: 1275, y: 375}]}), {
     cue: 'tension',
     timeJump: true,
     action: 'The lounge in a whirl: bags open on the sofa. Dad in his uniform, keys in hand.',
     lines: [SI('Twenty minutes. Take the things you can’t replace.', 0, 'point')],
   }),
-  sh('ana-takes', stage('villa', 'packing', push(2.4, 2.55, 1200, 560), [c(DD, 1500, 930, {facing: 'left', expr: 'determined'}), c(AA, 1200, 930, {facing: 'right', outfit: 'cold', expr: 'sad'}), c(LL, 980, 930, {facing: 'right', outfit: 'cold', expr: 'sad'})], [{at: 0.3, who: AA, look: [0.4, -0.6]}, {at: 0.6, who: AA, take: 'table', prop: 'photo'}, {at: 1.2, who: AA, pose: 'hold'}], {items: [{prop: 'photo', x: 1275, y: 375, until: 0.9}]}), {
+  sh('ana-takes', stage('villa', 'packing', push(2.4, 2.55, 1200, 560), [c(DD, 1500, 930, {facing: 'left', expr: 'determined'}), c(AA, 1200, 930, {facing: 'right', outfit: 'cold', expr: 'sad'}), c(LL, 980, 930, {facing: 'right', outfit: 'cold', expr: 'sad'})], [{at: 0.3, who: AA, look: [0.4, -0.6]}, {at: 0.6, who: AA, take: 'table', prop: 'familyPhoto'}, {at: 1.2, who: AA, pose: 'hold'}], {items: [{prop: 'familyPhoto', x: 1275, y: 375, until: 0.9}]}), {
     action: 'Ana takes a framed family photo off the wall and her notebook off the table.',
     lines: [N('I took a photo of the four of us, and my notebook.')],
   }),
-  sh('basement-cat', stage('busroute', 'evac', push(1.5, 1.65, 700, 600), [c('extra:70', 560, 940, {facing: 'right', expr: 'worried', pose: 'reach'}), c(AA, 860, 940, {facing: 'left', outfit: 'cold', expr: 'alert'})], [{at: 'l0+0.6', who: AA, to: 700, gait: 'run', dur: 0.6}]), {
+  sh('basement-cat', stage('busroute', 'evac', push(1.5, 1.65, 700, 600), [c('kaur', 560, 940, {facing: 'right', expr: 'worried', pose: 'reach'}), c(AA, 860, 940, {facing: 'left', outfit: 'cold', expr: 'alert'})], [{at: 'l0+0.6', who: AA, to: 700, gait: 'run', dur: 0.6}], {hatch: true}), {
     dev: 'Ana uses what she learned: gas sinks',
     beats: ['heart'],
     action: 'Next door, old Mrs. Kaur is lifting the hatch to her cellar under the house: her cat has run down there. Ana sprints over.',
     lines: [A("Mrs. Kaur, don't go down there! The gas sinks into low places.")],
   }),
-  sh('cat-out', stage('busroute', 'evac', push(2.0, 2.15, 640, 600), [c('extra:70', 560, 940, {facing: 'right', expr: 'surprised', hold: 'catbox', pose: 'hold'}), c(AA, 700, 940, {facing: 'left', outfit: 'cold', expr: 'smile'})], [{at: 'l0+0.4', who: 'extra:70', expr: 'relieved'}]), {
+  sh('cat-out', stage('busroute', 'evac', push(2.0, 2.15, 640, 600), [c('kaur', 560, 940, {facing: 'right', expr: 'surprised', hold: 'catbox', pose: 'hold'}), c(AA, 700, 940, {facing: 'left', outfit: 'cold', expr: 'smile'})], [{at: 'l0+0.4', who: 'kaur', expr: 'relieved'}], {hatch: true}), {
     action: 'Ana props the hatch open, shakes a box of cat biscuits, and the cat strolls out into its carrier.',
     lines: [N('I shook a box of cat biscuits at the hatch instead. Cats always come for biscuits.')],
   }),
@@ -355,7 +355,7 @@ const shots: Shot[] = [
     action: 'Dad lowers the bus ramp and wheels Mr. Tane up it in his wheelchair.',
     lines: [N("Dad lowered the ramp for Mr. Tane. Nobody on our street was left behind.")],
   }),
-  sh('dads-bus', stage('busroute', 'evac', move([1.0, 960, 560], [1.08, 1000, 560]), [c(DD, 1180, 940, {facing: 'left', expr: 'determined'}), c('extra:70', 900, 940, {facing: 'right', hold: 'catbox', pose: 'hold', expr: 'worried'}), c(AA, 760, 940, {facing: 'right', outfit: 'cold', expr: 'focused'}), c(LL, 640, 940, {facing: 'right', outfit: 'cold', expr: 'sad'})], [{at: 0.6, who: 'extra:70', to: 1060, dur: 1.4}]), {
+  sh('dads-bus', stage('busroute', 'evac', move([1.0, 960, 560], [1.08, 1000, 560]), [c(DD, 1180, 940, {facing: 'left', expr: 'determined'}), c('kaur', 900, 940, {facing: 'right', hold: 'catbox', pose: 'hold', expr: 'worried'}), c(AA, 760, 940, {facing: 'right', outfit: 'cold', expr: 'focused'}), c(LL, 640, 940, {facing: 'right', outfit: 'cold', expr: 'sad'})], [{at: 0.6, who: 'kaur', to: 1060, dur: 1.4}]), {
     dev: 'Dad drives the neighbours out',
     beats: ['laugh'],
     action: 'Dad’s bus at the kerb, doors open. Neighbours queue with bags; old Mrs. Kaur with a cat in a carrier. Ana and Lui behind her.',
@@ -371,7 +371,7 @@ const shots: Shot[] = [
     action: 'From above: every lane of the motorway flowing one way, out of the zone, buses in a long line, police at the on-ramps.',
     lines: [N('Every lane of the motorway ran one way: out.')],
   }),
-  sh('evac-centre', stage('hall', '', move([1.0, 960, 560], [1.1, 1000, 560]), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'sad'}), c(LL, 1180, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', outfit: 'cold', expr: 'sleepy'}), c('extra:70', 600, 940, {facing: 'right', hold: 'catbox', pose: 'hold'}), c('extra:72', 400, 940, {facing: 'right', pose: 'sit'})]), {
+  sh('evac-centre', stage('hall', '', move([1.0, 960, 560], [1.1, 1000, 560]), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'sad'}), c(LL, 1180, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', outfit: 'cold', expr: 'sleepy'}), c('kaur', 600, 940, {facing: 'right', hold: 'catbox', pose: 'hold'}), c('extra:72', 400, 940, {facing: 'right', pose: 'sit'})]), {
     hud: {place: 'EVACUATION CENTRE', time: 'WEDNESDAY · 6:00 PM'},
     cue: 'warm',
     dev: 'forty thousand people leave',
@@ -481,7 +481,7 @@ const shots: Shot[] = [
     action: 'Across the dark city: a flash, then a white column of steam and ash punches up from the suburbs, lightning crackling in it.',
     lines: [N('At eight minutes to midnight, the ground opened.', 0.4)],
   }),
-  sh('counting', stage('hall', 'glow', push(2.2, 2.4, 950, 560), [c(AA, 900, 940, {facing: 'back', outfit: 'cold', expr: 'focused'})], [{at: 0.4, who: AA, facing: 'right', look: [1, -0.3]}]), {
+  sh('counting', stage('hall', 'glow', push(1.4, 1.55, 950, 560), [c(AA, 900, 940, {facing: 'back', outfit: 'cold', expr: 'focused'})], [{at: 0.4, who: AA, facing: 'right', look: [1, -0.3]}]), {
     beats: ['wow'],
     dev: 'sound takes time: Ana counts to 23',
     action: 'Ana at the high window, the orange glow outside. Her lips move as she counts.',
@@ -493,7 +493,7 @@ const shots: Shot[] = [
     action: 'Twenty-three seconds later the windows rattle in their frames with a deep boom. Everyone in the hall wakes.',
     lines: [N('At twenty-three, the boom hit the windows. Sound takes twenty-three seconds to travel eight kilometres.')],
   }),
-  sh('headcount', stage('hall', 'glow', push(1.3, 1.45, 1100, 560), [c(AA, 900, 940, {facing: 'right', outfit: 'cold', expr: 'alert'}), c(LL, 1020, 940, {pose: 'lie', facing: 'left', outfit: 'cold', expr: 'alert'}), c(MM, 1300, 940, {facing: 'left', expr: 'focused'}), c('extra:74', 1600, 940, {facing: 'left', hold: 'list', pose: 'hold', expr: 'focused'}), c('extra:70', 640, 940, {facing: 'right', hold: 'catbox', pose: 'hold', expr: 'worried'})], [{at: 'l0+0.6', who: 'extra:74', look: [-1, 0]}]), {
+  sh('headcount', stage('hall', 'glow', push(1.3, 1.45, 1100, 560), [c(AA, 900, 940, {facing: 'right', outfit: 'cold', expr: 'alert'}), c(LL, 1020, 940, {pose: 'lie', facing: 'left', outfit: 'cold', expr: 'alert'}), c(MM, 1300, 940, {facing: 'left', expr: 'focused'}), c('extra:74', 1600, 940, {facing: 'left', hold: 'list', pose: 'hold', expr: 'focused'}), c('kaur', 640, 940, {facing: 'right', hold: 'catbox', pose: 'hold', expr: 'worried'})], [{at: 'l0+0.6', who: 'extra:74', look: [-1, 0]}]), {
     dev: 'everyone from the zone is accounted for',
     action: 'A volunteer with a clipboard calls names across the hall; hands go up everywhere.',
     lines: [N('A volunteer read out every name from our street. Every single person answered.')],
@@ -511,11 +511,11 @@ const shots: Shot[] = [
     action: 'The family at the high windows, silhouetted against an orange glow on the horizon. Dad is back. Lui tugs Mum’s sleeve.',
     lines: [LU('Is that our park?')],
   }),
-  sh('our-street', stage('hall', 'glow', push(2.4, 2.6, 1100, 540), [c(AA, 900, 940, {facing: 'right', outfit: 'cold', expr: 'alert'}), c(LL, 1020, 940, {facing: 'right', outfit: 'cold', expr: 'alert'}), c(MM, 1160, 940, {facing: 'left', expr: 'sad'}), c(DD, 1320, 940, {facing: 'left', expr: 'sad'})], [{at: 0.4, who: AA, expr: 'sad'}, {at: 0.5, who: LL, expr: 'worried'}, {at: 'l0+1.6', who: DD, pose: 'hug'}, {at: 'l0+1.6', who: AA, pose: 'hug'}]), {
+  sh('our-street', stage('hall', 'glow', push(2.4, 2.6, 1100, 540), [c(AA, 900, 940, {facing: 'right', outfit: 'cold', expr: 'alert'}), c(LL, 1020, 940, {facing: 'right', outfit: 'cold', expr: 'alert'}), c(MM, 1160, 940, {facing: 'left', expr: 'sad'}), c(DD, 1320, 940, {facing: 'left', expr: 'sad'})], [{at: 0.4, who: AA, expr: 'sad'}, {at: 0.5, who: LL, expr: 'worried'}, {at: 'l0+1.6', who: DD, look: [-1, 0.3]}, {at: 'l0+1.8', who: AA, look: [1, -0.2]}]), {
     beats: ['heart'],
     twist: 4,
     min: 3.6,
-    action: 'Mum turns to them. Dad puts his arms around Ana.',
+    action: 'Mum turns to them. Dad looks down at Ana.',
     lines: [ME("Yes. It's right at the end of our street.", 0.8)],
   }),
 
@@ -534,12 +534,12 @@ const shots: Shot[] = [
     action: 'The news over aerial pictures of a smoking crater where a park and a street used to be.',
     lines: [AN('About two hundred homes were destroyed. Nobody inside the zone was hurt.')],
   }),
-  sh('ours-gone', stage('hall', '', push(2.0, 2.2, 1100, 560), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'sad', hold: 'photo'}), c(DD, 1220, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', expr: 'sad'})], [{at: 'l0+0.6', who: DD, look: [-1, 0.3]}]), {
+  sh('ours-gone', stage('hall', '', push(2.0, 2.2, 1100, 560), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'sad', hold: 'familyPhoto'}), c(DD, 1220, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', expr: 'sad'})], [{at: 'l0+0.6', who: DD, look: [-1, 0.3]}]), {
     timeJump: true,
     action: 'Ana on the bench holding the family photo she saved. Dad beside her.',
     lines: [N('Ours was one of them.', 0.8)],
   }),
-  sh('dad-says', stage('hall', '', push(2.6, 2.75, 1160, 540), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'sad', hold: 'photo'}), c(DD, 1220, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', expr: 'focused'})], [{at: 'l0+0.4', who: DD, look: [-1, 0.2]}, {at: 'l0+2.4', who: AA, look: [0.6, 0.3]}]), {
+  sh('dad-says', stage('hall', '', push(2.6, 2.75, 1160, 540), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'sad', hold: 'familyPhoto'}), c(DD, 1220, 940, {pose: 'sitChair', seat: 'bench', facing: 'left', expr: 'focused'})], [{at: 'l0+0.4', who: DD, look: [-1, 0.2]}, {at: 'l0+2.4', who: AA, look: [0.6, 0.3]}]), {
     action: 'Dad nods at the hall: Mrs. Kaur with her cat, the neighbours, the kids.',
     lines: [SI('We lost a house. Look around you. We didn’t lose anyone.')],
   }),
@@ -558,7 +558,7 @@ const shots: Shot[] = [
     action: 'Ana and Mum in hard hats at a safety fence. Beyond it, where Kōwhai Street ran, a grey slope of ash and a steaming crater rim. Half a red letterbox sticks out of the ash.',
     lines: [N("When it was safe, Mum took me to the fence. Our street was under three metres of ash. I could see the top of our letterbox.")],
   }),
-  sh('new-house', stage('villa', 'new', push(1.3, 1.45, 1300, 600), [c(DD, 1500, 930, {facing: 'left', expr: 'smile', hold: 'bag', pose: 'hold'}), c(AA, 1180, 930, {facing: 'right', outfit: 'home', expr: 'smile', hold: 'photo', pose: 'hold'}), c(LL, 1000, 930, {facing: 'right', expr: 'laugh'})], [{at: 'l0+0.8', who: AA, put: 'table', prop: 'photo'}, {at: 'l0+0.4', who: LL, loop: 'bounce', dur: 1.2}], {items: [{prop: 'photo', x: 1280, y: 380, from: 'l0+1.4'}]}), {
+  sh('new-house', stage('villa', 'new', push(1.3, 1.45, 1300, 600), [c(DD, 1500, 930, {facing: 'left', expr: 'smile', hold: 'bag', pose: 'hold'}), c(AA, 1180, 930, {facing: 'right', outfit: 'home', expr: 'smile', hold: 'familyPhoto', pose: 'hold'}), c(LL, 1000, 930, {facing: 'right', expr: 'laugh'})], [{at: 'l0+0.8', who: AA, put: 'table', prop: 'familyPhoto'}, {at: 'l0+0.4', who: LL, loop: 'bounce', dur: 1.2}], {items: [{prop: 'familyPhoto', x: 1280, y: 380, from: 'l0+1.4'}]}), {
     hud: {place: 'AUCKLAND', time: 'THREE MONTHS LATER'},
     action: 'A different house, half-unpacked. Ana hangs the family photo on the new wall. Lui bounces on the boxes.',
     lines: [N('We moved into a house on the other side of town. I hung our photo up first.')],
