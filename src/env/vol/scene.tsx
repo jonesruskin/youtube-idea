@@ -62,7 +62,9 @@ const Map: React.FC<{frame: number; dots?: number; children?: React.ReactNode}> 
 export const VolScene: React.FC = () => {
   const {t, frame, dur, props: p} = useShot();
   const v = p.v as string;
-  const k = clamp(t / Math.max(2, dur - 0.5));
+  const part = p.part as [number, number] | undefined; // autoSplit: this shot is part i of n of one animation
+  const k0 = clamp(t / Math.max(part ? 1 : 2, dur - (part ? 0.2 : 0.5)));
+  const k = part ? (part[0] + k0) / part[1] : k0;
 
   if (v === 'oneyear') {
     const close = !!p.close;

@@ -1,4 +1,5 @@
 import type {Line, Shot, Episode} from '../../src/engine/schema';
+import {autoSplit} from '../../src/engine/autosplit';
 
 /**
  * THE BLINK FILES · File 002 — "A Volcano Started Growing Under Our City"
@@ -72,7 +73,7 @@ const shots: Shot[] = [
     cue: 'warm',
     beats: ['laugh'],
     dev: 'meet the family',
-    action: 'Monday breakfast in a wooden villa: Dad in his bus-driver shirt; Mum in a red fleece with her ID lanyard, heading out; Lui dropping fish food into a jam jar by the window; Ana with her notebook.',
+    action: 'Monday breakfast in a wooden villa: Dad in his bus-driver shirt; Mum in a red fleece with her ID lanyard, heading out; Lui at the back door with a tin of fish food for the pond; Ana with her notebook.',
     lines: [ME("Lui, Goldie and Spot get a pinch each, not the whole tin.", 0.2)],
   }),
   sh('family', stage('villa', '', push(1.5, 1.65, 1450, 600), [c(LL, 1340, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', expr: 'laugh'}), c(AA, 1500, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', outfit: 'home', expr: 'smile'}), c(DD, 1660, 930, {facing: 'left', expr: 'smile'})], [{at: 'l0+0.6', who: DD, look: [-1, 0.2]}]), {
@@ -117,7 +118,7 @@ const shots: Shot[] = [
     science: {text: 'Auckland sits on a volcanic field of about 53 volcanoes; each erupted once (except Rangitoto), so the next eruption will most likely open at a brand-new site.', source: 'Hayward, ‘Volcanoes of Auckland’ (Auckland University Press, 2019)'},
     beats: ['wow'],
     action: 'A map of Auckland: one by one, about fifty volcano dots light up across the city, harbour to harbour.',
-    lines: [N('Auckland is built on about fifty volcanoes. Each one erupted once, and each in a new place.')],
+    lines: [N('Auckland is built on about fifty volcanoes. Almost every one erupted just once, each in a new place.')],
   }),
   sh('nobody-knew', vol('field', {question: true}), {
     dev: 'nobody knows where it will open',
@@ -128,7 +129,7 @@ const shots: Shot[] = [
     hud: {place: 'AUCKLAND', time: 'MONDAY · 7:00 PM'},
     dev: 'Mum is a volcano scientist, at work',
     action: 'The Tupou family villa at dinner: Dad in his bus-driver shirt, Lui, Ana. An empty chair. The TV news shows a map with dots.',
-    lines: [N("Mum didn't come home for dinner. She was a volcano scientist.")],
+    lines: [N("Mum didn't come home for dinner. She was at the monitoring centre all night.")],
   }),
   sh('mum-call', stage('villa', 'night', push(2.0, 2.15, 1450, 580), TABLE({ana: {expr: 'focused'}, lui: {expr: 'uneasy'}, dad: {expr: 'worried'}}), [{at: 0.1, who: AA, take: 'pocket', prop: 'phoneLit'}, {at: 0.5, who: AA, pose: 'hold'}, {at: 'l0+0.4', who: LL, look: [1, -0.2]}]), {
     action: 'Ana holds up the phone: Mum on a video call from the monitoring centre.',
@@ -151,18 +152,20 @@ const shots: Shot[] = [
     action: 'After dinner. Lui, in pyjamas, grips the back of the sofa as a small jolt rattles the cups.',
     lines: [LU('Is the volcano going to come up under my bed?')],
   }),
-  sh('drop-cover', stage('villa', 'night', dutch(1.4, 1.55, 1500, 640, 3), [c(DD, 1560, 930, {facing: 'left', expr: 'determined', pose: 'crouch'}), c(AA, 1460, 930, {facing: 'right', outfit: 'home', expr: 'alert', pose: 'crouch'}), c(LL, 1360, 930, {facing: 'right', expr: 'scared', pose: 'crouch'})], [{at: 'l0+1.2', who: LL, expr: 'uneasy'}], {emptyChair: 1640}), {
+  sh('ana-calm', stage('villa', 'night', push(2.2, 2.35, 1120, 580), [c(LL, 1000, 930, {facing: 'right', expr: 'uneasy'}), c(AA, 1180, 930, {facing: 'left', outfit: 'home', expr: 'smile'})], [{at: 'l0+0.4', who: AA, look: [-1, 0.4]}, {at: 'l0+2.2', who: LL, expr: 'smile'}]), {
+    action: 'Ana crouches to his height.',
+    lines: [A('No. The city is huge, and your bed is tiny.')],
+  }),
+  sh('drop-cover', stage('villa', 'night', dutch(1.4, 1.55, 1500, 640, 3), [c(DD, 1560, 930, {facing: 'left', expr: 'determined', pose: 'crouch'}), c(AA, 1460, 930, {facing: 'right', outfit: 'home', expr: 'alert', pose: 'crouch'}), c(LL, 1360, 930, {facing: 'right', expr: 'alert', pose: 'crouch'})], [{at: 0.3, who: LL, expr: 'scared'}, {at: 'l0+1.2', who: LL, expr: 'uneasy'}], {emptyChair: 1640}), {
     sfx: 'impact',
     science: {text: 'In New Zealand the advice in an earthquake is Drop, Cover and Hold: get down, take cover under a sturdy table, hold on until the shaking stops.', source: 'NZ ShakeOut / National Emergency Management Agency'},
     action: 'A stronger jolt. The family drops under the dining table, Dad’s arm over the kids.',
     lines: [SI('Drop, cover, hold! Under the table, both of you!')],
   }),
-  sh('ana-calm', stage('villa', 'night', push(2.2, 2.35, 1120, 580), [c(LL, 1000, 930, {facing: 'right', expr: 'uneasy'}), c(AA, 1180, 930, {facing: 'left', outfit: 'home', expr: 'smile'})], [{at: 'l0+0.4', who: AA, look: [-1, 0.4]}, {at: 'l0+2.2', who: LL, expr: 'smile'}]), {
-    action: 'Ana crouches to his height.',
-    lines: [A('No. The city is huge, and your bed is tiny.')],
-  }),
-  sh('getaway', stage('villa', 'night', push(1.5, 1.65, 1300, 600), [c(DD, 1500, 930, {facing: 'left', expr: 'focused', hold: 'bag', pose: 'hold'}), c(AA, 1180, 930, {facing: 'right', outfit: 'home', expr: 'focused'}), c(LL, 1000, 930, {facing: 'right', expr: 'focused'})], [{at: 'l0+0.5', who: DD, put: 'floor', prop: 'bag'}], {items: [{prop: 'bag', x: 1440, y: 925, from: 'l0+1.0'}]}), {
+  sh('getaway', stage('villa', 'night', push(1.5, 1.65, 1300, 600), [c(DD, 1500, 930, {facing: 'left', expr: 'focused'}), c(AA, 1180, 930, {facing: 'right', outfit: 'home', expr: 'focused'}), c(LL, 1000, 930, {facing: 'right', expr: 'focused'})], [{at: 'l0+0.4', who: DD, pose: 'point'}, {at: 'l0+2.0', who: DD, pose: 'stand'}], {items: [{prop: 'bag', x: 1440, y: 925}]}), {
     dev: 'the getaway bag',
+    timeJump: true,
+    hud: {place: 'AUCKLAND', time: 'MONDAY · 9:15 PM'},
     science: {text: 'New Zealand Civil Defence advises every household to keep a grab bag ready: water, food, torch, radio, medicines, copies of documents.', source: 'National Emergency Management Agency (NZ), Get Ready'},
     action: 'Dad puts a packed backpack by the front door: water, a torch, a radio, a first-aid kit.',
     lines: [SI('Just in case. Water, torch, radio, and the first-aid kit. It lives by the door now.')],
@@ -187,7 +190,7 @@ const shots: Shot[] = [
     hud: {place: 'SCHOOL', time: 'TUESDAY · 10:00 AM'},
     dev: 'what a volcanic field is',
     action: 'A classroom. The teacher at a whiteboard covered in volcano dots. Ana at her desk with her notebook open.',
-    lines: [TE('Every volcano in Auckland is a one-off. It erupts once, and then it never wakes up again.')],
+    lines: [TE('Nearly every volcano in Auckland is a one-off. It erupts once, and then never again.')],
   }),
   sh('lesson-q', stage('classroom', '', push(2.0, 2.15, 900, 600), [c('teacher', 1500, 930, {facing: 'left', expr: 'focused'}), c(AA, 760, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', outfit: 'home', expr: 'focused'}), c('extra:301', 560, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', outfit: 'home', expr: 'uneasy'}), c('extra:308', 960, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', outfit: 'home'})], [{at: 'l0+0.2', who: 'extra:308', look: [-1, 0]}]), {
     dev: 'the next one could open under a house',
@@ -260,8 +263,10 @@ const shots: Shot[] = [
     lines: [A("Twenty-one degrees. It's still getting warmer.")],
   }),
   sh('warm-road', stage('busroute', 'night', push(2.0, 2.15, 1300, 640), [c(AA, 1240, 940, {pose: 'kneel', facing: 'right', outfit: 'cold', expr: 'alert'}), c(DD, 1420, 940, {facing: 'left', hold: 'torch', pose: 'torch', expr: 'worried'})], [{at: 'l0+0.4', who: AA, look: [0.4, 0.6]}], {hump: true}), {
-    action: 'Kōwhai Street, the hump in the torchlight. Ana lays her palm on the road.',
-    lines: [A("Dad, feel this. The road's warm."), SI('Call your mother. Now.', 0.3)],
+    beats: ['wow'],
+    dev: 'warm gas from a crack in the hump',
+    action: 'Kōwhai Street, the hump in the torchlight. A thin crack runs across the hump; Ana holds her palm over it.',
+    lines: [A('Dad, feel this. Warm air is coming out of the crack.'), SI('Call your mother. Now.', 0.3)],
   }),
   sh('ana-calls', stage('villa', 'night', push(2.0, 2.15, 900, 580), [c(AA, 900, 930, {facing: 'right', outfit: 'home', expr: 'determined'})], [{at: 0.1, who: AA, take: 'pocket', prop: 'phoneLit'}, {at: 0.5, who: AA, pose: 'hold'}, {at: 'l0+0.4', who: AA, look: [0.8, -0.2]}], {window: true}), {
     action: 'By the dark front window, Ana calls Mum.',
@@ -281,6 +286,8 @@ const shots: Shot[] = [
     lines: [A("Lui's fish died in the hollow, and the road on Kōwhai Street is rising.")],
   }),
   sh('mum-listens', stage('ops', 'night', push(2.8, 3.0, 1300, 540), OPS({mele: {hold: 'phoneLit', pose: 'hold', expr: 'alert'}}), [{at: 0.6, who: MM, look: [-1, 0]}]), {
+    beats: ['heart'],
+    dev: 'Mum listens',
     min: 2.6,
     action: 'Mum stops. Turns slowly toward the map.',
     lines: [ME('Say that again. Slowly.', 0.6)],
@@ -391,6 +398,7 @@ const shots: Shot[] = [
     lines: [SI("I'm going back for another load. Look after your brother.")],
   }),
   sh('what-if', stage('hall', 'night', push(2.0, 2.15, 1100, 580), [c(AA, 1060, 940, {pose: 'sitChair', seat: 'bench', facing: 'right', outfit: 'cold', expr: 'worried', hold: 'phoneLit', }), c(LL, 1180, 940, {pose: 'lie', facing: 'left', outfit: 'cold', expr: 'sleepy'})], [{at: 'l0+0.4', who: AA, look: [0.6, 0.6]}]), {
+    dev: 'what if she is wrong?',
     hud: {place: 'EVACUATION CENTRE', time: 'WEDNESDAY · 10:00 PM'},
     timeJump: true,
     action: 'Late. Lui asleep. Ana on the phone, quiet so as not to wake him.',
@@ -576,7 +584,7 @@ const shots: Shot[] = [
   }),
   sh('the-name', vol('oneyear', {people: true}), {
     action: 'A carved wooden sign at the foot of the path, the hill green above it.',
-    lines: [N('Mana whenua, the people of this land, gave the new hill its name.')],
+    lines: [N('Mana whenua, the people of this land, gave it its name.')],
   }),
   sh('bedroom', vol('oneyear', {people: true, close: true}), {
     beats: ['heart'],
@@ -626,5 +634,5 @@ export const vol02: Episode = {
   costumeByDay: false,
   noAngry: ['ana', 'lui', 'sione', 'mele'],
   dialogueLedger: 'episodes/vol02-volcano-under-our-city/dialogue-review.md',
-  shots,
+  shots: autoSplit(shots, {ANA: 'ana', LUI: 'lui', SIONE: 'sione', MELE: 'mele', TEACHER: 'teacher', COLLEAGUE: 'extra:64', JAZ: 'extra:308'}, [], {sentences: true}),
 };
