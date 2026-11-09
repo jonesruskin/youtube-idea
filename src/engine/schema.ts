@@ -50,6 +50,10 @@ export type Line = {
   text: string;
   /** Seconds of silence after the line (dramatic beat). */
   pause?: number;
+  /** How it is said: the line with *stress* and / beats marked (src/engine/delivery.ts). `text` stays plain. */
+  say?: string;
+  /** The feeling behind the line, right now (required: lint). Drives the voice and must match the speaker's face. */
+  feel?: import('./delivery').Feel;
   /** A scripted hand gesture for this line (people do not gesture on every line; most lines have none). */
   g?: 'point' | 'palm' | 'shrug' | 'count' | 'chest' | 'rub' | 'up';
 };

@@ -59,6 +59,9 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
 - **D13. No redundant echoes.** A fact one voice has just said isn't restated by the next voice: the anchor says "something around the Sun", so the narrator doesn't repeat it. Deliberate callbacks are allowed but must be signed off as deliberate. [gate: repeat flag]
 - **D14. Every pronoun has a clear owner** in the same or the previous line. "They told him not to" after a line about the builders reads as the builders, so name who. [gate: referent flag]
 - **D15. One count per span.** Never say two near-identical numbers for related spans ("forty-three years" and "forty-four years ago"), even when both are correct. Use a year ("in 1983") or a single count. [gate: numbers flag]
+- **D17. Every line carries a feeling, and says it.** People thank, fear, tease and miss each other; they don't file reports. "You kept them alive." is a report; "Thank you. For keeping them alive. For looking after them, all this time." is gratitude. Comfort comes before analysis ("Oh, Lui. I'm sorry." before the clue). At the big moments (reunions, goodbyes, danger, apologies), somebody says what they feel. [gate: `(feel)` required on every line; feeling flags in the dialogue review: report-shaped thanks, a heart moment said flat, an exclamation said calm]
+- **D18. Every line is written with its delivery:** `(feel)` first, `*stress*` on the word that carries the meaning, ` / ` for a beat and ` // ` for a long beat (a breath, a swallow, a hesitation). Character lines of 5+ words and narration of 12+ words must mark at least one. The voice engine performs them (Kokoro: per-phrase synthesis, stress markup and lift, feeling sets speed, pitch and level; ElevenLabs v3: audio tag, CAPS, pauses). [gate: delivery lint; src/engine/delivery.ts]
+- **D19. The face says what the voice says.** The speaker's expression when the line starts must be one that can carry its feeling (grateful: smile, relieved or tearful; urgent: alert, worried, scared or determined; never a blank face on gratitude or a smile on a warning). [gate: feel-to-face lint]
 - **D16. Lines have an addressee and a reason.** Offers and announcements include their lead-in ("Let me help. I know a little about old machines.", "Listen. Something near the Sun is calling us."). [ledger]
 
 ## P. Picture
@@ -68,6 +71,8 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
 - **P4. No mirrored text, no overlay covering a label, no empty or half-empty panel, no cropped heads.** [sheet: filmstrip]
 - **P5. Weather and light match the world model:** e.g. frost and not snowdrifts after the first week; lamps on when power works. [gate + filmstrip]
 - **P6. Stars, sky, scale and real-world sizes are correct** (ScaleLab). [sheet]
+- **P7. People face whoever they hug, talk to or come to.** A walk turns the walker toward where they went, so an arrival must turn them to the person they came to (Kai ran to Mum and stopped with his back to her). Listeners face the speaker unless they are side by side looking at the same thing. [gate: facing lint]
+- **P8. Every label a viewer must read is fully visible:** never under the letterbox bars, never cut by the frame or by the panel it sits in, never overlapping another label, never covered by something drawn over it (the sunrise city tags were hidden by the bars). Set dressing may be cropped (`data-text="set"`); a label is `info` by default. [gate: scripts/text-safe.ts, run by check-episode and before every render]
 
 ## A. Acting (faces and bodies)
 - **A1. Calm faces have clean, fully open eyes.** No drawn eyelid except for blinks, anger and real sleepiness. Sleepiness only where the story gives a visible reason (sun01: only at breakfast before the event). [gate: sleepy lint; sheet: EyeLab]
@@ -114,6 +119,12 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
   - Clarity beats cut speed: never clip a line to make the number. [gate]
 
 ## Source of these rules (CEO reviews)
+- **v5.2 review:**
+  - Kai stops behind Mum at the reunion, not facing her (P7);
+  - Mum's "You kept them alive." has no emotion; it should express gratitude; the dialogue across the whole video lacks emotion (D17);
+  - delivery: some words must be stressed, some need a pause, so the voice feels human (D18);
+  - the city names in the sunrise montage were blocked by the letterbox bars (P8).
+  The text audit then also found news-wall feeds cutting their own figures, farm labels hidden behind a lamp and the extras, and a menu cropped by the camera; all fixed.
 - **v3.1:** props popping in and out; hand-waving on every line; logic holes; Mum missing; no world chaos; unnatural dialogue.
 - **v4:** wide-eyed faces in many scenes; expressions switching too fast; remaining AI tells; a review loop required; title too short; nothing revealed in the title or thumbnails; high-quality video on GitHub via LFS (and Releases); one folder per episode; ElevenLabs only after approval.
 - **v4.1:** one eye bigger than the other; eyes looking half-closed.

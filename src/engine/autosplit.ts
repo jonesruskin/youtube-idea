@@ -1,4 +1,5 @@
 import type {Shot} from './schema';
+import {line} from './delivery';
 
 /**
  * Pacing helper (docs/00 Q6): turn a stage shot that carries several lines into a sequence of camera setups, one
@@ -36,18 +37,21 @@ const applyActs = (cast: Cast[], acts: Act[]) => {
   return out;
 };
 
-/** Split a long narration line at the sentence boundary nearest its middle (only lines of 15+ words, 2+ sentences). */
+/** Split a long narration line at the sentence boundary nearest its middle (only lines of 13+ words, 2+ sentences).
+ *  Works on the marked-up delivery (`say`) when there is one, so stress and beats survive the split. */
 const splitSentences = (shots: Shot[], minWords = 13): Shot[] =>
   shots.map((s) => {
     const lines = s.lines ?? [];
     if (lines.length !== 1 || lines[0].speaker !== 'NARRATOR' || s.scene === 'end' || s.scene === 'title') return s;
-    const t = lines[0].text;
-    if (t.split(/\s+/).length < minWords) return s;
-    const cuts = [...t.matchAll(/[.!?…](?=\s+[A-Z])/g)].map((m) => (m.index ?? 0) + 1);
+    const l0 = lines[0];
+    if (l0.text.split(/\s+/).length < minWords) return s;
+    const raw = l0.say ?? l0.text;
+    const cuts = [...raw.matchAll(/[.!?…]\*?(?=\s+(?:\/{1,2}\s+)?\*?[A-Z])/g)].map((m) => (m.index ?? 0) + m[0].length);
     if (!cuts.length) return s;
-    const mid = t.length / 2;
+    const mid = raw.length / 2;
     const at = cuts.reduce((b, c) => (Math.abs(c - mid) < Math.abs(b - mid) ? c : b), cuts[0]);
-    return {...s, lines: [{...lines[0], text: t.slice(0, at).trim(), pause: undefined}, {...lines[0], text: t.slice(at).trim()}]} as Shot;
+    const part = (r: string, pause?: number) => line(l0.speaker, `${l0.feel ? `(${l0.feel}) ` : ''}${r.replace(/^\s*\/{1,2}\s+/, '').trim()}`, pause, l0.g);
+    return {...s, lines: [part(raw.slice(0, at)), part(raw.slice(at), l0.pause)]} as Shot;
   });
 
 export const autoSplit = (shots0: Shot[], speakerCast: Record<string, string>, skip: string[] = [], opts: {sentences?: boolean} = {}): Shot[] => {

@@ -39,6 +39,16 @@ for (const [suffix, name] of [['', 'a'], ['-b', 'b'], ['-c', 'c']]) {
 run(`npx tsx scripts/metadata.ts ${id} > /dev/null`); // again, now that the thumbnails exist
 
 const composition = await selectComposition({serveUrl, id, inputProps: {episodeId: id}, browserExecutable});
+// v5.2: no frame renders until every label is visible (letterbox, frame/panel edges, overlaps, things drawn over it)
+if (!process.env.REMIX && !process.env.FRAMES) {
+  const {auditText} = await import('./text-safe');
+  const {errors, samples} = await auditText(serveUrl, id, browserExecutable);
+  if (errors.length) {
+    for (const e of errors) console.log(`  ✖ ${e}`);
+    throw new Error(`text-safe: ${errors.length} problem(s) in ${samples} samples — fix before rendering`);
+  }
+  console.log(`✔ text-safe: ${samples} samples, every label visible`);
+}
 const raw = cinema ? join(ROOT, 'out', `${id}-raw.mov`) : join(rel, `${id}.mp4`);
 const common = {serveUrl, composition, inputProps: composition.props, browserExecutable, concurrency: Number(process.env.CONCURRENCY ?? 4), imageFormat: 'jpeg' as const, jpegQuality: 92};
 const progress = (label: string) => {

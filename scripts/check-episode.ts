@@ -3,6 +3,7 @@
 //   1. lint-episode (props, faces, blinks, sleepy, presence, 180°, timing, world state, dialogue, pacing)
 //   2. question bank (docs/00 S4): ≥100 numbered questions, every one answered with a real shot id or OPEN, ≤2 OPEN
 //   2b. dialogue ledger (docs/00 D8–D16): every line signed off in context (scripts/dialogue-review.ts)
+//   2e. text-safe (docs/00 P12): labels under the letterbox, cut off, overlapping or covered (--fast skips)
 //   3. packaging (docs/00 K1–K3): title 50–70 characters, no spoiler words in title / alternates / thumbnail text /
 //      logline / tags / pinned comment
 // Exit code 1 on any failure.
@@ -106,6 +107,16 @@ if (id !== 'sun01') {
   else if (tl.join(' ').toLowerCase().includes('sun went out')) fails.push('title card: shows File 001\'s title');
   else ok.push(`title card: "${tl.join(' ')}"`);
   if (!ecard || !(ecard.props as any)?.motif) fails.push('end card: set props.motif (the default is File 001\'s shell)');
+}
+
+// 2e · text-safe (docs/00 P12): every label visible in the browser render (skip with --fast; render.ts always runs it)
+if (!process.argv.includes('--fast')) {
+  const {bundle} = await import('@remotion/bundler');
+  const {auditText} = await import('./text-safe');
+  const serveUrl = await bundle({entryPoint: join(ROOT, 'src/index.ts'), enableCaching: false});
+  const {errors, samples} = await auditText(serveUrl, id, process.env.REMOTION_BROWSER ?? '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell');
+  if (errors.length) fails.push(...errors);
+  else ok.push(`text-safe: ${samples} samples, every label visible`);
 }
 
 // 3 · packaging

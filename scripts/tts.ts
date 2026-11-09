@@ -9,6 +9,7 @@ import {join} from 'node:path';
 import type {Speaker} from '../src/engine/schema';
 import type {VoiceMap} from '../src/engine/timeline';
 import {loadEpisode, ROOT} from './load-episode';
+import {elevenText} from '../src/engine/delivery';
 
 const id = process.argv[2] ?? 'ep01';
 const key = process.env.ELEVENLABS_API_KEY;
@@ -66,7 +67,10 @@ for (let i = 0; i < flat.length; i++) {
   const line = flat[i];
   const voiceId = voiceFor(line.speaker);
   const settings = SETTINGS[line.speaker];
-  const hash = createHash('sha1').update(JSON.stringify([line.text, voiceId, model, settings])).digest('hex').slice(0, 12);
+  // the delivery marks (feel, *stress*, / beats): v3 takes audio tags and CAPS; v2 gets SSML breaks only
+  const v3 = model.includes('v3');
+  const said = v3 ? elevenText(line) : (line.say ?? line.text).replace(/\*([^*]+)\*/g, '$1').replace(/\s+\/\/\s+/g, ' <break time="0.8s" /> ').replace(/\s+\/\s+/g, ' <break time="0.35s" /> ');
+  const hash = createHash('sha1').update(JSON.stringify([said, voiceId, model, settings])).digest('hex').slice(0, 12);
   const file = `audio/${id}/${hash}.mp3`;
   const abs = join(ROOT, 'public', file);
   if (existsSync(abs) && map[line.key]?.file === file) continue;
@@ -76,7 +80,7 @@ for (let i = 0; i < flat.length; i++) {
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps?output_format=mp3_44100_128`, {
     method: 'POST',
     headers: {'xi-api-key': key, 'Content-Type': 'application/json'},
-    body: JSON.stringify({text: line.text, model_id: model, voice_settings: settings, previous_text: prev, next_text: next}),
+    body: JSON.stringify({text: said, model_id: model, voice_settings: settings, previous_text: prev, next_text: next}),
   });
   if (!res.ok) {
     console.error(`✖ ${line.key} (${line.speaker}): ${res.status} ${await res.text()}`);

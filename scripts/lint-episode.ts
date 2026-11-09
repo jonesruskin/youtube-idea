@@ -3,6 +3,7 @@
 import {buildTimeline, formatTimestamp, wordCount} from '../src/engine/timeline';
 import {loadEpisode} from './load-episode';
 import {blinkAt, hashStr} from '../src/characters/toon/acting';
+import {FEELS, type Feel} from '../src/engine/delivery';
 
 const id = process.argv[2] ?? 'ep01';
 const {episode, voice} = await loadEpisode(id);
@@ -545,7 +546,7 @@ if (episode.style === 'cinema') {
       const cast0 = ((p.cast ?? []) as any[]).filter((c) => !String(c.who).startsWith('biscuit') && (c.opacity ?? 1) > 0.2);
       const acts = ((p.acts ?? []) as any[]).map((a) => ({...a, t: at(s, a)})).sort((a, b) => a.t - b.t);
       const stateAt = (t: number) => {
-        const st = cast0.map((c) => ({who: c.who, x: c.x, facing: (c.facing ?? 'front') as string, pose: c.pose as string | undefined, arrived: false}));
+        const st = cast0.map((c) => ({who: c.who, x: c.x, facing: (c.facing ?? 'front') as string, pose: c.pose as string | undefined, expr: (c.expr ?? 'neutral') as string, arrived: false}));
         for (const a of acts) {
           if (a.t > t) break;
           const c = st.find((x) => x.who === a.who);
@@ -558,6 +559,7 @@ if (episode.style === 'cinema') {
           }
           if (a.facing) c.facing = a.facing;
           if (a.pose !== undefined) c.pose = a.pose;
+          if (a.expr !== undefined) c.expr = a.expr;
         }
         return st;
       };
@@ -580,10 +582,25 @@ if (episode.style === 'cinema') {
         const listeners = fam(st).filter((c) => c !== sp && Math.abs(c.x - sp.x) < 520);
         // side by side, both turned to the same thing (the sunrise, a screen) is shared attention, not a turned back
         for (const c of listeners) if (!faces(c.facing, c.x, sp.x) && c.facing !== sp.facing) errors.push(`Facing: ${c.who} has their back to ${sp.who} while ${l.speaker} talks in "${s.id}".`);
+        // the face says what the voice says: a grateful line is not said with a blank or scared face
+        const fe = (l as any).feel as Feel | undefined;
+        if (fe && FEELS[fe] && !FEELS[fe].faces.includes(sp.expr)) errors.push(`Delivery: ${l.speaker} says "${l.text}" (${fe}) with a ${sp.expr} face in "${s.id}" (faces for ${fe}: ${FEELS[fe].faces.join('/')}).`);
         if (listeners.length && !listeners.some((c) => faces(sp.facing, sp.x, c.x) || c.facing === sp.facing)) errors.push(`Facing: ${l.speaker} talks with their back to everyone near them in "${s.id}".`);
       }
     }
   }
+  // ── v5.2 delivery gate: every line says how it is said. A feeling on every line; stress or a beat marked on every
+  // character line of 5+ words and every narration line of 12+ words (people stress words; a flat read is a robot).
+  for (const s of tl.shots as any[])
+    for (const l of s.lines ?? []) {
+      const fe = l.feel as Feel | undefined;
+      if (!fe) errors.push(`Delivery: no feeling on "${l.text}" in "${s.id}" — write it as '(feel) …'.`);
+      else if (!FEELS[fe]) errors.push(`Delivery: unknown feeling "${fe}" in "${s.id}" (known: ${Object.keys(FEELS).join(', ')}).`);
+      const n = wordCount(l.text);
+      const marked = /\*|\s\/{1,2}(\s|$)/.test(l.say ?? '');
+      const narr = l.speaker === 'NARRATOR';
+      if (!marked && fe !== 'broadcast' && ((narr && n >= 12) || (!narr && n >= 5))) errors.push(`Delivery: "${l.text}" in "${s.id}" has no *stress* or / beat marked.`);
+    }
   // scale: everyone on the same floor line shares one depth (heights come from the chart, never per shot)
   for (const s of tl.shots) {
     const cast = ((s.props as any)?.cast ?? []) as any[];

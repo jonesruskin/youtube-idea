@@ -26,9 +26,9 @@ const update = process.argv.includes('--update');
 if (!id) throw new Error('usage: npx tsx scripts/dialogue-review.ts <id> [--update]');
 const {episode, dir} = await loadEpisode(id);
 
-type L = {key: string; shot: string; speaker: string; text: string; flags: string[]};
+type L = {key: string; shot: string; speaker: string; text: string; feel?: string; heart: boolean; flags: string[]};
 const lines: L[] = [];
-for (const s of episode.shots) (s.lines ?? []).forEach((l, i) => lines.push({key: `${s.id}:${i}`, shot: s.id, speaker: l.speaker, text: l.text, flags: []}));
+for (const s of episode.shots) (s.lines ?? []).forEach((l, i) => lines.push({key: `${s.id}:${i}`, shot: s.id, speaker: l.speaker, text: l.text, feel: l.feel, heart: !!s.beats?.includes('heart'), flags: []}));
 
 const STOP = new Set('a an the and or but so to of in on at for with from by is are was were be been am it its it\'s this that these those i me my we us our you your he him his she her they them their there here what who why where when how do does did not no yes just very all one too up out as if then than can could will would should have has had get got'.split(' '));
 const STANCE = /^(no|yes|yeah|yep|nope|well|but|so|exactly|right|oh|not|then|and|because|actually|okay|ok|maybe|probably|of course|i don't know|i don't think|i think|i'm not sure|not yet|it can't|it isn't|that's not|much|even|mm)\b/i;
@@ -38,6 +38,19 @@ const stem = (w: string) => w.replace(/'s$/, '').replace(/(ies)$/, 'y').replace(
 const content = (t: string) => new Set(words(t).filter((w) => !STOP.has(w) && w.length > 2).map(stem));
 const isNarr = (sp: string) => sp === 'NARRATOR';
 const NAMES = (episode.narratorIs ?? []).map((n) => n.toLowerCase());
+
+// v5.2 feeling checks (CEO: "Mum says 'You kept them alive.' This sentence has no emotion whatsoever").
+// A person thanks, fears, teases, misses: they don't file a report. These catch the report-shaped line.
+const FEELING_WORDS = /\b(thank|thanks|grateful|love|miss|so glad|so scared|sorry|please|proud|couldn't have|can't believe|mean[st]? (so much|everything)|i was (so )?(scared|worried)|oh|god|wow)\b/i;
+const CALM = new Set(['calm', 'dry', 'firm']); // (a newsreader is always 'broadcast': the heart is in the family's reaction)
+for (const l of lines) {
+  if (isNarr(l.speaker)) continue;
+  const t = l.text.trim();
+  if (/^(you|you've|you have|you're)\s+(kept|saved|found|brought|looked after|took care|got|did|made|came|helped|stayed|carried|fixed)\b/i.test(t) && !FEELING_WORDS.test(t))
+    l.flags.push('feeling: says what someone did, not what it means to the speaker (thank them, say what they feared, what it means)');
+  if (l.heart && l.feel && CALM.has(l.feel)) l.flags.push(`feeling: a heart moment said "${l.feel}"; what does the speaker feel here?`);
+  if (/!\s*$/.test(t) && l.feel && ['calm', 'tender', 'sad', 'tired', 'wistful', 'guilty', 'grieving'].includes(l.feel)) l.flags.push(`feeling: an exclamation said "${l.feel}"`);
+}
 
 for (let i = 0; i < lines.length; i++) {
   const l = lines[i];
@@ -119,7 +132,7 @@ for (let i = 0; i < lines.length; i++) {
   const l = lines[i];
   if (l.shot !== lastShot) sheet.push(`**${l.shot}**`);
   lastShot = l.shot;
-  sheet.push(`- \`${l.key}\` **${l.speaker}**: ${l.text}${l.flags.map((f) => `\n  - ⚑ ${f}`).join('')}`);
+  sheet.push(`- \`${l.key}\` **${l.speaker}**${l.feel ? ` *(${l.feel})*` : ''}: ${l.text}${l.flags.map((f) => `\n  - ⚑ ${f}`).join('')}`);
 }
 sheet.push('', '## Each character on their own', '');
 for (const sp of [...new Set(lines.map((l) => l.speaker))]) {
@@ -141,7 +154,7 @@ if (existsSync(ledgerPath))
 const fails: string[] = [];
 const rows: string[] = [];
 for (const l of lines) {
-  const h = hash(`${l.speaker}|${l.text}`);
+  const h = hash(`${l.speaker}|${l.text}|${l.feel ?? ""}`); // the feeling is part of the line: change it and it is re-read
   const o = old.get(l.key);
   let verdict = o && o.hash === h ? o.verdict : 'TODO';
   if (o && o.hash !== h) fails.push(`${l.key}: line changed since it was signed off; re-read it in context`);
