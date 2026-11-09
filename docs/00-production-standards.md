@@ -31,6 +31,7 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
 - **S9. Real places are named at the right level:** cities, not states (CHENNAI, not Tamil Nadu). Times agree with each city's real time zone. [gate: place-tag check; doc]
 - **S10. Two cold reads of the full screenplay before any production,** as a first-time viewer. Every finding is fixed in the screenplay first. [doc: `review-log.md`]
 - **S11. Every episode is a new story.** A new premise (a different event or mystery, not the same event seen by someone else), new characters, a new setting, a new title and a new twist. Episodes share only the format and the quality bar: a kid or family at the centre, real science behind every clue, one twist, complete in one episode, and every rule in this document. Never re-use an earlier episode's event, storyline or title pattern. [gate: premise registry, `docs/premises.md`, checked by `check-episode`: title lead words and premise overlap]
+- **S12. Nothing from another File leaks into this one:** title card, end card, props (a photo prop must show this story's photo), music cues, sound effects. Every shared component takes its content from the episode. [gate: check-episode title/end-card check; sheet: stills of every card]
 
 ## D. Dialogue
 - **D1. Every line is a complete, natural sentence** that makes sense on its own, with clear referents. Write "Then something has happened at the Sun", not "Then it happened at the Sun". [cold read]

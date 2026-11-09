@@ -50,3 +50,10 @@
 ## Gates before render
 - check-episode: lint clean; 103 questions (1 open); 122 lines signed; premise unique; title 62 characters; spoiler-free.
 - Voice: WER 2.2%. Eight lines with Māori names were checked by ear (the English ASR can't spell them).
+
+## Pass 5: filmstrip of the first render
+- **The title card showed File 001's title, and the end card showed File 001's alien shell and "next File: The Reply".** Both cards now take their text and motif from the episode, with a check-episode gate (S12). File 001's end card no longer promises a File that won't be made.
+- **Release QA failures:**
+  - true peak −0.5 dBTP → render.ts now measures the encoded peak and tightens the limiter until it is ≤ −1.2 dBTP;
+  - two idle alert inserts → they now move.
+- Re-rendered.
