@@ -3,9 +3,9 @@
 **Title alternates for Test & Compare:** “What If the Sun Went Out? A Family Survives Day 1 to Day 365” · “The Sun Disappeared at 6:52 AM. This Is What Happened Next”
 **Thumbnail text:** IT'S 7 AM.
 **Thumbnails for Test & Compare:** thumbnail-a.png, thumbnail-b.png, thumbnail-c.png (upload all of them; YouTube serves each to a share of viewers and keeps the one with the best watch time)
-**End screen:** the last 12 s (from 14:49) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 14:53 to the end.
-**Runtime:** 15:01
-**Manual mid-roll positions:** 5:57, 8:57 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
+**End screen:** the last 12 s (from 15:03) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 15:07 to the end.
+**Runtime:** 15:15
+**Manual mid-roll positions:** 6:02, 9:07 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
 
 ## Description (paste as-is)
 
@@ -16,17 +16,17 @@ If the Sun went out tomorrow, what's the first thing you'd do? Tell us below �
 
 0:00 The last morning
 1:14 Hour one
-2:51 The first day
-4:04 Day 1
-4:23 Day 2
-4:56 Day 3
-5:10 Day 7
-6:05 Day 8
-6:49 Day 30
-7:59 Day 40
-8:35 Day 100
-9:11 Day 300
-9:51 Day 365
+2:52 The first day
+4:08 Day 1
+4:27 Day 2
+5:00 Day 3
+5:14 Day 7
+6:10 Day 8
+6:55 Day 30
+8:06 Day 40
+8:43 Day 100
+9:21 Day 300
+9:59 Day 365
 
 THE BLINK FILES — one impossible year, seen by a different person each time. Every clue is real physics. Subscribe for the next File.
 
