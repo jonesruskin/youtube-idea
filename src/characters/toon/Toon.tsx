@@ -171,6 +171,7 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
       const h = R * 0.4 * open;
       const rw = w * (1 - f.round * 0.55) * (0.75 + s.talk * 0.25);
       const lift = f.smile * R * 0.06;
+      const hap = Math.min(1, Math.max(0, (f.smile - 0.5) / 0.45)); // 0 for neutral … determined, 1 for a full smile
       if (f.smile < -0.1) {
         // fear / dismay: corners down, the top lip arches up — never reads as a grin
         const dn = -f.smile * R * 0.1;
@@ -183,8 +184,10 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
       }
       return (
         <g>
-          <path d={`M${mx - rw},${mouthY - lift} Q${mx},${mouthY - h * 0.2 + lift * 0.5} ${mx + rw},${mouthY - lift} Q${mx + rw * 0.8},${mouthY + h} ${mx},${mouthY + h * 1.05} Q${mx - rw * 0.8},${mouthY + h} ${mx - rw},${mouthY - lift} Z`} fill="#4A1C22" stroke={ink} strokeWidth={sw * 0.8} strokeLinejoin="round" />
-          {open > 0.35 && <ellipse cx={mx} cy={mouthY + h * 0.7} rx={rw * 0.5} ry={h * 0.28} fill="#D95F6A" />}
+          {/* talking: an oval whose top lip arches up for neutral speech; only real smiles flatten the top into a
+              "D" (a flat-topped D on every line read as a grin, even on warnings: docs/00 A7) */}
+          <path d={`M${mx - rw},${mouthY - lift} Q${mx},${mouthY - h * (0.62 - 0.5 * hap) + lift * 0.5} ${mx + rw},${mouthY - lift} Q${mx + rw * 0.8},${mouthY + h * (0.62 + 0.38 * hap)} ${mx},${mouthY + h * (0.66 + 0.39 * hap)} Q${mx - rw * 0.8},${mouthY + h * (0.62 + 0.38 * hap)} ${mx - rw},${mouthY - lift} Z`} fill="#4A1C22" stroke={ink} strokeWidth={sw * 0.8} strokeLinejoin="round" />
+          {open > 0.35 && <ellipse cx={mx} cy={mouthY + h * (0.42 + 0.28 * hap)} rx={rw * 0.5} ry={h * 0.24} fill="#D95F6A" />}
         </g>
       );
     }

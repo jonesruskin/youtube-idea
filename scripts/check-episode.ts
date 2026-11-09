@@ -2,6 +2,7 @@
 // Usage: npx tsx scripts/check-episode.ts <id>
 //   1. lint-episode (props, faces, blinks, sleepy, presence, 180°, timing, world state, dialogue, pacing)
 //   2. question bank (docs/00 S4): ≥100 numbered questions, every one answered with a real shot id or OPEN, ≤2 OPEN
+//   2b. dialogue ledger (docs/00 D8–D16): every line signed off in context (scripts/dialogue-review.ts)
 //   3. packaging (docs/00 K1–K3): title 50–70 characters, no spoiler words in title / alternates / thumbnail text /
 //      logline / tags / pinned comment
 // Exit code 1 on any failure.
@@ -56,6 +57,17 @@ else {
   if (open > 2) fails.push(`question bank: ${open} OPEN questions (max 2)`);
   unanswered.forEach((q) => fails.push(`question bank: no real shot cited → ${q}`));
   if (qs.length >= 100 && open <= 2 && !unanswered.length) ok.push(`question bank: ${qs.length} questions, ${open} open on purpose, every answer cites a shot`);
+}
+
+// 2b · dialogue ledger (docs/00 D8–D16): every line signed off in context, flagged lines explained
+try {
+  const out = execSync(`npx tsx scripts/dialogue-review.ts ${id}`, {cwd: ROOT, stdio: 'pipe'}).toString();
+  ok.push(out.trim().replace(/^✔\s*/, ''));
+} catch (e) {
+  const out = String((e as {stdout?: Buffer}).stdout ?? '');
+  const lines = out.split('\n').filter((l) => l.trim());
+  fails.push(lines[0]?.replace(/^✖\s*/, '') ?? 'dialogue review: failed');
+  lines.slice(1, 12).forEach((l) => fails.push(`  ${l.trim()}`));
 }
 
 // 3 · packaging

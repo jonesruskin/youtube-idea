@@ -34,7 +34,8 @@ export const FACES = {
   awe: F({eye: 1.08, pupil: 1.12, browY: 8, browAng: 6, mouthW: 0.32, open: 0.32, round: 0.6}),
   relieved: F({happyEyes: 0.85, browAng: 8, browY: 2, mouthW: 0.58, smile: 0.75, blush: 0.3}),
   focused: F({browY: 0, browAng: 3, mouthW: 0.38, smile: 0.12}),
-  determined: F({browY: 0, browAng: 1, mouthW: 0.5, smile: 0.45}),
+  // firm, not grinning: lowered level brows, a set mouth (a smile here read as a grin on urgent lines)
+  determined: F({browY: -2, browAng: -4, mouthW: 0.44, smile: 0.06}),
   cold: F({browAng: 10, browY: 2, mouthW: 0.44, open: 0.12, smile: -0.2, wobble: 1}),
   sleepy: F({lid: 0.5, browAng: 2, mouthW: 0.36, smile: 0.2}),
   angry: F({lid: 0.22, browY: -6, browAng: -16, mouthW: 0.5, smile: -0.5}),

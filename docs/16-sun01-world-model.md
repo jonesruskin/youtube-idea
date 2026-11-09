@@ -31,7 +31,7 @@ marked **OPEN (series)** on purpose. Only two questions may stay open.
 | Ship arrives and starts braking (Day 0) | summer 2026 | about 22 years of travel at ~0.97c |
 | Ship stops (Day 365) | summer 2027 | "Twenty-three years for them to get here" (2004 → 2027) |
 | Ito watched sunrises | 1983 → 2026 | "forty-three years" |
-| Confession: "the man in the observatory" | said in 2027 | "forty-four years ago" |
+| Confession: "the young man in the observatory" | said in 2027 | "in 1983" (a year, not a count, so it never reads as clashing with the coda's "forty-three years") |
 
 ## 3. The world without sunlight (real physics; every scene obeys it)
 | System | Rule | Shown or said in |
@@ -50,8 +50,10 @@ marked **OPEN (series)** on purpose. Only two questions may stay open.
 | Water | Melted ice and deep wells once street mains freeze | world montage |
 | Air | Oxygen lasts thousands of years; plants stopping changes nothing within a year | (school line, optional) |
 | Health | Hospitals fill with crash injuries on Day 0, then frostbite and hypothermia. Staff work long shifts and sleep at the hospital. From Day 30, clinics open inside metro shelters where people live | mum-text, hosp-call, day30-clinic |
-| Human cost | Said once, honestly: "Not everyone made it." | day100 |
+| Human cost | Said once, honestly: "All over the world, many people did not make it through that winter." | not-everyone |
 | Phones | Phone networks work all year (they run on grid power and batteries). Mum texts on Day 0 and video-calls every night | mum-text, hosp-call, hosp-biscuit |
+
+| Satellites | Satellites run on solar panels; their batteries are sized for an hour or so in Earth's shadow, so they go dark within hours of Day 0: GPS, satellite TV and satellite phones fail. Phones, TV and internet in this File run on ground masts and undersea cables, so nothing on screen uses a satellite after Day 0. The Day 2 infrared sighting is by ground telescopes | press (ticker: space agencies, ground telescopes) |
 
 ## 4. Characters: where everyone is, and why
 | Day | Mira (8) | Kai (16) | Mr. Ito (73, upstairs) | Mum (nurse) | Biscuit |
@@ -66,6 +68,18 @@ marked **OPEN (series)** on purpose. Only two questions may stay open.
 | 100 | Coldest night with Kai and Mum | | Fixes the station's heaters with the engineers | Clinic | |
 | 300 | Station, news | | "Twenty-one." | Clinic | |
 | 365 | Surface; sends her drawing | Carries Ito's dish up the frozen stairs | Prediction, signal, confession | With them | With them |
+
+## 4b. Who knows what, when (docs/00 D11)
+| Fact | First known by | How | Shot | Others learn it |
+|---|---|---|---|---|
+| Mum is stuck at the hospital | Ito (Mum phoned him), then the kids (her text) | phone | ito-door, mum-text | everyone at once |
+| The Sun is still there (only hidden) | Ito suspects it first (Venus test); Kai and Mira prove it | tide gauge | ito-predict, gauge, still-there | the world, Day 2 (press) |
+| A shell around the Sun | the world | infrared press conference | press | together |
+| Where Biscuit went | **Biscuit** (nobody else knows where is warm: Kai says "I don't know") | his nose | where-warm, vent, found | Kai, then the street; the metro becomes the refuge |
+| Ito has seen the lines before | Ito (1983), hinted to Mira on Day 40 | his past | you-knew, nobody-listened | the viewer guesses; told fully on Day 365 |
+| Something is coming, slowing | astronomers | Day 300 news | beam-thing, beam-stop | everyone; only Ito knows "who" ("They're coming") |
+| It stops at 6:52 | Ito's guess, from "exactly one year" | reasoning | prediction-2 | the family |
+| The picture is a reply to Ito | Ito | the counting row he started | to-me | the family, then the world |
 
 ## 5. Question bank (each answered on screen, or OPEN on purpose)
 ### A. Premise mechanics

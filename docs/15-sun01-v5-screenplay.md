@@ -23,7 +23,7 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | lights-work | = | Kai flicks the switch; the lamp comes on. | N: "The lights still worked. The Sun didn't." |
 | knock | ~ | Three knocks. Kai walks to the door and opens it. | N: "Then someone knocked. Three times." |
 | ito-door | ~ | Kai holding the door open: Mr. Ito, dressed, torch and bag. | Ito: "Good morning. Your mother just phoned me from the hospital. You're with me today." |
-| shoes-on | + | Ito steps in. | Ito: "Shoes on, please. Both of you." |
+| shoes-on | + | Ito steps in. | Ito: "Put your shoes on, please. Both of you." |
 | from-upstairs | = | | N: "Mr. Ito, from upstairs. He was seventy-three, and he was never in a hurry." |
 | packed | = | | N: "His bag was already packed. It had been packed for years." |
 | and-the-dog | = | | Ito: "And bring the dog. He has your toast." |
@@ -58,7 +58,7 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | so-are-we | = | Ito hands him a list. | Ito: "Then so are we." |
 | day1-rush | = | Still Day 0, about 8:30 a.m. The street runs to the supermarket. | N: "Kai was right. The whole city had the same idea." |
 | grab | ~ | Half-empty shelves. | Kai: "Rice. Tins. Warm socks. Seeds?" |
-| treats | = | | Mira: "They're on Biscuit's list." |
+| treats | = | | Mira: "And dog treats. They're on Biscuit's list." |
 | last-heater | = | | N: "Two grown men fought over the last electric heater." |
 | theyll-learn | ~ | | Ito: "Heat won't be the hard part. Food will. Nothing grows without the Sun." |
 | hosp-call | ~ | Hospital corridor, evening. Mum on a phone video call. | Mum: "Kai! Mira! Can you see me?" |
@@ -67,9 +67,9 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | hosp-wide | ~ | Every bed full; ambulances outside with chains on the tyres. | Mum: "The ambulances haven't stopped since it went dark." |
 | apt-when | = | | Mira: "When are you coming home?" |
 | hosp-soon | ~ | | Mum: "As soon as I can. I'll call every night at seven. Be good for Mr. Ito." |
-| every-night | ~ | Kai ends the call. Ito by the window. | N: "She called every night at seven. Mr. Ito slept on our sofa." |
+| every-night | ~ | Kai ends the call. Ito by the window. | N: "And she did call, every single night. Mr. Ito slept on our sofa." |
 | is-it-dead | = | | Kai: "Is the Sun… dead?" |
-| if-dead | ~ | Tide diagram. | Ito: "If the Sun had vanished, its pull on the sea would vanish too." |
+| if-dead | ~ | Tide diagram. | Ito: "I don't think so. If it had vanished, its pull on the sea would vanish too." |
 | a-third | ~ | | Ito: "And tomorrow's high tide would be a third lower." |
 | go-look | ~ | Ito hands over a tide table. | Ito: "Here's a tide table. Go and check. High tide is at eleven." |
 | harbour | = | DAY 1. The harbour. | N: "So the next morning, Kai and I walked down to the harbour." |
@@ -80,7 +80,7 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | fish | ~ | A fish (head first) glides through dark water in the torch beam (no ice yet: +8 °C). | Mira: "The fish haven't even noticed!" |
 | press | = | DAY 2. | Anchor: "Infrared telescopes have found something around the Sun." |
 | press-sci | = | | Scientist: "It's warm. It's round. And it's twice as wide as the Sun." |
-| shell-reveal | = | | N: "There was something around the Sun." |
+| shell-reveal | = | | N: "Not a cloud. Not a planet." |
 | a-shell | = | | N: "A shell. Wrapped around a star." |
 | panic | = | | Anchor: "Governments are asking everyone to stay calm." N: "Nobody was calm." |
 | tv-ask | = | | Mira: "Mr. Ito, who built it?" |
@@ -95,7 +95,7 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | candles | ~ | The warm room, lamp and heater on (no candles). | N: "That night, Kai pretended he wasn't scared." |
 | hand | = | | N: "He was holding my hand too hard." |
 | smoke | = | | N: "Then we smelled smoke." |
-| furniture | ~ | | Ito: "Their heating's off too, so they're burning furniture. Indoors!" |
+| furniture | ~ | | Ito: "Next door's heating is off too. They're burning furniture, indoors!" |
 | invisible | ~ | | Ito: "Everyone out! A fire indoors makes carbon monoxide. You can't see it or smell it, and it kills." |
 | evacuate | ~ | | N: "Mr. Ito got the whole floor out." |
 | biscuit-bolts | ~ | The street door opens into the last big snowstorm; Biscuit bolts. | N: "At the street door, Biscuit panicked." |
@@ -104,11 +104,11 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | always-night | ~ | | N: "The fire brigade put the fire out. Kai searched all night, and came back without him." |
 | hosp-biscuit | ~ | DAY 8 · 7 PM. Mum on the video call. | Mum: "Mira, listen to me. Biscuit is a clever dog." |
 | warm-places | ~ | Mira holding Kai's phone. | Mum: "Clever dogs find warm places." |
-| where-warm | ~ | | Mira: "Kai, what's still warm out there?" Kai: "The metro! Warm air comes up from the tunnels." |
+| where-warm | ~ | | Mira: "Kai, where would it still be warm?" Kai: "I don't know. But I'm going to find him." |
 | bark | ~ | Kai on the frosty street again. A bark. | N: "Kai went straight back out." |
 | pawprints | ~ | Paw prints, toes pointing toward the metro. | N: "Paw prints. Fresh ones." |
-| vent | = | | N: "They led to the only warm thing on the street." |
-| found | = | | Kai: "You stupid, brilliant dog." |
+| vent | = | | N: "They led to the only warm thing on the street: air rising from the metro." |
+| found | = | | Kai: "You clever, clever dog." (Biscuit found the warm metro; nobody else had thought of it) |
 | ground-heat | ~ | | N: "A few metres down, the ground stays at about ten degrees, Sun or no Sun." |
 | he-knew | = | | N: "Biscuit hadn't run away. He'd found the way down." |
 | follow-him | = | | N: "By morning, half the street had followed him underground." |
@@ -126,16 +126,16 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | call-it-sunrise | = | | Ito: "We'll call it sunrise." |
 | school | = | | Mira: "It's yellow. And round. And it's warm on your face." |
 | forgotten | ~ | | N: "The littlest ones had started drawing it grey." |
-| keep-it | = | | N: "I kept mine in my pocket, all year." |
+| keep-it | = | | N: "I kept my drawing in my pocket, all year." |
 | fan-club | = | | N: "Biscuit got a fan club. And a bigger belly." |
 | day30-clinic | + | A new sign on the platform: CLINIC. | N: "That month, the hospital opened a clinic in our station. Mum asked to work there." |
 | mum-returns | ~ (moved from Day 180) | Mum walks along the platform with her bag; the kids run to her. | N: "And then she was home." |
 | mum-thanks | = | | Mum: "You kept them alive." |
-| they-kept-me | = | | Ito: "They kept me alive." |
+| they-kept-me | = | | Ito: "No. They kept me alive." |
 | obs-letter / obs-phone | = | 1983: the refusal letter; a colleague laughs. | — |
 | ws-ask | = | DAY 40. | Mira: "Mr. Ito. Who built it?" |
-| not-in-a-day | = | | Kai: "Nobody builds a thing that size in a day." |
-| nobody-did | ~ | | Ito: "No. It's very old. Look." |
+| not-in-a-day | = | | Kai: "Whoever it was, it must have taken them ages." |
+| nobody-did | ~ | | Ito: "Much longer than that. It's very old. Here." |
 | photo1919 | = | | Ito: "Nineteen-nineteen. A total eclipse. Look at the lines." |
 | blinds | = | | Ito: "It was always there. Edge-on, like the slats of a blind." |
 | closed-them | ~ | | Ito: "On the morning the Sun went out, every slat turned." |
@@ -143,9 +143,9 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | nobody-listened | = | | Ito: "Once. A long time ago. Nobody listened." |
 | even-true | = | | N: "I believed him. It was true. It just wasn't all of it." |
 | day100-cold | ~ (was day100-flicker) | DAY 100. The heaters' glow fades, frost creeps over the tiles, breath smokes; the lamps stay on. | N: "On Day 100, it was fifty below up top. The heaters that warm the air coming down into the station froze." |
-| ito-volunteers | = | | Ito: "I know a little about old machines." |
+| ito-volunteers | = | | Ito: "Let me help. I know a little about old machines." |
 | cold-night | = | Kai, Mira and Mum under blankets. | N: "That was the coldest night." |
-| not-everyone | + | The station, quiet, a few candles lit by a memorial board. | N: "All over the world, not everyone made it." |
+| not-everyone | + | The station, quiet, a few candles lit by a memorial board. | N: "All over the world, many people did not make it through that winter." |
 | how-it-ends | = | | Kai: "How does this end, Mira?" |
 | lights-on | ~ | | Mira: "With the Sun coming back." |
 | heaters-back | ~ (was day180-lights) | Morning: the heaters glow, the station cheers. | N: "By morning, Mr. Ito and the engineers had the heaters running again." |
@@ -153,9 +153,9 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | ear | ~ | | Ito: "Something to listen with. And to answer." |
 | beam-news | ~ | DAY 300. The big screen: a beam from the shell to one star. | Anchor: "After months of searching, astronomers have found where the Sun's light is going: one beam, aimed at a star called HD 219134." |
 | beam-thing | + | The screen zooms into the beam: a tiny glowing shape, an arrow SLOWING. | Anchor: "And there's something inside it, coming toward us and slowing down." |
-| twenty-one | ~ | Ito, white. | Ito: "Twenty-one light-years." |
+| twenty-one | ~ | Ito, white. | Ito: "They're coming." |
 | beam-stop | + | Ticker: "AT THIS RATE IT STOPS IN 65 DAYS". | Anchor: "At this rate, it will stop in sixty-five days. Scientists hope the Sun will come back when it does." |
-| didnt-ask | = | | N: "I didn't ask what it meant." |
+| didnt-ask | = | | N: "I didn't ask who he meant." |
 | beam-space | ~ | The shell; a needle of light toward one star; a speck in it. | N: "All the Sun's light, pushing against one small thing, coming our way." |
 | obs-hesitate / obs-press | = | 1983: he presses the key. | — |
 
@@ -166,33 +166,33 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | day365 | ~ | The surface: Milky Way, all five in cold gear, the station crowd behind. | N: "Half the station came up with us. It was seventy below, so we wore everything we owned." |
 | birthday | = | | Mira: "One whole lap around the Sun. Happy birthday, Earth." |
 | prediction | + | Ito, watch in hand. | Ito: "It started at 6:52 exactly one year ago. I think it stops at 6:52 today." |
-| from-the-sun | ~ | 6:31. The dish clicks. | Ito: "Something near the Sun is calling us." |
+| from-the-sun | ~ | 6:31. The dish clicks. | Ito: "Listen. Something near the Sun is calling us." |
 | counting | = | | Kai: "One." "Two." "Three." |
 | pulses | = | | N: "Then it didn't stop." |
 | hundreds | = | | Kai: "That's not three. That's hundreds." |
 | 1679 | = | | Ito: "One thousand, six hundred and seventy-nine." |
-| a-lot | = | | Kai: "Is that a lot?" |
-| primes | ~ | | Ito: "It's twenty-three times seventy-three. We used the same trick ourselves in 1974, to send a picture." |
+| a-lot | = | | Kai: "Why that exact number?" |
+| primes | ~ | | Ito: "Because it's twenty-three times seventy-three, and nothing else." / "We used the same trick ourselves in 1974, to send a picture." |
 | a-picture | = | | Mira: "Like squares on graph paper." "It's a picture!" |
 | decode | = | | Ito: "Twenty-three across. Seventy-three down." |
 | reply-count | ~ | Top: counting dots 1–10. | N: "At the top: counting, from one to ten." |
-| reply-them | = | | N: "Then them. And us, beside them, very small." |
+| reply-them | = | | N: "Then one of them. And one of us, beside them, much smaller." |
 | reply-home | ~ | Their star; their ship beside our Sun. | N: "Their star. And their ship, parked beside our Sun." |
 | what-is-it | = | | Mira: "Mr. Ito? What is it?" |
 | a-reply | = | | Ito: "It's a reply." |
 | to-who | = | | Mira: "To who?" |
 | to-me | = | | Ito: "To me." |
 | obs-knock / obs-dawn / obs-tap / obs-face | = | 1983 flashback. | — |
-| ito-face | ~ | | N: "The man in the observatory was Mr. Ito, forty-four years ago." |
+| ito-face | ~ | | N: "The young man in the observatory was Mr. Ito, in 1983." |
 | explain-chart | ~ | Chart, 21. | N: "He found lines in old eclipse photos. They pointed to one star." |
 | signpost | + | Ito to Mira. | Ito: "It was a signpost. It meant: if you can see this, call us. So I did." |
-| explain-knock | ~ | His young hand on the key. | N: "They told him not to. He knocked anyway. One. Two. Three." |
-| count-on | + | The picture's top row. | Ito: "I sent one, two, three. They counted on to ten, so I'd know it was them." |
+| explain-knock | ~ | His young hand on the key. | N: "The astronomers he worked for told him not to. He knocked anyway. One. Two. Three." |
+| count-on | + | The picture's top row. | Ito: "And they counted on, all the way to ten, so I'd know it was them." |
 | explain-years | ~ | Diagram: knock 1983 → 2004 (21 years); ship 2004 → 2027 (23 years). | N: "His knock took twenty-one years to reach them. They set off the day it arrived. It took them twenty-three years to get here." |
 | brake | + | Diagram: a ship with a sail at almost light speed; the shell's beam pushing it from the front; a speed bar falling to zero over 1 YEAR. | Ito: "Something that fast can't stop by itself. It needs a push from the front. Only a whole star pushes that hard." |
 | who-built | + | The shell. | Ito: "They built that shell long ago, as a harbour, so one day they could stop here. How, nobody knows." |
 | now-stopped | + | Ito looks east. | Ito: "So for one year, our Sun was their brake. In a few minutes they'll have stopped, and they won't need it anymore." |
-| warn | + | Mira, frowning. | Mira: "Why didn't they warn us?" Ito: "A warning travels at the speed of light. They were almost that fast. It would have arrived just before them." |
+| warn | + | Mira, frowning. | Mira: "Why didn't they warn us?" Ito: "Because a warning can't travel faster than light." / "They were almost that fast. It would have arrived with them." |
 | bag-payoff | + | Ito, quietly. | Ito: "I knew they might come any year now. That's why my bag was packed." |
 | hurt-us | = | | Mira: "Did they know it would hurt us?" |
 | dont-know | = | | Ito: "I don't know." |
@@ -214,11 +214,11 @@ Status codes: **=** unchanged · **~** line or picture changed · **+** new shot
 | globe-return | ~ | Earth: the whole day side lights up at once; the night side stays dark, labelled. | N: "Everywhere it was daytime, the Sun came back at the same moment." |
 | sun-beach / sun-field / sun-bus | ~ | SYDNEY 3:52 PM, CHENNAI 11:22 AM, MANILA 1:52 PM in sunlight. | — |
 | ny-night | + | NEW YORK · 1:52 AM, still dark. | N: "In New York it was the middle of the night. They got their sunrise a few hours later, the ordinary way." |
-| family-sun | ~ | | N: "At 6:52, exactly one year after it went out, the Sun came back." |
+| family-sun | ~ | | N: "At 6:52, exactly one year after it went out, we were standing in sunlight." |
 | roof-dawn | = | | N: "Every morning for forty-three years, Mr. Ito watched the sunrise." |
 | liked-it | = | | N: "I used to think it was because he liked it." |
 | waiting-answer | = | | N: "He was waiting for an answer." |
-| hook | ~ | 7:03. The dish clicks: one… two… three. | N: "Sixteen minutes after Mira pressed the key, the dish clicked again." (then three pulses) |
+| hook | ~ | 7:03. The dish clicks: one… two… three. | N: "Sixteen minutes after we sent my drawing, the dish clicked again." (then three pulses) |
 | end | = | End screen. | N: "What would you have sent? Tell us in the comments." |
 
 ## Removed shots (and why)

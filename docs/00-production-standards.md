@@ -38,6 +38,26 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
 - **D4. Every scene tells the viewer when it is:** a DAY tag, a time tag or a line. A cut must never look like a memory unless it is one (memories are graded and labelled). [gate: day-tag check; cold read]
 - **D5. Character voices stay consistent** (sun01: Mira blunt and curious, Kai dry, Ito precise and kind, Mum warm and practical). Character lines are at most about 14 words. [gate: line length]
 - **D6. Exposition through people, without lectures:** narrator and diagrams for the science, characters for feelings and decisions. [cold read]
+- **D7. Talk like people talk.** Read every line aloud in the character's voice. If a person wouldn't say it that way, rewrite it. [ledger]
+- **D8. Every line is signed off in context.** `scripts/dialogue-review.ts <id> --update` writes the dialogue sheet (every exchange in order, then each character's lines on their own). Every line gets a verdict in `dialogue-review.md`. A verdict only counts while the line's text is unchanged, so any rewrite forces a re-read. [gate: dialogue ledger]
+- **D9. Replies take a stance.** A reply that corrects or turns back what was just said opens with "No," / "Yes," / "Well," and never echoes it flat. Write "You kept them alive." → "No. They kept me alive.", not "They kept me alive." [gate: echo flag]
+- **D10. Answers answer the question asked.**
+  - A yes/no question gets yes, no, or "I don't know" first.
+  - "Why" gets a reason ("Because…").
+  - "Who" names someone, "where" names a place, "when" gives a time.
+
+  "Is that a lot?" answered with a fact about the number is a non-sequitur. [gate: answer flag]
+- **D11. Credit and knowledge stay true.**
+  - Praise, thanks and "you found it" go to whoever really did it.
+  - A character never acts surprised by something they already knew or said, and never credits someone else for their own idea.
+  - Example: Kai can't suggest the metro and then praise Biscuit for finding it. Now nobody knows where is warm, and Biscuit finds the metro.
+
+  Keep a "who knows what, when" table in the world model. [gate: credit flag + ledger; doc]
+- **D12. The narrator stays in the first person and names the right actor.** The narrator never calls themselves by name ("after Mira pressed the key" → "after we sent my drawing"). Who does an action matches what is on screen (Ito pressed the key). [gate: narrator flag; set `narratorIs`]
+- **D13. No redundant echoes.** A fact one voice has just said isn't restated by the next voice: the anchor says "something around the Sun", so the narrator doesn't repeat it. Deliberate callbacks are allowed but must be signed off as deliberate. [gate: repeat flag]
+- **D14. Every pronoun has a clear owner** in the same or the previous line. "They told him not to" after a line about the builders reads as the builders, so name who. [gate: referent flag]
+- **D15. One count per span.** Never say two near-identical numbers for related spans ("forty-three years" and "forty-four years ago"), even when both are correct. Use a year ("in 1983") or a single count. [gate: numbers flag]
+- **D16. Lines have an addressee and a reason.** Offers and announcements include their lead-in ("Let me help. I know a little about old machines.", "Listen. Something near the Sun is calling us."). [ledger]
 
 ## P. Picture
 - **P1. Things move head-first:** animals, fish, people and vehicles. Paw and foot prints point along the direction of travel. [sheet: direction sheet]
@@ -53,6 +73,7 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
 - **A3. Expressions match the event and blend in naturally:** shock fast, a smile blooming, sadness sinking in. Shocks only on the beat that causes them; they peak, then settle. No snap changes. [gate: face continuity, shock budget, mood; sheet: emotion sheet]
 - **A4. Blinks are single and crisp:** one in-between frame, two frames shut. At least 1 s apart. No flutter, no double blinks. [gate: blink spacing]
 - **A5. No automatic gestures:** gestures only when scripted and matching the line. Listener reactions are selective (about one line in three), with glances away. [gate: gesture cap]
+- **A7. Every face reads as its feeling while talking.** An open talking mouth amplifies any built-in smile, so only happy expressions curve up. "Determined" is firm (low, level brows, set mouth), never a grin. Urgent lines (warnings, danger) use alert, worried or scared. Checked on full-size stills of every speaking shot. [sheet; face.ts library]
 - **A6. Faces are always reviewed at full size and frame by frame,** never only on small contact sheets. [sheet: face strips at 1:1]
 
 ## K. Packaging
@@ -105,6 +126,10 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
   - the Biscuit search cutting confusingly to the Mum call;
   - paw prints backwards;
   - only lettuce on the farm.
+- **v5 review:**
+  - "They kept me alive" repeated flat, where a person says "No, they kept me alive";
+  - Kai suggesting the metro, then praising Biscuit as if Biscuit had found it;
+  - "small things like this" across the whole script. Rules D7–D16 and the dialogue ledger gate came from this review.
 - **v5 plan review:**
   - how the reply arrives, and who controls the shell;
   - transport and jobs;

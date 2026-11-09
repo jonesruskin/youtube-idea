@@ -30,6 +30,13 @@ Write the few sentences a viewer could repeat. Each step must follow from the on
 |---|---|---|---|
 | 0 | … | … | … |
 
+## 4b. Who knows what, when (docs/00 D11)
+One row per fact that matters to the plot: who learns it first, how, and in which shot. A character can't act
+surprised by, or credit someone else for, a fact they already have.
+| Fact | First known by | How | Shot | Others learn it |
+|---|---|---|---|---|
+| … | … | … | … | … |
+
 ## 5. Question bank
 At least 100 questions in the 9 categories. Each one ends with the shot ids that answer it in brackets, e.g.
 "(roof-arrive, venus)", or with **OPEN (series)**. At most two may be OPEN. `scripts/check-episode.ts` checks this.

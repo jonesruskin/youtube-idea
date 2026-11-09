@@ -129,6 +129,10 @@ export type Episode = {
   spoilers?: string[];
   /** The episode's world model + question bank (docs/00 S3–S4), checked by scripts/check-episode.ts. */
   questionBank?: string;
+  /** Who the first-person narrator is: names the narrator may never use for themselves (docs/00 D9). */
+  narratorIs?: string[];
+  /** Dialogue review ledger (docs/00 D8): every spoken line signed off in context; scripts/dialogue-review.ts. */
+  dialogueLedger?: string;
   shots: Shot[];
 };
 
