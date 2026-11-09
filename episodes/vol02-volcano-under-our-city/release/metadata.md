@@ -3,8 +3,8 @@
 **Title alternates for Test & Compare:** “A Volcano Started Growing Under Our City. We Had 4 Days” · “My Mum Studies Volcanoes. Then One Woke Up Under Our City”
 **Thumbnail text:** IT’S UNDER US
 **Thumbnails for Test & Compare:** thumbnail-a.png, thumbnail-b.png, thumbnail-c.png (upload all of them; YouTube serves each to a share of viewers and keeps the one with the best watch time)
-**End screen:** the last 6 s (from 8:01) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 8:04 to the end.
-**Runtime:** 8:07
+**End screen:** the last 6 s (from 8:46) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 8:49 to the end.
+**Runtime:** 8:52
 **Manual mid-roll positions:**  (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
 
 ## Description (paste as-is)
@@ -16,10 +16,10 @@ If you had twenty minutes to leave, what would you take? Tell us below 👇
 
 0:00 The newest volcano
 0:09 Monday
-1:45 Tuesday
-3:53 Wednesday
-5:09 Thursday
-6:48 After
+1:51 Tuesday
+4:12 Wednesday
+5:37 Thursday
+7:28 After
 
 THE BLINK FILES — one impossible year, seen by a different person each time. Every clue is real physics. Subscribe for the next File.
 

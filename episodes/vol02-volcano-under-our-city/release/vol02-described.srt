@@ -3,973 +3,1157 @@
 [A green, perfectly round young hill rising out of a suburb, houses all around its foot. Kites over the top.]
 
 2
-00:00:00,150 --> 00:00:05,215
+00:00:00,150 --> 00:00:05,395
 NARRATOR: Auckland has fifty-four volcanoes. I watched the newest one being born.
 
 3
-00:00:05,485 --> 00:00:08,635
+00:00:05,665 --> 00:00:08,815
 [Title card.]
 
 4
-00:00:05,585 --> 00:00:08,575
+00:00:05,765 --> 00:00:08,885
 NARRATOR: It took four days. This is how it happened.
 
 5
-00:00:09,345 --> 00:00:12,495
+00:00:09,655 --> 00:00:12,805
 [Monday breakfast in a wooden villa: Dad in his bus-driver shirt; Mum in a red fleece with her ID lanyard, heading out; Lui at the back door with a tin of fish food for the pond; Ana with her notebook.]
 
 6
-00:00:09,445 --> 00:00:13,385
+00:00:09,755 --> 00:00:13,910
 NARRATOR: Lui, Goldie and Spot get a pinch each, not the whole tin.
 
 7
-00:00:13,855 --> 00:00:17,005
+00:00:14,380 --> 00:00:17,530
 [The door closes behind Mum. Dad grabs his keys.]
 
 8
-00:00:13,955 --> 00:00:18,545
+00:00:14,480 --> 00:00:19,070
 NARRATOR: Mum studied volcanoes. Dad drove the number 72 bus.
 
 9
-00:00:18,815 --> 00:00:21,965
+00:00:19,340 --> 00:00:22,490
 [Reverse: narrator answers.]
 
 10
-00:00:18,915 --> 00:00:22,880
+00:00:19,440 --> 00:00:23,735
 NARRATOR: Lui had two goldfish in the pond. And I had a notebook.
 
 11
-00:00:23,150 --> 00:00:25,000
+00:00:24,005 --> 00:00:25,855
 [A bush creek behind a school: ferns, a footbridge. A class in raincoats taking readings. Ana kneels at the water with a thermometer and a notebook.]
 
 12
-00:00:23,250 --> 00:00:24,740
+00:00:24,105 --> 00:00:25,595
 NARRATOR: I was twelve.
 
 13
-00:00:25,150 --> 00:00:28,300
+00:00:26,005 --> 00:00:29,155
 [Reverse: narrator answers.]
 
 14
-00:00:25,250 --> 00:00:29,115
+00:00:26,105 --> 00:00:29,970
 NARRATOR: Every Monday, my class tested the creek behind our school.
 
 15
-00:00:29,385 --> 00:00:32,140
+00:00:30,240 --> 00:00:33,075
 [Close on Ana reading the thermometer.]
 
 16
-00:00:29,485 --> 00:00:32,020
+00:00:30,340 --> 00:00:32,955
 NARRATOR: Fourteen degrees. Same as always.
 
 17
-00:00:32,290 --> 00:00:35,050
+00:00:33,225 --> 00:00:35,985
 [Her classmate Jaz peers at the notebook, grinning.]
 
 18
-00:00:32,390 --> 00:00:34,930
+00:00:33,325 --> 00:00:35,865
 NARRATOR: Fourteen again? You and your nerd notebook.
 
 19
-00:00:35,200 --> 00:00:37,555
+00:00:36,135 --> 00:00:38,490
 [Reverse: ana answers.]
 
 20
-00:00:35,300 --> 00:00:37,135
+00:00:36,235 --> 00:00:38,070
 NARRATOR: Nerds notice things.
 
 21
-00:00:37,705 --> 00:00:40,615
+00:00:38,640 --> 00:00:41,325
 [A sharp jolt. The water ripples in rings, the trees shiver, a bird flock bursts up. The teacher steps forward.]
 
 22
-00:00:37,805 --> 00:00:40,495
+00:00:38,740 --> 00:00:41,205
 NARRATOR: Everyone, step away from the trees!
 
 23
-00:00:40,765 --> 00:00:43,915
+00:00:41,475 --> 00:00:44,625
 [A phone emergency alert: VOLCANIC UNREST · AUCKLAND · Earthquakes under the city. Stay informed.]
 
 24
-00:00:40,865 --> 00:00:44,805
+00:00:41,575 --> 00:00:45,515
 NARRATOR: By lunchtime, every phone in the city showed the same alert.
 
 25
-00:00:45,075 --> 00:00:48,225
+00:00:45,785 --> 00:00:48,935
 [Cut-away under the city: a thin finger of glowing magma deep below, a cloud of tiny flashes around its tip. Depth readout: 10 KM.]
 
 26
-00:00:45,175 --> 00:00:50,940
+00:00:45,885 --> 00:00:52,065
 NARRATOR: Ten kilometres under the city, hot melted rock was rising, cracking its way up.
 
 27
-00:00:51,210 --> 00:00:54,360
+00:00:52,335 --> 00:00:55,485
 [A map of Auckland: one by one, about fifty volcano dots light up across the city, harbour to harbour.]
 
 28
-00:00:51,310 --> 00:00:54,425
-NARRATOR: Auckland is built on about fifty volcanoes.
+00:00:52,435 --> 00:00:55,550
+NARRATOR: Auckland is built on fifty-three volcanoes.
 
 29
-00:00:54,695 --> 00:00:57,845
+00:00:55,820 --> 00:00:58,970
 [Continues.]
 
 30
-00:00:54,795 --> 00:00:58,860
+00:00:55,920 --> 00:00:59,985
 NARRATOR: Almost all of them erupted just once, each in a new place.
 
 31
-00:00:59,130 --> 00:01:02,280
+00:01:00,255 --> 00:01:03,405
 [The same map: a big pulsing question mark drifts over the city.]
 
 32
-00:00:59,230 --> 00:01:02,520
+00:01:00,355 --> 00:01:03,570
 NARRATOR: So nobody could say where the next one would come up.
 
 33
-00:01:02,790 --> 00:01:05,300
+00:01:03,840 --> 00:01:06,475
 [The Tupou family villa at dinner: Dad in his bus-driver shirt, Lui, Ana. An empty chair. The TV news shows a map with dots.]
 
 34
-00:01:02,890 --> 00:01:05,180
+00:01:03,940 --> 00:01:06,355
 NARRATOR: Mum didn't come home for dinner.
 
 35
-00:01:05,450 --> 00:01:08,435
+00:01:06,625 --> 00:01:09,660
 [Reverse: narrator answers.]
 
 36
-00:01:05,550 --> 00:01:08,315
+00:01:06,725 --> 00:01:09,540
 NARRATOR: She was at the monitoring centre all night.
 
 37
-00:01:08,585 --> 00:01:11,735
+00:01:09,810 --> 00:01:12,960
 [Ana holds up the phone: Mum on a video call from the monitoring centre.]
 
 38
-00:01:08,685 --> 00:01:13,675
+00:01:09,910 --> 00:01:14,980
 NARRATOR: It's about ten kilometres down, and it's rising. It could take a few days.
 
 39
-00:01:14,145 --> 00:01:16,175
+00:01:15,450 --> 00:01:17,455
 [Reverse: ana answers.]
 
 40
-00:01:14,245 --> 00:01:15,855
+00:01:15,550 --> 00:01:17,135
 NARRATOR: Where will it come out?
 
 41
-00:01:16,325 --> 00:01:19,475
+00:01:17,605 --> 00:01:19,840
 [At the monitoring centre, a wall-sized map behind her, Mum on the phone.]
 
 42
-00:01:16,425 --> 00:01:19,640
-NARRATOR: We don't know yet. That's what we're trying to work out.
+00:01:17,705 --> 00:01:19,720
+NARRATOR: We don't know yet.
 
 43
-00:01:19,910 --> 00:01:21,945
-[The cut-away again: traffic and trains on the surface shake the picture; the flashes around the magma blur into a wide fuzzy circle.]
-
-44
-00:01:20,010 --> 00:01:21,825
-NARRATOR: A city is noisy.
-
-45
-00:01:22,095 --> 00:01:25,245
-[Continues.]
-
-46
-00:01:22,195 --> 00:01:28,560
-NARRATOR: Trucks and trains blur tiny earthquakes, so the scientists could only roughly tell where they were.
-
-47
-00:01:28,830 --> 00:01:31,935
-[After dinner. Lui, in pyjamas, grips the back of the sofa as a small jolt rattles the cups.]
-
-48
-00:01:28,930 --> 00:01:31,815
-NARRATOR: Is the volcano going to come up under my bed?
-
-49
-00:01:32,085 --> 00:01:35,235
-[Ana crouches to his height.]
-
-50
-00:01:32,185 --> 00:01:35,270
-NARRATOR: No. The city is huge, and your bed is tiny.
-
-51
-00:01:35,540 --> 00:01:38,690
-[A stronger jolt. The family drops under the dining table, Dad’s arm over the kids.]
-
-52
-00:01:35,640 --> 00:01:39,105
-NARRATOR: Drop, cover, hold! Under the table, both of you!
-
-53
-00:01:39,375 --> 00:01:42,525
-[Dad puts a packed backpack by the front door: water, a torch, a radio, a first-aid kit.]
-
-54
-00:01:39,475 --> 00:01:45,090
-NARRATOR: Just in case. Water, torch, radio, and the first-aid kit. It lives by the door now.
-
-55
-00:01:45,360 --> 00:01:47,715
-[The next morning, before school. Ana alone at the creek. The water is fizzing with tiny bubbles all along the bank.]
-
-56
-00:01:45,460 --> 00:01:47,595
-NARRATOR: It's fizzing. Like lemonade.
-
-57
-00:01:47,865 --> 00:01:51,015
-[Ana’s notebook: a column of Monday readings, 14 °C, 14 °C, 14 °C… and today, circled: 19 °C. Bubbles!]
-
-58
-00:01:47,965 --> 00:01:52,155
-NARRATOR: Nineteen degrees. Overnight, the creek had warmed up by five.
-
-59
-00:01:52,425 --> 00:01:55,575
-[A classroom. The teacher at a whiteboard covered in volcano dots. Ana at her desk with her notebook open.]
-
-60
-00:01:52,525 --> 00:01:58,990
-NARRATOR: Nearly every volcano in Auckland is a one-off. It erupts once, and then never again.
-
-61
-00:01:59,260 --> 00:02:02,410
-[The class goes quiet, looking at the dots.]
-
-62
-00:01:59,360 --> 00:02:05,025
-NARRATOR: So the next one would open somewhere brand new: under a road, a field, or a house.
-
-63
-00:02:05,295 --> 00:02:08,445
-[At lunch, on a phone: a press conference. Mum at the microphones, a map behind her with a red circle out under the harbour.]
-
-64
-00:02:05,395 --> 00:02:10,185
-NEWS ANCHOR: Scientists say their best guess is under the harbour, but they can't be sure yet.
-
-65
-00:02:10,455 --> 00:02:13,035
-[The back garden after school. Lui kneels by the little pond at the bottom of the sloping lawn. Two goldfish float on the surface.]
-
-66
-00:02:10,555 --> 00:02:12,915
-NARRATOR: Ana! Goldie and Spot aren't moving!
-
-67
-00:02:13,185 --> 00:02:16,335
-[Ana kneels beside him and looks up the slope: the pond sits in the lowest dip of the garden.]
-
-68
-00:02:13,285 --> 00:02:17,668
-NARRATOR: They were fine this morning. And the pond's at the very bottom of the garden.
-
-69
-00:02:17,938 --> 00:02:21,088
-[A suburban street lined with wooden villas; a park with big trees at the far end. Dad’s city bus rolls over a smooth new hump in the road; the back of the bus scrapes with a shower of sparks.]
-
-70
-00:02:18,038 --> 00:02:22,553
-NARRATOR: On his last run, the back of Dad’s bus scraped on a bump in the road.
-
-71
-00:02:22,823 --> 00:02:25,283
-[Reverse: narrator answers.]
-
-72
-00:02:22,923 --> 00:02:25,163
-NARRATOR: It hadn’t been there last week.
-
-73
-00:02:25,433 --> 00:02:28,583
-[Dinner. Dad, puzzled.]
-
-74
-00:02:25,533 --> 00:02:29,798
-NARRATOR: There's a new bump on Kōwhai Street. My bus scraped right over it.
-
-75
-00:02:30,068 --> 00:02:33,048
-[Ana stops eating. Fork in the air.]
-
-76
-00:02:30,168 --> 00:02:32,928
-NARRATOR: Kōwhai Street? That's right next to the creek.
-
-77
-00:02:33,198 --> 00:02:35,408
-[Ana’s notebook map of the neighbourhood in coloured pen: a star at the creek, a fish at the pond, a bus at the bump. She draws a circle around all three. Their own house is in the middle.]
-
-78
-00:02:33,298 --> 00:02:35,288
-NARRATOR: I put all three on a map.
-
-79
-00:02:35,558 --> 00:02:38,618
-[Continues.]
-
-80
-00:02:35,658 --> 00:02:38,498
-NARRATOR: They were all within a kilometre of our house.
-
-81
-00:02:38,768 --> 00:02:41,918
-[Diagram: gas bubbling up through the ground ahead of the magma, fizzing out of the creek and pooling, invisible but tinted, in the low pond.]
-
-82
-00:02:38,868 --> 00:02:43,033
-NARRATOR: Before magma reaches the surface, gas leaks out ahead of it.
-
-83
-00:02:43,303 --> 00:02:46,453
-[Continues.]
-
-84
-00:02:43,403 --> 00:02:48,043
-NARRATOR: That gas is heavier than air, so it sinks into hollows and ponds.
-
-85
-00:02:48,313 --> 00:02:51,463
-[Diagram: the magma swelling up from below; the road surface bulging above it; a GPS station’s arrow climbing.]
-
-86
-00:02:48,413 --> 00:02:52,528
-NARRATOR: And as the magma pushes upward, the ground above it rises.
-
-87
-00:02:52,798 --> 00:02:55,948
-[Ana stands up from the table, notebook in hand.]
-
-88
-00:02:52,898 --> 00:02:56,433
-NARRATOR: Dad, can you drive me to the creek? I want to check it again.
-
-89
-00:02:56,703 --> 00:02:59,438
-[Reverse: sione answers.]
-
-90
-00:02:56,803 --> 00:02:59,018
-NARRATOR: Get your coat. I'll get the torch.
-
-91
-00:02:59,588 --> 00:03:02,718
-[Night at the creek. Dad’s torch on the fizzing water. Ana reads the thermometer.]
-
-92
-00:02:59,688 --> 00:03:02,598
-NARRATOR: Twenty-one degrees. It's still getting warmer.
-
-93
-00:03:02,868 --> 00:03:06,018
-[Kōwhai Street, the hump in the torchlight. A thin crack runs across the hump; Ana holds her palm over it.]
-
-94
-00:03:02,968 --> 00:03:06,328
-NARRATOR: Dad, feel this. Warm air is coming out of the crack.
-
-95
-00:03:06,598 --> 00:03:08,833
-[Reverse: sione answers.]
-
-96
-00:03:06,698 --> 00:03:08,413
-NARRATOR: Call your mother. Now.
-
-97
-00:03:08,983 --> 00:03:12,038
-[By the dark front window, Ana calls Mum.]
-
-98
-00:03:09,083 --> 00:03:11,918
-NARRATOR: Mum, I think I know where it’s going to come up.
-
-99
-00:03:12,188 --> 00:03:15,338
-[Mum at the centre, exhausted, screens everywhere.]
-
-100
-00:03:12,288 --> 00:03:16,153
-NARRATOR: Ana, love, I'm really busy. Can it wait until tomorrow?
-
-101
-00:03:16,423 --> 00:03:19,573
-[Ana, steady.]
-
-102
-00:03:16,523 --> 00:03:20,008
-NARRATOR: No. Our creek is fizzing, and it’s five degrees warmer.
-
-103
-00:03:20,278 --> 00:03:23,428
-[Closer.]
-
-104
-00:03:20,378 --> 00:03:24,838
-NARRATOR: Lui's fish died in the hollow, and the road on Kōwhai Street is rising.
-
-105
-00:03:25,108 --> 00:03:28,193
-[Mum stops. Turns slowly toward the map.]
-
-106
-00:03:25,208 --> 00:03:27,473
-NARRATOR: Say that again. Slowly.
-
-107
-00:03:28,343 --> 00:03:31,493
-[A colleague points at a screen: the graph of the nearest GPS station climbing steeply since the morning.]
-
-108
-00:03:28,443 --> 00:03:32,853
-NARRATOR: The nearest GPS station has risen four centimetres since this morning.
-
-109
-00:03:33,123 --> 00:03:36,273
+00:01:19,990 --> 00:01:22,725
 [Reverse: mele answers.]
 
-110
-00:03:33,223 --> 00:03:38,213
-NARRATOR: We have a handful of instruments for a whole city. She just gave us three more.
+44
+00:01:20,090 --> 00:01:22,605
+NARRATOR: That's what we're trying to work out.
 
-111
-00:03:38,783 --> 00:03:41,933
-[Mum, already moving.]
+45
+00:01:22,875 --> 00:01:24,910
+[The cut-away again: traffic and trains on the surface shake the picture; the flashes around the magma blur into a wide fuzzy circle.]
 
-112
-00:03:38,883 --> 00:03:42,548
-NARRATOR: Send the gas team to Kōwhai Street. Right now.
+46
+00:01:22,975 --> 00:01:24,790
+NARRATOR: A city is noisy.
 
-113
-00:03:42,818 --> 00:03:45,968
-[Midnight. Two scientists in high-vis on the hump in the road, a gas meter flashing red and beeping.]
-
-114
-00:03:42,918 --> 00:03:48,058
-NARRATOR: Just before midnight, the gas team's meters started beeping on Kōwhai Street.
-
-115
-00:03:48,328 --> 00:03:51,478
-[One in the morning. Ana asleep in the armchair by the window, the phone buzzing in her hand.]
-
-116
-00:03:48,428 --> 00:03:52,618
-NARRATOR: Ana? The gas team found it. You were right. Pack a bag, love.
-
-117
-00:03:53,288 --> 00:03:56,438
-[The map: a big red evacuation circle centred out under the harbour slides inland and shrinks onto one suburb. Ana’s street is near its centre.]
-
-118
-00:03:53,388 --> 00:03:56,953
-NARRATOR: On Wednesday morning, the evacuation zone moved.
-
-119
-00:03:57,223 --> 00:03:59,583
+47
+00:01:25,060 --> 00:01:28,210
 [Continues.]
 
+48
+00:01:25,160 --> 00:01:31,525
+NARRATOR: Trucks and trains blur tiny earthquakes, so the scientists could only roughly tell where they were.
+
+49
+00:01:31,795 --> 00:01:34,800
+[After dinner. Lui, in pyjamas, grips the back of the sofa as a small jolt rattles the cups.]
+
+50
+00:01:31,895 --> 00:01:34,680
+NARRATOR: Is the volcano going to come up under my bed?
+
+51
+00:01:34,950 --> 00:01:36,800
+[Ana crouches to his height.]
+
+52
+00:01:35,050 --> 00:01:35,860
+NARRATOR: No.
+
+53
+00:01:36,950 --> 00:01:39,930
+[Reverse: ana answers.]
+
+54
+00:01:37,050 --> 00:01:39,810
+NARRATOR: The city is huge, and your bed is tiny.
+
+55
+00:01:40,080 --> 00:01:42,015
+[A stronger jolt. The family drops under the dining table, Dad’s arm over the kids.]
+
+56
+00:01:40,180 --> 00:01:41,895
+NARRATOR: Drop, cover, hold!
+
+57
+00:01:42,165 --> 00:01:44,325
+[Reverse: sione answers.]
+
+58
+00:01:42,265 --> 00:01:44,205
+NARRATOR: Under the table, both of you!
+
+59
+00:01:44,475 --> 00:01:47,625
+[Dad puts a packed backpack by the front door: water, a torch, a radio, a first-aid kit.]
+
+60
+00:01:44,575 --> 00:01:48,720
+NARRATOR: Just in case. Water, torch, radio, and the first-aid kit.
+
+61
+00:01:48,990 --> 00:01:51,375
+[Reverse: sione answers.]
+
+62
+00:01:49,090 --> 00:01:51,255
+NARRATOR: It lives by the door now.
+
+63
+00:01:51,525 --> 00:01:53,910
+[The next morning, before school. Ana alone at the creek. The water is fizzing with tiny bubbles all along the bank.]
+
+64
+00:01:51,625 --> 00:01:53,790
+NARRATOR: It's fizzing. Like lemonade.
+
+65
+00:01:54,060 --> 00:01:57,210
+[Ana’s notebook: a column of Monday readings, 14 °C, 14 °C, 14 °C… and today, circled: 19 °C. Bubbles!]
+
+66
+00:01:54,160 --> 00:01:58,555
+NARRATOR: Nineteen degrees. Overnight, the creek had warmed up by five.
+
+67
+00:01:58,825 --> 00:02:01,975
+[A classroom. The teacher at a whiteboard covered in volcano dots. Ana at her desk with her notebook open.]
+
+68
+00:01:58,925 --> 00:02:02,665
+NARRATOR: Nearly every volcano in Auckland is a one-off.
+
+69
+00:02:02,935 --> 00:02:06,085
+[Reverse: teacher answers.]
+
+70
+00:02:03,035 --> 00:02:06,100
+NARRATOR: It erupts once, and then never again.
+
+71
+00:02:06,370 --> 00:02:09,520
+[The class goes quiet, looking at the dots.]
+
+72
+00:02:06,470 --> 00:02:12,275
+NARRATOR: So the next one would open somewhere brand new: under a road, a field, or a house.
+
+73
+00:02:12,545 --> 00:02:15,695
+[At lunch, on a phone: a press conference. Mum at the microphones, a map behind her with a red circle out under the harbour.]
+
+74
+00:02:12,645 --> 00:02:17,435
+NEWS ANCHOR: Scientists say their best guess is under the harbour, but they can't be sure yet.
+
+75
+00:02:17,705 --> 00:02:20,240
+[The back garden after school. Lui kneels by the little pond at the bottom of the sloping lawn. Two goldfish float on the surface.]
+
+76
+00:02:17,805 --> 00:02:20,120
+NARRATOR: Ana! Goldie and Spot aren't moving!
+
+77
+00:02:20,390 --> 00:02:23,540
+[Ana kneels beside him and looks up the slope: the pond sits in the lowest dip of the garden.]
+
+78
+00:02:20,490 --> 00:02:23,605
+NARRATOR: Oh, Lui. I'm sorry. They were fine this morning.
+
+79
+00:02:23,875 --> 00:02:26,980
+[Reverse: ana answers.]
+
+80
+00:02:23,975 --> 00:02:26,860
+NARRATOR: And the pond's right at the bottom of the garden.
+
+81
+00:02:27,130 --> 00:02:30,280
+[A suburban street lined with wooden villas; a park with big trees at the far end. Dad’s city bus rolls over a smooth new hump in the road; the back of the bus scrapes with a shower of sparks.]
+
+82
+00:02:27,230 --> 00:02:31,860
+NARRATOR: On his last run, the back of Dad's bus scraped on a bump in the road.
+
+83
+00:02:32,130 --> 00:02:34,515
+[Reverse: narrator answers.]
+
+84
+00:02:32,230 --> 00:02:34,395
+NARRATOR: It hadn't been there last week.
+
+85
+00:02:34,665 --> 00:02:37,400
+[Dinner. Dad, puzzled.]
+
+86
+00:02:34,765 --> 00:02:37,280
+NARRATOR: There's a new bump on Kōwhai Street.
+
+87
+00:02:37,550 --> 00:02:40,010
+[Reverse: sione answers.]
+
+88
+00:02:37,650 --> 00:02:39,890
+NARRATOR: My bus scraped right over it.
+
+89
+00:02:40,160 --> 00:02:43,170
+[Ana stops eating. Fork in the air.]
+
+90
+00:02:40,260 --> 00:02:43,050
+NARRATOR: Kōwhai Street? That's right next to the creek.
+
+91
+00:02:43,320 --> 00:02:45,580
+[Ana’s notebook map of the neighbourhood in coloured pen: a star at the creek, a fish at the pond, a bus at the bump. She draws a circle around all three. Their own house is in the middle.]
+
+92
+00:02:43,420 --> 00:02:45,460
+NARRATOR: I put all three on a map.
+
+93
+00:02:45,730 --> 00:02:48,880
+[Continues.]
+
+94
+00:02:45,830 --> 00:02:48,795
+NARRATOR: They were all within a kilometre of our house.
+
+95
+00:02:49,065 --> 00:02:52,215
+[Diagram: gas bubbling up through the ground ahead of the magma, fizzing out of the creek and pooling, invisible but tinted, in the low pond.]
+
+96
+00:02:49,165 --> 00:02:53,330
+NARRATOR: Before magma reaches the surface, gas leaks out ahead of it.
+
+97
+00:02:53,600 --> 00:02:56,750
+[Continues.]
+
+98
+00:02:53,700 --> 00:02:58,340
+NARRATOR: That gas is heavier than air, so it sinks into hollows and ponds.
+
+99
+00:02:58,610 --> 00:03:01,760
+[Diagram: the magma swelling up from below; the road surface bulging above it; a GPS station’s arrow climbing.]
+
+100
+00:02:58,710 --> 00:03:03,065
+NARRATOR: And as the magma pushes upward, the ground above it rises.
+
+101
+00:03:03,335 --> 00:03:06,485
+[Ana stands up from the table, notebook in hand.]
+
+102
+00:03:03,435 --> 00:03:07,050
+NARRATOR: Dad, can you drive me to the creek? I want to check it again.
+
+103
+00:03:07,320 --> 00:03:10,135
+[Reverse: sione answers.]
+
+104
+00:03:07,420 --> 00:03:09,715
+NARRATOR: Get your coat. I'll get the torch.
+
+105
+00:03:10,285 --> 00:03:13,435
+[Night at the creek. Dad’s torch on the fizzing water. Ana reads the thermometer.]
+
+106
+00:03:10,385 --> 00:03:13,375
+NARRATOR: Twenty-one degrees. It's still getting warmer.
+
+107
+00:03:13,645 --> 00:03:16,795
+[Kōwhai Street, the hump in the torchlight. A thin crack runs across the hump; Ana holds her palm over it.]
+
+108
+00:03:13,745 --> 00:03:17,135
+NARRATOR: Dad, feel this. Warm air is coming out of the crack.
+
+109
+00:03:17,405 --> 00:03:20,140
+[Reverse: sione answers.]
+
+110
+00:03:17,505 --> 00:03:19,720
+NARRATOR: Call your mother. Now.
+
+111
+00:03:20,290 --> 00:03:23,345
+[By the dark front window, Ana calls Mum.]
+
+112
+00:03:20,390 --> 00:03:23,225
+NARRATOR: Mum, I think I know where it's going to come up.
+
+113
+00:03:23,495 --> 00:03:26,405
+[Mum at the centre, exhausted, screens everywhere.]
+
+114
+00:03:23,595 --> 00:03:26,285
+NARRATOR: Ana, love, I'm really busy.
+
+115
+00:03:26,555 --> 00:03:29,515
+[Reverse: mele answers.]
+
+116
+00:03:26,655 --> 00:03:29,395
+NARRATOR: Can it wait until tomorrow?
+
+117
+00:03:29,665 --> 00:03:31,515
+[Ana, steady.]
+
+118
+00:03:29,765 --> 00:03:31,050
+NARRATOR: No, Mum.
+
+119
+00:03:31,665 --> 00:03:34,815
+[Reverse: ana answers.]
+
 120
-00:03:57,323 --> 00:03:59,463
-NARRATOR: Our street was right in the middle.
+00:03:31,765 --> 00:03:35,000
+NARRATOR: Our creek is fizzing, and it's five degrees warmer.
 
 121
-00:03:59,733 --> 00:04:02,693
-[The phone alert: EVACUATE NOW · Zone A · Leave within 2 hours. Take only what you need.]
+00:03:35,270 --> 00:03:38,420
+[Closer.]
 
 122
-00:03:59,833 --> 00:04:02,573
-NARRATOR: Every phone in the zone told us to leave.
+00:03:35,370 --> 00:03:40,455
+NARRATOR: Lui's fish died in the hollow, and the road on Kōwhai Street is rising.
 
 123
-00:04:02,843 --> 00:04:05,993
-[The lounge in a whirl: bags open on the sofa. Dad in his uniform, keys in hand.]
+00:03:40,725 --> 00:03:43,875
+[Mum stops. Turns slowly toward the map.]
 
 124
-00:04:02,943 --> 00:04:06,183
-NARRATOR: Twenty minutes. Take the things you can’t replace.
+00:03:40,825 --> 00:03:43,640
+NARRATOR: Say that again. Slowly.
 
 125
-00:04:06,453 --> 00:04:09,603
-[Ana takes a framed family photo off the wall and her notebook off the table.]
+00:03:44,510 --> 00:03:47,660
+[A colleague points at a screen: the graph of the nearest GPS station climbing steeply since the morning.]
 
 126
-00:04:06,553 --> 00:04:09,843
-NARRATOR: I took a photo of the four of us, and my notebook.
+00:03:44,610 --> 00:03:48,795
+NARRATOR: The nearest GPS station has risen four centimetres since this morning.
 
 127
-00:04:10,113 --> 00:04:13,263
-[Next door, old Mrs. Kaur is lifting the hatch to her cellar under the house: her cat has run down there. Ana sprints over.]
+00:03:49,065 --> 00:03:52,215
+[Reverse: mele answers.]
 
 128
-00:04:10,213 --> 00:04:14,273
-NARRATOR: Mrs. Kaur, don't go down there! The gas sinks into low places.
+00:03:49,165 --> 00:03:54,235
+NARRATOR: We have a handful of instruments for a whole city. She just gave us three more.
 
 129
-00:04:14,543 --> 00:04:17,693
-[Ana props the hatch open, shakes a box of cat biscuits, and the cat strolls out into its carrier.]
+00:03:54,805 --> 00:03:57,950
+[Mum, already moving.]
 
 130
-00:04:14,643 --> 00:04:17,983
-NARRATOR: I shook a box of cat biscuits at the hatch instead.
+00:03:54,905 --> 00:03:57,830
+NARRATOR: Send the gas team to Kōwhai Street.
 
 131
-00:04:18,253 --> 00:04:20,863
-[Reverse: narrator answers.]
+00:03:58,100 --> 00:03:59,950
+[Reverse: mele answers.]
 
 132
-00:04:18,353 --> 00:04:20,743
-NARRATOR: Cats always come for biscuits.
+00:03:58,200 --> 00:03:59,365
+NARRATOR: Right now.
 
 133
-00:04:21,013 --> 00:04:23,798
-[Dad lowers the bus ramp and wheels Mr. Tane up it in his wheelchair.]
+00:04:00,100 --> 00:04:03,250
+[Midnight. Two scientists in high-vis on the hump in the road, a gas meter flashing red and beeping.]
 
 134
-00:04:21,113 --> 00:04:23,678
-NARRATOR: Dad lowered the ramp for Mr. Tane.
+00:04:00,200 --> 00:04:05,480
+NARRATOR: Just before midnight, the gas team's meters started beeping on Kōwhai Street.
 
 135
-00:04:23,948 --> 00:04:26,908
-[Reverse: narrator answers.]
+00:04:05,750 --> 00:04:08,640
+[One in the morning. Ana asleep in the armchair by the window, the phone buzzing in her hand.]
 
 136
-00:04:24,048 --> 00:04:26,788
-NARRATOR: Nobody on our street was left behind.
+00:04:05,850 --> 00:04:08,520
+NARRATOR: Ana? The gas team found it.
 
 137
-00:04:27,058 --> 00:04:30,208
-[Dad’s bus at the kerb, doors open. Neighbours queue with bags; old Mrs. Kaur with a cat in a carrier. Ana and Lui behind her.]
+00:04:08,790 --> 00:04:11,940
+[Reverse: mele_phone answers.]
 
 138
-00:04:27,158 --> 00:04:30,648
-NARRATOR: On you get, Mrs. Kaur. Your cat rides free today.
+00:04:08,890 --> 00:04:12,180
+NARRATOR: You were right. Pack a bag, love.
 
 139
-00:04:30,918 --> 00:04:34,068
-[Ana stops at the bus door and looks back down the street at their villa and the park beyond it.]
+00:04:12,850 --> 00:04:16,000
+[The map: a big red evacuation circle centred out under the harbour slides inland and shrinks onto one suburb. Ana’s street is near its centre.]
 
 140
-00:04:31,018 --> 00:04:33,783
-NARRATOR: I looked back at our house from the bus door.
+00:04:12,950 --> 00:04:16,490
+NARRATOR: On Wednesday morning, the evacuation zone moved.
 
 141
-00:04:34,653 --> 00:04:37,803
-[From above: every lane of the motorway flowing one way, out of the zone, buses in a long line, police at the on-ramps.]
+00:04:16,760 --> 00:04:19,120
+[Continues.]
 
 142
-00:04:34,753 --> 00:04:38,093
-NARRATOR: Every lane of the motorway ran one way: out.
+00:04:16,860 --> 00:04:19,000
+NARRATOR: Our street was right in the middle.
 
 143
-00:04:38,363 --> 00:04:41,513
-[A school hall eight kilometres away, outside the zone: rows of camp beds, families, a tea urn, volunteers.]
+00:04:19,270 --> 00:04:22,055
+[The phone alert: EVACUATE NOW · Zone A · Leave within 2 hours. Take only what you need.]
 
 144
-00:04:38,463 --> 00:04:42,178
-NARRATOR: Forty thousand people left their homes in a day and a half.
+00:04:19,370 --> 00:04:21,935
+NARRATOR: Every phone in the zone told us to leave.
 
 145
-00:04:42,448 --> 00:04:45,598
-[On the hall’s TV: Mum at the press conference, the new zone behind her.]
+00:04:22,205 --> 00:04:25,355
+[The lounge in a whirl: bags open on the sofa. Dad in his uniform, keys in hand.]
 
 146
-00:04:42,548 --> 00:04:47,413
-NEWS ANCHOR: Scientists say a tip from a member of the public helped them find the right place.
+00:04:22,305 --> 00:04:25,370
+NARRATOR: Twenty minutes. Take the things you can't replace.
 
 147
-00:04:47,683 --> 00:04:50,363
-[Lui elbows Ana.]
+00:04:25,640 --> 00:04:28,790
+[Ana takes a framed family photo off the wall and her notebook off the table.]
 
 148
-00:04:47,783 --> 00:04:50,243
-NARRATOR: That's you! You're a member of the public!
+00:04:25,740 --> 00:04:29,445
+NARRATOR: I took a photo of the four of us, and my notebook.
 
 149
-00:04:50,513 --> 00:04:52,518
-[Then Lui goes quiet.]
+00:04:29,715 --> 00:04:32,070
+[Next door, old Mrs. Kaur is lifting the hatch to her cellar under the house: her cat has run down there. Ana sprints over.]
 
 150
-00:04:50,613 --> 00:04:52,398
-NARRATOR: Will our house be okay?
+00:04:29,815 --> 00:04:31,950
+NARRATOR: Mrs. Kaur, don't go down there!
 
 151
-00:04:52,668 --> 00:04:55,621
+00:04:32,220 --> 00:04:34,775
 [Reverse: ana answers.]
 
 152
-00:04:52,768 --> 00:04:55,101
-NARRATOR: I don't know, Lui. But we will be.
+00:04:32,320 --> 00:04:34,655
+NARRATOR: The gas sinks into low places.
 
 153
-00:04:55,771 --> 00:04:58,921
-[Dad crouches by them for a moment, keys in hand.]
+00:04:34,925 --> 00:04:38,075
+[Ana props the hatch open, shakes a box of cat biscuits, and the cat strolls out into its carrier.]
 
 154
-00:04:55,871 --> 00:04:59,511
-NARRATOR: I'm going back for another load. Look after your brother.
+00:04:35,025 --> 00:04:38,340
+NARRATOR: I shook a box of cat biscuits at the hatch instead.
 
 155
-00:04:59,781 --> 00:05:02,931
-[Late. Lui asleep. Ana on the phone, quiet so as not to wake him.]
+00:04:38,610 --> 00:04:41,220
+[Reverse: narrator answers.]
 
 156
-00:04:59,881 --> 00:05:04,316
-NARRATOR: Mum, what if I'm wrong? Forty thousand people left because of my map.
+00:04:38,710 --> 00:04:41,100
+NARRATOR: Cats always come for biscuits.
 
 157
-00:05:04,586 --> 00:05:07,736
-[Mum, at her desk, softly.]
+00:04:41,370 --> 00:04:44,155
+[Dad lowers the bus ramp and wheels Mr. Tane up it in his wheelchair.]
 
 158
-00:05:04,686 --> 00:05:09,601
-NARRATOR: Then they go home on Friday, a bit grumpy. Being wrong that way is fine.
+00:04:41,470 --> 00:04:44,035
+NARRATOR: Dad lowered the ramp for Mr. Tane.
 
 159
-00:05:09,871 --> 00:05:13,021
-[A police drone over the empty zone: at the end of an empty street, the duck pond in the park is steaming, and the grass around it has cracked.]
+00:04:44,305 --> 00:04:47,265
+[Reverse: narrator answers.]
 
 160
-00:05:09,971 --> 00:05:14,761
-NARRATOR: On Thursday afternoon, a police drone flew over our empty street.
+00:04:44,405 --> 00:04:47,145
+NARRATOR: Nobody on our street was left behind.
 
 161
-00:05:15,031 --> 00:05:17,741
-[Continues.]
+00:04:47,415 --> 00:04:49,675
+[Dad’s bus at the kerb, doors open. Neighbours queue with bags; old Mrs. Kaur with a cat in a carrier. Ana and Lui behind her.]
 
 162
-00:05:15,131 --> 00:05:17,621
-NARRATOR: The duck pond in the park was steaming.
+00:04:47,515 --> 00:04:49,555
+NARRATOR: On you get, Mrs. Kaur.
 
 163
-00:05:17,891 --> 00:05:21,041
-[Mum on the phone at the centre, the earthquake screens almost solid.]
+00:04:49,825 --> 00:04:52,160
+[Reverse: sione answers.]
 
 164
-00:05:17,991 --> 00:05:22,506
-NARRATOR: It's less than a kilometre down now. Keep everyone out of the zone.
+00:04:49,925 --> 00:04:52,040
+NARRATOR: Your cat rides free today.
 
 165
-00:05:22,776 --> 00:05:25,926
-[Ana’s notebook, a new page: the depth of the magma, copied from the TV every hour. 5 km, 3 km, 2 km, 1.2 km, 0.8 km.]
+00:04:52,310 --> 00:04:55,460
+[Ana stops at the bus door and looks back down the street at their villa and the park beyond it.]
 
 166
-00:05:22,876 --> 00:05:26,741
-NARRATOR: At the hall, I wrote down the depth from the TV every hour.
+00:04:52,410 --> 00:04:55,540
+NARRATOR: I looked back at our house from the bus door.
 
 167
-00:05:27,011 --> 00:05:29,646
-[Continues.]
+00:04:56,410 --> 00:04:59,560
+[From above: every lane of the motorway flowing one way, out of the zone, buses in a long line, police at the on-ramps.]
 
 168
-00:05:27,111 --> 00:05:29,526
-NARRATOR: The numbers kept getting smaller.
+00:04:56,510 --> 00:05:00,215
+NARRATOR: Every lane of the motorway ran one way: out.
 
 169
-00:05:29,796 --> 00:05:32,946
-[The hall TV: a depth gauge, less than one kilometre. ZONE A EVACUATED.]
+00:05:00,485 --> 00:05:03,635
+[A school hall eight kilometres away, outside the zone: rows of camp beds, families, a tea urn, volunteers.]
 
 170
-00:05:29,896 --> 00:05:34,961
-NEWS ANCHOR: The zone is empty, and the power there is off. Do not go back for any reason.
+00:05:00,585 --> 00:05:04,665
+NARRATOR: Forty thousand people left their homes in a day and a half.
 
 171
-00:05:35,231 --> 00:05:38,381
-[Thursday evening. Mum walks in, still in her lanyard, and hugs Ana hard.]
+00:05:04,935 --> 00:05:08,085
+[On the hall’s TV: Mum at the press conference, the new zone behind her.]
 
 172
-00:05:35,331 --> 00:05:38,821
-NARRATOR: Everyone in the zone is out. Your map did that, Ana.
+00:05:05,035 --> 00:05:09,900
+NEWS ANCHOR: Scientists say a tip from a member of the public helped them find the right place.
 
 173
-00:05:39,491 --> 00:05:42,641
-[Ana looks at her brother.]
+00:05:10,170 --> 00:05:12,880
+[Lui elbows Ana.]
 
 174
-00:05:39,591 --> 00:05:42,601
-NARRATOR: Lui found the fish. And Dad found the bump.
+00:05:10,270 --> 00:05:12,760
+NARRATOR: That's you! You're a member of the public!
 
 175
-00:05:42,871 --> 00:05:46,021
-[Mum sits with them on the bench.]
+00:05:13,030 --> 00:05:14,935
+[Then Lui goes quiet.]
 
 176
-00:05:42,971 --> 00:05:47,336
-NARRATOR: Six hundred years ago, people here watched Rangitoto erupt.
+00:05:13,130 --> 00:05:14,815
+NARRATOR: Will our house be okay?
 
 177
-00:05:47,606 --> 00:05:50,756
-[Grey hardened ash on an island shore: a trail of footprints, big and small, and the paw prints of a dog beside them, heading away from the sea.]
+00:05:15,085 --> 00:05:18,170
+[Reverse: ana answers.]
 
 178
-00:05:47,706 --> 00:05:50,996
-NARRATOR: Their footprints are still there, in the hardened ash.
+00:05:15,185 --> 00:05:17,650
+NARRATOR: I don't know, Lui. But we will be.
 
 179
-00:05:51,266 --> 00:05:54,416
-[Continues.]
+00:05:18,320 --> 00:05:20,955
+[Dad crouches by them for a moment, keys in hand.]
 
 180
-00:05:51,366 --> 00:05:55,381
-NARRATOR: Grown-ups, children, and dogs. They didn't run. They walked away.
+00:05:18,420 --> 00:05:20,835
+NARRATOR: I'm going back for another load.
 
 181
-00:05:55,651 --> 00:05:58,611
-[Time-lapse: the sea bubbles, an island rises, lava fountains build a wide gentle cone; centuries roll; it turns green with forest; ferries and picnickers.]
+00:05:21,105 --> 00:05:23,855
+[Reverse: sione answers.]
 
 182
-00:05:55,751 --> 00:05:58,491
-NARRATOR: Rangitoto rose straight out of the sea.
+00:05:21,205 --> 00:05:23,735
+NARRATOR: Look after your brother for me.
 
 183
-00:05:58,761 --> 00:06:01,911
-[Continues.]
+00:05:24,005 --> 00:05:25,985
+[Late. Lui asleep. Ana on the phone, quiet so as not to wake him.]
 
 184
-00:05:58,861 --> 00:06:03,501
-NARRATOR: Today it is covered in forest, and families walk up it on Sundays.
+00:05:24,105 --> 00:05:25,865
+NARRATOR: Mum, what if I'm wrong?
 
 185
-00:06:03,771 --> 00:06:06,821
-[Late night in the hall, lights low. Lui asleep. Mum dozing. Ana awake, watching the high windows. The clock says 11:51.]
+00:05:26,135 --> 00:05:29,285
+[Reverse: ana answers.]
 
 186
-00:06:03,871 --> 00:06:05,836
-NARRATOR: That night, I couldn’t sleep.
+00:05:26,235 --> 00:05:29,585
+NARRATOR: Forty thousand people left because of my map.
 
 187
-00:06:06,971 --> 00:06:10,121
-[Across the dark city: a flash, then a white column of steam and ash punches up from the suburbs, lightning crackling in it.]
+00:05:29,855 --> 00:05:33,005
+[Mum, at her desk, softly.]
 
 188
-00:06:07,071 --> 00:06:09,986
-NARRATOR: At eight minutes to midnight, the ground opened.
+00:05:29,955 --> 00:05:33,510
+NARRATOR: Then they go home on Friday, a bit grumpy.
 
 189
-00:06:10,656 --> 00:06:13,806
-[Ana at the high window, the orange glow outside. Her lips move as she counts.]
+00:05:33,780 --> 00:05:36,930
+[Reverse: mele answers.]
 
 190
-00:06:10,756 --> 00:06:14,621
-NARRATOR: I counted the seconds, the way Dad taught us to with lightning.
+00:05:33,880 --> 00:05:37,045
+NARRATOR: Being wrong that way is fine, love.
 
 191
-00:06:14,891 --> 00:06:17,376
-[Reverse: narrator answers.]
+00:05:37,315 --> 00:05:40,465
+[A police drone over the empty zone: at the end of an empty street, the duck pond in the park is steaming, and the grass around it has cracked.]
 
 192
-00:06:14,991 --> 00:06:16,656
-NARRATOR: One, two, three…
+00:05:37,415 --> 00:05:42,005
+NARRATOR: On Thursday afternoon, a police drone flew over our empty street.
 
 193
-00:06:17,526 --> 00:06:20,536
-[Twenty-three seconds later the windows rattle in their frames with a deep boom. Everyone in the hall wakes.]
+00:05:42,275 --> 00:05:44,910
+[Continues.]
 
 194
-00:06:17,626 --> 00:06:20,416
-NARRATOR: At twenty-three, the boom hit the windows.
+00:05:42,375 --> 00:05:44,790
+NARRATOR: The duck pond in the park was steaming.
 
 195
-00:06:20,686 --> 00:06:23,836
-[Reverse: narrator answers.]
+00:05:45,060 --> 00:05:48,015
+[Mum on the phone at the centre, the earthquake screens almost solid.]
 
 196
-00:06:20,786 --> 00:06:24,651
-NARRATOR: Sound takes twenty-three seconds to travel eight kilometres.
+00:05:45,160 --> 00:05:47,895
+NARRATOR: It's less than a kilometre down now.
 
 197
-00:06:24,921 --> 00:06:28,071
-[A volunteer with a clipboard calls names across the hall; hands go up everywhere.]
+00:05:48,165 --> 00:05:50,745
+[Reverse: mele answers.]
 
 198
-00:06:25,021 --> 00:06:28,461
-NARRATOR: A volunteer read out every name from our street.
+00:05:48,265 --> 00:05:50,625
+NARRATOR: Keep everyone out of the zone.
 
 199
-00:06:28,731 --> 00:06:31,391
-[Reverse: narrator answers.]
+00:05:50,895 --> 00:05:54,045
+[Ana’s notebook, a new page: the depth of the magma, copied from the TV every hour. 5 km, 3 km, 2 km, 1.2 km, 0.8 km.]
 
 200
-00:06:28,831 --> 00:06:31,271
-NARRATOR: Every single person answered.
+00:05:50,995 --> 00:05:54,785
+NARRATOR: At the hall, I wrote down the depth from the TV every hour.
 
 201
-00:06:31,541 --> 00:06:34,691
-[Diagram: magma meets groundwater, a steam explosion, a ring of ash rushing out along the ground. The evacuation line sits beyond it.]
+00:05:55,055 --> 00:05:57,665
+[Continues.]
 
 202
-00:06:31,641 --> 00:06:39,056
-NARRATOR: Where magma meets groundwater, it explodes into steam, and a cloud of ash and rock rushes out across the ground.
+00:05:55,155 --> 00:05:57,545
+NARRATOR: The numbers kept getting smaller.
 
 203
-00:06:39,326 --> 00:06:41,911
-[The surge sweeps empty streets; inside the zone, no one.]
+00:05:57,815 --> 00:06:00,965
+[The hall TV: a depth gauge, less than one kilometre. ZONE A EVACUATED.]
 
 204
-00:06:39,426 --> 00:06:41,791
-NARRATOR: Everyone it reached had already left.
+00:05:57,915 --> 00:06:01,155
+NEWS ANCHOR: The zone is empty, and the power there is off.
 
 205
-00:06:42,061 --> 00:06:44,466
-[The family at the high windows, silhouetted against an orange glow on the horizon. Dad is back. Lui tugs Mum’s sleeve.]
+00:06:01,425 --> 00:06:03,960
+[Continues.]
 
 206
-00:06:42,161 --> 00:06:44,346
-NARRATOR: Is that the park near our house?
+00:06:01,525 --> 00:06:03,840
+NEWS ANCHOR: Do not go back for any reason.
 
 207
-00:06:44,616 --> 00:06:47,766
-[Mum turns to them. Dad looks down at Ana.]
+00:06:04,110 --> 00:06:07,260
+[Thursday evening. Mum walks in, still in her lanyard, and hugs Ana hard.]
 
 208
-00:06:44,716 --> 00:06:47,556
-NARRATOR: Yes. It's right at the end of our street.
+00:06:04,210 --> 00:06:06,675
+NARRATOR: Everyone in the zone is out.
 
 209
-00:06:48,626 --> 00:06:51,776
-[Morning: grey ash falling like snow on cars and roofs across the city; people in masks; planes parked at a closed airport.]
+00:06:07,510 --> 00:06:10,660
+[Reverse: mele answers.]
 
 210
-00:06:48,726 --> 00:06:53,041
-NARRATOR: By morning, ash covered half the city, and the airport was closed.
+00:06:07,610 --> 00:06:11,200
+NARRATOR: Your map did that. I'm so proud of you.
 
 211
-00:06:53,311 --> 00:06:56,461
-[The news over aerial pictures of a smoking crater where a park and a street used to be.]
+00:06:11,870 --> 00:06:13,800
+[Ana looks at her brother.]
 
 212
-00:06:53,411 --> 00:06:58,351
-NEWS ANCHOR: About two hundred homes were destroyed. Nobody inside the zone was hurt.
+00:06:11,970 --> 00:06:13,680
+NARRATOR: Lui found the fish.
 
 213
-00:06:58,621 --> 00:07:01,456
-[Ana on the bench holding the family photo she saved. Dad beside her.]
+00:06:13,950 --> 00:06:16,055
+[Reverse: ana answers.]
 
 214
-00:06:58,721 --> 00:07:00,536
-NARRATOR: Ours was one of them.
+00:06:14,050 --> 00:06:15,935
+NARRATOR: And Dad found the bump.
 
 215
-00:07:01,606 --> 00:07:04,756
-[Dad nods at the hall: Mrs. Kaur with her cat, the neighbours, the kids.]
+00:06:16,205 --> 00:06:19,355
+[Mum sits with them on the bench.]
 
 216
-00:07:01,706 --> 00:07:05,446
-NARRATOR: We lost a house. Look around you. We didn’t lose anyone.
+00:06:16,305 --> 00:06:20,910
+NARRATOR: Six hundred years ago, people here watched Rangitoto erupt.
 
 217
-00:07:05,716 --> 00:07:08,866
-[Time-lapse: night after night a fountain of lava builds a black cone where the park was; a slow tongue of lava creeps down one street; then it goes quiet.]
+00:06:21,180 --> 00:06:24,330
+[Grey hardened ash on an island shore: a trail of footprints, big and small, and the paw prints of a dog beside them, heading away from the sea.]
 
 218
-00:07:05,816 --> 00:07:10,431
-NARRATOR: For two months, it fountained lava every night and built itself a hill.
+00:06:21,280 --> 00:06:24,645
+NARRATOR: Their footprints are still there, in the hardened ash.
 
 219
-00:07:10,701 --> 00:07:12,711
+00:06:24,915 --> 00:06:28,065
 [Continues.]
 
 220
-00:07:10,801 --> 00:07:12,591
-NARRATOR: Then it stopped, for good.
+00:06:25,015 --> 00:06:29,885
+NARRATOR: Grown-ups, children, and dogs. They didn't run. They walked away.
 
 221
-00:07:12,861 --> 00:07:15,921
-[Ana and Mum in hard hats at a safety fence. Beyond it, where Kōwhai Street ran, a grey slope of ash and a steaming crater rim. Half a red letterbox sticks out of the ash.]
+00:06:30,155 --> 00:06:33,115
+[Time-lapse: the sea bubbles, an island rises, lava fountains build a wide gentle cone; centuries roll; it turns green with forest; ferries and picnickers.]
 
 222
-00:07:12,961 --> 00:07:15,801
-NARRATOR: When it was safe, Mum took me to the fence.
+00:06:30,255 --> 00:06:32,995
+NARRATOR: Rangitoto rose straight out of the sea.
 
 223
-00:07:16,071 --> 00:07:19,221
+00:06:33,265 --> 00:06:36,415
 [Continues.]
 
 224
-00:07:16,171 --> 00:07:21,511
-NARRATOR: Our street was under three metres of ash. I could see the top of our letterbox.
+00:06:33,365 --> 00:06:37,955
+NARRATOR: Today it's covered in forest, and families walk up it on Sundays.
 
 225
-00:07:21,781 --> 00:07:24,931
-[A different house, half-unpacked. Ana hangs the family photo on the new wall. Lui bounces on the boxes.]
+00:06:38,225 --> 00:06:41,375
+[Late night in the hall, lights low. Lui asleep. Mum dozing. Ana awake, watching the high windows. The clock says 11:51.]
 
 226
-00:07:21,881 --> 00:07:25,121
-NARRATOR: We moved into a house on the other side of town.
+00:06:38,325 --> 00:06:40,555
+NARRATOR: That night, I couldn't sleep.
 
 227
-00:07:25,391 --> 00:07:27,726
-[Reverse: narrator answers.]
+00:06:41,625 --> 00:06:44,775
+[Across the dark city: a flash, then a white column of steam and ash punches up from the suburbs, lightning crackling in it.]
 
 228
-00:07:25,491 --> 00:07:27,606
-NARRATOR: I hung our photo up first.
+00:06:41,725 --> 00:06:45,465
+NARRATOR: At eight minutes to midnight, the ground opened.
 
 229
-00:07:27,876 --> 00:07:31,026
-[A new garden. Lui feeds two new goldfish in a new pond.]
+00:06:46,135 --> 00:06:49,285
+[Ana at the high window, the orange glow outside. Her lips move as she counts.]
 
 230
-00:07:27,976 --> 00:07:31,866
-NARRATOR: Lui got two new goldfish. He named them Gas and Bump.
+00:06:46,235 --> 00:06:50,240
+NARRATOR: I counted the seconds, the way Dad taught us to with lightning.
 
 231
-00:07:32,136 --> 00:07:35,286
-[A creek again; this time Jaz holds the notebook.]
+00:06:50,510 --> 00:06:52,895
+[Reverse: narrator answers.]
 
 232
-00:07:32,236 --> 00:07:39,501
-NARRATOR: Now schools all over the city test their creeks every week, and send the numbers to the volcano scientists.
+00:06:50,610 --> 00:06:52,175
+NARRATOR: One, two, three…
 
 233
-00:07:39,771 --> 00:07:42,921
-[A year later: the new hill, grass on its slopes, a path to the top. The Tupou family at the rim with a kite; the city all around.]
+00:06:53,045 --> 00:06:56,130
+[Twenty-three seconds later the windows rattle in their frames with a deep boom. Everyone in the hall wakes.]
 
 234
-00:07:39,871 --> 00:07:44,136
-NARRATOR: A year later, the new hill had grass on it, and a path to the top.
+00:06:53,145 --> 00:06:56,010
+NARRATOR: At twenty-three, the boom hit the windows.
 
 235
-00:07:44,406 --> 00:07:47,556
-[A carved wooden sign at the foot of the path, the hill green above it.]
+00:06:56,280 --> 00:06:59,430
+[Reverse: narrator answers.]
 
 236
-00:07:44,506 --> 00:07:48,171
-NARRATOR: Mana whenua, the people of this land, gave it its name.
+00:06:56,380 --> 00:07:00,445
+NARRATOR: Sound takes twenty-three seconds to travel eight kilometres.
 
 237
-00:07:48,441 --> 00:07:51,476
-[Ana at the rim, the notebook open: an old map with her circle, now with the hill drawn in its centre.]
+00:07:00,715 --> 00:07:03,865
+[A volunteer with a clipboard calls names across the hall; hands go up everywhere.]
 
 238
-00:07:48,541 --> 00:07:51,356
-NARRATOR: Auckland has fifty-four volcanoes now.
+00:07:00,815 --> 00:07:04,305
+NARRATOR: A volunteer read out every name from our street.
 
 239
-00:07:51,626 --> 00:07:54,776
-[Continues.]
+00:07:04,575 --> 00:07:07,310
+[Reverse: narrator answers.]
 
 240
-00:07:51,726 --> 00:07:54,741
-NARRATOR: The newest one is where my bedroom used to be.
+00:07:04,675 --> 00:07:07,190
+NARRATOR: Every single person answered.
 
 241
-00:07:56,011 --> 00:07:59,161
-[The hill at sunset, the city lights coming on around it.]
+00:07:07,460 --> 00:07:10,610
+[Diagram: magma meets groundwater, a steam explosion, a ring of ash rushing out along the ground. The evacuation line sits beyond it.]
 
 242
-00:07:56,111 --> 00:08:00,301
-NARRATOR: I study volcanoes now, like Mum. I still keep a notebook.
+00:07:07,560 --> 00:07:15,565
+NARRATOR: Where magma meets groundwater, it explodes into steam, and a cloud of ash and rock rushes out across the ground.
 
 243
-00:08:01,371 --> 00:08:04,521
-[End screen.]
+00:07:15,835 --> 00:07:18,710
+[The surge sweeps empty streets; inside the zone, no one.]
 
 244
-00:08:01,471 --> 00:08:06,211
+00:07:15,935 --> 00:07:18,590
+NARRATOR: Everyone it reached had already left.
+
+245
+00:07:18,860 --> 00:07:21,165
+[The family at the high windows, silhouetted against an orange glow on the horizon. Dad is back. Lui tugs Mum’s sleeve.]
+
+246
+00:07:18,960 --> 00:07:21,045
+NARRATOR: Is that the park near our house?
+
+247
+00:07:21,315 --> 00:07:24,465
+[Mum turns to them. Dad looks down at Ana.]
+
+248
+00:07:21,415 --> 00:07:22,430
+NARRATOR: Yes.
+
+249
+00:07:24,915 --> 00:07:28,065
+[Reverse: mele answers.]
+
+250
+00:07:25,015 --> 00:07:27,780
+NARRATOR: It's right at the end of our street.
+
+251
+00:07:28,850 --> 00:07:32,000
+[Morning: grey ash falling like snow on cars and roofs across the city; people in masks; planes parked at a closed airport.]
+
+252
+00:07:28,950 --> 00:07:33,465
+NARRATOR: By morning, ash covered half the city, and the airport was closed.
+
+253
+00:07:33,735 --> 00:07:36,770
+[The news over aerial pictures of a smoking crater where a park and a street used to be.]
+
+254
+00:07:33,835 --> 00:07:36,650
+NEWS ANCHOR: About two hundred homes were destroyed.
+
+255
+00:07:36,920 --> 00:07:39,980
+[Continues.]
+
+256
+00:07:37,020 --> 00:07:39,860
+NEWS ANCHOR: Nobody inside the zone was hurt.
+
+257
+00:07:40,130 --> 00:07:43,280
+[Ana on the bench holding the family photo she saved. Dad beside her.]
+
+258
+00:07:40,230 --> 00:07:42,410
+NARRATOR: Ours was one of them.
+
+259
+00:07:43,480 --> 00:07:46,320
+[Dad nods at the hall: Mrs. Kaur with her cat, the neighbours, the kids.]
+
+260
+00:07:43,580 --> 00:07:46,200
+NARRATOR: We lost a house. Look around you.
+
+261
+00:07:46,470 --> 00:07:48,680
+[Reverse: sione answers.]
+
+262
+00:07:46,570 --> 00:07:48,560
+NARRATOR: We didn't lose anyone.
+
+263
+00:07:48,830 --> 00:07:51,980
+[Time-lapse: night after night a fountain of lava builds a black cone where the park was; a slow tongue of lava creeps down one street; then it goes quiet.]
+
+264
+00:07:48,930 --> 00:07:53,645
+NARRATOR: For two months, it fountained lava every night and built itself a hill.
+
+265
+00:07:53,915 --> 00:07:56,025
+[Continues.]
+
+266
+00:07:54,015 --> 00:07:55,905
+NARRATOR: Then it stopped, for good.
+
+267
+00:07:56,175 --> 00:07:59,325
+[Ana and Mum in hard hats at a safety fence. Beyond it, where Kōwhai Street ran, a grey slope of ash and a steaming crater rim. Half a red letterbox sticks out of the ash.]
+
+268
+00:07:56,275 --> 00:07:59,215
+NARRATOR: When it was safe, Mum took me to the fence.
+
+269
+00:07:59,485 --> 00:08:02,635
+[Continues.]
+
+270
+00:07:59,585 --> 00:08:05,355
+NARRATOR: Our street was under three metres of ash. I could see the top of our letterbox.
+
+271
+00:08:05,625 --> 00:08:08,775
+[A different house, half-unpacked. Ana hangs the family photo on the new wall. Lui bounces on the boxes.]
+
+272
+00:08:05,725 --> 00:08:08,965
+NARRATOR: We moved into a house on the other side of town.
+
+273
+00:08:09,235 --> 00:08:11,570
+[Reverse: narrator answers.]
+
+274
+00:08:09,335 --> 00:08:11,450
+NARRATOR: I hung our photo up first.
+
+275
+00:08:11,720 --> 00:08:14,870
+[A new garden. Lui feeds two new goldfish in a new pond.]
+
+276
+00:08:11,820 --> 00:08:15,790
+NARRATOR: Lui got two new goldfish. He named them Gas and Bump.
+
+277
+00:08:16,060 --> 00:08:19,210
+[A creek again; this time Jaz holds the notebook.]
+
+278
+00:08:16,160 --> 00:08:23,665
+NARRATOR: Now schools all over the city test their creeks every week, and send the numbers to the volcano scientists.
+
+279
+00:08:23,935 --> 00:08:27,085
+[A year later: the new hill, grass on its slopes, a path to the top. The Tupou family at the rim with a kite; the city all around.]
+
+280
+00:08:24,035 --> 00:08:28,540
+NARRATOR: A year later, the new hill had grass on it, and a path to the top.
+
+281
+00:08:28,810 --> 00:08:31,960
+[A carved wooden sign at the foot of the path, the hill green above it.]
+
+282
+00:08:28,910 --> 00:08:32,815
+NARRATOR: Mana whenua, the people of this land, gave it its name.
+
+283
+00:08:33,085 --> 00:08:36,170
+[Ana at the rim, the notebook open: an old map with her circle, now with the hill drawn in its centre.]
+
+284
+00:08:33,185 --> 00:08:36,050
+NARRATOR: Auckland has fifty-four volcanoes now.
+
+285
+00:08:36,320 --> 00:08:39,470
+[Continues.]
+
+286
+00:08:36,420 --> 00:08:39,535
+NARRATOR: The newest one is where my bedroom used to be.
+
+287
+00:08:40,805 --> 00:08:43,955
+[The hill at sunset, the city lights coming on around it.]
+
+288
+00:08:40,905 --> 00:08:45,175
+NARRATOR: I study volcanoes now, like Mum. I still keep a notebook.
+
+289
+00:08:46,245 --> 00:08:49,395
+[End screen.]
+
+290
+00:08:46,345 --> 00:08:51,115
 NARRATOR: If you had twenty minutes to leave, what would you take? Tell us in the comments.
