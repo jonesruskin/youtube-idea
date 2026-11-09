@@ -31,7 +31,9 @@ export type PropKind =
   | 'dish'
   | 'mic'
   | 'sunDrawing'
-  | 'torchOff';
+  | 'torchOff'
+  | 'sextant'
+  | 'cable';
 
 /** Props drawn at the hand position (origin = hand centre). R = the holder's head radius. */
 export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({kind, R, frame}) => {
@@ -159,6 +161,28 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
           <path d={`M${-R * 0.9},${-R * 0.1} Q0,${R * 0.75} ${R * 0.9},${-R * 0.1} Q0,${R * 0.25} ${-R * 0.9},${-R * 0.1} Z`} fill="#DCE2EA" stroke={ink} strokeWidth={sw} />
           <path d={`M0,${R * 0.3} L0,${-R * 0.55}`} stroke={ink} strokeWidth={sw * 0.8} />
           <circle cx={0} cy={-R * 0.58} r={R * 0.07} fill="#3A3442" />
+        </g>
+      );
+    case 'sextant':
+      // a brass marine sextant: the arc, the index arm, a small telescope, and the spirit level taped to the frame
+      return (
+        <g transform="rotate(-18)">
+          <path d={`M${-R * 0.1},${-R * 0.5} L${R * 0.6},${R * 0.35} A${R * 0.75},${R * 0.75} 0 0 1 ${-R * 0.5},${R * 0.55} Z`} fill="none" stroke="#B8862E" strokeWidth={sw * 1.2} strokeLinejoin="round" />
+          <path d={`M${R * 0.6},${R * 0.35} A${R * 0.75},${R * 0.75} 0 0 1 ${-R * 0.5},${R * 0.55}`} stroke={ink} strokeWidth={sw * 0.5} fill="none" />
+          <path d={`M${-R * 0.1},${-R * 0.5} L${R * 0.1},${R * 0.62}`} stroke="#D9A441" strokeWidth={sw} />
+          <rect x={-R * 0.32} y={-R * 0.12} width={R * 0.5} height={R * 0.14} rx={R * 0.05} fill="#3A3442" stroke={ink} strokeWidth={sw * 0.5} />
+          <rect x={R * 0.14} y={R * 0.12} width={R * 0.3} height={R * 0.1} rx={R * 0.05} fill="#9FE0C8" stroke={ink} strokeWidth={sw * 0.5} />
+          <circle cx={R * 0.29} cy={R * 0.17} r={R * 0.03} fill="#FFFFFF" />
+        </g>
+      );
+    case 'cable':
+      // a heavy coil of black antenna cable over the shoulder, one end trailing behind
+      return (
+        <g>
+          {[0, 1, 2].map((k) => (
+            <ellipse key={k} cx={0} cy={0} rx={R * (0.42 - k * 0.04)} ry={R * (0.5 - k * 0.04)} fill="none" stroke="#1E2128" strokeWidth={sw * 1.4} />
+          ))}
+          <path d={`M${-R * 0.4},${R * 0.2} q${-R * 0.6},${R * 0.6} ${-R * 1.6},${R * 0.9}`} stroke="#1E2128" strokeWidth={sw * 1.2} fill="none" />
         </g>
       );
     case 'mic':

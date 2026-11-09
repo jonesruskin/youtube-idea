@@ -106,6 +106,13 @@ const FILL: Record<string, (v: string, dark: boolean) => [number, string]> = {
   hospital: (v) => [v === 'dark' ? 0.2 : 0, '#FFD3A0'],
   river: () => [0.24, '#FFD8A8'],
   montage: (_v, dark) => [dark ? 0.22 : 0, '#D8E4FF'],
+  // File 002
+  lolaflat: (v) => [v === 'dawn' ? 0.22 : 0, '#FFD9AE'],
+  basement: (v) => [v === 'dawn' ? 0.2 : 0.08, '#FFD9AE'],
+  manilaroof: () => [0.2, '#D8E4FF'],
+  bridge: (v) => [v === 'drift' ? 0.22 : 0.16, '#CFF0E0'],
+  deck: (v) => [v === 'rescued' ? 0.1 : 0.24, '#D8E6FF'],
+  pier: () => [0.18, '#FFF0D8'],
 };
 /**
  * Things that sit in the set rather than in a hand: whatever someone puts down stays where it was put (from the

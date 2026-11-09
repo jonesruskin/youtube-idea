@@ -556,8 +556,22 @@ def amb_key(sh, prev):
             "observatory": "obs_room" if v == "room" else "morning" if v == "dawn" else "wind_lo",
             "hospital": "ward",
             "river": "wind",
+            # File 002
+            "lolaflat": "room_wind" if v in ("cold", "dawn") else "room",
+            "basement": "metro_quiet",
+            "manilaroof": "wind_lo",
+            "bridge": "harbour" if v == "storm" else "room_wind",
+            "deck": "harbour",
+            "coastguard": "room",
+            "pier": "harbour",
         }.get(st, prev)
     if sc_ in ("closeup",):
+        return prev
+    if sc_ == "sea" and v in ("shipstorm",):
+        return "wind"
+    if sc_ == "sea" and v in ("shipdrift", "rescue"):
+        return "harbour"
+    if sc_ == "sea" and v in ("key", "radio", "logbook", "videocall"):
         return prev
     if sc_ == "sky":
         return "wind_lo"
@@ -636,6 +650,54 @@ def add_ambience(mix, tl):
         mix.add("fx", a - 0.2, bed * fade[:, None], 0.55)
     return len(regions)
 
+def morse_beeps(mix, t0, dur, rate=7.0, pitch=760, gain=0.55, seed=3):
+    """A run of Morse-like dits and dahs (a radio tone) from t0 for dur seconds."""
+    r = np.random.default_rng(seed)
+    t = t0
+    while t < t0 + dur:
+        d = 1 / rate * (3 if r.random() < 0.35 else 1)
+        mix.add("fx", t, beep(pitch, d * 0.9, 0.8), gain)
+        t += d + 1 / rate * (3 if r.random() < 0.2 else 1)
+
+def sun02_sfx(mix, tl, shots):
+    """File 002: Morse keys, radio chirps (meteor pings), the bus doors, the storm."""
+    for sh in tl["shots"]:
+        p = sh.get("props") or {}
+        t0 = sh["start"]
+        if sh["scene"] == "sea" and p.get("v") == "key":
+            taps = p.get("taps") or []
+            for i, tt in enumerate(taps):
+                d = 0.32 if i % 3 == 2 else 0.12
+                mix.add("fx", t0 + tt, tick(False, 1.0), 0.7)
+                mix.add("fx", t0 + tt, beep(720, d, 0.8), 0.5)
+        if sh["scene"] == "sea" and p.get("v") == "radio":
+            mix.add("fx", t0, static(sh["end"] - t0, 0.5), 0.5)
+            for tt in p.get("pings") or []:
+                morse_beeps(mix, t0 + tt, 0.5, rate=12, pitch=820, gain=0.8)
+        if sh["scene"] == "sea" and p.get("v") == "logbook" and p.get("mode") == "pings":
+            mix.add("fx", t0, static(sh["end"] - t0, 0.35), 0.4)
+            k = 0
+            t = t0 + 0.4
+            while t < sh["end"] - 0.4:
+                morse_beeps(mix, t, 0.35 + 0.3 * (k % 3), rate=12, pitch=820, gain=0.6, seed=k)
+                t += 1.1 + 0.4 * (k % 2)
+                k += 1
+        if sh["scene"] == "stage":
+            if p.get("chirpAt") is not None and isinstance(p.get("chirpAt"), (int, float)):
+                morse_beeps(mix, t0 + p["chirpAt"], 0.35, rate=12, pitch=820, gain=0.5)
+            if p.get("radioOn") or p.get("radioOnAt") is not None:
+                mix.add("fx", t0, static(sh["end"] - t0, 0.25), 0.3)
+            for a in p.get("acts") or []:
+                if a.get("loop") == "tap" and isinstance(a.get("at"), (int, float)):
+                    morse_beeps(mix, t0 + a["at"], a.get("dur", 1.5), rate=8, pitch=720, gain=0.45, seed=int(a["at"] * 10))
+            if p.get("busGo") is not None:
+                g = p["busGo"]
+                mix.add("fx", t0 + g - 0.1, slam(0.5), 0.6)
+                mix.add("fx", t0 + g + 0.05, whoosh(1.4, 0.8), 0.8)
+    if "storm" in shots:
+        st = shots["storm"]
+        mix.add("fx", st["start"], wind(st["end"] - st["start"] + 6, 1.6, 1.2), 0.9)
+
 def render(tl):
     dur = tl["duration"]
     mix = Mix(dur)
@@ -647,7 +709,8 @@ def render(tl):
                 cur["end"] = s["start"]
             cur = {"cue": s["cue"], "start": s["start"], "end": dur, "shot": s["id"]}
             regions.append(cur)
-    B = shots["lights-out"]["start"]  # the frame the light goes out
+    # the frame the light goes out (File 001: lights-out; File 002: dark-bus)
+    B = next((shots[k]["start"] for k in ("lights-out", "dark-bus") if k in shots), 0.0)
     gate = []
     lines = {l["key"]: l for l in tl["lines"]}
 
@@ -705,9 +768,10 @@ def render(tl):
             mix.add("music", s - 1.0, strings(["D3", "A3", "D4", "Eb4", "A4"], B - s + 1.0, a=2.0, r=0.05, bright=4200), 0.9)
             gate.append((B, B + 1.3))
         elif c == "silence":
-            mix.add("hits", B + 1.35, boom(1.0, 5), 1.0)
-            mix.add("hall", B + 1.45, organ(["D1", "D2", "A2", "D3", "F3"], e - B - 1.3, a=3.0, r=2.5), 1.2)
-            mix.add("hall", B + 2.0, choir(["D4", "F4", "A4"], e - B - 1.8, "oo", a=3, r=2.5), 0.7)
+            b0 = B if s - 0.5 <= B <= e else s  # the blackout, or the start of any later silence
+            mix.add("hits", b0 + 1.35, boom(1.0, 5), 1.0)
+            mix.add("hall", b0 + 1.45, organ(["D1", "D2", "A2", "D3", "F3"], max(1.0, e - b0 - 1.3), a=3.0, r=2.5), 1.2)
+            mix.add("hall", b0 + 2.0, choir(["D4", "F4", "A4"], max(1.0, e - b0 - 1.8), "oo", a=3, r=2.5), 0.7)
         elif c == "title":
             mix.add("hits", s + 0.2, braam("D1", 5, 1.0), 1.0)
             shell_motif(mix, s + 0.25, 0.7, long=L + 1)
@@ -858,7 +922,7 @@ def render(tl):
             mix.add("music", s, strings(["D2", "A2", "D3", "E3", "A3"], L, a=L * 0.6, r=0.1, bright=2400), 0.85)
             mix.add("hits", e - 3.0, riser(3.0, 1.0), 0.9)
             gate.append((e - 0.05, e + 0.35))
-        elif c == "sunrise":
+        elif c in ("sunrise", "triumph"):
             # the Sun comes back: the theme in the major, full, for the first time
             mix.add("hits", s + 0.35, boom(1.0, 5), 1.0)
             mix.add("hall", s + 0.35, organ(["D2", "A2", "D3", "F#3", "A3", "D4"], L, a=1.2, r=3.0), 1.1)
@@ -917,7 +981,7 @@ def render(tl):
                 mix.add("fx", sh["start"] + tt, tick(False, 1.2), 0.9)
                 mix.add("fx", sh["start"] + tt, beep(700, 0.1, 0.8), 0.6)
         # Ito's three knuckle taps (acting loop 'tap'): three small knocks across the loop
-        for a in (p.get("acts") or []):
+        for a in (p.get("acts") or []) if tl["id"] == "sun01" else []:
             if a.get("loop") == "tap" and isinstance(a.get("at"), (int, float)):
                 d = a.get("dur", 1.2)
                 for k in range(3):
@@ -961,6 +1025,8 @@ def render(tl):
         ct = shots["closed-them"]
         mix.add("fx", ct["start"] + 0.45, slat_ripple(1.1, 1.0), 1.0)
 
+    if tl["id"] == "sun02":
+        sun02_sfx(mix, tl, shots)
     print(f"ambience: {add_ambience(mix, tl)} beds", flush=True)
     # per-shot sound effects and whip transitions
     for sh in tl["shots"]:

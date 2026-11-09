@@ -10,6 +10,13 @@ const tl = buildTimeline(episode, voice);
 
 const errors: string[] = [];
 const warnings: string[] = [];
+// per-episode cast settings (defaults are File 001's)
+const MAIN_CAST = episode.mainCast ?? ['you', 'mira', 'ito', 'mum'];
+const NARR = episode.narratorCast ?? 'mira';
+const NARR_NAME = (episode.narratorIs ?? ['Mira'])[0];
+const SPK_CAST: Record<string, string> = episode.speakerCast ?? {KAI: 'you', MIRA: 'mira', ITO: 'ito', MUM: 'mum', MAN: '*'};
+const COATS = episode.coatsFromDay ?? 1;
+const NO_ANGRY = episode.noAngry ?? ['you', 'mira', 'ito'];
 
 // 1. Runtime: 8:00+ unlocks manual mid-rolls. Never pad: 8:00 is a floor, not a target.
 if (tl.duration < 480) errors.push(`Runtime ${formatTimestamp(tl.duration)} is under 8:00 (mid-roll threshold).`);
@@ -105,10 +112,10 @@ if (episode.style === 'cinema') {
     if (s.hud && 'day' in s.hud) day = s.hud.day;
     if (s.thread) continue; // other timelines (1982, a memory) dress for their own day
     for (const c of ((s.props as any)?.cast ?? []) as any[]) {
-      if (!['you', 'mira', 'ito'].includes(c.who)) continue;
+      if (!MAIN_CAST.includes(c.who) || c.who === 'mum') continue;
       const outfit = c.outfit ?? 'home';
-      if (day === 0 && outfit !== 'home') errors.push(`Continuity: ${c.who} wears "${outfit}" before Day 1 in "${s.id}".`);
-      if (day >= 1 && outfit === 'home') errors.push(`Continuity: ${c.who} is still in summer clothes on Day ${day} in "${s.id}".`);
+      if (day < COATS && outfit !== 'home') errors.push(`Continuity: ${c.who} wears "${outfit}" before Day ${COATS} in "${s.id}".`);
+      if (day >= COATS && outfit === 'home') errors.push(`Continuity: ${c.who} is still in summer clothes on Day ${day} in "${s.id}".`);
     }
   }
   // chronology: nothing may show what the episode is hiding before the shot marked `reveal`
@@ -146,7 +153,7 @@ if (episode.style === 'cinema') {
         worn = new Map();
       }
       for (const c of (p.cast ?? []) as any[]) {
-        if (!['you', 'mira', 'ito', 'mum'].includes(c.who)) continue;
+        if (!MAIN_CAST.includes(c.who)) continue;
         const o = c.outfit ?? 'home';
         if (worn.has(c.who) && worn.get(c.who) !== o) errors.push(`Continuity: ${c.who} changes from "${worn.get(c.who)}" to "${o}" mid-scene in "${s.id}".`);
         worn.set(c.who, o);
@@ -165,8 +172,8 @@ if (episode.style === 'cinema') {
       let b = i;
       while (a > 0 && isScene(tl.shots[a - 1]) && ((tl.shots[a - 1].props as any)?.set ?? set) === set) a--;
       while (b < tl.shots.length - 1 && isScene(tl.shots[b + 1]) && ((tl.shots[b + 1].props as any)?.set ?? set) === set) b++;
-      const present = tl.shots.slice(a, b + 1).some((x) => (((x.props as any)?.cast ?? []) as any[]).some((c) => c.who === 'mira'));
-      if (!present) errors.push(`Perspective: "${s.id}" is narrated in the first person but Mira is not in the scene.`);
+      const present = tl.shots.slice(a, b + 1).some((x) => (((x.props as any)?.cast ?? []) as any[]).some((c) => c.who === NARR));
+      if (!present) errors.push(`Perspective: "${s.id}" is narrated in the first person but ${NARR_NAME} is not in the scene.`);
     });
   }
   // letterbox belongs to sequences: an isolated letterboxed shot is ignored by the renderer
@@ -190,7 +197,7 @@ if (episode.style === 'cinema') {
   // ── v4 continuity gates: nothing a person holds may pop in or out ─────────────────────────────
   {
     type Hold = {r?: string; l?: string};
-    const MAIN = ['you', 'mira', 'ito', 'itoYoung', 'itoMid', 'mum', 'biscuit'];
+    const MAIN = [...MAIN_CAST, 'itoYoung', 'itoMid', 'biscuit'];
     const resolve = (at: any, s: any) => {
       if (typeof at === 'number') return at;
       const m = /^l(\d+)([+-][\d.]+)?$/.exec(String(at));
@@ -282,7 +289,7 @@ if (episode.style === 'cinema') {
   }
   // ── v4 presence: nobody vanishes from a spot the next shot's camera can see ──────────────────────
   {
-    const MAIN = ['you', 'mira', 'ito', 'mum', 'biscuit'];
+    const MAIN = [...MAIN_CAST, 'biscuit'];
     let day6 = 0;
     let prev: {key: string; id: string; pos: Map<string, [number, number, number]>} | null = null;
     for (const s of tl.shots as any[]) {
@@ -316,7 +323,7 @@ if (episode.style === 'cinema') {
   }
   // ── v4.1 face gates: expressions follow events, flow across cuts, and nobody watches a big moment blank ──
   {
-    const MAIN = ['you', 'mira', 'ito', 'mum'];
+    const MAIN = MAIN_CAST;
     const SETTLE: Record<string, string> = {surprised: 'alert', scared: 'uneasy'};
     const GROUPS = [
       ['neutral', 'focused', 'determined', 'alert', 'smile', 'sleepy', 'awe'],
@@ -487,7 +494,7 @@ if (episode.style === 'cinema') {
   }
   // ── v4 staging gates: speakers are in the shot; two people talking keep their sides (180° rule) ──
   {
-    const SPK: Record<string, string> = {KAI: 'you', MIRA: 'mira', ITO: 'ito', MUM: 'mum', MAN: '*'};
+    const SPK = SPK_CAST;
     let side = new Map<string, number>();
     let runKey = '';
     let day4 = 0;
@@ -506,7 +513,7 @@ if (episode.style === 'cinema') {
         runKey = key;
         side = new Map();
       }
-      const fam = cast.filter((c) => ['you', 'mira', 'ito', 'mum'].includes(c.who));
+      const fam = cast.filter((c) => MAIN_CAST.includes(c.who));
       for (const a of fam)
         for (const b of fam) {
           if (a.who >= b.who) continue;
@@ -523,8 +530,8 @@ if (episode.style === 'cinema') {
     const cast = ((s.props as any)?.cast ?? []) as any[];
     for (const a of cast) for (const b of cast) if (a !== b && Math.abs(a.y - b.y) < 30 && a.depth !== b.depth) errors.push(`Scale: ${a.who} and ${b.who} stand together at different depths in "${s.id}".`);
     // expressions: the hero and family never look angry
-    for (const c of cast) if (['you', 'mira', 'ito'].includes(c.who) && c.expr === 'angry') errors.push(`Expression: ${c.who} is angry in "${s.id}".`);
-    for (const a of ((s.props as any)?.acts ?? []) as any[]) if (['you', 'mira', 'ito'].includes(a.who) && a.expr === 'angry') errors.push(`Expression: ${a.who} turns angry in "${s.id}".`);
+    for (const c of cast) if (NO_ANGRY.includes(c.who) && c.expr === 'angry') errors.push(`Expression: ${c.who} is angry in "${s.id}".`);
+    for (const a of ((s.props as any)?.acts ?? []) as any[]) if (NO_ANGRY.includes(a.who) && a.expr === 'angry') errors.push(`Expression: ${a.who} turns angry in "${s.id}".`);
     // extras variety: never the same extra twice in a shot
     const ex = cast.filter((c) => String(c.who).startsWith('extra:')).map((c) => c.who);
     if (new Set(ex).size !== ex.length) errors.push(`Extras: duplicate extra in "${s.id}".`);

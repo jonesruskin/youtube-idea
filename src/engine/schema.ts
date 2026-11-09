@@ -26,7 +26,15 @@ export type Speaker =
   | 'MUM'
   | 'MUM_RADIO'
   | 'MAN'
-  | 'SCIENTIST';
+  | 'SCIENTIST'
+  // File 002 onward
+  | 'TOMAS'
+  | 'LOLA'
+  | 'ROSA'
+  | 'ROSA_RADIO'
+  | 'CAPTAIN'
+  | 'OFFICER'
+  | 'CLERK';
 
 export type Line = {
   speaker: Speaker;
@@ -133,6 +141,16 @@ export type Episode = {
   narratorIs?: string[];
   /** Dialogue review ledger (docs/00 D8): every spoken line signed off in context; scripts/dialogue-review.ts. */
   dialogueLedger?: string;
+  /** Cast keys of the principal characters (continuity, staging and face gates). Default: File 001's family. */
+  mainCast?: string[];
+  /** Cast key of the first-person narrator as a child on screen (perspective gate). Default 'mira'. */
+  narratorCast?: string;
+  /** Speaker → cast key, for the "speaker is in the shot" gate. Default: File 001's speakers. */
+  speakerCast?: Record<string, string>;
+  /** First Day on which the main cast must wear cold-weather clothes outdoors and in. Default 1. */
+  coatsFromDay?: number;
+  /** Characters who must never look angry (the family). Default File 001's kids and Ito. */
+  noAngry?: string[];
   shots: Shot[];
 };
 

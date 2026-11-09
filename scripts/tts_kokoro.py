@@ -32,10 +32,23 @@ VOICES = {
     # television: a newsreader and a scientist at a press conference, through a TV speaker
     "ANCHOR": {"voice": "bf_emma", "speed": 0.95, "fx": "tv", "lang": "b"},
     "SCIENTIST": {"voice": "am_adam", "speed": 0.95, "fx": "tv"},
+    # File 002
+    "TOMAS": {"voice": "am_puck", "speed": 1.0, "fx": "boy"},
+    "LOLA": {"voice": "af_kore", "speed": 0.88, "fx": "elder"},
+    "ROSA": {"voice": "af_nova", "speed": 0.95, "fx": None},
+    "ROSA_RADIO": {"voice": "af_nova", "speed": 0.95, "fx": "radio"},
+    "CAPTAIN": {"voice": "am_onyx", "speed": 0.95, "fx": None},
+    "OFFICER": {"voice": "af_jessica", "speed": 0.95, "fx": None},
+    "CLERK": {"voice": "am_eric", "speed": 0.95, "fx": "radio"},
+}
+
+# Per-episode voice overrides (each File has its own narrator)
+EP_VOICES = {
+    "sun02": {"NARRATOR": {"voice": "am_michael", "speed": 0.9, "fx": None}},
 }
 
 # Pronunciation fixes (Kokoro inline phonemes); the script and captions keep normal spelling.
-PRONOUNCE = {"Mira": "[Mira](/mˈɪɹə/)", "Ito": "[Ito](/ˈiːtoʊ/)", "Kai": "[Kai](/kˈaɪ/)"}
+PRONOUNCE = {"Mira": "[Mira](/mˈɪɹə/)", "Ito": "[Ito](/ˈiːtoʊ/)", "Kai": "[Kai](/kˈaɪ/)", "Tomás": "[Tomás](/toʊmˈɑs/)", "Amihan": "[Amihan](/ɑmˈiːhɑn/)", "anak": "[anak](/ˈɑnɑk/)", "Lola": "[Lola](/lˈoʊlə/)", "Luzon": "[Luzon](/luːzˈɔn/)", "Pilar": "[Pilar](/piːlˈɑɹ/)"}
 
 def spoken(text):
     for word, sub in PRONOUNCE.items():
@@ -53,6 +66,8 @@ def ffmpeg_fx(audio, fx):
             af = "rubberband=pitch=1.06:tempo=1.0:formant=preserved,highpass=f=90"
         elif fx == "tv":
             af = "highpass=f=140,lowpass=f=6500,acompressor=threshold=0.15:ratio=4:attack=3:release=80"
+        elif fx == "boy":
+            af = "rubberband=pitch=1.12:tempo=1.0:formant=preserved,highpass=f=110"
         elif fx == "elder":
             af = "rubberband=pitch=0.94:tempo=1.0:formant=preserved,highpass=f=70"
         else:
@@ -97,7 +112,7 @@ def main():
     vmap = {k: v for k, v in vmap.items() if k in live}  # drop lines from older drafts
     made = 0
     for line in tl["lines"]:
-        cfg = VOICES[line["speaker"]]
+        cfg = {**VOICES[line["speaker"]], **EP_VOICES.get(ep, {}).get(line["speaker"], {})}
         h = hashlib.sha1(json.dumps([spoken(line["text"]), cfg]).encode()).hexdigest()[:12]
         rel = f"audio/{ep}/{h}.wav"
         abs_ = os.path.join(ROOT, "public", rel)

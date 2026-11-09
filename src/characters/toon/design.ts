@@ -34,7 +34,7 @@ export type ToonDesign = {
   watch?: boolean;
 };
 
-export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum', ToonDesign> = {
+export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'tomas' | 'lola' | 'rosa' | 'captain' | 'officer', ToonDesign> = {
   you: {
     id: 'you',
     height: 1,
@@ -140,6 +140,95 @@ export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum'
     },
     rim: '#FFB547',
     speaker: 'MUM',
+  },
+  // ── File 002 · Manila ──────────────────────────────────────────────────────────────────────────
+  // Tomás Reyes, 12: the boy File 001 shows missing his bus at 1:51 PM (extra 17's skin, hair and clothes kept, so
+  // both Files match), drawn at his true size: between Mira (8, 0.6) and Kai (16, 1.0)
+  tomas: {
+    id: 'tomas',
+    height: 0.8,
+    head: 0.24,
+    build: 0.85,
+    skin: '#7A4A2E',
+    skinShade: '#5E3620',
+    hair: 'short',
+    hairColor: '#2E1E14',
+    outfits: {
+      home: ['#9A8C98', '#9A8C98', '#3B3B3B', '#2A2A2A'], // grey school polo, dark trousers
+      cold: ['#6D597A', '#6D597A', '#4A5568', '#2A2A2A'], // purple parka (as File 001's Day 365 shot)
+    },
+    rim: '#9FD8FF',
+    speaker: 'TOMAS',
+  },
+  // Lola Pilar Reyes, 76: retired coast-guard radio operator; small, upright, reading glasses, grey bun
+  lola: {
+    id: 'lola',
+    height: 0.86,
+    head: 0.2,
+    build: 0.92,
+    skin: '#B57E56',
+    skinShade: '#93623E',
+    hair: 'bun',
+    hairColor: '#D8D6DC',
+    glasses: true,
+    outfits: {
+      home: ['#C2577A', '#9E3F5E', '#4A4E5C', '#2A2A2A'], // rose blouse
+      cold: ['#7A3A4A', '#5E2A38', '#3A3A44', '#2A2A2A'], // maroon coat
+    },
+    elder: true,
+    rim: '#FFB58A',
+    speaker: 'LOLA',
+  },
+  // Rosa Reyes, 38: Second Officer, merchant navy: white uniform shirt, navy trousers; navy watch jacket in the cold
+  rosa: {
+    id: 'rosa',
+    height: 0.96,
+    head: 0.19,
+    build: 0.98,
+    skin: '#9A6440',
+    skinShade: '#7A4C2E',
+    hair: 'ponytail',
+    hairColor: '#17120F',
+    outfits: {
+      home: ['#F4F1EA', '#D9C38A', '#1F2A44', '#1A1A1A'],
+      cold: ['#22304F', '#D9C38A', '#1F2A44', '#1A1A1A'],
+    },
+    rim: '#FFD08A',
+    speaker: 'ROSA',
+  },
+  captain: {
+    id: 'captain',
+    height: 1.02,
+    head: 0.19,
+    build: 1.15,
+    skin: '#C68A5E',
+    skinShade: '#A56E46',
+    hair: 'short',
+    hairColor: '#8A8890',
+    beard: 'full',
+    outfits: {
+      home: ['#F4F1EA', '#D9C38A', '#1F2A44', '#1A1A1A'],
+      cold: ['#2A3550', '#D9C38A', '#1F2A44', '#1A1A1A'],
+    },
+    rim: '#9FD8FF',
+    speaker: 'CAPTAIN',
+  },
+  // Commander Joy Santos, 45: coast guard; trained under Lola
+  officer: {
+    id: 'officer',
+    height: 0.95,
+    head: 0.19,
+    build: 1.0,
+    skin: '#A87048',
+    skinShade: '#86553A',
+    hair: 'bun',
+    hairColor: '#17120F',
+    outfits: {
+      home: ['#E8EEF4', '#3A5A8A', '#22304F', '#1A1A1A'],
+      cold: ['#22304F', '#3A5A8A', '#22304F', '#1A1A1A'],
+    },
+    rim: '#9FD8FF',
+    speaker: 'OFFICER',
   },
 };
 
