@@ -8,7 +8,7 @@
 //      logline / tags / pinned comment
 // Exit code 1 on any failure.
 import {execSync} from 'node:child_process';
-import {existsSync, readFileSync} from 'node:fs';
+import {existsSync, readFileSync, rmSync} from 'node:fs';
 import {join} from 'node:path';
 import {loadEpisode, ROOT} from './load-episode';
 
@@ -114,6 +114,8 @@ if (!process.argv.includes('--fast')) {
   const {bundle} = await import('@remotion/bundler');
   const {auditText} = await import('./text-safe');
   const serveUrl = await bundle({entryPoint: join(ROOT, 'src/index.ts'), enableCaching: false});
+  // each bundle is ~470 MB in /tmp: remove it when the script ends (21 leaked bundles once filled the disk)
+  process.on('exit', () => rmSync(serveUrl, {recursive: true, force: true}));
   const {errors, samples} = await auditText(serveUrl, id, process.env.REMOTION_BROWSER ?? '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell');
   if (errors.length) fails.push(...errors);
   else ok.push(`text-safe: ${samples} samples, every label visible`);

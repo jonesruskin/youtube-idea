@@ -1,6 +1,6 @@
 // Stills for review: npx tsx scripts/stills.ts <id> <seconds…>  → out/review/<id>/stills/<s>.jpg (half size)
 import {join} from 'node:path';
-import {mkdirSync} from 'node:fs';
+import {mkdirSync, rmSync} from 'node:fs';
 import {bundle} from '@remotion/bundler';
 import {renderStill, selectComposition} from '@remotion/renderer';
 import {ROOT} from './load-episode';
@@ -8,6 +8,8 @@ import {ROOT} from './load-episode';
 const [id, ...secs] = process.argv.slice(2);
 const browserExecutable = process.env.REMOTION_BROWSER ?? '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell';
 const serveUrl = await bundle({entryPoint: join(ROOT, 'src/index.ts'), enableCaching: false});
+// each bundle is ~470 MB in /tmp: remove it when the script ends (21 leaked bundles once filled the disk)
+process.on('exit', () => rmSync(serveUrl, {recursive: true, force: true}));
 const composition = await selectComposition({serveUrl, id, inputProps: {episodeId: id}, browserExecutable});
 const dir = join(ROOT, 'out', 'review', id, 'stills');
 mkdirSync(dir, {recursive: true});

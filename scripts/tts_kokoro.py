@@ -282,6 +282,13 @@ def main():
         print(f"✔ {line['key']:<26} {line['speaker']:<9} {seconds:6.2f}s", flush=True)
     json.dump(vmap, open(map_path, "w"), indent=1)
     print(f"\n{made} line(s) voiced, {len(tl['lines']) - made} cached.")
+    # old takes pile up (every rewrite or delivery change voices a new file): keep only what the map uses
+    used = {os.path.basename(v["file"]) for v in vmap.values()}
+    stale = [f for f in os.listdir(audio_dir) if f.endswith(".wav") and f not in used]
+    for f in stale:
+        os.remove(os.path.join(audio_dir, f))
+    if stale:
+        print(f"pruned {len(stale)} old take(s)")
 
 if __name__ == "__main__":
     main()

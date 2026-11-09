@@ -8,7 +8,7 @@
 // A problem must last ≥ 2 samples (≥ 0.5 s) so text sliding in or out doesn't count.
 // Usage: npx tsx scripts/text-safe.ts sun01   (render.ts runs it before rendering a single chunk)
 import {join} from 'node:path';
-import {mkdirSync, writeFileSync} from 'node:fs';
+import {mkdirSync, writeFileSync, rmSync} from 'node:fs';
 import {bundle} from '@remotion/bundler';
 import {renderFrames, selectComposition} from '@remotion/renderer';
 import {buildTimeline} from '../src/engine/timeline';
@@ -115,6 +115,8 @@ export const auditText = async (serveUrl: string, id: string, browserExecutable:
 if (import.meta.url === `file://${process.argv[1]}`) {
   const id = process.argv[2] ?? 'sun01';
   const serveUrl = await bundle({entryPoint: join(ROOT, 'src/index.ts'), enableCaching: false});
+  // each bundle is ~470 MB in /tmp: remove it when the script ends (21 leaked bundles once filled the disk)
+  process.on('exit', () => rmSync(serveUrl, {recursive: true, force: true}));
   const {errors, samples} = await auditText(serveUrl, id, process.env.REMOTION_BROWSER ?? null);
   for (const e of errors) console.log(`  ✖ ${e}`);
   console.log(errors.length ? `✖ text-safe: ${errors.length} problem(s) in ${samples} samples` : `✔ text-safe: ${samples} samples, every label visible`);
