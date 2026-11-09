@@ -2119,5 +2119,5 @@ export const sun01: Episode = {
   fps: 30,
   style: 'cinema',
   // v5.2 pacing: the performed lines run longer, so dialogue plays shot / reverse and long narration gets two setups
-  shots: autoSplit(shots, {KAI: 'you', MIRA: 'mira', ITO: 'ito', MUM: 'mum'}, [], {sentences: true, characters: true}),
+  shots: autoSplit(shots, {KAI: 'you', MIRA: 'mira', ITO: 'ito', MUM: 'mum'}, ['farm'], {sentences: true, characters: true}),
 };

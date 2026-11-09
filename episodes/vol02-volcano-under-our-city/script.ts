@@ -636,5 +636,5 @@ export const vol02: Episode = {
   costumeByDay: false,
   noAngry: ['ana', 'lui', 'sione', 'mele'],
   dialogueLedger: 'episodes/vol02-volcano-under-our-city/dialogue-review.md',
-  shots: autoSplit(rawShots, {ANA: 'ana', LUI: 'lui', SIONE: 'sione', MELE: 'mele', TEACHER: 'teacher', COLLEAGUE: 'extra:64', JAZ: 'extra:308'}, [], {sentences: true, characters: true}),
+  shots: autoSplit(rawShots, {ANA: 'ana', LUI: 'lui', SIONE: 'sione', MELE: 'mele', TEACHER: 'teacher', COLLEAGUE: 'extra:64', JAZ: 'extra:308'}, [], {sentences: true, characters: true, narrationPush: 'tight'}), // 'tight' = as released (v5.2)
 };

@@ -74,7 +74,7 @@ const splitSentences = (shots: Shot[], characters: boolean): Shot[] =>
     return {...s, lines: [part(raw.slice(0, at), undefined, l0.g), part(raw.slice(at), l0.pause)]} as Shot;
   });
 
-export const autoSplit = (shots0: Shot[], speakerCast: Record<string, string>, skip: string[] = [], opts: {sentences?: boolean; characters?: boolean} = {}): Shot[] => {
+export const autoSplit = (shots0: Shot[], speakerCast: Record<string, string>, skip: string[] = [], opts: {sentences?: boolean; characters?: boolean; narrationPush?: 'tight' | 'gentle'} = {}): Shot[] => {
   const shots = opts.sentences ? splitSentences(shots0, !!opts.characters) : shots0;
   const out: Shot[] = [];
   for (const s of shots) {
@@ -112,7 +112,8 @@ export const autoSplit = (shots0: Shot[], speakerCast: Record<string, string>, s
         const sp = cast.find((c) => c.who === who);
         const x = sp ? sp.x : cam0[cam0.length - 1][2];
         const y = sp ? sp.y - 320 * sp.depth * 0.75 : cam0[cam0.length - 1][3];
-        const z = Math.min(3.2, z0 * 1.12 + 0.15);
+        // a speaker gets a real cut-in; narration over a wide shot only a gentle push (labels near the edges stay in)
+        const z = Math.min(3.2, sp || opts.narrationPush === 'tight' ? z0 * 1.12 + 0.15 : z0 * 1.05 + 0.03);
         out.push({
           id: `${s.id}~${k + 1}`,
           scene: 'stage',
