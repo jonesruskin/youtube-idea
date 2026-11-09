@@ -63,7 +63,7 @@ const shots: Shot[] = [
     action: 'A green, perfectly round young hill rising out of a suburb, houses all around its foot. Kites over the top.',
     lines: [N('Auckland has fifty-four volcanoes. I watched the newest one being born.')],
   }),
-  sh('title', sc('title'), {min: 3.6, cue: 'title', action: 'Title card.', lines: [N('It took four days. This is how it happened.', 0.5)]}),
+  sh('title', sc('title', {titleLines: ['A VOLCANO STARTED GROWING', 'UNDER OUR CITY'], motif: 'volcano'}), {min: 3.6, cue: 'title', action: 'Title card.', lines: [N('It took four days. This is how it happened.', 0.5)]}),
 
   // ══ MONDAY ════════════════════════════════════════════════════════════════════════════════════════
   sh('breakfast', stage('villa', '', move([1.0, 1300, 580], [1.1, 1400, 580]), [c(MM, 1800, 930, {facing: 'left', expr: 'smile', hold: 'bag', pose: 'hold'}), c(LL, 1340, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', expr: 'smile'}), c(AA, 1500, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', outfit: 'home', expr: 'smile'}), c(DD, 1660, 930, {facing: 'left', expr: 'smile'})], [{at: 'l0+0.4', who: MM, look: [-1, 0]}, {at: 2.6, who: MM, to: 2100, dur: 1.4}]), {
@@ -595,7 +595,7 @@ const shots: Shot[] = [
     action: 'The hill at sunset, the city lights coming on around it.',
     lines: [N("I study volcanoes now, like Mum. I still keep a notebook.", 0.8)],
   }),
-  sh('end', sc('end'), {cue: 'end', action: 'End screen.', lines: [N('If you had twenty minutes to leave, what would you take? Tell us in the comments.', 1.0)]}),
+  sh('end', sc('end', {motif: 'volcano', prompt: 'WHAT WOULD YOU TAKE? TELL US BELOW ↓'}), {cue: 'end', action: 'End screen.', lines: [N('If you had twenty minutes to leave, what would you take? Tell us in the comments.', 1.0)]}),
 ];
 
 export const vol02: Episode = {

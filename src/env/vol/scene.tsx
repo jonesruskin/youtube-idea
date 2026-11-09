@@ -109,9 +109,11 @@ export const VolScene: React.FC = () => {
   if (v === 'alert') {
     const evac = p.mode === 'evac';
     return (
-      <Frame frame={frame} bg="#101420" drift={false}>
+      <Frame frame={frame} bg="#101420">
         <rect x={0} y={0} width={W} height={H} fill="#1A2030" />
-        <g transform={`translate(660,${60 + (1 - clamp(t * 3)) * 60})`}>
+        {/* the alert's pulse lights the room */}
+        <circle cx={960} cy={500} r={500 + 60 * Math.sin(frame * 0.4)} fill={evac ? '#C2464F' : '#E8742A'} opacity={0.12 + 0.08 * Math.sin(frame * 0.4)} />
+        <g transform={`translate(660,${60 + (1 - clamp(t * 3)) * 60 + Math.sin(frame * 0.9) * 4}) rotate(${Math.sin(frame * 0.7) * 0.8},300,480)`}>
           <rect x={0} y={0} width={600} height={960} rx={60} fill="#1A1A1E" stroke={INK} strokeWidth={8} />
           <rect x={24} y={60} width={552} height={840} rx={24} fill="#2A3550" />
           <rect x={50} y={150} width={500} height={360} rx={24} fill={evac ? '#C2464F' : '#E8742A'} stroke={INK} strokeWidth={5} />

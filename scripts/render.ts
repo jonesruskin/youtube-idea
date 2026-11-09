@@ -117,8 +117,15 @@ if (cinema) {
   const meas = execSync(`ffmpeg -hide_banner -i "${raw}" -map 0:a -af ebur128=framelog=quiet -f null - 2>&1`, {cwd: ROOT, maxBuffer: 256 * 1024 * 1024}).toString();
   const inI = Number([...meas.matchAll(/I:\s+(-?[\d.]+) LUFS/g)].pop()![1]);
   const gain = (-14 - inI + 0.6).toFixed(2); // +0.6 dB compensates what the limiter shaves off
-  const chain = `aresample=192000,volume=${gain}dB,alimiter=limit=0.794:attack=0.5:release=40:level=disabled,aresample=48000`;
-  run(`ffmpeg -v error -y -i "${raw}" -i "${r(`${id}.srt`)}" -map 0:v -map 0:a -map 1:0 -c:v copy -af "${chain}" -c:a aac -b:a 256k -c:s mov_text -metadata:s:s:0 language=eng -movflags +faststart "${r(`${id}-master.mp4`)}"`);
+  // AAC can overshoot the limiter; measure the encoded true peak and tighten the limiter until it is ≤ −1.2 dBTP.
+  for (const lim of [0.794, 0.708, 0.631, 0.562]) {
+    const chain = `aresample=192000,volume=${gain}dB,alimiter=limit=${lim}:attack=0.5:release=40:level=disabled,aresample=48000`;
+    run(`ffmpeg -v error -y -i "${raw}" -i "${r(`${id}.srt`)}" -map 0:v -map 0:a -map 1:0 -c:v copy -af "${chain}" -c:a aac -b:a 256k -c:s mov_text -metadata:s:s:0 language=eng -movflags +faststart "${r(`${id}-master.mp4`)}"`);
+    const pk = execSync(`ffmpeg -hide_banner -i "${r(`${id}-master.mp4`)}" -map 0:a -af ebur128=peak=true:framelog=quiet -f null - 2>&1`, {cwd: ROOT, maxBuffer: 256 * 1024 * 1024}).toString();
+    const tp = Number([...pk.matchAll(/Peak:\s+(-?[\d.]+) dBFS/g)].pop()?.[1] ?? 0);
+    console.log(`master: limiter ${lim} → true peak ${tp} dBTP`);
+    if (tp <= -1.2) break;
+  }
   unlinkSync(raw);
   // The master stays (Git LFS); a ~90 MB web copy sits beside it for quick viewing.
   const hq = r(`${id}-master.mp4`);

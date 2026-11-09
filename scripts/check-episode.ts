@@ -97,6 +97,17 @@ try {
   }
 }
 
+// 2d · the title and end cards belong to this episode (a File must never open with another File's title)
+if (id !== 'sun01') {
+  const tcard = episode.shots.find((x) => x.scene === 'title');
+  const ecard = episode.shots.find((x) => x.scene === 'end');
+  const tl = (tcard?.props as any)?.titleLines as string[] | undefined;
+  if (!tcard || !tl?.length) fails.push('title card: set props.titleLines (the default is File 001\'s title)');
+  else if (tl.join(' ').toLowerCase().includes('sun went out')) fails.push('title card: shows File 001\'s title');
+  else ok.push(`title card: "${tl.join(' ')}"`);
+  if (!ecard || !(ecard.props as any)?.motif) fails.push('end card: set props.motif (the default is File 001\'s shell)');
+}
+
 // 3 · packaging
 const t = episode.youtubeTitle;
 if (t.length < 50 || t.length > 70) fails.push(`title: "${t}" is ${t.length} characters (50–70)`);

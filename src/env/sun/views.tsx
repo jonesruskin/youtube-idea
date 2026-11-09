@@ -257,19 +257,37 @@ export const TitleScene: React.FC = () => {
   const c = useSetCtx();
   const a = clamp(c.t / 0.8);
   const s = interpolate(c.t, [0, c.dur], [1.06, 1], {easing: ease});
+  // each File passes its own title lines and motif (File 001's are the defaults)
+  const lines = (c.p.titleLines as string[] | undefined) ?? ['THE SUN WENT OUT', 'AT BREAKFAST'];
+  const motif = (c.p.motif as string | undefined) ?? 'sun';
   return (
     <AbsoluteFill style={{background: '#000'}}>
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%">
         <Stars frame={c.frame} count={500} w={W} h={H} seed={88} maxR={2} />
         <g transform={`translate(960,470) scale(${s}) translate(-960,-470)`}>
-          {/* where the Sun was: nothing, just the ghost of its glow fading from the sky (no answers yet) */}
-          <circle cx={960} cy={420} r={330} fill="#FF9E3A" opacity={0.1 * (1 - clamp(c.t / c.dur))} filter="blur(30px)" />
-          <circle cx={960} cy={420} r={150} fill="none" stroke="#FFB13B" strokeWidth={3} strokeDasharray="10 12" opacity={0.35} />
-          <text x={960} y={830} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={120} fill="#F4EFE6" letterSpacing={8} opacity={a}>
-            THE SUN WENT OUT
+          {motif === 'volcano' ? (
+            <g>
+              {/* a young cone in the dark, a red glow at its crater and a plume of steam */}
+              <circle cx={960} cy={430} r={300} fill="#FF6A2A" opacity={0.12} filter="blur(30px)" />
+              <path d="M560,620 Q860,330 960,320 Q1060,330 1360,620 Z" fill="#1A1418" stroke="#FF8A3A" strokeWidth={4} />
+              <ellipse cx={960} cy={326} rx={70} ry={14} fill="#FF7A2A" />
+              {[0, 1, 2, 3].map((i) => {
+                const y = 300 - ((c.frame * 1.2 + i * 60) % 240);
+                return <circle key={i} cx={960 + Math.sin(c.frame * 0.03 + i) * 20} cy={y} r={30 + (300 - y) * 0.25} fill="#D8D0C8" opacity={0.25 * (y / 300)} />;
+              })}
+            </g>
+          ) : (
+            <g>
+              {/* where the Sun was: nothing, just the ghost of its glow fading from the sky (no answers yet) */}
+              <circle cx={960} cy={420} r={330} fill="#FF9E3A" opacity={0.1 * (1 - clamp(c.t / c.dur))} filter="blur(30px)" />
+              <circle cx={960} cy={420} r={150} fill="none" stroke="#FFB13B" strokeWidth={3} strokeDasharray="10 12" opacity={0.35} />
+            </g>
+          )}
+          <text x={960} y={830} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={Math.min(120, Math.floor((1700 / lines[0].length - 8) / 0.9))} fill="#F4EFE6" letterSpacing={8} opacity={a}>
+            {lines[0]}
           </text>
-          <text x={960} y={930} textAnchor="middle" fontFamily={fonts.display} fontWeight={800} fontSize={64} fill="#FFC93C" letterSpacing={14} opacity={a}>
-            AT BREAKFAST
+          <text x={960} y={930} textAnchor="middle" fontFamily={fonts.display} fontWeight={800} fontSize={Math.min(64, Math.floor((1700 / Math.max(1, lines[1].length) - 14) / 0.9))} fill="#FFC93C" letterSpacing={14} opacity={a}>
+            {lines[1]}
           </text>
         </g>
         <Vignette amount={0.6} />
@@ -294,17 +312,28 @@ export const EndScene: React.FC = () => {
     <AbsoluteFill style={{background: '#000'}}>
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%">
         <Stars frame={c.frame} count={500} w={W} h={H} seed={89} maxR={2} />
-        <Shell cx={960} cy={cy} r={r} turn={1} spin={c.frame * 0.006} seam={0.4 + 0.3 * Math.abs(Math.sin(c.frame * 0.15))} frame={c.frame} />
-        {/* the pulses, one, two, three */}
-        {Array.from({length: 3}, (_, i) => {
-          const rr = r * 1.08 + ((c.frame * 4 + i * 160) % 480) * (r / 260);
-          return <circle key={i} cx={960} cy={cy} r={rr} fill="none" stroke="#7FE8FF" strokeWidth={4} opacity={0.35 * (1 - (rr - r * 1.08) / (480 * (r / 260)))} />;
-        })}
+        {c.p.motif === 'volcano' ? (
+          <g>
+            <circle cx={960} cy={cy} r={r * 1.2} fill="#FF6A2A" opacity={0.12} filter="blur(24px)" />
+            <path d={`M${960 - r * 1.4},${cy + r * 0.6} Q${960 - r * 0.3},${cy - r * 0.55} 960,${cy - r * 0.6} Q${960 + r * 0.3},${cy - r * 0.55} ${960 + r * 1.4},${cy + r * 0.6} Z`} fill="#1A1418" stroke="#FF8A3A" strokeWidth={4} />
+            <ellipse cx={960} cy={cy - r * 0.58} rx={r * 0.25} ry={r * 0.05} fill="#FF7A2A" />
+          </g>
+        ) : (
+          <g>
+            <Shell cx={960} cy={cy} r={r} turn={1} spin={c.frame * 0.006} seam={0.4 + 0.3 * Math.abs(Math.sin(c.frame * 0.15))} frame={c.frame} />
+            {/* the pulses, one, two, three */}
+            {Array.from({length: 3}, (_, i) => {
+              const rr = r * 1.08 + ((c.frame * 4 + i * 160) % 480) * (r / 260);
+              return <circle key={i} cx={960} cy={cy} r={rr} fill="none" stroke="#7FE8FF" strokeWidth={4} opacity={0.35 * (1 - (rr - r * 1.08) / (480 * (r / 260)))} />;
+            })}
+          </g>
+        )}
+        {/* no promise of a particular next File: every File is its own story (docs/00 S11) */}
         <text x={960} y={900 - 420 * k} textAnchor="middle" fontFamily={fonts.display} fontWeight={900} fontSize={84 - 18 * k} fill="#F4EFE6" letterSpacing={6} opacity={title}>
-          NEXT FILE · THE REPLY
+          THE BLINK FILES
         </text>
         <text x={960} y={556} textAnchor="middle" fontFamily={fonts.ui} fontWeight={700} fontSize={34} fill="#9FE8FF" letterSpacing={3} opacity={slots}>
-          WHAT WOULD YOU HAVE SENT? TELL US BELOW ↓
+          {(c.p.prompt as string | undefined) ?? 'WHAT WOULD YOU HAVE SENT? TELL US BELOW ↓'}
         </text>
         <g opacity={slots}>
           <text x={570} y={640} textAnchor="middle" fontFamily={fonts.ui} fontWeight={800} fontSize={30} fill="#F4EFE6" letterSpacing={4}>
