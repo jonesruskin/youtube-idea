@@ -3,9 +3,9 @@
 **Title alternates for Test & Compare:** “What If the Sun Went Out? A Family Survives Day 1 to Day 365” · “The Sun Disappeared at 6:52 AM. This Is What Happened Next”
 **Thumbnail text:** IT'S 7 AM.
 **Thumbnails for Test & Compare:** thumbnail-a.png, thumbnail-b.png, thumbnail-c.png (upload all of them; YouTube serves each to a share of viewers and keeps the one with the best watch time)
-**End screen:** the last 12 s (from 15:03) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 15:07 to the end.
-**Runtime:** 15:15
-**Manual mid-roll positions:** 6:02, 9:07 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
+**End screen:** the last 12 s (from 16:39) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 16:43 to the end.
+**Runtime:** 16:51
+**Manual mid-roll positions:** 6:37, 10:09 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
 
 ## Description (paste as-is)
 
@@ -15,18 +15,18 @@ On a summer morning, at 6:52, the Sun goes out. Eight-year-old Mira, her big bro
 If the Sun went out tomorrow, what's the first thing you'd do? Tell us below 👇
 
 0:00 The last morning
-1:14 Hour one
-2:52 The first day
-4:08 Day 1
-4:27 Day 2
-5:00 Day 3
-5:14 Day 7
-6:10 Day 8
-6:55 Day 30
-8:06 Day 40
-8:43 Day 100
-9:21 Day 300
-9:59 Day 365
+1:20 Hour one
+3:05 The first day
+4:36 Day 1
+4:56 Day 2
+5:31 Day 3
+5:45 Day 7
+6:47 Day 8
+7:36 Day 30
+8:59 Day 40
+9:42 Day 100
+10:23 Day 300
+11:03 Day 365
 
 THE BLINK FILES — one impossible year, seen by a different person each time. Every clue is real physics. Subscribe for the next File.
 
