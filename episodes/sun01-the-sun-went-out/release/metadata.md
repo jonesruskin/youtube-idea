@@ -3,9 +3,9 @@
 **Title alternates for Test & Compare:** “What If the Sun Went Out? A Family Survives Day 1 to Day 365” · “The Sun Disappeared at 6:52 AM. This Is What Happened Next”
 **Thumbnail text:** IT'S 7 AM.
 **Thumbnails for Test & Compare:** thumbnail-a.png, thumbnail-b.png, thumbnail-c.png (upload all of them; YouTube serves each to a share of viewers and keeps the one with the best watch time)
-**End screen:** the last 12 s (from 14:50) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 14:54 to the end.
-**Runtime:** 15:02
-**Manual mid-roll positions:** 5:58, 8:58 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
+**End screen:** the last 12 s (from 14:49) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 14:53 to the end.
+**Runtime:** 15:01
+**Manual mid-roll positions:** 5:57, 8:57 (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
 
 ## Description (paste as-is)
 
@@ -18,15 +18,15 @@ If the Sun went out tomorrow, what's the first thing you'd do? Tell us below �
 1:14 Hour one
 2:51 The first day
 4:04 Day 1
-4:24 Day 2
-4:57 Day 3
-5:11 Day 7
-6:06 Day 8
-6:50 Day 30
-8:00 Day 40
-8:36 Day 100
-9:12 Day 300
-9:52 Day 365
+4:23 Day 2
+4:56 Day 3
+5:10 Day 7
+6:05 Day 8
+6:49 Day 30
+7:59 Day 40
+8:35 Day 100
+9:11 Day 300
+9:51 Day 365
 
 THE BLINK FILES — one impossible year, seen by a different person each time. Every clue is real physics. Subscribe for the next File.
 
@@ -41,7 +41,7 @@ THE REAL SCIENCE IN THIS STORY
 (1) Venus near the far side of the Sun: sunlight needs ~361 s to reach it and ~860 s more to cross 1.72 AU back to us, versus 499 s straight from the Sun, so it fades ~12 minutes after the Sun (6:52 → 7:04). — Source: Calculation from 1 AU = 149.6 million km, c = 299,792 km/s, Venus orbit 0.72 AU (NASA JPL planetary fact sheets)
 (2) Jupiter is 5.2 AU from the Sun; light needs ~43 minutes to reach it and ~37 more to reach us when it is 4.5 AU away: about 72 minutes after the Sun. — Source: NASA Jupiter fact sheet (nssdc.gsfc.nasa.gov)
 (3) The Sun’s tide-raising force is about 46% of the Moon’s; at spring tide the two add up, so without the Sun the tidal range would fall by roughly a third. — Source: NOAA Ocean Service, ‘Tides and Water Levels’ tutorial
-(4) Ice floats and insulates the water below it, so seas freeze from the top and stay liquid underneath for a very long time. — Source: National Snow and Ice Data Center, ‘All About Sea Ice’
+(4) Water holds far more heat than air, so the sea cools months more slowly than the land; even when ice forms later, it floats and keeps the water below it liquid. — Source: National Snow and Ice Data Center, ‘All About Sea Ice’; NOAA, ‘Ocean heat content’
 (5) Anything that absorbs starlight must give off waste heat as infrared; this is how astronomers search for Dyson spheres. — Source: Freeman Dyson, ‘Search for Artificial Stellar Sources of Infrared Radiation’, Science (1960)
 (6) Coronal mass ejections take roughly 1 to 4 days to reach Earth, so particles already on their way would still arrive after the light was gone. — Source: NOAA Space Weather Prediction Center, ‘Coronal Mass Ejections’
 (7) Estimates for a sunless Earth: around −18 °C average after a week, around −73 °C after a year. — Source: Live Science, ‘What would happen if the sun disappeared?’
