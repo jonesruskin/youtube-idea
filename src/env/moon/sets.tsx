@@ -15,7 +15,8 @@ import {Boat, F, Flood, HillTown, House, Lamp, MoonDisc, PX, SeaBand, SkyBox, to
  *   moon    the Moon's width, 1 = normal … 3;  moonAt [x, y] to place it (default: over the sea)
  *   line    hill only: 0–1, how much of the white line is painted
  */
-const moonOf = (c: {p: Record<string, any>}, dx = 0, dy = 0): [number, number] => (c.p.moonAt ? c.p.moonAt : [330 + dx, 250 + dy]);
+// default: upper middle-left, clear of the day/place tag in the top-left corner (docs/00 P8: nothing important under a tag)
+const moonOf = (c: {p: Record<string, any>}, dx = 0, dy = 0): [number, number] => (c.p.moonAt ? c.p.moonAt : [760 + dx, 220 + dy]);
 const night = (tod: string, amount = 0.42) => (tod === 'night' ? <Grade color="#31417E" amount={amount} /> : tod === 'dusk' ? <Grade color="#8C6A8E" amount={0.22} /> : null);
 
 // ── QUAY ── floor 930 = 1.6 m. Mean sea level would be at y 930 + 1.6 m.
@@ -38,9 +39,23 @@ registerSet('quay', {
         node: (
           <g>
             {/* the harbour basin to the left of the quay wall: water at its true height, a boat riding on it */}
-            <SeaBand y={Math.max(640, wy)} tod={tod} frame={c.frame} x0={-1400} x1={330} h={1400} />
-            {!c.p.noBoat && <Boat x={-40} y={Math.max(640, wy) + 8} bob={bob} />}
-            <Boat x={-520} y={Math.max(640, wy) + 8} col="#2F6F9F" bob={-bob} s={0.9} />
+            {/* the basin's floor (mud, weed, a lost bicycle), seen when the tide is far out */}
+            <rect x={-1400} y={1240} width={1730} height={1000} fill={tod === 'night' ? '#3A3428' : '#7A6A4E'} />
+            {sea < 0.3 && (
+              <g>
+                <path d="M-1400,1240 Q-900,1210 -500,1236 Q-100,1262 330,1232" stroke="#5A6A3A" strokeWidth={10} fill="none" />
+                <g transform="translate(-260,1236) rotate(-8)" stroke={INK} strokeWidth={6} fill="none">
+                  <circle cx={-44} cy={0} r={30} /><circle cx={44} cy={0} r={30} /><path d="M-44,0 L0,-34 L44,0 M0,-34 L-10,-50" />
+                </g>
+                <g transform="translate(60,1222) rotate(6)">
+                  <rect x={-80} y={-60} width={160} height={70} rx={6} fill="#2B2B2B" stroke={INK} strokeWidth={5} />
+                  <rect x={-70} y={-8} width={140} height={18} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
+                </g>
+              </g>
+            )}
+            <SeaBand y={Math.max(640, Math.min(wy, 1236))} tod={tod} frame={c.frame} x0={-1400} x1={330} h={1400} />
+            {!c.p.noBoat && <Boat x={-40} y={Math.max(640, Math.min(wy, 1236)) + 8} bob={sea < 0.3 ? 0 : bob} aground={sea < 0.3} />}
+            <Boat x={-520} y={Math.max(640, Math.min(wy, 1236)) + 8} col="#2F6F9F" bob={sea < 0.3 ? 0 : -bob} s={0.9} aground={sea < 0.3} />
             {/* the tide gauge: a painted post on the wall, zero at mean sea level, a mark every half metre */}
             <g>
               <rect x={236} y={300} width={64} height={1300} fill="#F4EFE6" stroke={INK} strokeWidth={5} />
@@ -205,7 +220,7 @@ registerSet('hill', {
     const tod = todOf(c.v);
     const sea = (c.p.sea ?? 0.6) as number;
     const k = (c.p.moon ?? 1) as number;
-    const [mx, my] = moonOf(c, -60, -30);
+    const [mx, my] = moonOf(c, 360, 20);
     const line = (c.p.line ?? 0) as number;
     // the sea far below, 16 px per metre until it is within 3 m of the line, then at true scale on the steps
     const near = sea > 32;
@@ -280,7 +295,7 @@ registerSet('hill', {
       ...(near ? [{depth: 1, front: true, node: <Flood y={wy} tod={tod} frame={c.frame} opacity={0.8} x0={-1400} x1={3600} />}] : []),
     ];
   },
-  light: (c) => (todOf(c.v) !== 'day' ? <Glow x={moonOf(c, -60, -30)[0]} y={moonOf(c, -60, -30)[1]} r={500 * (c.p.moon ?? 1)} color="#FFF6C8" opacity={0.22} /> : null),
+  light: (c) => (todOf(c.v) !== 'day' ? <Glow x={moonOf(c, 360, 20)[0]} y={moonOf(c, 360, 20)[1]} r={500 * (c.p.moon ?? 1)} color="#FFF6C8" opacity={0.22} /> : null),
   grade: (c) => (
     <g>
       {night(todOf(c.v), 0.36)}

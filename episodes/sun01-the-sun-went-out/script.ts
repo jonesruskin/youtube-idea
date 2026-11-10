@@ -1524,7 +1524,7 @@ const shots: Shot[] = [
     action: 'Ito, not looking up.',
     lines: [I("(calm) We sent a message like this *ourselves*, once. / In 1974.", 0.3)],
   }),
-  sh('a-picture', stage('surface', 'milky', push(2.8, 3.2, 940, 620), SURF({mira: {facing: 'front', expr: 'focused'}}), [{at: 'l1', who: MI, expr: 'laugh'}], {transmitter: 1380}), {
+  sh('a-picture', stage('surface', 'milky', push(2.3, 2.6, 940, 620), SURF({mira: {facing: 'front', expr: 'focused'}}), [{at: 'l1', who: MI, expr: 'laugh'}], {transmitter: 1380}), {
     cue: 'decode',
     twist: 6,
     beats: ['wow'],

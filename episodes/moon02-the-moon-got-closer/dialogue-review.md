@@ -48,6 +48,8 @@ the line: change a line and it must be re-read. Flagged lines need a written rea
 | `kepler~2:0` | 6d52b68d | NARRATOR · A closer Moon goes round faster: the month was down to twenty-two days. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d60-quay:0` | 0f6e654c | NARRATOR · By Day 60 the tides had doubled. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d60-quay~2:0` | b6a94b59 | NARRATOR · Quay Street was only ours at low water. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `d60-low:0` | 21cb2931 | NARRATOR · And at low tide the sea went out so far, we could see the harbour floor. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `d60-low~2:0` | 4e9e8de1 | NARRATOR · Crabs, bicycles, and somebody's piano. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d60-lifeboat:0` | e7dd738b | NARRATOR · Mum's lifeboat went out eleven times that week. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d60-lifeboat~2:0` | 35434824 | NARRATOR · Mostly for people who had gone back for one more thing. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d60-line:0` | 0b992d14 | WREN · What's the line for? |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
@@ -64,10 +66,15 @@ the line: change a line and it must be re-read. Flagged lines need a written rea
 | `your-column~3:0` | 12a6813e | NARRATOR · She didn't even look up. | referent | ✓ "She" = Nana, who has just answered "Is it." |
 | `d90-hill:0` | c7c2abe2 | NARRATOR · Day 90. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d90-hill~2:0` | 044a580c | NARRATOR · The lighthouse was an island twice a day, and the school moved up the hill. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `d90-world:0` | 7d507806 | NARRATOR · It wasn't just us. Every port on Earth closed. Whole cities moved inland, one street at a time. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `d90-world~2:0` | 9078e0c0 | NARRATOR · In some bays the shape of the coast made it worse. Places that already had big tides got the biggest. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `will-it-hit:0` | 83ea6322 | WREN · Mum? Is it going to hit us? |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `will-it-hit~2:0` | e6471998 | TESS · No, love. I promise you it can't. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `roche:0` | f9b031f9 | NARRATOR · Mum was right. A moon doesn't fall onto its planet. It goes round it. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `roche~2:0` | 53f94723 | NARRATOR · And one that came really close would be pulled to pieces long before it touched. Ours was never going to come anywhere near that. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `d100-fight:0` | d89bc433 | WREN · You care more about that book than about our house! |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `d100-fight~2:0` | 45cccd0b | NANA · The book is how I know what's coming for our house, love. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `d100-silent:0` | 34bd5feb | NARRATOR · I didn't speak to her for three days. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d110-find:0` | ac085c23 | NARRATOR · On Day 110, I found two pages she'd glued together. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d110-sum:0` | 75160aab | NARRATOR · Her sum from Day 9. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d110-sum~2:0` | 78f5a574 | NARRATOR · And at the bottom, the last high tide: thirty-five metres. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
@@ -80,6 +87,9 @@ the line: change a line and it must be re-read. Flagged lines need a written rea
 | `d120-street:0` | 4b86fc13 | NARRATOR · On Day 120, the sea came up Market Street. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d120-window:0` | 250b5f2c | NARRATOR · From the steps, I watched it reach my bedroom window. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d120-window~2:0` | aa86e6eb | NARRATOR · Then I couldn't see my window any more. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `d118-pell:0` | 0be77faf | NARRATOR · The next day, the sea came into the Harbour Board. | repeat | ✓ a time cue after the Day-120 street shots; the Harbour Board was named and shown on Day 10 |
+| `d118-pell~2:0` | 68803ce4 | PELL · It will settle. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `d118-pell~3:0` | 3697f13f | NARRATOR · He still said it. Just quieter. | referent | ✓ "He" = Mr. Pell, who has just said it on screen |
 | `ground:0` | 3dceb39f | NARRATOR · Even the ground rose and fell now. Two metres, twice a day. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `ground~2:0` | df24c492 | NARRATOR · Nobody felt it. Only the cups did. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d150-crowd:0` | ae486878 | WREN · Mr. Pell. This is my Nana's book. Every tide for a hundred and forty years. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
@@ -93,11 +103,14 @@ the line: change a line and it must be re-read. Flagged lines need a written rea
 | `d150-beds:0` | 510947b0 | NARRATOR · Four hundred people slept in the chapel that night. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d150-beds~2:0` | 5729d725 | NARRATOR · Mr. Pell carried the beds. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d160-news:0` | 4f0383f5 | NARRATOR · On Day 160, the scientists finally had a number of their own. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
-| `d160-news~2:0` | dd99b3ae | SCIENTIST · The visitor gets faster with every loop. Around Day 200 it will be fast enough to escape. The Moon should stop at about a hundred and twenty-eight thousand kilometres. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `d160-news~2:0` | 21a7a555 | SCIENTIST · The visitor gets faster with every loop. Around Day 200, it will be fast enough to escape. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `d160-news~3:0` | e0901b5e | SCIENTIST · And the Moon should stop at about a hundred and twenty-eight thousand kilometres. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `your-number:0` | aa618730 | WREN · Nana. That's your number. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `your-number~2:0` | 86ff4efa | NANA · I rounded up. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d180-hill:0` | bfba5cb0 | NARRATOR · By Day 180, the sea was at the churchyard wall, and the Moon was nearly three times as wide. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `last-launch:0` | ea4a1351 | NARRATOR · Mum launched the lifeboat one last time, from a ramp cut into the hill, and brought a family back from the lighthouse. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `names:0` | 6f6cc388 | NARRATOR · That night I saw Nana writing in the book again. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `names~2:0` | 7fda2c45 | NARRATOR · Not the tide. Just our names. All four hundred of them. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `what-if:0` | 301c2c71 | WREN · Nana? What if your sum is wrong? |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `what-if~2:0` | bc8c3755 | NANA · Then we go up one more step, love. And I buy a better pencil. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `d200-wait:0` | cebe1160 | NARRATOR · Day 200. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
@@ -106,7 +119,7 @@ the line: change a line and it must be re-read. Flagged lines need a written rea
 | `d200-line:0` | 484cb981 | NARRATOR · It touched the white line. And it stopped. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `leaves:0` | 530d7bb1 | NARRATOR · That night, the visitor made its last loop. It had stolen all the speed it needed, and it flew off into the dark. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `leaves~2:0` | 7772b7da | NARRATOR · We thought it would take the Moon with it. It didn't. It left the Moon exactly where it was. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
-| `page-one:0` | d499c7b9 | NANA · New book, Wren. Page one. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
+| `page-one:0` | 358ce5f5 | NANA · Your book now, love. Page one. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `page-one~2:0` | b41e0797 | WREN · Day 1. High tide: on time. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `year-later:0` | 6f22cd28 | NARRATOR · We built the town again, above the line. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |
 | `year-later~2:0` | 6efe0549 | NARRATOR · The tide still climbs thirty-five metres, twice a day, and falls back. |  | ✓ read in context: read in context: feeling, stress and beats fit what this person feels here |

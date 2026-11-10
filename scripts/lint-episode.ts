@@ -5,6 +5,7 @@ import {loadEpisode} from './load-episode';
 import {blinkAt, designOf, hashStr} from '../src/characters/toon/acting';
 import {FEELS, type Feel} from '../src/engine/delivery';
 import {HERO_PX} from '../src/characters/toon/design';
+import {afterWalks, cutHeads, frameCamera, isNamed} from '../src/engine/framing';
 
 const id = process.argv[2] ?? 'ep01';
 const {episode, voice} = await loadEpisode(id);
@@ -603,6 +604,15 @@ if (episode.style === 'cinema') {
         };
         check(end, 'end of shot');
         for (const l of s.timedLines ?? []) check(stateAt(l.startInShot + 0.3), 'at a line');
+      }
+      // ── v5.3 head-crop gate (P4: "no cropped heads"): with the engine's framing rules applied (src/engine/framing.ts,
+      // the same code the render uses), no named character's head may be cut by the frame edge. ──
+      {
+        const raw = ((p.cam ?? [[0, 1, 960, 540]]) as any[]);
+        const keys = frameCamera(raw, cast0 as any, (p.acts ?? []) as any);
+        const main = cast0.map((c: any) => c.who).filter(isNamed);
+        const ends = [[keys[0], cast0], [keys[keys.length - 1], afterWalks(cast0 as any, (p.acts ?? []) as any)]] as const;
+        for (const [k, cc] of ends) for (const h of cutHeads(k as any, cc as any, main)) errors.push(`Frame: ${h.who}'s head is cut by the ${h.edge} edge in "${s.id}" and the camera can't slide enough to fix it: reframe the shot.`);
       }
       // a prop taken out or put away on the first frames of a shot is missed: give the eye 0.4 s first
       for (const a of acts) if ((a.take !== undefined || a.put !== undefined) && a.t < 0.4 && MAIN_CAST.includes(a.who)) errors.push(`Props: ${a.who} ${a.take !== undefined ? 'takes' : 'puts away'} ${a.prop} on the cut in "${s.id}" (at ${a.t.toFixed(1)}s): start it at 0.5 s or later so it is seen.`);

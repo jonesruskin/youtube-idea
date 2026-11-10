@@ -3,6 +3,7 @@ import {AbsoluteFill, Easing, interpolate} from 'remotion';
 import {Actors, actorAt, designOf, resolveAt, type Act, type CastEntry} from '../../characters/toon/acting';
 import {HERO_PX} from '../../characters/toon/design';
 import {useShot} from '../../engine/shot-context';
+import {frameCamera} from '../../engine/framing';
 import {HeldProp, type PropKind} from '../../characters/toon/props';
 import {Cine, Plane, ScreenPlane, type CamKey} from '../../fx/cinema/camera';
 
@@ -54,7 +55,7 @@ export const Stage: React.FC = () => {
   if (!def) throw new Error(`Unknown set "${props.set}"`);
   const c = useSetCtx();
   const layers = def.layers(c);
-  const keys = frameFaces((props.cam as CamKey[]) ?? [[0, 1, 960, 540]], (props.cast as CastEntry[]) ?? []);
+  const keys = frameCamera((props.cam as CamKey[]) ?? [[0, 1, 960, 540]], (props.cast as CastEntry[]) ?? [], (props.acts as any[]) ?? []);
   return (
     <AbsoluteFill style={{background: '#000'}}>
       <svg viewBox="0 0 1920 1080" width="100%" height="100%">
@@ -158,25 +159,6 @@ const FaceFill: React.FC<{set: string; v: string; dark: boolean; cast: CastEntry
     </Plane>
   );
 };
-
-/**
- * Close-ups frame faces, not coordinates: any key zoomed in past 1.8× re-centres vertically on the face of the
- * cast member nearest the key's x (so a close-up can never crop a head off, whatever the character's height).
- */
-const faceOf = (c: CastEntry): [number, number] => {
-  if (c.who === 'biscuit') return [c.x + 42 * c.depth * (c.facing === 'left' ? -1 : 1), c.y - 84 * c.depth];
-  const d = designOf(c.who)!;
-  const H = HERO_PX * d.height * c.depth;
-  return [c.x, c.y - H * (1 - d.head)];
-};
-const frameFaces = (keys: CamKey[], cast: CastEntry[]): CamKey[] =>
-  keys.map((k) => {
-    if (k[1] < 1.8 || !cast.length) return k;
-    const near = [...cast].sort((a, b) => Math.abs(a.x - k[2]) - Math.abs(b.x - k[2]))[0];
-    const [, fy] = faceOf(near);
-    const H = near.who === 'biscuit' ? 100 * near.depth : HERO_PX * designOf(near.who)!.height * near.depth;
-    return [k[0], k[1], k[2], fy + H * 0.12, k[4]] as CamKey;
-  });
 
 // ── world scale ─────────────────────────────────────────────────────────────────────────────────
 /**

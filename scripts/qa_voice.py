@@ -43,7 +43,8 @@ def norm(s):
 # Same sounds, different spellings: the ASR model writes American and common spellings for what was said right.
 # Only true homophones of the script's words belong here (the WER gate measures pronunciation, not spelling).
 HOMOPHONES = {"mom": "mum", "moms": "mums", "mommy": "mummy", "anna": "ana", "core": "kaur", "louis": "lui", "louie": "lui",
-              "louis's": "lui's", "louie's": "lui's", "neighbors": "neighbours", "meters": "metres", "kilometers": "kilometres", "gray": "grey"}
+              "louis's": "lui's", "louie's": "lui's", "neighbors": "neighbours", "meters": "metres", "kilometers": "kilometres", "gray": "grey",
+              "key": "quay", "anymore": "any more", "odell": "odile", "odeal": "odile", "ren": "wren"}
 
 def wer(ref, hyp):
     d = [[0] * (len(hyp) + 1) for _ in range(len(ref) + 1)]
@@ -59,7 +60,7 @@ def wer(ref, hyp):
 bad = 0
 # Non-English proper names the English ASR model cannot spell (Māori place and people's words, etc.). Lines that
 # contain them are left out of the WER average and listed for a listening check instead (docs/00 Q3).
-ASR_NAMES = {"vol02": ["kōwhai", "mana whenua", "rangitoto", "motutapu"]}
+ASR_NAMES = {"vol02": ["kōwhai", "mana whenua", "rangitoto", "motutapu"], "moon02": []}
 names = [n.lower() for n in ASR_NAMES.get(ep, [])]
 by_ear = []
 total_ref = total_err = 0

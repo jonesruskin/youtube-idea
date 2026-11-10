@@ -177,7 +177,7 @@ export const House: React.FC<{x: number; y: number; w?: number; i?: number; lit?
         <g>
           <rect x={w * 0.52} y={-400} width={w * 0.42} height={300} fill={lit ? '#FFE6A8' : '#7FA6C4'} stroke={INK} strokeWidth={5} />
           <rect x={w * 0.5} y={-470} width={w * 0.46} height={62} fill={door} stroke={INK} strokeWidth={4} />
-          <text data-text="set" x={w * 0.73} y={-426} textAnchor="middle" fontFamily={F} fontWeight={800} fontSize={34} fill="#FFFFFF">
+          <text data-text="set" x={w * 0.73} y={-426} textAnchor="middle" fontFamily={F} fontWeight={800} fontSize={Math.min(34, (w * 0.42) / (shop.length * 0.62))} fill="#FFFFFF">
             {shop}
           </text>
         </g>

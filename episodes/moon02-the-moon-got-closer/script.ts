@@ -130,7 +130,7 @@ export const rawShots: Shot[] = [
     c(NN, 900, 930, {facing: 'left', expr: 'worried'}),
     c(WR, 1080, 930, {facing: 'left', expr: 'awe'}),
     c(TS, 1290, 930, {facing: 'left', expr: 'smile'}),
-  ], [{at: 'l0+0.4', who: WR, pose: 'point'}], {sea: 1.2, moon: 1.1}), {
+  ], [{at: 'l0+0.4', who: WR, pose: 'point'}], {sea: 1.2, moon: 1.1, moonAt: [600, 330]}), {
     hud: {place: 'QUAY STREET', time: '9:10 PM'},
     timeJump: true,
     beats: ['wow'],
@@ -261,7 +261,7 @@ export const rawShots: Shot[] = [
   }),
 
   // ══ DAY 60 ══════════════════════════════════════════════════════════════════════════════════
-  sh('d60-quay', stage('quay', 'day', push(1.0, 1.1, 900, 540), [], [], {sea: 3.0, moon: 1.3}), {
+  sh('d60-quay', stage('quay', 'day', move([1.0, 1200, 540], [1.2, 820, 520]), [], [], {sea: 3.0, moon: 1.3}), {
     chapter: 'Day 60',
     hud: day(60, 290000),
     timeJump: true,
@@ -269,6 +269,15 @@ export const rawShots: Shot[] = [
     dev: 'tides have doubled; Quay Street is abandoned',
     action: 'High water at noon: the sea stands at the door handles along Quay Street; the fishing boats float level with the windows.',
     lines: [N('(sad) By Day 60 the tides had doubled. / Quay Street was only *ours* at low water.')],
+  }),
+  sh('d60-low', stage('quay', 'day', push(1.15, 1.25, 380, 940, 300, 990), [
+    c(WR, 620, 930, {facing: 'left', expr: 'awe'}),
+    c('extra:35', 820, 930, {facing: 'left', expr: 'surprised'}),
+  ], [{at: 0.5, who: WR, look: [-1, 0.9]}, {at: 'l0+1.4', who: 'extra:35', pose: 'point'}], {sea: -2.4, noStall: true}), {
+    beats: ['laugh', 'wow'],
+    dev: 'low tides fall as far as high tides rise',
+    action: 'Low water. The harbour basin has drained: the boats lie on the mud far below the quay edge. Wren peers over.',
+    lines: [N('(amused) And at low tide the sea went out so far, we could see the *harbour floor*. / Crabs, bicycles, / and somebody\'s piano.')],
   }),
   sh('d60-lifeboat', stage('marketst', 'night', push(1.2, 1.32, 900, 560), [
     c(TS, 760, 930, {facing: 'left', expr: 'determined'}),
@@ -342,6 +351,13 @@ export const rawShots: Shot[] = [
     action: 'From the hill: the lower roofs standing in the sea, the lighthouse alone on its rock, the Moon half as big again.',
     lines: [N('(sad) Day 90. The lighthouse was an island twice a day, / and the school moved up the *hill*.')],
   }),
+  sh('d90-world', moon('world', {moon: 1.5, label: 'EVERY PORT ON EARTH: CLOSED', sub: 'COASTAL CITIES MOVE INLAND', headline: 'THE WORLD MOVES UPHILL'}), {
+    hud: day(92, 245000),
+    dev: 'it is happening to every coast on Earth',
+    science: {text: 'The shape of a bay can multiply a tide: the Bay of Fundy in Canada already has tides of up to 16 metres.', source: 'Canadian Hydrographic Service'},
+    action: 'The news: the whole Earth from space, its oceans pulled into two bulges toward a Moon that is far too close.',
+    lines: [N("(sad) It wasn't just us. Every port on Earth closed. / Whole cities moved inland, *one* street at a time."), N('(awed) In some bays the shape of the coast made it worse. / Places that already had big tides got the *biggest*.')],
+  }),
   sh('will-it-hit', stage('marketst', 'night', push(1.5, 1.65, 1000, 600), [
     c(WR, 900, 930, {facing: 'right', expr: 'scared'}),
     c(TS, 1140, 930, {facing: 'left', expr: 'worried'}),
@@ -361,6 +377,23 @@ export const rawShots: Shot[] = [
   }),
 
   // ══ DAY 110–120 ═════════════════════════════════════════════════════════════════════════════
+  sh('d100-fight', stage('chapelin', 'day', push(1.2, 1.5, 1180, 620, 1100, 600), [
+    c(NN, 1000, 930, {facing: 'right', expr: 'focused', pose: 'hold', hold: 'tideLog'}),
+    c(WR, 1260, 930, {facing: 'left', expr: 'worried'}),
+  ], [{at: 0.3, who: NN, loop: 'tap', dur: 1.2}, {at: 'l0+0.4', who: NN, look: [1, 0]}, {at: 'l1', who: NN, expr: 'sad'}, {at: 'l1+2.2', who: WR, facing: 'right'}, {at: 'l1+2.5', who: WR, to: 1760, dur: 1.4, gait: 'run'}], {moon: 1.6, sea: 5}), {
+    hud: {place: 'THE CHAPEL', time: 'DAY 100'},
+    timeJump: true,
+    beats: ['heart'],
+    dev: 'Wren turns on Nana',
+    action: 'The chapel. Nana writing in the ledger; Wren, wet through from carrying boxes, finally snaps.',
+    lines: [W('(frustrated) You care more about that *book* than about our house!'), NA("(sad) The book is how I know what's *coming* for our house, love.")],
+  }),
+  sh('d100-silent', stage('hill', 'dusk', push(1.3, 1.4, 1500, 600), [c(WR, 1560, 930, {facing: 'left', expr: 'sad', pose: 'sit'})], [{at: 1.0, who: WR, look: [-1, 0.4]}], {sea: 5.2, moon: 1.6, line: 1}), {
+    bridge: 'for three days',
+    beats: ['heart'],
+    action: 'Wren alone on the chapel wall at dusk, looking down at the drowned lower town.',
+    lines: [N("(guilty) I didn't speak to her for three days.")],
+  }),
   sh('d110-find', stage('chapelin', 'night', push(1.3, 1.42, 1200, 600), [
     c(WR, 1260, 930, {facing: 'left', expr: 'focused', pose: 'hold', hold: 'tideLog'}),
   ], [{at: 'l0+1.6', who: WR, expr: 'surprised'}], {moon: 1.75, sea: 6}), {
@@ -414,6 +447,14 @@ export const rawShots: Shot[] = [
     dev: 'Wren watches her own house go under',
     action: 'The top of the steps on Market Street. Wren and Mum look down over the drowned roofs of Quay Street toward No. 3.',
     lines: [N("(grieving) From the steps, I watched it reach my bedroom window. / Then I couldn't see my window any *more*.")],
+  }),
+  sh('d118-pell', stage('marketst', 'day', push(1.2, 1.55, 2200, 600, 2360, 620), [c(PL, 2390, 930, {facing: 'left', expr: 'worried'})], [{at: 'l1+0.4', who: PL, look: [-0.8, 0.6]}], {sea: 7.75, moon: 1.8, car: false}), {
+    hud: {place: 'HARBOUR BOARD', time: 'DAY 121'},
+    timeJump: true,
+    beats: ['laugh'],
+    dev: 'the sea reaches the Harbour Board; Pell still says it will settle',
+    action: 'Market Street by day. The sea is ankle-deep across the doorstep of the Harbour Board; Mr. Pell stands in it in his good shoes.',
+    lines: [N('(dry) The next day, the sea came into the Harbour Board.'), PE('(tired) It will *settle*.'), N('(dry) He still said it. / Just *quieter*.')],
   }),
   sh('ground', stage('chapelin', 'day', push(1.5, 1.95, 560, 720), [], [], {moon: 1.8, sea: 7}), {
     dev: 'the solid ground rises and falls too',
@@ -478,7 +519,7 @@ export const rawShots: Shot[] = [
     bridge: 'On Day 160',
     dev: 'the scientists’ final figure: 128,000 km on about Day 200',
     action: 'The news: the Moon’s shrinking path, and a figure.',
-    lines: [N('(hopeful) On Day 160, the scientists finally had a number of their *own*.'), SCI('(hopeful) The visitor gets faster with every loop. Around Day 200 it will be fast enough to escape. / The Moon should stop at about a hundred and twenty-eight thousand kilometres.')],
+    lines: [N('(hopeful) On Day 160, the scientists finally had a number of their *own*.'), SCI('(hopeful) The visitor gets faster with every loop. / Around Day 200, it will be fast enough to *escape*.'), SCI('(hopeful) And the Moon should stop at about a hundred and twenty-eight thousand *kilometres*.')],
   }),
   sh('your-number', stage('chapelin', 'night', push(1.5, 1.62, 1130, 600), [
     c(NN, 1000, 930, {facing: 'right', expr: 'smile'}),
@@ -510,8 +551,14 @@ export const rawShots: Shot[] = [
     action: 'Mum runs down the steps toward the water, pulling on her gloves. Wren watches her go.',
     lines: [N('(proud) Mum launched the lifeboat one last time, from a ramp cut into the hill, / and brought a family back from the *lighthouse*.')],
   }),
+  sh('names', stage('chapelin', 'night', push(1.5, 1.62, 1000, 620), [c(NN, 1000, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', expr: 'smile', hold: 'tideLog'})], [{at: 0.6, who: NN, loop: 'tap', dur: 2.2}], {moon: 2.7, sea: 27}), {
+    beats: ['heart'],
+    dev: 'what Nana writes now',
+    action: 'Late at night in the chapel. Nana by a lantern, writing in the ledger while four hundred people sleep around her.',
+    lines: [N('(tender) That night I saw Nana writing in the book again. / Not the tide. // Just our names. All four hundred of them.')],
+  }),
   sh('what-if', stage('chapelin', 'night', push(1.5, 1.65, 1130, 600), [
-    c(NN, 1000, 930, {facing: 'right', expr: 'smile'}),
+    c(NN, 1000, 930, {facing: 'right', expr: 'smile', pose: 'hold', hold: 'tideLog'}),
     c(WR, 1260, 930, {facing: 'left', expr: 'scared'}),
   ], [{at: 'l1+1.8', who: WR, expr: 'smile'}], {moon: 2.7, sea: 27}), {
     hud: {place: 'THE CHAPEL', time: 'DAY 199'},
@@ -556,7 +603,7 @@ export const rawShots: Shot[] = [
     beats: ['heart'],
     dev: 'Nana hands the log on',
     action: 'Nana holds the ledger out to Wren.',
-    lines: [NA('(tender) New book, Wren. / Page *one*.'), W('(proud) Day 1. / High tide: on *time*.')],
+    lines: [NA('(tender) Your book now, love. / Page *one*.'), W('(proud) Day 1. / High tide: on *time*.')],
   }),
 
   // ══ CODA ════════════════════════════════════════════════════════════════════════════════════
