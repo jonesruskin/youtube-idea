@@ -61,7 +61,8 @@ the line: change a line and it must be re-read. Flagged lines need a written rea
 | `last-heater:0` | 6cb4c250 | NARRATOR · Two grown men fought over the last electric heater. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
 | `theyll-learn:0` | 53890891 | ITO · Heat won't be the hard part. Food will. |  | ✓ read in context: one sentence of a performed line, split at the sentence for a cut-in on the speaker; feeling and stress carried over |
 | `theyll-learn~2:0` | 772c3257 | ITO · Nothing grows without the Sun. |  | ✓ read in context: one sentence of a performed line, split at the sentence for a cut-in on the speaker; feeling and stress carried over |
-| `hosp-call:0` | cd8ef8af | MUM · Kai! Mira! Oh, there you are. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
+| `hosp-call:0` | c0071be6 | NARRATOR · That evening, at seven, Mum called. |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
+| `hosp-call~2:0` | cd8ef8af | MUM · Kai! Mira! Oh, there you are. |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
 | `apt-answer:0` | 092817ce | KAI · Mum! Are you okay? |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
 | `hosp-bridges:0` | 928dafd6 | MUM · I'm fine, love. I'm so sorry. |  | ✓ read in context: one sentence of a performed line, split at the sentence for a cut-in on the speaker; feeling and stress carried over |
 | `hosp-bridges~2:0` | ad2b4468 | MUM · I have to stay here. They need every nurse. |  | ✓ read in context: one sentence of a performed line, split at the sentence for a cut-in on the speaker; feeling and stress carried over |
@@ -102,7 +103,7 @@ the line: change a line and it must be re-read. Flagged lines need a written rea
 | `seal-room:0` | b91434de | NARRATOR · Mr. Ito showed us how to keep one room warm. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
 | `candles:0` | f8fe07e6 | NARRATOR · That night, Kai pretended he wasn't scared. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
 | `hand:0` | 29f58381 | NARRATOR · He was holding my hand too hard. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
-| `smoke:0` | 259ed1ec | NARRATOR · Then we smelled smoke. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
+| `smoke:0` | fd2110a1 | NARRATOR · Then, out on the stairs, we smelled smoke. |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
 | `furniture:0` | 77d98d98 | ITO · Next door's heating is off too. |  | ✓ read in context: one sentence of a performed line, split at the sentence for a cut-in on the speaker; feeling and stress carried over |
 | `furniture~2:0` | 8b9a8669 | ITO · They're burning furniture. Indoors! |  | ✓ read in context: one sentence of a performed line, split at the sentence for a cut-in on the speaker; feeling and stress carried over |
 | `invisible:0` | 6dbed2f5 | ITO · Everyone out! |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
@@ -192,13 +193,16 @@ the line: change a line and it must be re-read. Flagged lines need a written rea
 | `counting~3:0` | baace84f | KAI · Three! |  | ✓ read in context: one sentence of a performed line, split at the sentence for a cut-in on the speaker; feeling and stress carried over |
 | `pulses:0` | 3701fffe | NARRATOR · Then it didn't stop. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
 | `hundreds:0` | 34f05ccd | KAI · That's not three. That's hundreds. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
-| `1679:0` | 4b2a0f20 | ITO · One thousand, six hundred and seventy-nine. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
-| `a-lot:0` | a879e2c6 | KAI · Why that exact number? |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
-| `primes:0` | b8720904 | ITO · Because it's twenty-three times seventy-three. And nothing else. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
-| `primes-1974:0` | 779dc232 | ITO · We used the same trick ourselves, in 1974, to send a picture into space. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
-| `a-picture:0` | 0ff5fd94 | MIRA · Like squares on graph paper. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
+| `1679:0` | fcc08d32 | ITO · It's stopped. And listen: they come in rows. |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
+| `1679~2:0` | 8a8cfb49 | ITO · Every row is the same length. |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
+| `a-lot:0` | bf1c85a0 | KAI · Rows of what? |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
+| `primes:0` | 236591db | ITO · Loud beeps and soft beeps. |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
+| `primes~2:0` | 29740eae | ITO · Like squares that are filled in, or left empty. |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
+| `primes-1974:0` | 0f24197f | ITO · We sent a message like this ourselves, once. |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
+| `primes-1974~2:0` | 45263315 | ITO · In 1974. |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
+| `a-picture:0` | 73a63ba2 | MIRA · Filled squares and empty squares? That's just graph paper. |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
 | `a-picture~2:0` | 71a8a227 | MIRA · It's a picture! |  | ✓ read in context: one sentence of a performed line, split at the sentence for a cut-in on the speaker; feeling and stress carried over |
-| `decode:0` | d1e5bc06 | ITO · Twenty-three across. Seventy-three down. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
+| `decode:0` | 809d6220 | ITO · Row by row. Let's see it. |  | ✓ read in context: re-read after the v5.3 rewrite (plain words, spoken bridge or cut-in); feeling and stress fit the moment |
 | `reply-count:0` | 313fb293 | NARRATOR · At the top: counting, from one to ten. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
 | `reply-them:0` | 9024cd5d | NARRATOR · Then one of them. And one of us, beside them, much smaller. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |
 | `reply-home:0` | 2d3292fa | NARRATOR · Their star. And their ship, parked beside our Sun. |  | ✓ read in context (v5.2 feeling pass): says what the speaker feels here, stress on the word that carries it |

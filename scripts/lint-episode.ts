@@ -579,6 +579,7 @@ if (episode.style === 'cinema') {
         };
         const check = (st: ReturnType<typeof stateAt>, when: string) => {
           for (const a of fam(st)) {
+            if (cast0.find((c) => c.who === a.who)?.carriedBy) continue; // a piggyback rider sits above their carrier
             const ga = geo(a.who);
             if (!ga) continue;
             for (const b of st) {
@@ -589,8 +590,8 @@ if (episode.style === 'cinema') {
               const ay = ga.y - ga.H + ga.r;
               const by = gb.y - gb.H + gb.r;
               const dist = Math.hypot(a.x - b.x, ay - by);
-              const behindBody = ay > by + gb.r && ay < gb.y && Math.abs(a.x - b.x) < 0.7 * ga.r + 0.45 * gb.r;
-              if (dist < 0.98 * (ga.r + gb.r) || behindBody) {
+              const behindBody = ay > by + gb.r && ay < gb.y && Math.abs(a.x - b.x) < 0.95 * ga.r + 0.55 * gb.r;
+              if (dist < 1.12 * (ga.r + gb.r) || behindBody) { // 1.12: hair and hoods reach past the head circle
                 errors.push(`Face: ${a.who}'s face is behind ${b.who} in "${s.id}" (${when}; ${Math.round(Math.abs(a.x - b.x))} px apart): move them apart or list ${a.who} after ${b.who}.`);
                 return;
               }

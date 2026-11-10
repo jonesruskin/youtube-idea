@@ -255,7 +255,7 @@ const shots: Shot[] = [
   }),
   sh('knock', stage('apartment', 'door', push(1.3, 1.45, 1250, 620), [c(MI, 860, 930, {facing: 'right', expr: 'scared'}), c(Y, 1000, 930, {facing: 'right', expr: 'worried'})], [
     {at: 0.5, who: Y, look: [1, 0], expr: 'surprised'},
-    {at: 'l0+0.9', who: Y, to: 1420, dur: 1.0},
+    {at: 'l0+0.9', who: Y, to: 1385, dur: 1.0},
     {at: 'l0+1.9', who: Y, pose: 'reach', keep: true},
   ], {frosty: false, knock: true, doorOpenAt: 'l0+2.1'}), {
     min: 3.6,
@@ -265,7 +265,7 @@ const shots: Shot[] = [
   }),
   sh('ito-door', stage('apartment', 'door', push(1.45, 1.6, 1230, 600), [
     c(MI, 860, 930, {facing: 'right', expr: 'scared'}),
-    c(Y, 1420, 930, {facing: 'right', expr: 'surprised', pose: 'reach'}),
+    c(Y, 1385, 930, {facing: 'right', expr: 'surprised', pose: 'reach'}),
     c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', outfit: 'home', expr: 'determined'}),
   ], [{at: 0.4, who: Y, pose: 'stand'}, {at: 'l0+0.4', who: MI, look: [1, -0.3]}], {frosty: false, doorOpen: true}), {
     dev: 'Mr. Ito arrives, already prepared: Mum phoned him from the hospital',
@@ -274,22 +274,22 @@ const shots: Shot[] = [
   }),
   sh('shoes-on', stage('apartment', 'door', push(1.7, 1.9, 1250, 600), [
     c(MI, 860, 930, {facing: 'right', expr: 'uneasy'}),
-    c(Y, 1420, 930, {facing: 'right', expr: 'worried'}),
+    c(Y, 1385, 930, {facing: 'right', expr: 'worried'}),
     c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', outfit: 'home', expr: 'focused'}),
   ], [{at: 'l0+0.3', who: Y, look: [-1, 0.6]}], {frosty: false, doorOpen: true}), {
     action: 'Ito, calm, nods at their bare feet.',
     lines: [I("(firm) Put your shoes on, please. / *Both* of you.")],
   }),
-  sh('from-upstairs', stage('apartment', 'door', push(2.3, 2.5, 1560, 600), [c(Y, 1420, 930, {facing: 'right', expr: 'worried'}), c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', outfit: 'home', expr: 'neutral'})], [{at: 'l0+0.8', who: IT, look: [-0.6, 0.2]}], {frosty: false, doorOpen: true}), {
+  sh('from-upstairs', stage('apartment', 'door', push(2.3, 2.5, 1560, 600), [c(Y, 1385, 930, {facing: 'right', expr: 'worried'}), c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', outfit: 'home', expr: 'neutral'})], [{at: 'l0+0.8', who: IT, look: [-0.6, 0.2]}], {frosty: false, doorOpen: true}), {
     action: 'Close on Ito, calm in the torchlight.',
     lines: [N("(warm) Mr. Ito, from upstairs. / He was seventy-three, and he was *never* in a hurry.")],
   }),
-  sh('packed', stage('apartment', 'door', push(2.4, 2.7, 1560, 800, 1540, 840), [c(Y, 1420, 930, {facing: 'right', expr: 'worried'}), c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', outfit: 'home'})], [{at: 0.3, who: IT, look: [-0.4, 0.4]}], {frosty: false, doorOpen: true}), {
+  sh('packed', stage('apartment', 'door', push(2.4, 2.7, 1560, 800, 1540, 840), [c(Y, 1385, 930, {facing: 'right', expr: 'worried'}), c(IT, 1590, 930, {facing: 'left', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', outfit: 'home'})], [{at: 0.3, who: IT, look: [-0.4, 0.4]}], {frosty: false, doorOpen: true}), {
     action: 'Close on the canvas bag in his hand: worn straps, a luggage tag, packed tight.',
     dev: 'his bag has been packed for years: he was expecting something',
     lines: [N("(wistful) His bag was *already* packed. / It had been packed for *years*.")],
   }),
-  sh('and-the-dog', stage('apartment', 'door', push(2.4, 2.7, 1500, 560), [c(Y, 1420, 930, {facing: 'right', expr: 'worried'}), c(IT, 1590, 930, {facing: 'left', outfit: 'home', pose: 'relaxed', hold: 'torchOff', expr: 'smile', holdL: 'bag'}), c(B, 1300, 930, {hold: 'toast'})], [
+  sh('and-the-dog', stage('apartment', 'door', push(2.4, 2.7, 1500, 560), [c(Y, 1385, 930, {facing: 'right', expr: 'worried'}), c(IT, 1590, 930, {facing: 'left', outfit: 'home', pose: 'relaxed', hold: 'torchOff', expr: 'smile', holdL: 'bag'}), c(B, 1300, 930, {hold: 'toast'})], [
     {at: 'l0+0.4', who: B, pose: 'beg', wag: 1},
   ], {frosty: false, doorOpen: true}), {
     beats: ['laugh'],
@@ -1178,7 +1178,7 @@ const shots: Shot[] = [
     {at: 0, who: MU, to: 1200, dur: 1.4},
     {at: 1.3, who: MU, put: 'floor', prop: 'bag'},
     {at: 0.4, who: MI, to: 1065, gait: 'run', dur: 0.9, expr: 'laugh'},
-    {at: 0.6, who: Y, to: 1350, gait: 'run', dur: 1.3, expr: 'laugh'},
+    {at: 0.6, who: Y, to: 1380, gait: 'run', dur: 1.3, expr: 'laugh'},
     {at: 1.95, who: Y, facing: 'left'},
     {at: 1.4, who: MI, pose: 'hug'},
     {at: 2.0, who: MU, pose: 'hug'},
@@ -1190,11 +1190,11 @@ const shots: Shot[] = [
     action: 'A woman in a navy coat over nurse’s scrubs walks along the platform with her bag, past the new CLINIC sign. She sets the bag down. Mira and Kai run.',
     lines: [M("(joyful) *Mum*!"), N("(joyful) And then / she was *home*.", 0.8)],
   }),
-  sh('mum-thanks', stage('metro', 'city', push(2.2, 2.4, 1290, 620), [c(MI, 1065, 900, {outfit: 'cold', facing: 'right', expr: 'smile'}), c(MU, 1200, 900, {outfit: 'cold', facing: 'right', expr: 'smile'}), c(Y, 1350, 900, {outfit: 'cold', facing: 'left', expr: 'smile'}), c(IT, 1540, 900, {outfit: 'cold', facing: 'left', expr: 'smile'})], [{at: 'l0+1.0', who: IT, look: [-1, 0.3]}], {clinic: true, items: [{prop: 'bag', x: 1250, y: 862}]}), {
+  sh('mum-thanks', stage('metro', 'city', push(2.2, 2.4, 1290, 620), [c(MI, 1065, 900, {outfit: 'cold', facing: 'right', expr: 'smile'}), c(MU, 1200, 900, {outfit: 'cold', facing: 'right', expr: 'smile'}), c(Y, 1380, 900, {outfit: 'cold', facing: 'left', expr: 'smile'}), c(IT, 1575, 900, {outfit: 'cold', facing: 'left', expr: 'smile'})], [{at: 'l0+1.0', who: IT, look: [-1, 0.3]}], {clinic: true, items: [{prop: 'bag', x: 1250, y: 862}]}), {
     action: 'Mum turns to Ito, who has kept the children safe for a month.',
     lines: [MUM("(grateful) Thank you. / For keeping them *alive*. / For looking after them, / all this *time*.")],
   }),
-  sh('they-kept-me', stage('metro', 'city', push(2.8, 3.0, 1450, 600), [c(MU, 1200, 900, {outfit: 'cold', facing: 'right', expr: 'smile'}), c(Y, 1350, 900, {outfit: 'cold', facing: 'left', expr: 'smile'}), c(IT, 1540, 900, {outfit: 'cold', facing: 'left', expr: 'smile'})], [{at: 'l0+0.8', who: IT, look: [-0.8, 0.6]}], {clinic: true, items: [{prop: 'bag', x: 1250, y: 862}]}), {
+  sh('they-kept-me', stage('metro', 'city', push(2.8, 3.0, 1450, 600), [c(MU, 1200, 900, {outfit: 'cold', facing: 'right', expr: 'smile'}), c(Y, 1380, 900, {outfit: 'cold', facing: 'left', expr: 'smile'}), c(IT, 1575, 900, {outfit: 'cold', facing: 'left', expr: 'smile'})], [{at: 'l0+0.8', who: IT, look: [-0.8, 0.6]}], {clinic: true, items: [{prop: 'bag', x: 1250, y: 862}]}), {
     beats: ['heart'],
     action: 'Ito, quietly.',
     lines: [I("(tender) No. // *They* kept me alive.", 0.4)],
@@ -1338,8 +1338,8 @@ const shots: Shot[] = [
     c('extra:36', 400, 900, {outfit: 'cold', facing: 'front', expr: 'surprised'}),
     c(MI, 760, 900, {outfit: 'cold', facing: 'front', expr: 'surprised'}),
     c(Y, 880, 900, {outfit: 'cold', facing: 'front', expr: 'surprised'}),
-    c(MU, 1030, 900, {outfit: 'cold', facing: 'front', expr: 'surprised'}),
-    c('extra:37', 1240, 900, {outfit: 'cold', facing: 'front'}),
+    c(MU, 1060, 900, {outfit: 'cold', facing: 'front', expr: 'surprised'}),
+    c('extra:37', 1270, 900, {outfit: 'cold', facing: 'front'}),
   ], [
     {at: 'l0+0.4', who: MI, pose: 'cheer', expr: 'laugh'},
     {at: 'l0+0.6', who: 'extra:37', pose: 'armsUp', expr: 'laugh'},
@@ -1683,11 +1683,10 @@ const shots: Shot[] = [
     lines: [I("(guilty) I don't *know*.", 0.8)],
   }),
   sh('sorry', stage('surface', 'milky', push(1.9, 2.1, 1100, 630), SURF({mira: {expr: 'sad'}, ito: {pose: 'holdBoth', expr: 'sad'}}), [
-    {at: 0.2, who: MI, to: 965, dur: 0.5},
     {at: 'l0', who: MI, pose: 'reach'},
   ], {transmitter: 1380}), {
     beats: ['heart'],
-    action: 'Mira steps toward him and reaches out.',
+    action: 'Mira reaches out to him.',
     lines: [I("(grieving) I'm so *sorry*, Mira.", 1.0), M("(tender) It's okay. / You didn't *know*.")],
   }),
   sh('empty-square', sc('closeup', {v: 'reply', focus: true}), {
