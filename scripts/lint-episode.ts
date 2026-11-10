@@ -398,6 +398,16 @@ if (episode.style === 'cinema') {
       }
       const big = s.twist || (s.beats ?? []).some((b: string) => ['wow', 'heart', 'loop'].includes(b)) || s.dev;
       if (big) for (const [who, e] of start) if (e === 'neutral' && !acted.has(who) && (p.cast as any[]).length > 1) errors.push(`Face: ${who} watches "${s.id}" with a blank face; give them the scene's feeling.`);
+      // crowd: an extra keeps the room's feeling. If every named character ends the shot happy, no extra may still be
+      // worried or scared (moon02 page-one: a townsperson stayed worried while the whole town smiled)
+      {
+        const endFace = new Map<string, string>(((p.cast ?? []) as any[]).map((c) => [String(c.who), c.expr ?? 'neutral']));
+        for (const a of ((p.acts ?? []) as any[]).sort((x, y) => resolveT(x.at, s) - resolveT(y.at, s))) if (a.expr && endFace.has(String(a.who))) endFace.set(String(a.who), a.expr);
+        const named = [...endFace].filter(([w]) => !String(w).startsWith('extra:') && !String(w).startsWith('biscuit'));
+        const HAPPY = ['smile', 'laugh', 'relieved'];
+        if (named.length > 1 && named.every(([, e]) => HAPPY.includes(e as string)))
+          for (const [w, e] of endFace) if (String(w).startsWith('extra:') && ['worried', 'scared', 'sad'].includes(e as string)) errors.push(`Face: ${w} is still ${e} in "${s.id}" while everyone else is happy; give the crowd the room's feeling.`);
+      }
       prev = {key, id: s.id, end};
     }
   }

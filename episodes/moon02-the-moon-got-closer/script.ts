@@ -43,7 +43,7 @@ const day = (d: number, km: number) => ({day: d, km, of: 200});
 const sc = (scene: string, props: Record<string, unknown> = {}) => ({scene, props});
 /** Day 200: the town along the top step, behind the line. */
 const TOWN = (o: Record<string, object> = {}) => [
-  c('extra:21', 760, 930, {facing: 'left', expr: 'worried', outfit: 'cold'}),
+  c('extra:21', 760, 930, {facing: 'left', expr: 'worried', outfit: 'cold', ...o.extra}),
   c(PL, 980, 930, {facing: 'left', expr: 'worried', ...o.pell}),
   c(WR, 1200, 930, {facing: 'left', expr: 'worried', ...o.wren}),
   c(NN, 1400, 930, {facing: 'left', expr: 'focused', pose: 'hold', hold: 'tideLog', ...o.nana}),
@@ -599,7 +599,7 @@ export const rawShots: Shot[] = [
     action: 'From above: something small leaves its last loop and flies off the edge of the picture. The Moon goes on round its new, small path.',
     lines: [N('(awed) That night, the visitor made its last loop. It had stolen all the speed it needed, / and it flew off into the *dark*.'), N("(wistful) We thought it would take the Moon with it. / It didn't. It left the Moon exactly where it *was*.")],
   }),
-  sh('page-one', stage('hill', 'night', push(1.5, 1.65, 1300, 600), TOWN({wren: {facing: 'right', expr: 'smile'}, nana: {expr: 'smile'}, pell: {expr: 'smile', facing: 'right'}, tess: {expr: 'smile'}}), [{at: 'l0+1.6', who: NN, give: WR, prop: 'tideLog'}, {at: 'l1', who: WR, expr: 'laugh'}], {sea: 34.97, moon: 3, line: 1, chapelLit: true}), {
+  sh('page-one', stage('hill', 'night', push(1.5, 1.65, 1300, 600), TOWN({wren: {facing: 'right', expr: 'smile'}, nana: {expr: 'smile'}, pell: {expr: 'smile', facing: 'right'}, tess: {expr: 'smile'}, extra: {expr: 'smile'}}), [{at: 'l0+1.6', who: NN, give: WR, prop: 'tideLog'}, {at: 'l1', who: WR, expr: 'laugh'}], {sea: 34.97, moon: 3, line: 1, chapelLit: true}), {
     beats: ['heart'],
     dev: 'Nana hands the log on',
     action: 'Nana holds the ledger out to Wren.',
