@@ -345,7 +345,7 @@ export const MoonScene: React.FC = () => {
         <Earth x={820} y={540} r={250} bulge={0.09} ang={-18} />
         <MoonDisc x={1500 + Math.cos(a) * 20} y={330 + Math.sin(a) * 20} k={(p.moon as number) ?? 2} base={60} tod="night" />
         <Label x={1010} y={200} t={(p.label as string) ?? 'EVERY PORT ON EARTH: CLOSED'} s={42} c="#FFE08A" />
-        <Label x={820} y={HEADLINE ? 828 : 900} t={(p.sub as string) ?? ''} s={32} />
+        <Label x={HEADLINE ? 1010 : 820} y={HEADLINE ? 252 : 900} t={(p.sub as string) ?? ''} s={32} />
       </Frame>
     );
   }
