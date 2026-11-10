@@ -49,12 +49,18 @@ VOICES = {
     "TEACHER": {"voice": "bm_lewis", "speed": 0.98, "fx": None},
     "COLLEAGUE": {"voice": "am_eric", "speed": 0.98, "fx": None},
     "JAZ": {"voice": "am_puck", "speed": 1.04, "fx": "boy"},
+    # File 002 (moon02)
+    "WREN": {"voice": "af_sky", "speed": 1.0, "fx": "child"},
+    "NANA": {"voice": "bf_emma", "speed": 0.9, "fx": "elder", "lang": "b"},
+    "TESS": {"voice": "af_sarah", "speed": 0.96, "fx": None},
+    "PELL": {"voice": "bm_lewis", "speed": 0.95, "fx": None, "lang": "b"},
 }
 
 # Per-episode voice overrides (each File has its own narrator)
 EP_VOICES = {
     "sun02": {"NARRATOR": {"voice": "am_michael", "speed": 0.9, "fx": None}},
     "vol02": {"NARRATOR": {"voice": "af_aoede", "speed": 0.9, "fx": None}},
+    "moon02": {"NARRATOR": {"voice": "bf_isabella", "speed": 0.92, "fx": None, "lang": "b"}, "ANCHOR": {"voice": "af_nova", "speed": 0.98, "fx": "tv"}, "SCIENTIST": {"voice": "am_michael", "speed": 0.95, "fx": "tv"}},
 }
 
 # Pronunciation fixes (Kokoro inline phonemes); the script and captions keep normal spelling.

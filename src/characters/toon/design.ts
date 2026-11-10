@@ -34,7 +34,7 @@ export type ToonDesign = {
   watch?: boolean;
 };
 
-export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'tomas' | 'lola' | 'rosa' | 'captain' | 'officer' | 'ana' | 'lui' | 'sione' | 'mele' | 'teacher' | 'kaur', ToonDesign> = {
+export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'tomas' | 'lola' | 'rosa' | 'captain' | 'officer' | 'ana' | 'lui' | 'sione' | 'mele' | 'teacher' | 'kaur' | 'wren' | 'nana' | 'tess' | 'pell', ToonDesign> = {
   you: {
     id: 'you',
     height: 1,
@@ -316,6 +316,66 @@ export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum'
     speaker: 'TEACHER',
   },
   // Mrs. Kaur, 79: the Tupous' neighbour; small, grey plait, purple cardigan over a long kurta, and a cat
+  // ── File 002 (moon02), Saltmouth ──
+  // Wren, 10: yellow raincoat and red wellies every day of the story (the town's weather; her signature)
+  wren: {
+    id: 'wren',
+    height: 0.66,
+    head: 0.26,
+    build: 0.85,
+    skin: '#C99570',
+    skinShade: '#A87650',
+    hair: 'short',
+    hairColor: '#8A3B1E',
+    outfits: {home: ['#F2C230', '#D4A72C', '#3A4A6A', '#C2464F'], cold: ['#F2C230', '#D4A72C', '#3A4A6A', '#C2464F']},
+    rim: '#FFE08A',
+    speaker: 'WREN',
+  },
+  // Nana Odile, 72: keeper of the family tide log; navy fisherman's jumper
+  nana: {
+    id: 'nana',
+    height: 0.84,
+    head: 0.2,
+    build: 0.95,
+    skin: '#C99570',
+    skinShade: '#A87650',
+    hair: 'bun',
+    hairColor: '#E4E2E6',
+    glasses: true,
+    elder: true,
+    outfits: {home: ['#2B4A6F', '#1E3552', '#6B5A4A', '#2A2A2A'], cold: ['#2B4A6F', '#1E3552', '#6B5A4A', '#2A2A2A']},
+    rim: '#BFD8FF',
+    speaker: 'NANA',
+  },
+  // Tess, 38: Wren's mum, lifeboat coxswain; orange sea jacket
+  tess: {
+    id: 'tess',
+    height: 0.97,
+    head: 0.19,
+    build: 1.0,
+    skin: '#C99570',
+    skinShade: '#A87650',
+    hair: 'ponytail',
+    hairColor: '#5A2E1A',
+    outfits: {home: ['#F08A24', '#F2C230', '#1F2A44', '#2A2A2A'], cold: ['#F08A24', '#F2C230', '#1F2A44', '#2A2A2A']},
+    rim: '#FFC08A',
+    speaker: 'TESS',
+  },
+  // Mr. Pell, 60: chairman of the harbour board; tweed jacket
+  pell: {
+    id: 'pell',
+    height: 0.98,
+    head: 0.19,
+    build: 1.18,
+    skin: '#F1D2B6',
+    skinShade: '#D4B092',
+    hair: 'short',
+    hairColor: '#B8BCC4',
+    mustache: '#B8BCC4',
+    outfits: {home: ['#7A6A4A', '#5E5038', '#3A3A44', '#2A2A2A'], cold: ['#7A6A4A', '#5E5038', '#3A3A44', '#2A2A2A']},
+    rim: '#FFD9AE',
+    speaker: 'PELL',
+  },
   kaur: {
     id: 'kaur',
     height: 0.82,

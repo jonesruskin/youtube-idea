@@ -43,7 +43,11 @@ export type Speaker =
   | 'MELE_PHONE'
   | 'TEACHER'
   | 'COLLEAGUE'
-  | 'JAZ';
+  | 'JAZ'
+  | 'WREN'
+  | 'NANA'
+  | 'TESS'
+  | 'PELL';
 
 export type Line = {
   speaker: Speaker;
@@ -116,7 +120,8 @@ export type Shot = {
   timer?: {from: number; to: number; label?: string; pos?: 'band'}; // 'band': smaller, in the top letterbox band, clear of a 2×2 news wall's labels
   callout?: {text: string; at?: number | string; pos?: 'center' | 'top' | 'low' | 'left' | 'right'; color?: string};
   /** Corner tag that marks a jump in time: Day N and the outside temperature. */
-  hud?: {day: number; temp: number} | {place: string; time: string};
+  /** Day tag: with a temperature (File 001), or with a distance in km and the day the count ends (`of`), or a place/time tag. */
+  hud?: {day: number; temp: number} | {day: number; km: number; of: number} | {place: string; time: string};
   /** A shot in another timeline (e.g. '1982'): never Day-tagged, never narrated before the reveal, ignored by the year bar. */
   thread?: string;
   /** Plot development delivered by this shot (the linter enforces one at least every 30 s). */

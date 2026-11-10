@@ -77,6 +77,7 @@ export const DayTag: React.FC<{prevDay?: number}> = ({prevDay = 0}) => {
   const hh = shot.hud;
   if (!hh) return null;
   if ('place' in hh) return <PlaceTag place={hh.place} time={hh.time} t={t} dur={shot.duration} top={shot.letterbox ? 220 : shot.scene === 'news' ? 250 : 150} />;
+  if ('km' in hh) return <KmTag day={hh.day} km={hh.km} of={hh.of} prevDay={prevDay} t={t} dur={shot.duration} top={shot.letterbox ? 220 : shot.scene === 'news' ? 250 : 150} />;
   const h = hh;
   const inK = interpolate(t, [0.05, 0.45], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic)});
   const outK = interpolate(t, [Math.min(3.6, shot.duration - 0.3), Math.min(3.9, shot.duration)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
@@ -124,6 +125,36 @@ const PlaceTag: React.FC<{place: string; time: string; t: number; dur: number; t
           </text>
           <text x={14} y={56} fontFamily={fonts.mono} fontWeight={600} fontSize={48} fill="#FFD08A" stroke="#0B1026" strokeWidth={8} paintOrder="stroke">
             {time}
+          </text>
+        </g>
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+/** "DAY 60 · 290,000 km": the Moon File's clock. The distance counts down to its value; the bar is the days so far. */
+const KmTag: React.FC<{day: number; km: number; of: number; prevDay: number; t: number; dur: number; top: number}> = ({day, km, of, prevDay, t, dur, top}) => {
+  const inK = interpolate(t, [0.05, 0.45], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic)});
+  const outK = interpolate(t, [Math.min(3.8, dur - 0.3), Math.min(4.1, dur)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const shown = Math.round(interpolate(t, [0.3, 1.2], [km + Math.min(30000, km * 0.08), km], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) / 1000) * 1000;
+  const bar = interpolate(t, [0.35, 1.3], [prevDay / of, day / of], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic)});
+  const BAR = 330;
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%">
+        <g transform={`translate(${-60 + 150 * inK},${top})`} opacity={inK * outK}>
+          <rect x={-10} y={-84} width={470} height={206} rx={10} fill="#0B1026" opacity={0.82} />
+          <rect x={-20} y={-74} width={10} height={186} fill="#FFE08A" />
+          <text x={10} y={-10} fontFamily={fonts.display} fontWeight={900} fontSize={84} fill="#FFF6E0" stroke="#0B1026" strokeWidth={10} paintOrder="stroke" letterSpacing={3}>
+            DAY {day}
+          </text>
+          <text x={14} y={62} fontFamily={fonts.mono} fontWeight={600} fontSize={46} fill="#FFE08A" stroke="#0B1026" strokeWidth={8} paintOrder="stroke">
+            {shown.toLocaleString('en-US')} km
+          </text>
+          <rect x={12} y={90} width={BAR} height={10} rx={5} fill="#FFF6E0" opacity={0.25} />
+          <rect x={12} y={90} width={Math.max(10, BAR * bar)} height={10} rx={5} fill="#FFE08A" />
+          <text x={12 + BAR + 12} y={104} fontFamily={fonts.mono} fontWeight={600} fontSize={26} fill="#FFF6E0" stroke="#0B1026" strokeWidth={5} paintOrder="stroke" opacity={0.85}>
+            {of}
           </text>
         </g>
       </svg>
