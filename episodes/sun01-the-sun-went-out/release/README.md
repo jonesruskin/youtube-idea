@@ -4,8 +4,8 @@ Everything needed to publish this episode. Big files are stored with Git LFS (`g
 
 | file | what it is |
 |---|---|
-| `sun01-master.mp4` | upload master: 1080p30, H.264, AAC 256k, −14 LUFS, soft English subtitles (571 MB) |
-| `sun01.mp4` | web copy for quick viewing (91 MB) |
+| `sun01-master.mp4` | upload master: 1080p30, H.264, AAC 256k, −14 LUFS, soft English subtitles (568 MB) |
+| `sun01.mp4` | web copy for quick viewing (92 MB) |
 | `sun01.srt` | English captions for YouTube |
 | `sun01-described.srt` | captions plus stage directions (review copy) |
 | `metadata.md` | title, Test & Compare alternates, description with chapters and sources, tags, pinned comment, mid-rolls, end screen |
@@ -14,4 +14,4 @@ Everything needed to publish this episode. Big files are stored with Git LFS (`g
 - **Runtime:** 17:02
 - **Voice:** Kokoro-82M, free local voices (placeholder: to be replaced with ElevenLabs once the picture is approved)
 - **Music and sound:** synthesised score and sound design (scripts/score_cinema.py)
-- **Built from:** commit `cc19582`
+- **Built from:** commit `2849a6a`
