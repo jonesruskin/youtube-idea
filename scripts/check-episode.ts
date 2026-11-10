@@ -81,6 +81,14 @@ try {
   lines.slice(1, 12).forEach((l) => fails.push(`  ${l.trim()}`));
 }
 
+// 2b+ · real bodies (docs/00 P13): every Moon, Earth and planet is drawn from a real map; the gate tests itself first
+{
+  const {checkRealBodies} = await import('./real-bodies');
+  const {errors, files} = checkRealBodies();
+  if (errors.length) fails.push(...errors);
+  else ok.push(`real bodies: ${files} source files, every Moon, Earth and planet from a real map (self-test passed)`);
+}
+
 // 2c · premise registry (docs/00 S11): a new story, not a re-use of an earlier episode's event or title
 {
   const reg = join(ROOT, 'docs', 'premises.md');

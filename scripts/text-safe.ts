@@ -14,7 +14,7 @@ import {renderFrames, selectComposition} from '@remotion/renderer';
 import {buildTimeline} from '../src/engine/timeline';
 import {loadEpisode, ROOT} from './load-episode';
 
-type T = {t: string; q: number[][]; o: number; k: string; cover: number; clip: number[][]; v?: P};
+type T = {t: string; q: number[][]; o: number; k: string; cover: number; cols?: number; clip: number[][]; v?: P};
 type Sample = {f: number; bar: number; texts: T[]};
 type P = number[][];
 
@@ -88,7 +88,8 @@ export const auditText = async (serveUrl: string, id: string, browserExecutable:
       }
       const seen = a.v!.length ? areaOf(a.v!) : 0;
       if (a.k !== 'scroll' && a.o >= 0.6 && seen > 0.02 * area(a) && area(a) - seen > 0.15 * area(a)) note(`edge|${shot}|${a.t}`, i);
-      if (a.k !== 'set' && a.o >= 0.6 && a.cover > 0.3) note(`cover|${shot}|${a.t}`, i);
+      // any hidden letter column fails (a 30% threshold once let a HUD box hide "EV" of "EVERY PORT…")
+      if (a.k !== 'set' && a.o >= 0.6 && (a.cover > 0.3 || (a.cols ?? 0) >= 1)) note(`cover|${shot}|${a.t}`, i);
     }
     for (let p = 0; p < s.texts.length; p++)
       for (let q = p + 1; q < s.texts.length; q++) {

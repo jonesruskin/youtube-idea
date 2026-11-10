@@ -1,3 +1,4 @@
+import {Body} from '../../fx/bodies';
 import React, {useMemo} from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
 import {Stars, rand} from '../../fx/sky';
@@ -241,12 +242,8 @@ const Space: React.FC = () => {
             <circle cx={200} cy={540} r={front} fill="url(#front)" style={{mixBlendMode: 'screen'}} />
             <Shell cx={200} cy={540} r={120} turn={1} spin={frame * 0.004} seam={0.5} frame={frame} />
             {/* Earth, tiny, lit from the left */}
-            <g transform="translate(1700,540)">
-              <circle r={26} fill="#1D5FA8" />
-              <path d="M-26,0 A26,26 0 0 1 26,0 A26,26 0 0 1 -26,0" fill="#3E8E6A" opacity={0.35} />
-              <path d="M0,-26 A26,26 0 0 0 0,26 A26,26 0 0 1 0,-26" fill="#000" opacity={0.75} />
-              <circle r={34} fill="none" stroke="#6FB8FF" strokeWidth={3} opacity={0.5} />
-            </g>
+            <Body name="earth-atlantic" x={1700} y={540} r={26} light={180} phase={1} />
+            <circle cx={1700} cy={540} r={34} fill="none" stroke="#6FB8FF" strokeWidth={3} opacity={0.5} />
           </svg>
         </AbsoluteFill>
       );
@@ -283,12 +280,7 @@ const Space: React.FC = () => {
           <path d={`M${edge},0 L${edge},${H}`} stroke="#FFF3D0" strokeWidth={6} opacity={0.5} />
           <rect x={edge - 40} y={0} width={40} height={H} fill="#FFF3D0" opacity={0.12} />
           {/* the Moon */}
-          <g transform="translate(380,300)">
-            <circle r={60} fill={moonDark ? '#16181E' : '#D8D4CC'} />
-            {!moonDark && <circle cx={-14} cy={-10} r={12} fill="#B8B4AC" />}
-            {!moonDark && <circle cx={18} cy={20} r={9} fill="#B8B4AC" />}
-            {!moonDark && <path d="M0,-60 A60,60 0 0 0 0,60 A40,60 0 0 1 0,-60" fill="#000" opacity={0.65} />}
-          </g>
+          <Body name="moon" x={380} y={300} r={60} light={0} phase={moonDark ? 0 : 1.2} dark={moonDark ? 0.9 : 0} />
         </svg>
         <div style={{position: 'absolute', left: 1180 - 330, top: 560 - 330, filter: earthDim < 1 ? 'drop-shadow(0 0 40px rgba(111,184,255,0.5))' : 'drop-shadow(0 0 20px rgba(60,90,160,0.4))'}}>
           <PhotoGlobe size={660} center={[0, 35]} sun={[-35, 20]} dim={earthDim} />
@@ -362,7 +354,7 @@ const Space: React.FC = () => {
           {v === 'shellOrbit' && (
             <g transform="translate(1600,860)">
               {/* Earth to scale against one plate */}
-              <circle r={6} fill="#4A8BD8" />
+              <Body name="earth-atlantic" x={0} y={0} r={6} />
               <circle r={10} fill="none" stroke="#6FB8FF" strokeWidth={2} opacity={0.6} />
             </g>
           )}

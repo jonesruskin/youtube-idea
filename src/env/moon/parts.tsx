@@ -1,3 +1,4 @@
+import {Body} from '../../fx/bodies';
 import React from 'react';
 import {INK} from '../sun/stage';
 import {rnd} from '../sea/parts';
@@ -47,52 +48,16 @@ export const SkyBox: React.FC<{tod: Tod; frame: number; moonlit?: number}> = ({t
   );
 };
 
-/** The Moon, drawn to the size the story's distance gives it: r is the radius in px for a normal Moon × `k`. */
+/** The Moon, drawn to the size the story's distance gives it: r is the radius in px for a normal Moon × `k`.
+ *  The disc is the real near side (NASA LRO, src/fx/bodies.tsx): the same face the town has always seen, only bigger. */
 export const MoonDisc: React.FC<{x: number; y: number; k: number; base?: number; tod: Tod}> = ({x, y, k, base = 70, tod}) => {
   const R = base * k;
   const day = tod === 'day';
-  const body = day ? '#EEF3F8' : '#F4F0DC';
-  const mare = day ? '#C9D6E4' : '#CFC9AE';
-  const id = `moon${Math.round(R)}${tod}`;
-  // maria and craters at fixed places on the face, so it is always our Moon, only bigger
-  const maria: [number, number, number, number][] = [[-0.32, -0.28, 0.3, 0.24], [0.12, -0.36, 0.22, 0.17], [0.34, -0.06, 0.2, 0.26], [-0.1, 0.12, 0.34, 0.2], [-0.46, 0.2, 0.16, 0.2], [0.2, 0.42, 0.18, 0.12]];
-  const craters: [number, number, number][] = [[-0.6, -0.5, 0.06], [0.55, -0.55, 0.05], [0.66, 0.3, 0.07], [-0.2, 0.62, 0.09], [0.02, -0.72, 0.04], [-0.7, 0.02, 0.05], [0.4, 0.66, 0.05], [-0.42, -0.02, 0.035]];
   return (
-    <g transform={`translate(${x},${y})`} opacity={day ? 0.92 : 1}>
-      <defs>
-        <radialGradient id={`${id}g`}>
-          <stop offset="0.55" stopColor={day ? '#FFFFFF' : '#FFF6C8'} stopOpacity={day ? 0.25 : 0.5} />
-          <stop offset="1" stopColor="#FFF6C8" stopOpacity={0} />
-        </radialGradient>
-        <radialGradient id={`${id}s`} cx="0.38" cy="0.36" r="0.75">
-          <stop offset="0.6" stopColor="#000" stopOpacity={0} />
-          <stop offset="1" stopColor="#1B2A5C" stopOpacity={day ? 0.12 : 0.3} />
-        </radialGradient>
-        <clipPath id={`${id}c`}>
-          <circle r={R} />
-        </clipPath>
-      </defs>
-      <circle r={R * 1.9} fill={`url(#${id}g)`} />
-      <circle r={R} fill={body} />
-      <g clipPath={`url(#${id}c)`}>
-        {maria.map(([mx, my, rx, ry], i) => (
-          <ellipse key={i} cx={mx * R} cy={my * R} rx={rx * R} ry={ry * R} fill={mare} opacity={0.85} transform={`rotate(${i * 23},${mx * R},${my * R})`} />
-        ))}
-        {craters.map(([cx, cy, cr], i) => (
-          <g key={i}>
-            <circle cx={cx * R} cy={cy * R} r={cr * R} fill={mare} opacity={0.7} />
-            <circle cx={cx * R - cr * R * 0.2} cy={cy * R - cr * R * 0.2} r={cr * R * 0.7} fill={body} opacity={0.7} />
-          </g>
-        ))}
-        {/* rays from the bright crater near the bottom (Tycho): only read when the Moon is big */}
-        {k > 1.6 &&
-          Array.from({length: 9}, (_, i) => {
-            const a = (i / 9) * Math.PI * 2;
-            return <line key={i} x1={-0.2 * R} y1={0.62 * R} x2={-0.2 * R + Math.cos(a) * R * 0.7} y2={0.62 * R + Math.sin(a) * R * 0.7} stroke={body} strokeWidth={R * 0.012} opacity={0.5} />;
-          })}
-        <circle r={R} fill={`url(#${id}s)`} />
-      </g>
-      <circle r={R} fill="none" stroke={day ? '#B7C6D6' : '#E6DFB8'} strokeWidth={Math.max(2, R * 0.012)} opacity={0.8} />
+    <g>
+      <Body name="moon" x={x} y={y} r={R} glow={day ? 0.4 : 1} glowColor={day ? '#FFFFFF' : '#FFF6C8'} tint={day ? undefined : '#FFF1CC'} tintAmount={0.18} opacity={day ? 0.9 : 1} />
+      {/* a day Moon sits behind blue sky: wash it a little so it reads as daylight, like the real one */}
+      {day && <circle cx={x} cy={y} r={R} fill="#BFDDF2" opacity={0.28} />}
     </g>
   );
 };

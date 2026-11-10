@@ -572,6 +572,13 @@ def amb_key(sh, prev):
             "ops": "room",
             "hall": "room",
             "classroom": "room",
+            # File 002 (moon02): the sea is in every outdoor scene; how loud depends on how high it is
+            "quay": "flood" if (p.get("sea") or 0) >= 3 else "harbour",
+            "marketst": "flood" if (p.get("sea") or 0) >= 2 else "street",
+            "hill": "surf_far" if (p.get("sea") or 0) >= 20 else ("wind_lo" if v == "night" else "field"),
+            "nanakitchen": "room_wind" if v == "night" else "room",
+            "boardroom": "room",
+            "chapelin": "metro_quiet",
         }.get(st, prev)
     if sc_ in ("closeup",):
         return prev
@@ -613,6 +620,16 @@ def amb_bed(key, dur):
         lap = filt(sos_bp(200, 900), rng.standard_normal(n).astype(np.float32))
         lap *= (np.maximum(0, np.sin(2 * np.pi * 0.33 * t)) ** 3 * 0.6).astype(np.float32)
         return wind(dur, 0.55, 0.5) + pan(lap, -0.2)
+    if key == "flood":
+        # water in the street: lapping on doors, a slow surge every few seconds, wind over it
+        x = filt(sos_lp(1100), pink(n))
+        sw = (0.3 + 0.7 * (0.5 + 0.5 * np.sin(2 * np.pi * 0.14 * t))) ** 2
+        return pan((x * sw * 0.9).astype(np.float32), 0.1) + amb_bed("harbour", dur) * 0.8
+    if key == "surf_far":
+        # the sea far below the hill: a low roar that rises and falls with the swell
+        x = filt(sos_lp(420), brown(n))
+        sw = 0.5 + 0.5 * (0.5 + 0.5 * np.sin(2 * np.pi * 0.08 * t))
+        return pan((x * sw * 0.9).astype(np.float32), 0) + wind(dur, 0.4, 0.35)
     if key == "wind_lo":
         return wind(dur, 0.4, 0.35)
     if key == "wind":
@@ -643,6 +660,9 @@ def amb_bed(key, dur):
 def add_ambience(mix, tl):
     regions = []
     prev = None
+    unmapped = sorted({(sh.get("props") or {}).get("set") for sh in tl["shots"] if sh["scene"] == "stage" and amb_key(sh, None) is None})
+    if unmapped:
+        raise SystemExit(f"score_cinema: no ambience bed for set(s) {unmapped}: add them to amb_key (every place must sound like itself)")
     for sh in tl["shots"]:
         k = amb_key(sh, prev)
         if k and regions and regions[-1][0] == k and abs(regions[-1][2] - sh["start"]) < 0.05:

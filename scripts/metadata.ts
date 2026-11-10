@@ -21,7 +21,7 @@ ${chapters.join('\n')}
 
 THE BLINK FILES — one impossible year, seen by a different person each time. Every clue is real physics. Subscribe for the next File.
 
-This is a work of fiction. Everything that follows from its one impossible event is real physics. Earth imagery: NASA Blue Marble / Black Marble (public domain).
+This is a work of fiction. Everything that follows from its one impossible event is real physics. Earth imagery: NASA Blue Marble / Black Marble (public domain). Moon: NASA Lunar Reconnaissance Orbiter (LROC), via the NASA SVS CGI Moon Kit (public domain). Planet maps: Solar System Scope (CC BY 4.0), from NASA mission data.
 #whatif #space #survival #animation #theblinkfiles
 
 ⚠️ SPOILERS BELOW — watch to the end first.

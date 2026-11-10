@@ -50,7 +50,7 @@ export const TextAudit: React.FC = () => {
         }
         return o;
       };
-      const texts: {t: string; q: number[][]; o: number; k: string; cover: number; clip: number[][]; by: string}[] = [];
+      const texts: {t: string; q: number[][]; o: number; k: string; cover: number; cols: number; clip: number[][]; by: string}[] = [];
       document.querySelectorAll('text').forEach((el) => {
         if (el.closest('defs, clipPath, mask, symbol')) return;
         const t = (el.textContent ?? '').trim();
@@ -67,9 +67,12 @@ export const TextAudit: React.FC = () => {
         let n = 0;
         let hid = 0;
         let by = '';
-        for (let i = 1; i <= 8; i++)
+        let cols = 0; // letter columns (of 24) where 2 or 3 of the 3 sample rows are covered: any one means letters are hidden
+        // 24 columns from half a column inside each edge: a box hiding the first two letters is caught
+        for (let i = 1; i <= 24; i++) {
+          let colHid = 0;
           for (let j = 1; j <= 3; j++) {
-            const [cx, cy] = pt(b.x + (b.width * i) / 9, b.y + (b.height * j) / 4);
+            const [cx, cy] = pt(b.x + (b.width * (i - 0.5)) / 24, b.y + (b.height * j) / 4);
             if (cx < 0 || cy < 0 || cx >= window.innerWidth || cy >= window.innerHeight) continue;
             n++;
             for (const e of document.elementsFromPoint(cx, cy)) {
@@ -77,11 +80,14 @@ export const TextAudit: React.FC = () => {
               if (e.contains(el)) continue;
               if (opaque(e)) {
                 hid++;
+                colHid++;
                 if (!by) by = `${e.tagName}${e.id ? '#' + e.id : ''} ${(e.getAttribute('class') ?? '').slice(0, 30)} ${e.getAttribute('fill') ?? getComputedStyle(e).backgroundColor} ${e.parentElement?.tagName}`;
                 break;
               }
             }
           }
+          if (colHid >= 2) cols++;
+        }
         // what kind of text: 'set' dressing (signs in a set may be cropped by the frame), 'scroll' (a ticker), or 'info'
         const k = el.closest('[data-text]')?.getAttribute('data-text') ?? 'info';
         // nested <svg> viewports (news-wall panels, inserts) crop what they hold: send them as clip boxes
@@ -91,7 +97,7 @@ export const TextAudit: React.FC = () => {
             const r = e.getBoundingClientRect();
             clip.push([Math.round(r.x * sx), Math.round(r.y * sy), Math.round(r.width * sx), Math.round(r.height * sy)]);
           }
-        texts.push({t: t.slice(0, 40), q: q.map(([x, y]) => [Math.round(x * sx), Math.round(y * sy)]), o: Math.round(o * 100) / 100, k, cover: n ? hid / n : 0, clip, by});
+        texts.push({t: t.slice(0, 40), q: q.map(([x, y]) => [Math.round(x * sx), Math.round(y * sy)]), o: Math.round(o * 100) / 100, k, cover: n ? hid / n : 0, cols, clip, by});
       });
       const bars = [...document.querySelectorAll('[data-letterbox]')].map((b) => b.getBoundingClientRect().height * sy);
       console.log('TEXTAUDIT ' + JSON.stringify({f, bar: Math.max(0, ...bars), texts}));

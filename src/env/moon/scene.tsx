@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
 import {useShot} from '../../engine/shot-context';
+import {Body} from '../../fx/bodies';
 import {INK, Vignette} from '../sun/stage';
 import {rnd} from '../sea/parts';
 import {F, HAND, MoonDisc} from './parts';
@@ -64,13 +65,14 @@ const Stars: React.FC<{frame: number; seed?: number}> = ({frame, seed = 3}) => {
     </g>
   );
 };
+/** The real Earth (NASA Blue Marble, src/fx/bodies.tsx). `bulge` draws the ocean pulled toward the Moon as a pale
+ *  water shell around it (exaggerated so it can be seen; the real bulge is metres on a 6,371 km planet, and the
+ *  diagram says "TIDES ×", never a size). */
 const Earth: React.FC<{x: number; y: number; r: number; bulge?: number; ang?: number}> = ({x, y, r, bulge = 0, ang = 0}) => (
-  <g transform={`translate(${x},${y})`}>
-    {/* the ocean, pulled into two bulges along the line to the Moon */}
-    <ellipse rx={r * (1.04 + bulge)} ry={r * (1.04 - bulge * 0.5)} fill="#3F8FBF" opacity={0.85} transform={`rotate(${ang})`} />
-    <circle r={r} fill="#2E6FA8" stroke={INK} strokeWidth={4} />
-    <path d={`M${-r * 0.5},${-r * 0.5} q${r * 0.3},${-r * 0.2} ${r * 0.5},${r * 0.05} q${r * 0.1},${r * 0.3} ${-r * 0.2},${r * 0.45} q${-r * 0.3},${r * 0.05} ${-r * 0.3},${-r * 0.5} Z`} fill="#5FA868" />
-    <path d={`M${r * 0.15},${r * 0.2} q${r * 0.3},${-r * 0.1} ${r * 0.4},${r * 0.2} q${-r * 0.1},${r * 0.3} ${-r * 0.35},${r * 0.2} Z`} fill="#5FA868" />
+  <g>
+    {bulge > 0 && <ellipse cx={x} cy={y} rx={r * (1.04 + bulge)} ry={r * (1.04 - bulge * 0.5)} fill="#8FD0F4" opacity={0.45} stroke="#DDF2FF" strokeWidth={2} transform={`rotate(${ang},${x},${y})`} />}
+    <Body name="earth-atlantic" x={x} y={y} r={r} />
+    <circle cx={x} cy={y} r={r * 1.03} fill="none" stroke="#9FD8FF" strokeWidth={Math.max(2, r * 0.03)} opacity={0.5} />
   </g>
 );
 
@@ -206,9 +208,7 @@ export const MoonScene: React.FC = () => {
         <circle cx={cx} cy={cy} r={400} fill="none" stroke="#8FA3C8" strokeWidth={3} strokeDasharray="10 12" opacity={0.6} />
         <circle cx={cx} cy={cy} r={R} fill="none" stroke="#FFE08A" strokeWidth={4} opacity={0.9} />
         <Earth x={cx} y={cy} r={44} bulge={Math.min(0.2, 0.012 * Math.pow(384000 / d, 3))} ang={(a * 180) / Math.PI} />
-        <g transform={`translate(${cx + Math.cos(a) * R},${cy + Math.sin(a) * R})`}>
-          <circle r={16} fill="#F4F0DC" stroke={INK} strokeWidth={3} />
-        </g>
+        <Body name="moon" x={cx + Math.cos(a) * R} y={cy + Math.sin(a) * R} r={16} />
         {leaves && (
           <g>
             {/* the visitor's path: out of the last loop and away */}
@@ -316,7 +316,7 @@ export const MoonScene: React.FC = () => {
         <circle cx={cx} cy={cy} r={360} fill="none" stroke="#FFE08A" strokeWidth={4} />
         <circle cx={cx} cy={cy} r={86} fill="none" stroke="#FF8A7A" strokeWidth={4} strokeDasharray="8 10" opacity={clamp((k - 0.35) * 3)} />
         <Earth x={cx} y={cy} r={44} />
-        <circle cx={cx + Math.cos(a) * 360} cy={cy + Math.sin(a) * 360} r={30} fill="#F4F0DC" stroke={INK} strokeWidth={3} />
+        <Body name="moon" x={cx + Math.cos(a) * 360} y={cy + Math.sin(a) * 360} r={30} />
         <Label x={cx} y={180} t="IT GOES ROUND. IT CANNOT FALL IN." s={40} c="#FFE08A" />
         <g opacity={clamp((k - 0.4) * 3)}>
           <line x1={cx + 70} y1={cy - 60} x2={cx + 300} y2={cy - 250} stroke="#FF8A7A" strokeWidth={3} />
@@ -335,7 +335,7 @@ export const MoonScene: React.FC = () => {
         <Stars frame={frame} seed={13} />
         <Earth x={820} y={540} r={250} bulge={0.09} ang={-18} />
         <MoonDisc x={1500 + Math.cos(a) * 20} y={330 + Math.sin(a) * 20} k={(p.moon as number) ?? 2} base={60} tod="night" />
-        <Label x={820} y={200} t={(p.label as string) ?? 'EVERY PORT ON EARTH: CLOSED'} s={42} c="#FFE08A" />
+        <Label x={1010} y={200} t={(p.label as string) ?? 'EVERY PORT ON EARTH: CLOSED'} s={42} c="#FFE08A" />
         <Label x={820} y={HEADLINE ? 828 : 900} t={(p.sub as string) ?? ''} s={32} />
       </Frame>
     );

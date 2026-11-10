@@ -5,60 +5,17 @@ import {Bloom, MilkyWay} from '../../fx/cinema/atmos';
 import {Cine, Plane, type CamKey} from '../../fx/cinema/camera';
 import {Stars} from '../../fx/sky';
 import {Stage} from '../common';
+import {Body} from '../../fx/bodies';
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 
-/** A planet disc lit from one side; `lit` 0..1 fades the day side to black. */
-const Planet: React.FC<{x: number; y: number; r: number; color: string; shade: string; lit: number; lightFrom?: number; id: string; bands?: boolean; lights?: number; atmosphere?: string}> = ({
-  x,
-  y,
-  r,
-  color,
-  shade,
-  lit,
-  lightFrom = 180,
-  id,
-  bands,
-  lights = 0,
-  atmosphere,
-}) => {
-  const dx = Math.cos((lightFrom * Math.PI) / 180);
-  const dy = Math.sin((lightFrom * Math.PI) / 180);
-  return (
-    <g>
-      <defs>
-        <radialGradient id={`${id}l`} cx={0.5 + dx * 0.35} cy={0.5 + dy * 0.35} r="0.9">
-          <stop offset="0" stopColor={color} />
-          <stop offset="0.55" stopColor={color} />
-          <stop offset="0.75" stopColor={shade} />
-          <stop offset="1" stopColor="#05060E" />
-        </radialGradient>
-        <clipPath id={`${id}c`}>
-          <circle cx={x} cy={y} r={r} />
-        </clipPath>
-      </defs>
-      {atmosphere && <Bloom x={x} y={y} r={r * 1.6} color={atmosphere} opacity={0.35 * lit + 0.1} />}
-      <circle cx={x} cy={y} r={r} fill="#06080F" />
-      <g clipPath={`url(#${id}c)`}>
-        <circle cx={x} cy={y} r={r} fill={`url(#${id}l)`} opacity={lit} />
-        {bands && [-0.5, -0.2, 0.15, 0.45].map((b, i) => <rect key={i} x={x - r} y={y + b * r} width={r * 2} height={r * 0.14} fill="#8A5A3A" opacity={0.45 * lit} />)}
-        {lights > 0 &&
-          // City lights in clusters (coasts and river valleys), not a grid.
-          [
-            [-0.35, -0.42, 14], [-0.1, -0.3, 10], [0.2, -0.45, 8], [0.45, -0.15, 12], [-0.5, 0.05, 9],
-            [-0.2, 0.15, 16], [0.15, 0.1, 11], [0.35, 0.35, 7], [-0.3, 0.45, 6], [0.05, 0.55, 5],
-          ].map(([cx0, cy0, n], c) =>
-            Array.from({length: n}, (_, k) => {
-              const a = k * 2.39996 + c;
-              const rr = Math.sqrt(k / n) * r * 0.09;
-              return <circle key={`${c}-${k}`} cx={x + cx0 * r + Math.cos(a) * rr} cy={y + cy0 * r + Math.sin(a) * rr * 0.7} r={r * (k ? 0.012 : 0.022)} fill="#FFD58A" opacity={lights * (1 - lit) * 0.95} />;
-            }),
-          )}
-      </g>
-      <circle cx={x} cy={y} r={r} fill="none" stroke="#0B1026" strokeWidth={Math.max(2, r * 0.04)} />
-    </g>
-  );
-};
+/** A real body (src/fx/bodies.tsx) lit from one side; `lit` 0..1 fades the day side to black. */
+const Planet: React.FC<{x: number; y: number; r: number; color: string; shade: string; lit: number; lightFrom?: number; id: string; bands?: boolean; lights?: number; atmosphere?: string}> = ({x, y, r, color, lit, atmosphere}) => (
+  <g>
+    {atmosphere && <Bloom x={x} y={y} r={r * 1.6} color={atmosphere} opacity={0.35 * lit + 0.1} />}
+    <Body name={color === '#E8E2D6' ? 'moon' : 'earth-atlantic'} x={x} y={y} r={r} dark={0.9 * (1 - lit)} />
+  </g>
+);
 
 /** The dead Sun: a black disc whose corona is still fading. */
 const DeadSun: React.FC<{x: number; y: number; r: number; glow: number}> = ({x, y, r, glow}) => (

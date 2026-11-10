@@ -1,4 +1,5 @@
 import {MoonDisc} from '../moon/parts';
+import {Body} from '../../fx/bodies';
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
 import {Aurora, Frost, MilkyWay} from '../../fx/cinema/atmos';
@@ -92,9 +93,8 @@ export const SkyScene: React.FC = () => {
           )}
           {(v === 'moon' || v === 'moonClose') && (
             <g transform={`translate(${v === 'moon' ? 1350 : 960},${v === 'moon' ? 420 : 470}) scale(${v === 'moon' ? 1 : 3.2})`}>
-              {/* a dead crescent: a black disc hiding the stars, with the faintest rim */}
-              <circle r={70} fill="#05060D" />
-              <path d="M30,-62 A70,70 0 0 1 30,62 A54,70 0 0 0 30,-62" fill="#3A3F52" opacity={0.55} />
+              {/* the real Moon with no sunlight on it: only the faint earthshine of city lights, hiding the stars */}
+              <Body name="moon" x={0} y={0} r={70} dark={0.9} />
               <circle r={70} fill="none" stroke="#5A6488" strokeWidth={2} opacity={0.5} />
             </g>
           )}

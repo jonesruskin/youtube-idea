@@ -1,3 +1,4 @@
+import {Body, type BodyName} from '../../fx/bodies';
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
 import {Toon} from '../../characters/toon/Toon';
@@ -53,20 +54,20 @@ const HiddenSun: React.FC<{x: number; y: number; r: number}> = ({x, y, r}) => (
 );
 const SunMark: React.FC<{shell: boolean; x: number; y: number; r: number; frame: number}> = ({shell, ...p}) => (shell ? <SealedSun {...p} /> : <HiddenSun x={p.x} y={p.y} r={p.r} />);
 
+/** Real planets (src/fx/bodies.tsx, docs/00 P13), picked by the colour the diagrams already pass. Unlit = the Sun is
+ *  gone, so the disc is dimmed, never recoloured. */
+const PLANET_OF: Record<string, BodyName> = {'#F2D49A': 'venus', '#D9B48A': 'jupiter', '#B8B0A4': 'mercury', '#D9443A': 'mars'};
 const Planet: React.FC<{x: number; y: number; r: number; col: string; lit?: number; ring?: boolean}> = ({x, y, r, col, lit = 1, ring}) => (
   <g>
     {lit > 0 && <circle cx={x} cy={y} r={r * 2.2} fill={col} opacity={0.12 * lit} />}
-    <circle cx={x} cy={y} r={r} fill={lit > 0.1 ? col : '#1A1E2E'} stroke={INK} strokeWidth={4} />
-    <path d={`M${x},${y - r} A${r},${r} 0 0 1 ${x},${y + r} A${r * 0.6},${r} 0 0 0 ${x},${y - r}`} fill="#000" opacity={0.3} />
     {ring && <ellipse cx={x} cy={y} rx={r * 1.8} ry={r * 0.4} fill="none" stroke={col} strokeWidth={4} />}
+    <Body name={ring ? 'saturn' : (PLANET_OF[col] ?? 'mercury')} x={x} y={y} r={r} dark={0.85 * (1 - Math.min(1, lit))} />
   </g>
 );
 const Earth: React.FC<{x: number; y: number; r: number; lit?: boolean}> = ({x, y, r, lit = false}) => (
   <g>
-    <circle cx={x} cy={y} r={r} fill={lit ? '#2E7BD6' : '#1E3E78'} stroke={INK} strokeWidth={4} />
-    <path d={`M${x - r * 0.5},${y - r * 0.6} q${r * 0.4},${r * 0.2} ${r * 0.3},${r * 0.6} q${-r * 0.3},${r * 0.3} ${-r * 0.1},${r * 0.7}`} fill={lit ? '#3EA06A' : '#2A5A4A'} />
-    <path d={`M${x + r * 0.2},${y - r * 0.2} q${r * 0.4},0 ${r * 0.5},${r * 0.4} q-${r * 0.2},${r * 0.3} -${r * 0.5},${r * 0.1} z`} fill={lit ? '#3EA06A' : '#2A5A4A'} />
-    <circle cx={x} cy={y} r={r * 1.12} fill="none" stroke="#6FB8FF" strokeWidth={3} opacity={0.5} />
+    <Body name="earth-atlantic" x={x} y={y} r={r} dark={lit ? 0 : 0.55} />
+    <circle cx={x} cy={y} r={r * 1.1} fill="none" stroke="#6FB8FF" strokeWidth={3} opacity={0.5} />
   </g>
 );
 /** Light travelling along a polyline: a bright dash at progress u. */
@@ -232,8 +233,7 @@ export const DiagramScene: React.FC = () => {
           <ellipse rx={230 + 50} ry={240} fill="#4A9BEA" opacity={0.5} />
         </g>
         <g transform={`translate(${1720 + Math.sin(f * 0.03) * 40},${470 + Math.cos(f * 0.03) * 60})`}>
-          <circle r={60} fill="#C9C4B8" stroke={INK} strokeWidth={5} />
-          <circle cx={-14} cy={-10} r={12} fill="#A8A296" />
+          <Body name="moon" x={0} y={0} r={60} />
         </g>
         {/* tide gauge bar */}
         <g transform="translate(1500,900)">

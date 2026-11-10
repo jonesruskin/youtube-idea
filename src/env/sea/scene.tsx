@@ -1,3 +1,4 @@
+import {Body} from '../../fx/bodies';
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
 import {Toon} from '../../characters/toon/Toon';
@@ -76,9 +77,7 @@ const SeaSurface: React.FC<{y: number; frame: number; amp?: number; col?: string
 
 const Earth: React.FC<{cx: number; cy: number; r: number}> = ({cx, cy, r}) => (
   <g>
-    <circle cx={cx} cy={cy} r={r} fill="#1A4A7A" stroke={INK} strokeWidth={6} />
-    <path d={`M${cx - r * 0.6},${cy - r * 0.3} q${r * 0.3},${-r * 0.4} ${r * 0.7},${-r * 0.1} q${r * 0.1},${r * 0.3} ${-r * 0.2},${r * 0.5} q${-r * 0.4},${r * 0.1} ${-r * 0.5},${-r * 0.4} Z`} fill="#3A7A4A" opacity={0.9} />
-    <path d={`M${cx + r * 0.1},${cy + r * 0.2} q${r * 0.3},${-r * 0.1} ${r * 0.5},${r * 0.2} q${-r * 0.1},${r * 0.4} ${-r * 0.4},${r * 0.3} Z`} fill="#3A7A4A" opacity={0.9} />
+    <Body name="earth-pacific" x={cx} y={cy} r={r} />
     <circle cx={cx} cy={cy} r={r} fill="none" stroke="#9FD8FF" strokeWidth={10} opacity={0.25} />
   </g>
 );

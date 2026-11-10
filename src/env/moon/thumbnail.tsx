@@ -5,6 +5,7 @@ import {CAST} from '../../characters/toon/design';
 import {FACES} from '../../characters/toon/face';
 import {POSES} from '../../characters/toon/poses';
 import {fonts} from '../../theme';
+import {Body} from '../../fx/bodies';
 import {rnd} from '../sea/parts';
 import {Boat, Flood, House, Lamp, MoonDisc, SkyBox} from './parts';
 
@@ -73,13 +74,10 @@ export const MoonThumbnailB: React.FC = () => {
       <svg viewBox="0 0 1920 1080" width="100%" height="100%">
         <rect width={1920} height={1080} fill="#03050F" />
         <Stars seed={9} />
-        <g transform="translate(560,600)">
-          <ellipse rx={r * 1.16} ry={r * 0.97} fill="#8FD0F4" opacity={0.55} stroke="#DDF2FF" strokeWidth={4} strokeDasharray="18 12" transform="rotate(-20)" />
-          <circle r={r} fill="#2E6FA8" stroke="#0B1026" strokeWidth={6} />
-          <path d={`M${-r * 0.5},${-r * 0.5} q${r * 0.3},${-r * 0.2} ${r * 0.5},${r * 0.05} q${r * 0.1},${r * 0.3} ${-r * 0.2},${r * 0.45} q${-r * 0.3},${r * 0.05} ${-r * 0.3},${-r * 0.5} Z`} fill="#5FA868" />
-          <path d={`M${r * 0.15},${r * 0.2} q${r * 0.3},${-r * 0.1} ${r * 0.4},${r * 0.2} q${-r * 0.1},${r * 0.3} ${-r * 0.35},${r * 0.2} Z`} fill="#5FA868" />
-          <ellipse cx={-r * 0.2} cy={-r * 0.75} rx={r * 0.5} ry={r * 0.14} fill="#FFFFFF" opacity={0.6} />
-        </g>
+        {/* the real Earth, its oceans pulled toward the Moon (the pale shell is the tide, exaggerated to be seen) */}
+        <ellipse cx={560} cy={600} rx={r * 1.14} ry={r * 0.98} fill="#8FD0F4" opacity={0.4} stroke="#DDF2FF" strokeWidth={4} transform="rotate(-20,560,600)" />
+        <Body name="earth-atlantic" x={560} y={600} r={r} />
+        <circle cx={560} cy={600} r={r * 1.025} fill="none" stroke="#9FD8FF" strokeWidth={8} opacity={0.45} />
         <MoonDisc x={1440} y={420} k={4.2} base={70} tod="night" />
         <Words lines={[{t: 'TOO', size: 200, col: '#FFFFFF'}, {t: 'CLOSE', size: 200, col: '#FFD27A'}]} x={1850} y={600} anchor="end" />
       </svg>
