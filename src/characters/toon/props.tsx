@@ -2,6 +2,8 @@ import React from 'react';
 import {C} from '../../theme';
 
 export type PropKind =
+  | 'tideLog'
+  | 'brush'
   | 'torch'
   | 'tape'
   | 'bottle'
@@ -312,6 +314,25 @@ export const HeldProp: React.FC<{kind: PropKind; R: number; frame: number}> = ({
             <path key={a} d={`M${Math.cos((a * Math.PI) / 180) * -R * 0.34},${Math.sin((a * Math.PI) / 180) * -R * 0.34} L${Math.cos((a * Math.PI) / 180) * R * 0.34},${Math.sin((a * Math.PI) / 180) * R * 0.34}`} stroke="#F4EFE6" strokeWidth={sw * 0.4} opacity={0.8} />
           ))}
           <circle r={R * 0.11} fill="#0A0A0C" />
+        </g>
+      );
+    case 'tideLog':
+      // Nana's tide log: a worn navy ledger with a paper label and a pencil tucked in it
+      return (
+        <g transform={`translate(${R * 0.1},${-R * 0.45}) rotate(-8)`}>
+          <rect x={-R * 0.42} y={-R * 0.56} width={R * 0.84} height={R * 1.12} rx={R * 0.05} fill="#1F3A5A" stroke={ink} strokeWidth={sw} />
+          <rect x={-R * 0.42} y={-R * 0.56} width={R * 0.14} height={R * 1.12} fill="#16293F" />
+          <rect x={-R * 0.16} y={-R * 0.36} width={R * 0.46} height={R * 0.3} fill="#F6EFD9" stroke={ink} strokeWidth={sw * 0.5} />
+          <path d={`M${R * 0.2},${-R * 0.66} L${R * 0.3},${R * 0.2}`} stroke="#E3A22B" strokeWidth={sw * 1.4} strokeLinecap="round" />
+        </g>
+      );
+    case 'brush':
+      // a wide paintbrush loaded with white
+      return (
+        <g transform={`translate(${R * 0.05},${-R * 0.1}) rotate(20)`}>
+          <rect x={-R * 0.07} y={-R * 0.7} width={R * 0.14} height={R * 0.6} rx={R * 0.04} fill="#8A5A36" stroke={ink} strokeWidth={sw * 0.8} />
+          <rect x={-R * 0.16} y={-R * 0.12} width={R * 0.32} height={R * 0.14} fill="#C9D2DC" stroke={ink} strokeWidth={sw * 0.8} />
+          <rect x={-R * 0.16} y={R * 0.02} width={R * 0.32} height={R * 0.3} rx={R * 0.04} fill="#FFFFFF" stroke={ink} strokeWidth={sw * 0.8} />
         </g>
       );
     case 'tideTable':

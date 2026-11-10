@@ -1,3 +1,4 @@
+import {MoonDisc} from '../moon/parts';
 import React from 'react';
 import {AbsoluteFill, Easing, interpolate} from 'remotion';
 import {Aurora, Frost, MilkyWay} from '../../fx/cinema/atmos';
@@ -265,7 +266,9 @@ export const TitleScene: React.FC = () => {
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%">
         <Stars frame={c.frame} count={500} w={W} h={H} seed={88} maxR={2} />
         <g transform={`translate(960,470) scale(${s}) translate(-960,-470)`}>
-          {motif === 'volcano' ? (
+          {motif === 'moon' ? (
+            <MoonDisc x={960} y={400} k={2.2 + 0.8 * clamp(c.t / c.dur)} base={60} tod="night" />
+          ) : motif === 'volcano' ? (
             <g>
               {/* a young cone in the dark, a red glow at its crater and a plume of steam */}
               <circle cx={960} cy={430} r={300} fill="#FF6A2A" opacity={0.12} filter="blur(30px)" />
@@ -312,7 +315,9 @@ export const EndScene: React.FC = () => {
     <AbsoluteFill style={{background: '#000'}}>
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%">
         <Stars frame={c.frame} count={500} w={W} h={H} seed={89} maxR={2} />
-        {c.p.motif === 'volcano' ? (
+        {c.p.motif === 'moon' ? (
+          <MoonDisc x={960} y={cy} k={r / 70} base={60} tod="night" />
+        ) : c.p.motif === 'volcano' ? (
           <g>
             <circle cx={960} cy={cy} r={r * 1.2} fill="#FF6A2A" opacity={0.12} filter="blur(24px)" />
             <path d={`M${960 - r * 1.4},${cy + r * 0.6} Q${960 - r * 0.3},${cy - r * 0.55} 960,${cy - r * 0.6} Q${960 + r * 0.3},${cy - r * 0.55} ${960 + r * 1.4},${cy + r * 0.6} Z`} fill="#1A1418" stroke="#FF8A3A" strokeWidth={4} />

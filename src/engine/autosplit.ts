@@ -44,6 +44,12 @@ const applyActs = (cast: Cast[], acts: Act[]) => {
     if (a.facing !== undefined) c.facing = a.facing;
     if (a.to !== undefined) c.x = Array.isArray(a.to) ? (a.to as number[])[0] : (a.to as number);
     if (a.take !== undefined && a.prop) c.hold = a.prop;
+    if (a.give !== undefined && a.prop) {
+      // a hand-over: the giver's hand empties and the receiver holds it in every later setup
+      if (c.hold === a.prop) c.hold = undefined;
+      const r = out.find((x) => x.who === a.give);
+      if (r) r.hold = a.prop;
+    }
     if (a.put !== undefined && c.hold === a.prop) c.hold = undefined;
     if ('seat' in a) c.seat = a.seat;
   }

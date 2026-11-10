@@ -19,6 +19,7 @@ import {F, HAND, MoonDisc} from './parts';
  *   grain    how small the visitor is: a grain of sand, and beside it a dot you cannot see
  *   roche    why it cannot hit: the Moon goes round; the dashed ring it would break at is far inside
  *   leaves   the visitor flies off; the Moon's new small orbit stays
+ *   p.headline on any view: shown as a news broadcast (LIVE bug + lower third)
  *   title    the title card (p.titleLines);  end  the end card (p.prompt)
  */
 const W = 1920;
@@ -32,10 +33,23 @@ const Label: React.FC<{x: number; y: number; t: string; s?: number; c?: string; 
     {t}
   </text>
 );
+/** p.headline turns any view into a news broadcast: a LIVE bug and a lower third (both inside the safe area). */
+let HEADLINE: string | undefined;
 const Frame: React.FC<{children: React.ReactNode; bg?: string}> = ({children, bg = '#070B1E'}) => (
   <AbsoluteFill style={{background: bg}}>
     <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%">
       {children}
+      {HEADLINE && (
+        <g>
+          <rect x={1580} y={150} width={150} height={52} rx={8} fill="#C2464F" />
+          <circle cx={1608} cy={176} r={9} fill="#FFFFFF" />
+          <text x={1630} y={188} fontFamily={F} fontWeight={800} fontSize={30} fill="#FFFFFF">LIVE</text>
+          <rect x={100} y={846} width={1720} height={84} fill="#C2464F" />
+          <rect x={100} y={846} width={200} height={84} fill="#8E2A34" />
+          <text x={200} y={900} textAnchor="middle" fontFamily={F} fontWeight={800} fontSize={32} fill="#FFFFFF">NEWS</text>
+          <text x={330} y={904} fontFamily={F} fontWeight={900} fontSize={46} fill="#FFFFFF">{HEADLINE}</text>
+        </g>
+      )}
       <Vignette amount={0.4} full />
     </svg>
   </AbsoluteFill>
@@ -76,6 +90,7 @@ const Page: React.FC<{children: React.ReactNode; x?: number; y?: number; w?: num
 export const MoonScene: React.FC = () => {
   const {t, frame, dur, props: p} = useShot();
   const v = p.v as string;
+  HEADLINE = p.headline as string | undefined;
   const part = p.part as [number, number] | undefined;
   const k0 = clamp(t / Math.max(part ? 1 : 2, dur - (part ? 0.2 : 0.5)));
   const k = part ? (part[0] + k0) / part[1] : k0;
@@ -205,7 +220,7 @@ export const MoonScene: React.FC = () => {
         <Label x={1420} y={470} t={km(d)} s={78} c="#FFE08A" />
         <Label x={1420} y={550} t={`ONE MONTH = ${month.toFixed(month < 10 ? 1 : 0)} DAYS`} s={36} />
         <Label x={1420} y={612} t={`TIDES × ${Math.pow(384000 / d, 3).toFixed(d > 300000 ? 1 : 0)}`} s={36} c="#9FD8FF" />
-        <Label x={cx} y={cy + 470} t="WHERE THE MOON USED TO BE" s={30} c="#8FA3C8" />
+        <Label x={1420} y={690} t="DASHED: WHERE IT USED TO BE" s={28} c="#8FA3C8" />
       </Frame>
     );
   }
@@ -308,6 +323,20 @@ export const MoonScene: React.FC = () => {
           <Label x={cx + 310} y={cy - 262} t="A MOON THIS CLOSE BREAKS UP" s={30} c="#FF8A7A" a="start" />
           <Label x={cx + 310} y={cy - 220} t="OURS STAYS 7 TIMES FURTHER OUT" s={30} a="start" />
         </g>
+      </Frame>
+    );
+  }
+
+  if (v === 'world') {
+    // the whole Earth, its oceans pulled into two bulges toward a Moon that is far too close
+    const a = frame * 0.004;
+    return (
+      <Frame>
+        <Stars frame={frame} seed={13} />
+        <Earth x={820} y={540} r={250} bulge={0.09} ang={-18} />
+        <MoonDisc x={1500 + Math.cos(a) * 20} y={330 + Math.sin(a) * 20} k={(p.moon as number) ?? 2} base={60} tod="night" />
+        <Label x={820} y={200} t={(p.label as string) ?? 'EVERY PORT ON EARTH: CLOSED'} s={42} c="#FFE08A" />
+        <Label x={820} y={900} t={(p.sub as string) ?? ''} s={32} />
       </Frame>
     );
   }
