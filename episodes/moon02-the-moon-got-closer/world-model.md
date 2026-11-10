@@ -69,3 +69,123 @@ Saltmouth: a harbour town of about 4,000. Quay Street 2 m above the sea, Market 
 
 ## 5. Question bank
 (Written after the screenplay, when every answer can cite a shot. At least 100 questions; at most 2 left open on purpose.)
+At least 100 questions. Each one ends with the shot ids that answer it, in brackets, or with **OPEN (series)**.
+At most two may be OPEN.
+
+### A. Premise mechanics
+1. Who tells the story? Wren, grown up; she was ten (title, d1-gauge)
+2. Where is it set? Saltmouth, a harbour town with a hill and a ruined chapel above it (d1-gauge, d60-line)
+3. What is the first sign? High water forty centimetres over the tide table (d1-log, d1-stall)
+4. How does the world know the Moon is closer? Observatories measure its distance every night with lasers (d1-news)
+5. How much closer on Day 1? Thirty-two thousand kilometres (d1-news)
+6. Why do the tides grow? A closer Moon pulls harder: half the distance gives eight times the tide (cube)
+7. Is the Moon falling? No: something is taking its speed away, a little on every loop (news-slow)
+8. How can something take the Moon's speed? Like a spacecraft's gravity slingshot, run the other way (sling)
+9. What is the something? A black hole smaller than a grain of sand, a third as heavy as the Moon (grain)
+10. Why can't anyone see it? It gives off no light and is far too small (grain, instrument)
+11. How is it found at all? By what it does to the Moon and the sea (instrument, your-column)
+12. Will the Moon hit the Earth? No: a moon goes round its planet and cannot fall in (roche, will-it-hit)
+13. How close would be dangerous? About 18,000 km, where a moon is pulled apart; ours stays far outside that (roche)
+14. Why does it stop? The visitor speeds up with every loop until it escapes, around Day 200 (d160-news, leaves)
+15. What happens to the Moon when it leaves? It stays where it was left, about 128,000 km away (leaves, year-later)
+16. Does the visitor take the Moon? No (leaves)
+17. How high do the tides end up? Thirty-five metres at Saltmouth, twice a day (d110-sum, d200-line, year-later)
+18. Where does the sea stop on Day 200? On Nana's white line (d200-line)
+19. Is the new Moon permanent? Yes; the town is rebuilt above the line (year-later)
+20. What does the story leave open? Where the visitor came from **OPEN (series)**
+
+### B. Physics and timing
+21. How far away is the Moon normally? 384,000 km (d1-gauge, d1-news)
+22. On Day 30? 330,000 km (d30-quay)
+23. On Day 60? 290,000 km (d60-quay)
+24. On Day 90? 250,000 km (d90-hill)
+25. On Day 120? 210,000 km (d120-street)
+26. On Day 150? 170,000 km (d150-crowd)
+27. On Day 180? 140,000 km (d180-hill)
+28. On Day 200? 128,000 km (d200-wait)
+29. Why does the month get shorter? A closer Moon orbits faster (kepler)
+30. How long is a month on Day 30? About 22 days (kepler)
+31. How long at the end? About five days (leaves)
+32. Why do tides grow so much faster than the Moon's size? Tidal pull grows with the cube of closeness (cube)
+33. How big does the Moon look at the end? About three times as wide (d180-hill, final)
+34. Does the ground move? Yes: the solid Earth's own tide reaches about two metres (ground)
+35. Why doesn't anyone feel the ground move? It rises slowly over hours (ground)
+36. Why does Nana's log show a tide "with no Moon"? The visitor's own pull makes a small extra tide (d3-extra, your-column)
+37. How did Nana work out 35 metres? Each loop's drop was a little bigger than the last; she carried the sum forward by hand (d110-sum)
+38. Does the scientists' figure match hers? Yes, to within rounding (d160-news, your-number)
+39. How small is the visitor? About 25 times smaller than a grain of sand (grain)
+40. How heavy? A third of the Moon (grain)
+
+### C. Power and communications
+41. Does the power stay on? Yes, throughout (d1-news, d30-news, d160-news)
+42. How does the town hear the news? TV and radio (d1-news, d30-news, d160-news)
+43. Do phones work? Yes (d1-kitchen)
+44. How is Mum called out? Her pager (d1-kitchen)
+45. Why does nobody stop the flooding? Nobody can stop the Moon; people can only move (d30-news, d150-crowd)
+
+### D. Transport and jobs
+46. What is Mum's job? Lifeboat coxswain (d1-kitchen, d60-lifeboat)
+47. Why is the lifeboat busy? People go back into flooded streets for belongings (d60-lifeboat)
+48. Where does the lifeboat launch at the end? From a ramp cut into the hill (last-launch)
+49. What happens to the fishing boats? They float at window height on the drowned quay (d60-quay)
+50. Who runs the town? The Harbour Board, chaired by Mr. Pell (d10-board)
+51. Why does the Board not act at first? It expects the tide to settle, as the news says (d10-board, d30-news)
+52. Where does the school go? Up the hill (d90-hill)
+53. What does the fishmonger think on Day 1? That it is a spring tide (d1-stall)
+
+### E. Food, water and shelter
+54. Where does the town end up sleeping? In the chapel on the hill (d150-beds)
+55. How many people? About four hundred (d150-beds)
+56. Who prepared the chapel? Nana, for months (d30-beds, your-column, confront)
+57. Why does the chapel have beds and an urn already? Nana moved them there (d30-beds, your-column)
+58. Who carries the beds in? Mr. Pell (d150-beds)
+59. What happens to Wren's house? The sea covers it on Day 120 (d120-window)
+60. Is the town rebuilt? Yes, above the white line (year-later)
+
+### F. Health and safety
+61. Is anyone in danger at sea? A family at the lighthouse, rescued by the lifeboat (last-launch)
+62. Why is the hook's street so dangerous? The sea lifts cars and floods to door height (hook, d120-street)
+63. Does anyone die in Saltmouth? No; the town moves up in time (d150-beds, d200-wait)
+64. Does Mum keep her promise that the Moon can't hit? Yes (will-it-hit, roche)
+65. What reassures Wren on the last night? Nana's joke about one more step and a better pencil (what-if)
+
+### G. Characters and motives
+66. Why does Nana keep the log? Her mother and grandmother did; the book is older than the harbour computer (d1-gauge, d1-book)
+67. Why does she hide the log? She had already been laughed at once (d110-letter, confront)
+68. When did she know how high it would come? Day 9 (d9-sums, d110-sum)
+69. Did she tell anyone? Yes, the Harbour Board on Day 10 (d10-board, confront)
+70. What did they say? That it would settle; they laughed (d10-board, d10-left)
+71. Had they laughed before? Yes, in 1998 (d110-letter)
+72. Why did she buy the chapel? To have a refuge ready above the last tide (d12-deeds, confront)
+73. Why did she paint the line? To mark where the sea would stop (d60-line, where-stop, d200-line)
+74. Why doesn't she react to the "extra tide" news? She had known since Day 3 (your-column)
+75. What does Wren want? Her street, her Nana and her sea to stay as they are (d30-beds, d120-window)
+76. Why does Wren refuse to move at first? It is her house (d30-beds)
+77. What changes Wren's mind? Finding the hidden pages (d110-find, d110-sum, confront)
+78. Why does Wren take the log to Mr. Pell? So the town will believe the numbers (d150-crowd)
+79. Why does Mr. Pell change? Nana's Day-9 figure for that night is exactly right (pell-reads)
+80. What does Pell do then? Leads the town to the line, carries beds (where-stop, d150-beds)
+81. Why does Nana hand Wren the book? She is passing the job on (page-one)
+82. What is the last line of the new book? High tide on time (page-one)
+83. Who is the narrator talking to at the end? The viewer, through the comment prompt only (end)
+
+### H. Continuity
+84. What does Wren wear? A yellow raincoat and red wellies throughout (d1-gauge, final)
+85. Where is the log kept? In the bread bin, then on the hill (d1-bin, d110-find)
+86. Who holds the log on Day 150? Wren, then Mr. Pell (d150-crowd, pell-reads)
+87. Who holds it on Day 200? Nana, then Wren (d200-wait, page-one)
+88. Is the white line there before the sea reaches it? Yes, painted on Day 66 (d60-line)
+89. Is the chapel the same building inside and out? Yes (d60-line, your-column)
+90. Does Quay Street flood before Market Street? Yes: 1.6 m before 7.5 m (d30-quay, d120-street)
+91. Does every day tag show the distance? Yes (d1-gauge, d30-quay, d60-quay, d90-hill, d120-street, d150-crowd, d180-hill, d200-wait)
+92. Is the hook a flash-forward? Yes: Day 120, shown again in order (hook, d120-street)
+93. Does the sea stay below the line after Day 200? Yes (year-later)
+
+### I. Picture logic
+94. How big is the Moon drawn on each day? Width in proportion to its distance (d1-moonrise, d90-hill, final)
+95. Does the sea level drawn match the day's tide? Yes; every set takes the height in metres (d30-quay, d60-quay, d120-street, d200-steps)
+96. Are labels readable? Yes, checked by the text audit before render (cube, d1-news, kepler)
+97. Where does the light come from at night? The Moon, brighter as it grows (d180-hill, final)
+98. Does anyone stand in front of anyone's face? No; face gate (page-one, d200-wait)
+99. Does the visitor ever appear on screen? Only as a marked speck in diagrams (sling, grain, leaves)
+100. Is there a second open question? How it was caught between the Earth and the Moon **OPEN (series)**

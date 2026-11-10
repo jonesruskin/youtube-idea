@@ -46,7 +46,7 @@ const TOWN = (o: Record<string, object> = {}) => [
   c('extra:21', 760, 930, {facing: 'left', expr: 'worried', outfit: 'cold'}),
   c(PL, 980, 930, {facing: 'left', expr: 'worried', ...o.pell}),
   c(WR, 1200, 930, {facing: 'left', expr: 'worried', ...o.wren}),
-  c(NN, 1400, 930, {facing: 'left', expr: 'focused', ...o.nana}),
+  c(NN, 1400, 930, {facing: 'left', expr: 'focused', pose: 'hold', hold: 'tideLog', ...o.nana}),
   c(TS, 1620, 930, {facing: 'left', expr: 'worried', ...o.tess}),
 ];
 
@@ -296,7 +296,7 @@ export const rawShots: Shot[] = [
   sh('news-slow', moon('orbit', {from: 290000, to: 280000, headline: 'WHAT IS SLOWING THE MOON?'}), {
     chapter: 'The visitor',
     bridge: 'On Day 70',
-    twist: 1,
+    twist: 2,
     cue: 'mystery',
     dev: 'the Moon is not falling: something is taking its speed, loop by loop',
     action: 'The news: the Moon’s path stepping inward, a little on every circuit.',
@@ -309,7 +309,6 @@ export const rawShots: Shot[] = [
     lines: [N('(calm) Spacecraft do it on purpose: swing past a planet, and *steal* a little of its speed. / Something was doing it to our *Moon*.')],
   }),
   sh('grain', moon('grain', {headline: 'A BLACK HOLE THE SIZE OF DUST'}), {
-    twist: 2,
     beats: ['wow'],
     dev: 'the visitor is a black hole smaller than a grain of sand',
     science: {text: 'A black hole with a third of the Moon’s mass would be about 0.04 mm across and give off no light; such primordial black holes are a real but unconfirmed hypothesis.', source: 'Hawking (1971); Scholtz and Unwin (2020)'},
@@ -358,7 +357,7 @@ export const rawShots: Shot[] = [
     dev: 'it can never hit: a moon orbits, and would break up long before it touched',
     science: {text: 'A moon closer than about 18,000 km to the Earth would be pulled apart by tides (the Roche limit); that is how planetary rings form.', source: 'Édouard Roche (1848)'},
     action: 'From above: the Moon going round and round. Far inside its path, a dashed ring.',
-    lines: [N("(calm) She was right. A moon doesn't fall *onto* its planet. It goes round it."), N('(calm) And one that came really close would be pulled to pieces long before it touched. / Ours was never going to come anywhere *near* that.')],
+    lines: [N("(calm) Mum was right. A moon doesn't fall *onto* its planet. It goes round it."), N('(calm) And one that came really close would be pulled to pieces long before it touched. / Ours was never going to come anywhere *near* that.')],
   }),
 
   // ══ DAY 110–120 ═════════════════════════════════════════════════════════════════════════════
@@ -399,7 +398,7 @@ export const rawShots: Shot[] = [
       NA("(determined) They'll believe the sea before they believe me. / So I'm getting the hill ready for when they *do*."),
     ],
   }),
-  sh('d120-street', stage('marketst', 'night', push(1.0, 1.1, 900, 540), [], [], {sea: 7.9, moon: 1.8}), {
+  sh('d120-street', stage('marketst', 'night', move([1.0, 1200, 560], [1.2, 860, 520]), [], [], {sea: 7.9, moon: 1.8}), {
     chapter: 'Day 120',
     hud: day(120, 210000),
     timeJump: true,
@@ -409,11 +408,11 @@ export const rawShots: Shot[] = [
     action: 'The opening picture again, now earned: Market Street at night, the sea lifting the yellow car.',
     lines: [N('(scared) On Day 120, the sea came up Market Street.')],
   }),
-  sh('d120-window', stage('quay', 'night', move([1.0, 1300, 380], [1.1, 1300, 330]), [], [], {sea: 5.0, moon: 1.8, noBoat: true, noStall: true}), {
+  sh('d120-window', stage('marketst', 'night', push(1.3, 1.45, 520, 600, 380, 640), [c(WR, 560, 930, {facing: 'left', expr: 'sad'}), c(TS, 760, 930, {facing: 'left', expr: 'sad'})], [{at: 0.6, who: WR, look: [-1, 0.8]}, {at: 'l0+1.2', who: TS, look: [-0.6, 0.5]}], {sea: 7.0, moon: 1.8, car: false}), {
     letterbox: true,
     beats: ['heart'],
     dev: 'Wren watches her own house go under',
-    action: 'Quay Street from above the water: the blue door of No. 3 gone, the sea at the sill of the upstairs window.',
+    action: 'The top of the steps on Market Street. Wren and Mum look down over the drowned roofs of Quay Street toward No. 3.',
     lines: [N("(grieving) From the steps, I watched it reach my bedroom window. / Then I couldn't see my window any *more*.")],
   }),
   sh('ground', stage('chapelin', 'day', push(1.5, 1.95, 560, 720), [], [], {moon: 1.8, sea: 7}), {
@@ -440,7 +439,7 @@ export const rawShots: Shot[] = [
     lines: [
       W("(determined) Mr. Pell. This is my Nana's book. / Every tide for a hundred and forty *years*."),
       PE('(tired) Wren, / not *now*.'),
-      W("(firm) She wrote down *tonight's* tide on Day 9. / Fifteen metres. Go and look at it."),
+      W("(firm) Nana wrote down *tonight's* tide on Day 9. / Fifteen metres. Go and look at it."),
     ],
   }),
   sh('pell-reads', stage('hill', 'dusk', push(1.6, 1.75, 1000, 600), [
@@ -450,7 +449,7 @@ export const rawShots: Shot[] = [
     beats: ['heart'],
     dev: 'Pell sees she was right',
     action: 'Mr. Pell with the open book, reading; the sea, far below him, exactly where the pencil said.',
-    lines: [PE('(shocked) Fifteen metres. // She had it *right*.'), PE('(guilty) She had *all* of it right.')],
+    lines: [PE('(shocked) Good Lord. // She had it *right*.'), PE('(guilty) She had *all* of it right.')],
   }),
   sh('where-stop', stage('hill', 'dusk', push(1.2, 1.32, 1250, 580), [
     c(WR, 780, 930, {facing: 'right', expr: 'determined'}),
@@ -539,7 +538,7 @@ export const rawShots: Shot[] = [
     action: 'Close on the steps: the water lapping onto the one below the line.',
     lines: [N('(scared) Two steps below the line. // *One*.')],
   }),
-  sh('d200-line', stage('hill', 'night', push(1.5, 1.7, 900, 800), TOWN({wren: {expr: 'awe'}, pell: {expr: 'surprised'}, tess: {expr: 'awe'}}), [{at: 'l0+2.4', who: NN, expr: 'smile'}], {sea: 34.97, moon: 3, line: 1, chapelLit: true}), {
+  sh('d200-line', stage('hill', 'night', push(1.5, 1.7, 900, 800), TOWN({wren: {expr: 'scared'}, tess: {expr: 'worried'}}), [{at: 'l0+1.5', who: WR, expr: 'awe'}, {at: 'l0+1.6', who: TS, expr: 'awe'}, {at: 'l0+1.6', who: PL, expr: 'surprised'}, {at: 'l0+2.4', who: NN, expr: 'smile'}], {sea: 34.97, moon: 3, line: 1, chapelLit: true}), {
     letterbox: true,
     beats: ['wow', 'heart'],
     cue: 'triumph',
@@ -553,10 +552,7 @@ export const rawShots: Shot[] = [
     action: 'From above: something small leaves its last loop and flies off the edge of the picture. The Moon goes on round its new, small path.',
     lines: [N('(awed) That night, the visitor made its last loop. It had stolen all the speed it needed, / and it flew off into the *dark*.'), N("(wistful) We thought it would take the Moon with it. / It didn't. It left the Moon exactly where it *was*.")],
   }),
-  sh('page-one', stage('hill', 'night', push(1.5, 1.65, 1300, 600), [
-    c(WR, 1200, 930, {facing: 'right', expr: 'smile'}),
-    c(NN, 1400, 930, {facing: 'left', expr: 'smile', pose: 'hold', hold: 'tideLog'}),
-  ], [{at: 'l0+1.6', who: NN, give: WR, prop: 'tideLog'}, {at: 'l1', who: WR, expr: 'laugh'}], {sea: 34.97, moon: 3, line: 1, chapelLit: true}), {
+  sh('page-one', stage('hill', 'night', push(1.5, 1.65, 1300, 600), TOWN({wren: {facing: 'right', expr: 'smile'}, nana: {expr: 'smile'}, pell: {expr: 'smile', facing: 'right'}, tess: {expr: 'smile'}}), [{at: 'l0+1.6', who: NN, give: WR, prop: 'tideLog'}, {at: 'l1', who: WR, expr: 'laugh'}], {sea: 34.97, moon: 3, line: 1, chapelLit: true}), {
     beats: ['heart'],
     dev: 'Nana hands the log on',
     action: 'Nana holds the ledger out to Wren.',
@@ -610,7 +606,6 @@ export const moon02: Episode = {
     twists: [
       {shot: 'd1-news', thought: 'it was only a big spring tide', but: 'the Moon itself was 32,000 km closer than the night before'},
       {shot: 'news-slow', thought: 'the Moon was falling towards us', but: 'nothing falls that slowly: something is stealing its speed, loop by loop'},
-      {shot: 'grain', thought: 'telescopes would find whatever was doing it', but: 'it is a black hole smaller than a grain of sand, and only the Moon and the sea can feel it'},
       {shot: 'roche', thought: 'the Moon would hit the Earth', but: 'a moon orbits and can never fall in; it would break up long before it touched'},
       {shot: 'confront', thought: 'Nana was losing her mind on the hill at night', but: 'she worked out the final tide on Day 9, told them on Day 10, and was building the refuge alone'},
       {shot: 'leaves', thought: 'the visitor would take the Moon away or drop it on us', but: 'it sped up until it escaped, and the Moon stayed exactly where it was left'},
@@ -620,7 +615,7 @@ export const moon02: Episode = {
   },
   logline:
     'One evening the Moon rises a little too big over a harbour town, and the tide comes in forty centimetres too high. Ten-year-old Wren’s grandmother has kept the tide log for fifty years, and she stops letting anyone read it. A survival story told day by day, with real science.',
-  tags: ['what if the moon came closer', 'moon closer to earth', 'tides', 'day 1 to day 200', 'animated story', 'science story', 'survival story', 'what if', 'black hole', 'the blink files', 'kids science', 'space'],
+  tags: ['what if the moon came closer', 'moon closer to earth', 'tides', 'day 1 to day 200', 'animated story', 'science story', 'survival story', 'what if', 'tide', 'the blink files', 'kids science', 'space'],
   pinnedComment: 'Every science fact in this File is real, with sources in the description. What would you carry up the hill first?',
   fps: 30,
   style: 'cinema',
