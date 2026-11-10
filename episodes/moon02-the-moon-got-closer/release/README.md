@@ -4,7 +4,7 @@ Everything needed to publish this episode. Big files are stored with Git LFS (`g
 
 | file | what it is |
 |---|---|
-| `moon02-master.mp4` | upload master: 1080p30, H.264, AAC 256k, −14 LUFS, soft English subtitles (204 MB) |
+| `moon02-master.mp4` | upload master: 1080p30, H.264, AAC 256k, −14 LUFS, soft English subtitles (228 MB) |
 | `moon02.mp4` | web copy for quick viewing (90 MB) |
 | `moon02.srt` | English captions for YouTube |
 | `moon02-described.srt` | captions plus stage directions (review copy) |
@@ -14,4 +14,4 @@ Everything needed to publish this episode. Big files are stored with Git LFS (`g
 - **Runtime:** 8:06
 - **Voice:** Kokoro-82M, free local voices (placeholder: to be replaced with ElevenLabs once the picture is approved)
 - **Music and sound:** synthesised score and sound design (scripts/score_cinema.py)
-- **Built from:** commit `ef35c16`
+- **Built from:** commit `be1c6bf`
