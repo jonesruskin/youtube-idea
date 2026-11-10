@@ -2139,7 +2139,7 @@ export const sun01: Episode = {
     'what if the sun disappeared for a year',
     'the sun',
     'earth without the sun',
-    'plot twist',
+    'sci-fi mystery',
     'the blink files',
   ],
   pinnedComment: "Did you catch the clue in the first ten seconds? 👀 (No spoilers in the replies, please, for people still watching!)\n\nIf the Sun went out tomorrow, what's the first thing you'd do? 👇",
