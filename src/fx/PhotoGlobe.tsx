@@ -2,8 +2,9 @@ import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {continueRender, delayRender, staticFile} from 'remotion';
 
 /**
- * The real Earth: NASA Blue Marble (day) and Black Marble (night lights) textures, public domain, reprojected
- * per pixel onto an orthographic sphere on a canvas. Story controls: where the Sun is (or that there is none),
+ * The Earth in the show's style (docs/00 P13): real continents, coasts, deserts, ice and city lights from NASA Blue
+ * Marble / Black Marble, redrawn flat by scripts/bake_bodies.py (public/toon/earth-*.png), reprojected per pixel onto
+ * an orthographic sphere on a canvas, lit with a flat cel terminator and inked like the characters. Story controls: where the Sun is (or that there is none),
  * how many city lights are still on, how far the ice has spread, and a slow spin.
  */
 type Tex = {w: number; h: number; d: Uint8ClampedArray};
@@ -25,7 +26,7 @@ const load = (name: string): Promise<Tex> => {
       res(t);
     };
     img.onerror = rej;
-    img.src = staticFile(`earth/${name}.jpg`);
+    img.src = staticFile(`toon/${name}.png`);
   });
   cache[name] = p;
   return p;
@@ -49,12 +50,12 @@ export type PhotoGlobeProps = {
   clouds?: number;
 };
 
-export const PhotoGlobe: React.FC<PhotoGlobeProps> = ({size, center, sun, lights = 1, ice = 90, dim = 0, nightLift = 0.45, clouds = 0.7}) => {
+export const PhotoGlobe: React.FC<PhotoGlobeProps> = ({size, center, sun, lights = 1, ice = 90, dim = 0, nightLift = 0.45, clouds = 0}) => {
   const ref = useRef<HTMLCanvasElement>(null);
   const [tex, setTex] = useState<{day: Tex; night: Tex; cl: Tex} | null>(null);
   const [handle] = useState(() => delayRender('earth textures'));
   useEffect(() => {
-    Promise.all([load('day'), load('night'), load('clouds')]).then(([day, night, cl]) => {
+    Promise.all([load('earth-day'), load('earth-night'), load('earth-clouds')]).then(([day, night, cl]) => {
       setTex({day, night, cl});
     });
   }, []);
@@ -122,25 +123,25 @@ export const PhotoGlobe: React.FC<PhotoGlobeProps> = ({size, center, sun, lights
           const ny = cl2 * Math.sin(lam);
           const nz = Math.sin(phi);
           const dot = nx * sx + ny * sy + nz * sz;
-          lit = Math.max(0, Math.min(1, dot * 4 + 0.15)) * (1 - dim);
+          lit = Math.max(0, Math.min(1, dot * 40 + 0.5)) * (1 - dim); // a crisp cel terminator, not a soft photo gradient
         }
         // night: the Black Marble land/ocean tones (faint) + city lights (scaled by `lights`)
         const nr = night.d[ni];
         const ng = night.d[ni + 1];
         const nb = night.d[ni + 2];
         const lum = (nr + ng + nb) / 3;
-        const city = Math.max(0, lum - 60) / 195; // bright pixels are cities
+        const city = lum > 100 ? 1 : 0; // the toon night map is flat: lit pixels are cities
         // night: a cool, starlit version of the day texture so continents, clouds and ice still read
         const base = 0.42 * nightLift;
-        let qr = r * base * 0.62 + nr * 0.15;
-        let qg = gg * base * 0.8 + ng * 0.15;
-        let qb = b * base * 1.25 + nb * 0.2 + 18 * nightLift;
+        let qr = r * base * 0.62;
+        let qg = gg * base * 0.8;
+        let qb = b * base * 1.25 + 18 * nightLift;
         const cityOn = Math.min(1, city * 1.6) * lights;
         qr += 255 * cityOn * 1.2;
         qg += 196 * cityOn * 1.2;
         qb += 110 * cityOn;
         // limb darkening
-        const limb = 0.55 + 0.45 * Math.pow(z, 0.6);
+        const limb = 1; // flat colour to the edge, like every other shape in the show
         const idx = (py * S + px) * 4;
         o[idx] = Math.min(255, (r * lit + qr * (1 - lit)) * limb);
         o[idx + 1] = Math.min(255, (gg * lit + qg * (1 - lit)) * limb);
@@ -158,6 +159,14 @@ export const PhotoGlobe: React.FC<PhotoGlobeProps> = ({size, center, sun, lights
       g.drawImage(ref.current, 0, 0);
       g.restore();
     }
+    // the ink outline every shape in the show has
+    g.save();
+    g.beginPath();
+    g.arc(S / 2, S / 2, S / 2 - Math.max(1.5, S * 0.007), 0, Math.PI * 2);
+    g.lineWidth = Math.max(3, S * 0.014);
+    g.strokeStyle = '#0B1026';
+    g.stroke();
+    g.restore();
     continueRender(handle);
   }, [tex, size, center[0], center[1], sun?.[0], sun?.[1], lights, ice, dim, nightLift, clouds]);
   return <canvas ref={ref} width={Math.round(size)} height={Math.round(size)} style={{width: size, height: size, borderRadius: '50%'}} />;

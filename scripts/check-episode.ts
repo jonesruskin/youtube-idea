@@ -86,7 +86,7 @@ try {
   const {checkRealBodies} = await import('./real-bodies');
   const {errors, files} = checkRealBodies();
   if (errors.length) fails.push(...errors);
-  else ok.push(`real bodies: ${files} source files, every Moon, Earth and planet from a real map (self-test passed)`);
+  else ok.push(`real bodies: ${files} source files, every Moon, Earth and planet from a real map in the show's style (self-test passed)`);
 }
 
 // 2c · premise registry (docs/00 S11): a new story, not a re-use of an earlier episode's event or title

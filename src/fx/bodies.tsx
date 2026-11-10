@@ -2,11 +2,14 @@ import React, {useLayoutEffect, useState} from 'react';
 import {continueRender, delayRender, staticFile} from 'remotion';
 
 /**
- * Real celestial bodies (docs/00 P13). Every Moon, Earth and planet on screen is one of these discs, baked from real maps
- * by scripts/bake_bodies.py (NASA LRO Moon, NASA Blue Marble Earth, Solar System Scope planets). Nothing is hand-drawn:
- * a hand-drawn Moon or Earth is what the CEO caught on the File 002 thumbnails ("craters look weird, continents misplaced").
- * The check-episode "real bodies" gate fails any scene file that defines its own Moon / Earth / Planet drawing.
+ * Celestial bodies (docs/00 P13): real geography, drawn in the show's style. Every Moon, Earth and planet on screen is
+ * one of these discs, baked by scripts/bake_bodies.py from real maps (NASA LRO Moon, NASA Blue Marble Earth, Solar
+ * System Scope planets) and redrawn flat: a few solid colours, inked coasts and crater rims. On screen each gets the
+ * same ink outline and flat cel shadow as the characters. Two CEO notes made this: "the craters look weird, continents
+ * misplaced" (a hand-drawn Moon and Earth) and then "the real image looks odd with the animation" (raw NASA photos).
+ * The check-episode real-bodies gate fails hand-drawn bodies and any texture not in public/bodies/manifest.json.
  */
+const INK = '#0B1026';
 export type BodyName = 'moon' | 'earth-atlantic' | 'earth-pacific' | 'earth-asia' | 'venus' | 'mars' | 'mercury' | 'jupiter' | 'saturn';
 
 const ready: Record<string, boolean | Promise<void>> = {};
@@ -62,7 +65,9 @@ export const Body: React.FC<{
   dark?: number;
   opacity?: number;
   rotate?: number;
-}> = ({name, x, y, r, light, phase = 0, tint, tintAmount = 0.25, glow = 0, glowColor = '#FFF6C8', dark = 0, opacity = 1, rotate = 0}) => {
+  /** where the flat cel shadow sits, degrees (0 = right side, the default: light from the upper left). */
+  shadeAngle?: number;
+}> = ({name, x, y, r, light, phase = 0, tint, tintAmount = 0.25, glow = 0, glowColor = '#FFF6C8', dark = 0, opacity = 1, rotate = 0, shadeAngle = 20}) => {
   useBody(name);
   const id = `b-${name}-${Math.round(x)}-${Math.round(y)}-${Math.round(r)}`;
   const lit = light !== undefined && phase > 0;
@@ -72,6 +77,11 @@ export const Body: React.FC<{
         <clipPath id={`${id}c`}>
           <circle r={r} />
         </clipPath>
+        {/* cel shadow: the disc minus a copy shifted toward the light leaves a crescent on the far side */}
+        <mask id={`${id}m`} maskUnits="userSpaceOnUse" x={-r * 1.1} y={-r * 1.1} width={r * 2.2} height={r * 2.2}>
+          <circle r={r * 1.05} fill="#fff" />
+          <circle cx={-Math.cos((shadeAngle * Math.PI) / 180) * r * 0.24} cy={-Math.sin((shadeAngle * Math.PI) / 180) * r * 0.24} r={r} fill="#000" />
+        </mask>
         {glow > 0 && (
           <radialGradient id={`${id}g`}>
             <stop offset="0.5" stopColor={glowColor} stopOpacity={0.5 * glow} />
@@ -80,8 +90,8 @@ export const Body: React.FC<{
         )}
         {lit && (
           <linearGradient id={`${id}t`} gradientTransform={`rotate(${light! + 180},0.5,0.5)`}>
-            <stop offset={Math.max(0, 1 - phase * 0.5 - 0.08)} stopColor="#000" stopOpacity={0} />
-            <stop offset={Math.min(1, 1 - phase * 0.5 + 0.08)} stopColor="#000" stopOpacity={0.88} />
+            <stop offset={Math.max(0, 1 - phase * 0.5 - 0.015)} stopColor={INK} stopOpacity={0} />
+            <stop offset={Math.min(1, 1 - phase * 0.5 + 0.015)} stopColor={INK} stopOpacity={0.8} />
           </linearGradient>
         )}
       </defs>
@@ -91,7 +101,10 @@ export const Body: React.FC<{
         {tint && <circle r={r} fill={tint} opacity={tintAmount} style={{mixBlendMode: 'multiply'}} />}
         {lit && <rect x={-r} y={-r} width={2 * r} height={2 * r} fill={`url(#${id}t)`} />}
         {dark > 0 && <circle r={r} fill="#02040C" opacity={dark} />}
+        {/* flat cel shadow on the side away from the light, like the characters' shading */}
+        {!lit && <circle r={r} fill={INK} opacity={0.16} mask={`url(#${id}m)`} />}
       </g>
+      <circle r={r} fill="none" stroke={INK} strokeWidth={Math.max(2, r * 0.028)} />
     </g>
   );
 };
