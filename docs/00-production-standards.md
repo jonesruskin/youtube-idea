@@ -33,6 +33,11 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
 - **S11. Every episode is a new story.** A new premise (a different event or mystery, not the same event seen by someone else), new characters, a new setting, a new title and a new twist. Episodes share only the format and the quality bar: a kid or family at the centre, real science behind every clue, one twist, complete in one episode, and every rule in this document. Never re-use an earlier episode's event, storyline or title pattern. [gate: premise registry, `docs/premises.md`, checked by `check-episode`: title lead words and premise overlap]
 - **S12. Nothing from another File leaks into this one:** title card, end card, props (a photo prop must show this story's photo), music cues, sound effects. Every shared component takes its content from the episode. [gate: check-episode title/end-card check; sheet: stills of every card]
 
+- **S13. The hook is the event:** the impossible thing is on screen within 30 seconds, before anyone is introduced.
+- **S14. A mystery with an owner:** one question the audience cannot answer and one character who knows more than they say; the answer changes what earlier scenes meant.
+- **S15. A twist ladder:** at least four reversals written as "we thought X, but Y" in the treatment, the last inside the final two minutes, approved before any build.
+- **S16. A clock the viewer can count** (days, distance, depth), with the world visibly worse at each step.
+
 ## D. Dialogue
 - **D1. Every line is a complete, natural sentence** that makes sense on its own, with clear referents. Write "Then something has happened at the Sun", not "Then it happened at the Sun". [cold read]
 - **D2. No clipped numbers or jargon:** say "four minutes past seven", not "seven-oh-four". [gate: line lint]
@@ -62,6 +67,7 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
 - **D17. Every line carries a feeling, and says it.** People thank, fear, tease and miss each other; they don't file reports. "You kept them alive." is a report; "Thank you. For keeping them alive. For looking after them, all this time." is gratitude. Comfort comes before analysis ("Oh, Lui. I'm sorry." before the clue). At the big moments (reunions, goodbyes, danger, apologies), somebody says what they feel. [gate: `(feel)` required on every line; feeling flags in the dialogue review: report-shaped thanks, a heart moment said flat, an exclamation said calm]
 - **D18. Every line is written with its delivery:** `(feel)` first, `*stress*` on the word that carries the meaning, ` / ` for a beat and ` // ` for a long beat (a breath, a swallow, a hesitation). Character lines of 5+ words and narration of 12+ words must mark at least one. The voice engine performs them (Kokoro: per-phrase synthesis, stress markup and lift, feeling sets speed, pitch and level; ElevenLabs v3: audio tag, CAPS, pauses). [gate: delivery lint; src/engine/delivery.ts]
 - **D19. The face says what the voice says.** The speaker's expression when the line starts must be one that can carry its feeling (grateful: smile, relieved or tearful; urgent: alert, worried, scared or determined; never a blank face on gratitude or a smile on a warning). [gate: feel-to-face lint]
+- **D20. Explain it the way the youngest character would notice it.** No arithmetic or jargon spoken aloud to carry a plot point ("twenty-three times seventy-three" became "they come in rows… filled squares and empty squares"). The exact numbers can sit on screen for those who want them. [ledger]
 - **D16. Lines have an addressee and a reason.** Offers and announcements include their lead-in ("Let me help. I know a little about old machines.", "Listen. Something near the Sun is calling us."). [ledger]
 
 ## P. Picture
@@ -72,6 +78,10 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
 - **P5. Weather and light match the world model:** e.g. frost and not snowdrifts after the first week; lamps on when power works. [gate + filmstrip]
 - **P6. Stars, sky, scale and real-world sizes are correct** (ScaleLab). [sheet]
 - **P7. People face whoever they hug, talk to or come to.** A walk turns the walker toward where they went, so an arrival must turn them to the person they came to (Kai ran to Mum and stopped with his back to her). Listeners face the speaker unless they are side by side looking at the same thing. [gate: facing lint]
+- **P9. No face is ever behind another person.** Heads must not overlap; in a hug or a line-up, the shorter person stands clear of the taller one's head and body. [gate: face lint, checked at the end of every shot and at every line]
+- **P10. Every change of place is announced:** an on-screen place/day tag, or words in that shot's own line ("That evening, at seven, Mum called."; "out on the stairs"). A cut from a supermarket to a living room with nothing said is a continuity break. [gate: place lint; `hud` or `bridge`]
+- **P11. People don't undo what they just did.** Whoever opens a door stays at it; nobody walks to a spot and straight back. A prop taken from a pocket, bag or table grows out of the reaching hand and one put away shrinks into it, never on the first 0.4 s of a shot. [gate: take/put timing lint; rig]
+- **P12. Furniture fits the people using it:** a chair back ends at the sitter's shoulders, a table top at a standing adult's hip. [rig: Seat; sheet: seated stills]
 - **P8. Every label a viewer must read is fully visible:** never under the letterbox bars, never cut by the frame or by the panel it sits in, never overlapping another label, never covered by something drawn over it (the sunrise city tags were hidden by the bars). Set dressing may be cropped (`data-text="set"`); a label is `info` by default. [gate: scripts/text-safe.ts, run by check-episode and before every render]
 
 ## A. Acting (faces and bodies)
@@ -119,6 +129,15 @@ A new CEO note becomes a new numbered rule here, and a gate wherever it can be a
   - Clarity beats cut speed: never clip a line to make the number. [gate]
 
 ## Source of these rules (CEO reviews)
+- **v5.3 review:**
+  - Mira's face blocked behind Mum (P9);
+  - the drawing appearing and disappearing in a hand (P11);
+  - supermarket to home with nothing said (P10);
+  - Kai opening the door and walking back (P11);
+  - the 1,679 sequence too technical (D20);
+  - chair as tall as the sitter (P12);
+  - "double voices" (two pitch passes on one line; now one);
+  - File 002: no substance, no twists (S13–S16, `docs/17-file002-rethink.md`).
 - **v5.2 review:**
   - Kai stops behind Mum at the reunion, not facing her (P7);
   - Mum's "You kept them alive." has no emotion; it should express gratitude; the dialogue across the whole video lacks emotion (D17);
