@@ -6,7 +6,7 @@
 The Moon Got Closer Every Night. Day 1 to Day 200 by the Sea
 
 ## Premise
-A black hole smaller than a grain of sand but heavier than a mountain range drifts in from deep space and gets caught between the Earth and the Moon. It cannot be seen. Every loop it makes around the Moon works like a spacecraft's gravity slingshot in reverse: the visitor gains a little speed and the Moon loses a little, and a slower Moon sinks closer to the Earth. The tides grow with every loop. In a harbour town, ten-year-old Wren, her mother (who runs the lifeboat) and her grandmother Nana Odile (who keeps the family's 140-year tide log) move uphill one street at a time. After two hundred days the visitor has stolen enough speed to escape, and it leaves. The Moon stays where it was dropped: three times closer, for good.
+A black hole smaller than a grain of sand but a third as heavy as the Moon drifts in from deep space and gets caught between the Earth and the Moon. It cannot be seen. Every loop it makes around the Moon works like a spacecraft's gravity slingshot in reverse: the visitor gains a little speed and the Moon loses a little, and a slower Moon sinks closer to the Earth. The tides grow with every loop. In a harbour town, ten-year-old Wren, her mother (who runs the lifeboat) and her grandmother Nana Odile (who keeps the family's 140-year tide log) move uphill one street at a time. After two hundred days the visitor has stolen enough speed to escape, and it leaves. The Moon stays where it was dropped: three times closer, for good.
 
 ## Hook (0:00–0:30)
 Night. A harbour street. The Moon rises over the sea wall three times too big, close enough to see its mountains, and the sea climbs the street after it, lifting parked cars, while a girl in pyjamas watches from an upstairs window. "The first night, we thought it was beautiful."
@@ -44,7 +44,7 @@ Answer: The white line is where her Day 9 sum said the last high tide would stop
 2. We measure the Moon's distance to within centimetres by bouncing lasers off mirrors the Apollo astronauts left there; it normally drifts away 3.8 cm a year. — Source: NASA Lunar Laser Ranging
 3. A closer moon orbits faster: at a third of the distance, a month lasts about five days. — Source: Kepler's third law (1619)
 4. A gravity slingshot trades speed between a small body and a big one; spacecraft like Voyager used it to gain speed from planets. — Source: NASA Jet Propulsion Laboratory
-5. A black hole with the mass of an asteroid would be smaller than a grain of sand and completely dark; such primordial black holes are a real, unconfirmed hypothesis. — Source: Hawking (1971); Scholtz and Unwin (2020)
+5. A black hole a third as heavy as the Moon would be smaller than a grain of sand and completely dark; such primordial black holes are a real, unconfirmed hypothesis. — Source: Hawking (1971); Scholtz and Unwin (2020)
 6. The shape of a bay can multiply a tide: the Bay of Fundy's reach 16 metres today. — Source: Canadian Hydrographic Service
 7. A moon that comes closer than about 18,000 km to the Earth is torn apart by tides (the Roche limit); that is how rings form. — Source: Édouard Roche (1848)
 8. The solid ground rises and falls about 30 centimetres twice a day with the Moon, and nobody feels it. — Source: International Earth Rotation and Reference Systems Service
