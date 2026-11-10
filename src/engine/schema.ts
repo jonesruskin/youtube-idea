@@ -129,8 +129,30 @@ export type Shot = {
   reveal?: string;
 };
 
+/**
+ * The story contract (docs/00 S13–S16). Every File declares, as data, the five things that make it worth watching, each
+ * tied to real shot ids; the linter then proves the film delivers them on time. Written at the treatment stage and
+ * approved before anything is built.
+ */
+export type Story = {
+  /** The impossible event, on screen inside the first 30 seconds. */
+  hook: {shot: string; image: string};
+  /** What the viewer counts (days, distance, depth…) and the shots where it visibly steps on (6 or more). */
+  clock: {unit: string; steps: string[]};
+  /** The question the audience can't answer, who knows more than they say, where it is planted (3+) and answered. */
+  mystery: {question: string; owner: string; plants: string[]; answer: string};
+  /** The reversals: "we thought X, but Y" (4 or more; the last one inside the final 2.5 minutes). */
+  twists: {shot: string; thought: string; but: string}[];
+  /** What the main character wants, what it costs, and the shot that pays it off. */
+  heart: {want: string; cost: string; payoff: string};
+  /** The last picture the viewer takes away. */
+  finalImage: string;
+};
+
 export type Episode = {
   id: string;
+  /** The story contract; required for every cinema File (lint: Story gate). */
+  story?: Story;
   file: string; // "FILE 01"
   title: string;
   youtubeTitle: string;

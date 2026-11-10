@@ -30,6 +30,16 @@ try {
   if (!fails.length) fails.push('lint: failed');
 }
 
+// 1b · the treatment exists and passes (stage 1), and the gates themselves still catch every known defect
+if (id !== 'sun01' && id !== 'ep01') {
+  try { execSync(`npx tsx scripts/check-treatment.ts ${id}`, {cwd: ROOT, stdio: 'pipe'}); ok.push('treatment: passes'); }
+  catch { fails.push(`treatment: check-treatment ${id} fails (stage 1 comes before everything)`); }
+}
+if (!process.argv.includes('--fast')) {
+  try { execSync('npx tsx scripts/test-gates.ts', {cwd: ROOT, stdio: 'pipe'}); ok.push('gate self-test: every planted defect is caught'); }
+  catch (e: any) { fails.push('gate self-test: a gate no longer catches its defect (npx tsx scripts/test-gates.ts)'); }
+}
+
 // 2 · question bank
 const qbPath = episode.questionBank ? join(ROOT, episode.questionBank) : null;
 if (!qbPath || !existsSync(qbPath)) fails.push(`question bank: missing (set episode.questionBank; docs/00 S4)`);

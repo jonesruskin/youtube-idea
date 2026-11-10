@@ -8,6 +8,9 @@ import {HERO_PX} from '../src/characters/toon/design';
 
 const id = process.argv[2] ?? 'ep01';
 const {episode, voice} = await loadEpisode(id);
+// Gate self-test hook (scripts/test-gates.ts): plant one known defect in the loaded episode, so the test can prove
+// the gate that should catch it still fires.
+if (process.env.LINT_MUTATE) (await import('./gate-mutations')).MUTATIONS[process.env.LINT_MUTATE].apply(episode);
 const tl = buildTimeline(episode, voice);
 
 const errors: string[] = [];
@@ -627,6 +630,27 @@ if (episode.style === 'cinema') {
       }
     }
   }
+  // ── v5.3 there-and-back gate (CEO: "Kai goes front, opens the door and then comes back. No one does that in real
+  // life"). A person who walks somewhere and, in the same or the next shot, walks straight back to where they started
+  // has undone their own action. ──
+  {
+    const lastWalk = new Map<string, {from: number; to: number; idx: number; set: string}>();
+    (tl.shots as any[]).forEach((s, idx) => {
+      if (s.scene !== 'stage') return;
+      const p = s.props ?? {};
+      for (const c of (p.cast ?? []) as any[]) {
+        let x = c.x;
+        for (const a of ((p.acts ?? []) as any[]).filter((a) => a.who === c.who && a.to !== undefined)) {
+          const tx = Array.isArray(a.to) ? a.to[0] : a.to;
+          const prev = lastWalk.get(c.who);
+          if (prev && prev.set === p.set && idx - prev.idx <= 1 && Math.abs(prev.to - prev.from) > 150 && Math.abs(tx - prev.from) < 120 && Math.abs(tx - x) > 150 && MAIN_CAST.includes(c.who))
+            errors.push(`Staging: ${c.who} walks to x ${Math.round(prev.to)} and straight back in "${s.id}" (people don't undo what they just did).`);
+          if (Math.abs(tx - x) > 4) lastWalk.set(c.who, {from: x, to: tx, idx, set: p.set});
+          x = tx;
+        }
+      }
+    });
+  }
   // ── v5.3 place gate (CEO: "one minute they are in the supermarket and the other they are talking in their house.
   // It has to explain or say something"). Whenever the story moves to a different place, the first shot there (or a
   // cutaway just before it) must orient the viewer: an on-screen place/day tag (`hud`) or a spoken bridge (`bridge`:
@@ -650,6 +674,52 @@ if (episode.style === 'cinema') {
       recent.push(loc);
       last = loc;
       pending = false;
+    }
+  }
+  // ── Story gate (docs/00 S13–S16; CEO: "I need the hook, the clock, the mystery, the twists and turns, the science
+  // in all the upcoming videos"). The episode declares its story contract; this proves the film keeps it. ──
+  {
+    const st = episode.story;
+    const at = (id: string) => (tl.shots as any[]).find((x) => x.id === id);
+    const D = tl.duration;
+    if (!st) errors.push('Story: no story contract (episode.story): declare the hook, clock, mystery, twists and heart.');
+    else {
+      const need = (id: string, what: string) => {
+        const x = at(id);
+        if (!x) errors.push(`Story: ${what} points at "${id}", which is not a shot.`);
+        return x;
+      };
+      const hook = need(st.hook.shot, 'the hook');
+      if (hook && hook.start > 30) errors.push(`Story: the hook ("${st.hook.image}") starts at ${formatTimestamp(hook.start)}; the event must be on screen within 0:30.`);
+      const steps = st.clock.steps.map((id) => need(id, 'a clock step')).filter(Boolean);
+      if (steps.length < 6) errors.push(`Story: the clock (${st.clock.unit}) has ${steps.length} steps; the viewer needs at least 6 to count.`);
+      const stepT = [0, ...steps.map((x: any) => x.start).sort((a: number, b: number) => a - b), D];
+      for (let i = 1; i < stepT.length; i++) if (stepT[i] - stepT[i - 1] > D * 0.3) errors.push(`Story: no clock step between ${formatTimestamp(stepT[i - 1])} and ${formatTimestamp(stepT[i])} (more than 30% of the film).`);
+      for (const x of steps) if (!x.hud && !/\b(day|days|kilomet|km|metres?|hours?|minutes?|degrees?)\b/i.test((x.lines ?? []).map((l: any) => l.text).join(' '))) errors.push(`Story: clock step "${x.id}" shows no tag and says no number of ${st.clock.unit}.`);
+      const plants = st.mystery.plants.map((id) => need(id, 'a mystery plant')).filter(Boolean);
+      const ans = need(st.mystery.answer, 'the mystery answer');
+      if (plants.length < 3) errors.push(`Story: the mystery ("${st.mystery.question}") is planted ${plants.length} time(s); plant it at least 3 times.`);
+      if (ans) {
+        if (ans.start < D * 0.6) errors.push(`Story: the mystery is answered at ${formatTimestamp(ans.start)}, before 60% of the film; nothing is left to wait for.`);
+        for (const x of plants) if (x.start >= ans.start) errors.push(`Story: mystery plant "${x.id}" comes after its answer.`);
+        if (plants.length && plants[0].start > D * 0.2) errors.push(`Story: the mystery is first planted at ${formatTimestamp(plants[0].start)}; plant it in the first 20%.`);
+      }
+      const tw = st.twists.map((t) => ({...t, x: need(t.shot, 'a twist')})).filter((t) => t.x);
+      if (tw.length < 4) errors.push(`Story: ${tw.length} twists declared; a File needs at least 4 reversals ("we thought X, but Y").`);
+      for (const t of tw) {
+        if (!t.x.twist) errors.push(`Story: twist shot "${t.shot}" is not marked \`twist\` in the script.`);
+        if (t.thought.split(/\s+/).length < 3 || t.but.split(/\s+/).length < 3) errors.push(`Story: twist "${t.shot}" must say what we thought and what is true instead.`);
+      }
+      const tt = tw.map((t) => t.x.start).sort((a: number, b: number) => a - b);
+      if (tt.length && D - tt[tt.length - 1] > 150) errors.push(`Story: the last twist is at ${formatTimestamp(tt[tt.length - 1])}; one must land inside the final 2:30.`);
+      for (let i = 1; i < tt.length; i++) if (tt[i] - tt[i - 1] < 30) errors.push(`Story: two twists within 30 s of each other at ${formatTimestamp(tt[i])}; spread them.`);
+      if (tt.length && tt[0] > D * 0.35) errors.push(`Story: the first twist only arrives at ${formatTimestamp(tt[0])}; one must land in the first 35%.`);
+      const pay = need(st.heart.payoff, 'the heart payoff');
+      if (pay && pay.start < D * 0.5) errors.push('Story: the heart pays off in the first half; it must cost something first.');
+      const fin = need(st.finalImage, 'the final image');
+      if (fin && D - fin.end > 60) errors.push('Story: the final image is not in the last minute.');
+      const sci = (tl.shots as any[]).filter((x) => x.science?.source).length;
+      if (sci < 6) errors.push(`Story: ${sci} sourced science facts; a File teaches at least 6.`);
     }
   }
   // ── v5.2 delivery gate: every line says how it is said. A feeling on every line; stress or a beat marked on every
