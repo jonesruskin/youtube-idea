@@ -487,1625 +487,1657 @@ MR. ITO: Heat won't be the hard part. Food will.
 MR. ITO: Nothing grows without the Sun.
 
 123
-00:03:41,190 --> 00:03:43,935
+00:03:41,190 --> 00:03:44,265
 [Day 0, evening. A hospital corridor turned shelter. At the nurses’ station, a nurse in scrubs holds up her phone for a video call.]
 
 124
-00:03:41,290 --> 00:03:43,815
-NARRATOR: Kai! Mira! Oh, there you are.
+00:03:41,290 --> 00:03:44,145
+NARRATOR: That evening, at seven, Mum called.
 
 125
-00:03:44,085 --> 00:03:46,450
-[Their flat, that evening. Kai holds his phone up for the video call; Mira squeezes in beside him.]
+00:03:44,415 --> 00:03:47,160
+[Reverse: mum answers.]
 
 126
-00:03:44,535 --> 00:03:46,330
-NARRATOR: Mum! Are you okay?
+00:03:44,515 --> 00:03:47,040
+NARRATOR: Kai! Mira! Oh, there you are.
 
 127
-00:03:46,600 --> 00:03:49,590
-[Mum, tired, smiling at the sight of them on her screen.]
+00:03:47,310 --> 00:03:49,675
+[Their flat, that evening. Kai holds his phone up for the video call; Mira squeezes in beside him.]
 
 128
-00:03:46,700 --> 00:03:49,470
-NARRATOR: I'm fine, love. I'm so sorry.
+00:03:47,760 --> 00:03:49,555
+NARRATOR: Mum! Are you okay?
 
 129
-00:03:49,740 --> 00:03:52,890
-[Reverse: mum answers.]
+00:03:49,825 --> 00:03:52,815
+[Mum, tired, smiling at the sight of them on her screen.]
 
 130
-00:03:49,840 --> 00:03:53,130
-NARRATOR: I have to stay here. They need every nurse.
+00:03:49,925 --> 00:03:52,695
+NARRATOR: I'm fine, love. I'm so sorry.
 
 131
-00:03:53,400 --> 00:03:56,550
-[Wide: every bed full, cots lining the corridor; an ambulance’s blue light sweeps through the doors.]
+00:03:52,965 --> 00:03:56,115
+[Reverse: mum answers.]
 
 132
-00:03:53,500 --> 00:03:57,165
-NARRATOR: The ambulances haven't stopped since it went dark.
+00:03:53,065 --> 00:03:56,355
+NARRATOR: I have to stay here. They need every nurse.
 
 133
-00:03:57,435 --> 00:03:59,320
-[Mira leans in to the phone in Kai’s hand.]
+00:03:56,625 --> 00:03:59,775
+[Wide: every bed full, cots lining the corridor; an ambulance’s blue light sweeps through the doors.]
 
 134
-00:03:57,535 --> 00:03:59,200
-MIRA: When are you coming home?
+00:03:56,725 --> 00:04:00,390
+NARRATOR: The ambulances haven't stopped since it went dark.
 
 135
-00:03:59,470 --> 00:04:02,620
-[Mum closes her eyes for a second, then makes her voice bright.]
+00:04:00,660 --> 00:04:02,545
+[Mira leans in to the phone in Kai’s hand.]
 
 136
-00:03:59,570 --> 00:04:04,240
-NARRATOR: As soon as I can, sweetheart. I'll call every night at seven.
+00:04:00,760 --> 00:04:02,425
+MIRA: When are you coming home?
 
 137
-00:04:04,510 --> 00:04:07,660
-[Reverse: mum answers.]
+00:04:02,695 --> 00:04:05,845
+[Mum closes her eyes for a second, then makes her voice bright.]
 
 138
-00:04:04,610 --> 00:04:07,675
-NARRATOR: Be good for Mr. Ito. I love you.
+00:04:02,795 --> 00:04:07,465
+NARRATOR: As soon as I can, sweetheart. I'll call every night at seven.
 
 139
-00:04:07,945 --> 00:04:11,095
-[Kai ends the call and pockets his phone. Ito, by the window, watching them.]
+00:04:07,735 --> 00:04:10,885
+[Reverse: mum answers.]
 
 140
-00:04:08,045 --> 00:04:11,085
-NARRATOR: And she did call. Every single night.
+00:04:07,835 --> 00:04:10,900
+NARRATOR: Be good for Mr. Ito. I love you.
 
 141
-00:04:11,355 --> 00:04:14,290
-[Ito sets his packed bag down by the sofa: he is staying.]
+00:04:11,170 --> 00:04:14,320
+[Kai ends the call and pockets his phone. Ito, by the window, watching them.]
 
 142
-00:04:11,455 --> 00:04:14,170
-NARRATOR: Mr. Ito slept on our sofa.
+00:04:11,270 --> 00:04:14,310
+NARRATOR: And she did call. Every single night.
 
 143
-00:04:14,440 --> 00:04:16,885
-[Later. Kai and Mira on the rug. Kai finally asks it.]
+00:04:14,580 --> 00:04:17,515
+[Ito sets his packed bag down by the sofa: he is staying.]
 
 144
-00:04:14,540 --> 00:04:16,465
-NARRATOR: Is the Sun dead?
+00:04:14,680 --> 00:04:17,395
+NARRATOR: Mr. Ito slept on our sofa.
 
 145
-00:04:17,035 --> 00:04:19,425
-[Diagram: the Moon tugs a bulge of ocean toward it. The hidden Sun tugs too.]
+00:04:17,665 --> 00:04:20,110
+[Later. Kai and Mira on the rug. Kai finally asks it.]
 
 146
-00:04:17,135 --> 00:04:19,305
-MR. ITO: No. I don't think so.
+00:04:17,765 --> 00:04:19,690
+NARRATOR: Is the Sun dead?
 
 147
-00:04:19,575 --> 00:04:22,725
-[Continues.]
+00:04:20,260 --> 00:04:22,650
+[Diagram: the Moon tugs a bulge of ocean toward it. The hidden Sun tugs too.]
 
 148
-00:04:19,675 --> 00:04:23,965
-MR. ITO: If it had vanished, its pull on the sea would vanish too.
+00:04:20,360 --> 00:04:22,530
+MR. ITO: No. I don't think so.
 
 149
-00:04:24,235 --> 00:04:27,385
-[The Sun’s bulge is removed: the tide shrinks by a third.]
+00:04:22,800 --> 00:04:25,950
+[Continues.]
 
 150
-00:04:24,335 --> 00:04:28,325
-MR. ITO: And tomorrow's high tide would be a third lower.
+00:04:22,900 --> 00:04:27,190
+MR. ITO: If it had vanished, its pull on the sea would vanish too.
 
 151
-00:04:28,595 --> 00:04:31,745
-[Ito takes an old tide table out of his bag and hands it to Kai.]
+00:04:27,460 --> 00:04:30,610
+[The Sun’s bulge is removed: the tide shrinks by a third.]
 
 152
-00:04:29,445 --> 00:04:35,940
-MR. ITO: Here's a tide table. Go and see for yourselves. High tide is at twenty to eleven.
+00:04:27,560 --> 00:04:31,550
+MR. ITO: And tomorrow's high tide would be a third lower.
 
 153
-00:04:36,210 --> 00:04:39,360
-[Day 1. The harbour. Torchlight on boats and black water.]
+00:04:31,820 --> 00:04:34,970
+[Ito takes an old tide table out of his bag and hands it to Kai.]
 
 154
-00:04:36,310 --> 00:04:40,100
-NARRATOR: So the next morning, Kai and I walked down to the harbour.
+00:04:32,670 --> 00:04:39,165
+MR. ITO: Here's a tide table. Go and see for yourselves. High tide is at twenty to eleven.
 
 155
-00:04:40,370 --> 00:04:42,225
-[The torch finds the painted tide gauge. The water sits exactly on Ito’s pencilled mark.]
+00:04:39,435 --> 00:04:42,585
+[Day 1. The harbour. Torchlight on boats and black water.]
 
 156
-00:04:40,470 --> 00:04:42,105
-MIRA: It's right on the line!
+00:04:39,535 --> 00:04:43,325
+NARRATOR: So the next morning, Kai and I walked down to the harbour.
 
 157
-00:04:42,375 --> 00:04:44,560
-[Kai stares at the tide table, then up.]
+00:04:43,595 --> 00:04:45,450
+[The torch finds the painted tide gauge. The water sits exactly on Ito’s pencilled mark.]
 
 158
-00:04:42,475 --> 00:04:44,440
-NARRATOR: So the Sun's still there.
+00:04:43,695 --> 00:04:45,330
+MIRA: It's right on the line!
 
 159
-00:04:44,710 --> 00:04:46,690
-[Reverse: kai answers.]
+00:04:45,600 --> 00:04:47,785
+[Kai stares at the tide table, then up.]
 
 160
-00:04:44,810 --> 00:04:46,570
-NARRATOR: We just can't see it.
+00:04:45,700 --> 00:04:47,665
+NARRATOR: So the Sun's still there.
 
 161
-00:04:46,840 --> 00:04:48,895
-[Mira looks up at the black sky.]
+00:04:47,935 --> 00:04:49,915
+[Reverse: kai answers.]
 
 162
-00:04:46,940 --> 00:04:48,475
-MIRA: Then why is it dark?
+00:04:48,035 --> 00:04:49,795
+NARRATOR: We just can't see it.
 
 163
-00:04:49,045 --> 00:04:52,195
-[The two of them, tiny at the edge of the freezing harbour, staring at where the Sun should be.]
+00:04:50,065 --> 00:04:52,120
+[Mira looks up at the black sky.]
 
 164
-00:04:49,145 --> 00:04:53,265
-NARRATOR: The Sun hadn't gone anywhere. Something was in front of it.
+00:04:50,165 --> 00:04:51,700
+MIRA: Then why is it dark?
 
 165
-00:04:54,035 --> 00:04:56,295
-[Mira’s mitten points down at the dark water: a fish glides past in the torch beam, unbothered.]
+00:04:52,270 --> 00:04:55,420
+[The two of them, tiny at the edge of the freezing harbour, staring at where the Sun should be.]
 
 166
-00:04:54,135 --> 00:04:56,175
-MIRA: The fish haven't even noticed!
+00:04:52,370 --> 00:04:56,490
+NARRATOR: The Sun hadn't gone anywhere. Something was in front of it.
 
 167
-00:04:56,445 --> 00:04:59,595
-[Day 2. A press conference. Behind the scientist, an infrared image: a warm ring where the Sun should be.]
+00:04:57,260 --> 00:04:59,520
+[Mira’s mitten points down at the dark water: a fish glides past in the torch beam, unbothered.]
 
 168
-00:04:56,545 --> 00:05:00,135
-NEWS ANCHOR: Infrared telescopes have found something around the Sun.
+00:04:57,360 --> 00:04:59,400
+MIRA: The fish haven't even noticed!
 
 169
-00:05:00,405 --> 00:05:02,665
-[The scientist at the podium, the warm ring behind her.]
+00:04:59,670 --> 00:05:02,820
+[Day 2. A press conference. Behind the scientist, an infrared image: a warm ring where the Sun should be.]
 
 170
-00:05:00,505 --> 00:05:02,545
-NARRATOR: It's warm. It's round.
+00:04:59,770 --> 00:05:03,360
+NEWS ANCHOR: Infrared telescopes have found something around the Sun.
 
 171
-00:05:02,815 --> 00:05:05,965
-[Continues.]
+00:05:03,630 --> 00:05:05,890
+[The scientist at the podium, the warm ring behind her.]
 
 172
-00:05:02,915 --> 00:05:05,680
-NARRATOR: And it's twice as wide as the Sun.
+00:05:03,730 --> 00:05:05,770
+NARRATOR: It's warm. It's round.
 
 173
-00:05:06,250 --> 00:05:08,915
-[Pull back from where the Sun should be: a colossal sphere of dark slats wrapped around the star, faintly glowing at the seams.]
+00:05:06,040 --> 00:05:09,190
+[Continues.]
 
 174
-00:05:06,350 --> 00:05:08,795
-NARRATOR: Not a cloud. Not a planet.
+00:05:06,140 --> 00:05:08,905
+NARRATOR: And it's twice as wide as the Sun.
 
 175
-00:05:09,065 --> 00:05:12,215
-[The camera glides around the shell. Each of its slats is wider than Earth.]
+00:05:09,475 --> 00:05:12,140
+[Pull back from where the Sun should be: a colossal sphere of dark slats wrapped around the star, faintly glowing at the seams.]
 
 176
-00:05:09,165 --> 00:05:11,685
-NARRATOR: A shell. Wrapped around a star.
+00:05:09,575 --> 00:05:12,020
+NARRATOR: Not a cloud. Not a planet.
 
 177
-00:05:12,755 --> 00:05:15,905
-[The feeds: candlelit prayer in Rome, protests in London, radar rooms, a stampede for rice in Mumbai.]
+00:05:12,290 --> 00:05:15,440
+[The camera glides around the shell. Each of its slats is wider than Earth.]
 
 178
-00:05:12,855 --> 00:05:15,995
-NEWS ANCHOR: Governments are asking everyone to stay calm.
+00:05:12,390 --> 00:05:14,910
+NARRATOR: A shell. Wrapped around a star.
 
 179
-00:05:16,265 --> 00:05:18,525
-[Continues.]
+00:05:15,980 --> 00:05:19,130
+[The feeds: candlelit prayer in Rome, protests in London, radar rooms, a stampede for rice in Mumbai.]
 
 180
-00:05:16,365 --> 00:05:18,005
-NARRATOR: Nobody was calm.
+00:05:16,080 --> 00:05:19,220
+NEWS ANCHOR: Governments are asking everyone to stay calm.
 
 181
-00:05:18,675 --> 00:05:21,135
-[Their flat. The news on the little TV. Mira turns from it to Mr. Ito.]
+00:05:19,490 --> 00:05:21,750
+[Continues.]
 
 182
-00:05:18,775 --> 00:05:21,015
-MIRA: Mr. Ito? Who built it?
+00:05:19,590 --> 00:05:21,230
+NARRATOR: Nobody was calm.
 
 183
-00:05:21,285 --> 00:05:24,435
-[Ito crosses to the TV and switches it off. He does not look at her.]
+00:05:21,900 --> 00:05:24,360
+[Their flat. The news on the little TV. Mira turns from it to Mr. Ito.]
 
 184
-00:05:22,535 --> 00:05:25,075
-MR. ITO: It's bedtime, Mira.
+00:05:22,000 --> 00:05:24,240
+MIRA: Mr. Ito? Who built it?
 
 185
-00:05:25,345 --> 00:05:27,980
-[Mira, in the dark. The clock says four in the afternoon.]
+00:05:24,510 --> 00:05:27,660
+[Ito crosses to the TV and switches it off. He does not look at her.]
 
 186
-00:05:25,445 --> 00:05:27,560
-NARRATOR: It was four in the afternoon.
+00:05:25,760 --> 00:05:28,300
+MR. ITO: It's bedtime, Mira.
 
 187
-00:05:28,130 --> 00:05:31,280
-[Reverse: narrator answers.]
+00:05:28,570 --> 00:05:31,205
+[Mira, in the dark. The clock says four in the afternoon.]
 
 188
-00:05:28,230 --> 00:05:30,845
-NARRATOR: He'd never sent me to bed before.
+00:05:28,670 --> 00:05:30,785
+NARRATOR: It was four in the afternoon.
 
 189
-00:05:31,515 --> 00:05:34,665
-[The whole sky ignites: green and violet curtains over the frozen city.]
+00:05:31,355 --> 00:05:34,505
+[Reverse: narrator answers.]
 
 190
-00:05:31,615 --> 00:05:36,305
-NEWS ANCHOR: A solar storm that left the Sun before it went dark is reaching Earth tonight.
+00:05:31,455 --> 00:05:34,070
+NARRATOR: He'd never sent me to bed before.
 
 191
-00:05:36,575 --> 00:05:39,350
-[Mira, face lit green, watching.]
+00:05:34,740 --> 00:05:37,890
+[The whole sky ignites: green and violet curtains over the frozen city.]
 
 192
-00:05:36,675 --> 00:05:38,630
-MIRA: It's saying goodbye.
+00:05:34,840 --> 00:05:39,530
+NEWS ANCHOR: A solar storm that left the Sun before it went dark is reaching Earth tonight.
 
 193
-00:05:39,500 --> 00:05:42,350
-[The young astronomer studies three plates pinned to the wall beside a star chart.]
+00:05:39,800 --> 00:05:42,575
+[Mira, face lit green, watching.]
 
 194
-00:05:42,500 --> 00:05:45,550
-[Red lines, extended from each plate, meet at one faint star on the chart. He writes 21 beside it.]
+00:05:39,900 --> 00:05:41,855
+MIRA: It's saying goodbye.
 
 195
-00:05:45,700 --> 00:05:48,850
-[Day 7. The city from above, every window still lit, frost rolling over the rooftops.]
+00:05:42,725 --> 00:05:45,575
+[The young astronomer studies three plates pinned to the wall beside a star chart.]
 
 196
-00:05:45,800 --> 00:05:48,740
-NARRATOR: By Day 7, it was twenty below.
+00:05:45,725 --> 00:05:48,775
+[Red lines, extended from each plate, meet at one faint star on the chart. He writes 21 beside it.]
 
 197
-00:05:49,010 --> 00:05:52,160
-[Close on a frozen pipe in their building: split open, an icicle hanging from the crack.]
+00:05:48,925 --> 00:05:52,075
+[Day 7. The city from above, every window still lit, frost rolling over the rooftops.]
 
 198
-00:05:49,110 --> 00:05:54,440
-NARRATOR: The pipes in our building froze and burst, and the radiators went cold.
+00:05:49,025 --> 00:05:51,965
+NARRATOR: By Day 7, it was twenty below.
 
 199
-00:05:54,710 --> 00:05:57,860
-[Earth from orbit: ice spreading toward the equator, the cities’ lights still on.]
+00:05:52,235 --> 00:05:55,385
+[Close on a frozen pipe in their building: split open, an icicle hanging from the crack.]
 
 200
-00:05:54,810 --> 00:05:59,145
-NARRATOR: All over the world, heating was never built for cold like this.
+00:05:52,335 --> 00:05:57,665
+NARRATOR: The pipes in our building froze and burst, and the radiators went cold.
 
 201
-00:05:59,415 --> 00:06:02,565
-[Blankets taped over the windows of one room. Mira holds the corner while Kai tapes.]
+00:05:57,935 --> 00:06:01,085
+[Earth from orbit: ice spreading toward the equator, the cities’ lights still on.]
 
 202
-00:05:59,515 --> 00:06:03,000
-NARRATOR: Mr. Ito showed us how to keep one room warm.
+00:05:58,035 --> 00:06:02,370
+NARRATOR: All over the world, heating was never built for cold like this.
 
 203
-00:06:03,270 --> 00:06:06,420
-[The warm room, lit by the lamp and the small electric heater. Kai sits up straight, trying to look calm.]
+00:06:02,640 --> 00:06:05,790
+[Blankets taped over the windows of one room. Mira holds the corner while Kai tapes.]
 
 204
-00:06:03,370 --> 00:06:06,510
-NARRATOR: That night, Kai pretended he wasn't scared.
+00:06:02,740 --> 00:06:06,225
+NARRATOR: Mr. Ito showed us how to keep one room warm.
 
 205
-00:06:06,780 --> 00:06:09,930
-[Close, in the heater’s glow: Kai’s hand clamped round Mira’s mitten, knuckles pale.]
+00:06:06,495 --> 00:06:09,645
+[The warm room, lit by the lamp and the small electric heater. Kai sits up straight, trying to look calm.]
 
 206
-00:06:06,880 --> 00:06:09,585
-NARRATOR: He was holding my hand too hard.
+00:06:06,595 --> 00:06:09,735
+NARRATOR: That night, Kai pretended he wasn't scared.
 
 207
-00:06:10,355 --> 00:06:12,235
-[Torch beam in the stairwell. Grey smoke curls out from under a neighbour’s door.]
+00:06:10,005 --> 00:06:13,155
+[Close, in the heater’s glow: Kai’s hand clamped round Mira’s mitten, knuckles pale.]
 
 208
-00:06:10,455 --> 00:06:12,115
-NARRATOR: Then we smelled smoke.
+00:06:10,105 --> 00:06:12,810
+NARRATOR: He was holding my hand too hard.
 
 209
-00:06:12,385 --> 00:06:15,535
-[The torch finds door 3B: firelight flickering underneath, smoke pouring out.]
+00:06:13,580 --> 00:06:16,730
+[Torch beam in the stairwell. Grey smoke curls out from under a neighbour’s door.]
 
 210
-00:06:12,485 --> 00:06:15,475
-MR. ITO: Next door's heating is off too.
+00:06:13,680 --> 00:06:16,805
+NARRATOR: Then, out on the stairs, we smelled smoke.
 
 211
-00:06:15,745 --> 00:06:18,895
-[Reverse: ito answers.]
+00:06:17,075 --> 00:06:20,225
+[The torch finds door 3B: firelight flickering underneath, smoke pouring out.]
 
 212
-00:06:15,845 --> 00:06:19,010
-MR. ITO: They're burning furniture. Indoors!
+00:06:17,175 --> 00:06:20,165
+MR. ITO: Next door's heating is off too.
 
 213
-00:06:19,280 --> 00:06:21,130
-[Ito, in the smoke, suddenly very loud.]
+00:06:20,435 --> 00:06:23,585
+[Reverse: ito answers.]
 
 214
-00:06:19,380 --> 00:06:20,945
-MR. ITO: Everyone out!
+00:06:20,535 --> 00:06:23,700
+MR. ITO: They're burning furniture. Indoors!
 
 215
-00:06:21,280 --> 00:06:24,430
-[Closer on Ito, urgent, explaining as he herds them toward the stairs.]
+00:06:23,970 --> 00:06:25,820
+[Ito, in the smoke, suddenly very loud.]
 
 216
-00:06:21,380 --> 00:06:24,820
-MR. ITO: A fire indoors makes carbon monoxide.
+00:06:24,070 --> 00:06:25,635
+MR. ITO: Everyone out!
 
 217
-00:06:25,090 --> 00:06:28,240
-[Reverse: ito answers.]
+00:06:25,970 --> 00:06:29,120
+[Closer on Ito, urgent, explaining as he herds them toward the stairs.]
 
 218
-00:06:25,190 --> 00:06:28,995
-MR. ITO: You can't see it, you can't smell it, and it kills.
+00:06:26,070 --> 00:06:29,510
+MR. ITO: A fire indoors makes carbon monoxide.
 
 219
-00:06:29,265 --> 00:06:32,070
-[Down the stairs: neighbours coughing into their sleeves, Kai with the torch, Mira at his heels, Ito banging on doors, Biscuit ahead.]
-
-220
-00:06:29,365 --> 00:06:31,950
-NARRATOR: Mr. Ito got the whole floor out.
-
-221
-00:06:32,220 --> 00:06:35,190
-[The street door bangs open into the week’s big snowstorm. Biscuit bolts into the dark. Kai lunges, torch swinging.]
-
-222
-00:06:32,320 --> 00:06:35,070
-NARRATOR: At the street door, Biscuit panicked.
-
-223
-00:06:35,340 --> 00:06:37,645
-[Mira screams his name into the storm. Nothing comes back.]
-
-224
-00:06:35,440 --> 00:06:36,525
-MIRA: BISCUIT!
-
-225
-00:06:37,795 --> 00:06:40,385
-[That night. Kai walks the snowy street alone with a torch, streetlights glowing through the snow.]
-
-226
-00:06:37,895 --> 00:06:40,265
-NARRATOR: Biscuit! Come on, boy! Please!
-
-227
-00:06:40,535 --> 00:06:43,470
-[Kai turns on the spot, sweeping the torch. Nothing.]
-
-228
-00:06:40,635 --> 00:06:43,350
-NARRATOR: The fire brigade put the fire out.
-
-229
-00:06:43,620 --> 00:06:46,770
-[Reverse: narrator answers.]
-
-230
-00:06:43,720 --> 00:06:47,345
-NARRATOR: Kai searched all night, and came back without him.
-
-231
-00:06:47,615 --> 00:06:50,715
-[Day 8, seven in the evening. Mum on the nightly video call, in the same scrubs, more tired.]
-
-232
-00:06:47,715 --> 00:06:50,595
-NARRATOR: Mira, sweetheart, listen to me.
-
-233
-00:06:50,865 --> 00:06:53,600
-[Reverse: mum answers.]
-
-234
-00:06:50,965 --> 00:06:53,480
-NARRATOR: Biscuit is a clever dog.
-
-235
-00:06:53,750 --> 00:06:56,900
-[In the warm room, Mira holds Kai’s phone in both hands, listening to Mum.]
-
-236
-00:06:53,850 --> 00:06:56,855
-NARRATOR: Clever dogs find warm places.
-
-237
-00:06:57,525 --> 00:07:00,085
-[Mira turns to Kai.]
-
-238
-00:06:57,625 --> 00:06:59,965
-MIRA: Kai, where would it still be warm?
-
-239
-00:07:00,235 --> 00:07:03,195
-[Reverse: kai answers.]
-
-240
-00:07:00,335 --> 00:07:02,775
-NARRATOR: I don't know. But I'm going to find him.
-
-241
-00:07:03,345 --> 00:07:05,795
-[Kai, back out on the frosty street. Somewhere near the metro, a single bark (a little "WOOF!" pops out of the dark). His head snaps round.]
-
-242
-00:07:03,445 --> 00:07:05,405
-NARRATOR: Kai went straight back out.
-
-243
-00:07:05,945 --> 00:07:08,405
-[The torch beam finds a line of fresh paw prints in the snow, toes pointing toward the metro.]
-
-244
-00:07:06,045 --> 00:07:08,285
-NARRATOR: Paw prints. Fresh ones.
-
-245
-00:07:08,555 --> 00:07:11,705
-[The prints lead across the street to a cloud of steam rising from a metro entrance.]
-
-246
-00:07:08,655 --> 00:07:14,010
-NARRATOR: They led to the only warm thing on the street: air rising from the metro.
-
-247
-00:07:14,280 --> 00:07:17,430
-[Biscuit is curled against the warm grate, frost on his whiskers. He sees Kai. His tail explodes. Kai drops the torch in the snow and grabs him.]
-
-248
-00:07:16,130 --> 00:07:18,995
-NARRATOR: You clever, clever dog. You scared me.
-
-249
-00:07:19,265 --> 00:07:22,415
-[Cut-away of the ground: frozen surface, then the metro tunnels, then warm rock below.]
-
-250
-00:07:19,365 --> 00:07:25,115
-NARRATOR: A few metres down, the ground stays at about ten degrees, Sun or no Sun.
-
-251
-00:07:25,385 --> 00:07:28,535
-[Kai picks up his torch. Biscuit trots toward the metro stairs and looks back. Come on.]
-
-252
-00:07:25,485 --> 00:07:29,100
-NARRATOR: Biscuit hadn't run away. He'd found the way down.
-
-253
-00:07:29,370 --> 00:07:32,520
-[Down the metro stairs: Kai carrying Mira on his back, Ito with his bag, and behind them a line of torches.]
-
-254
-00:07:29,470 --> 00:07:32,680
-NARRATOR: By morning, half the street had followed him down.
-
-255
-00:07:32,950 --> 00:07:36,100
-[Feeds from around the world: tents in metro halls, families on escalators, shelters cut into rock.]
-
-256
-00:07:33,050 --> 00:07:36,730
-NARRATOR: All over the world, cities moved underground.
-
-257
-00:07:37,000 --> 00:07:40,150
-[Day 30. The metro is a town: tents on the platforms, string lights, laundry lines.]
-
-258
-00:07:37,100 --> 00:07:40,885
-NARRATOR: By Day 30, Harbour Street station was a town.
-
-259
-00:07:41,155 --> 00:07:44,305
-[The station’s big screen: a power station steaming, an electric freight train, someone working from home, an underground farm.]
-
-260
-00:07:41,255 --> 00:07:45,965
-NARRATOR: The power stations kept running, on coal, gas and nuclear.
-
-261
-00:07:46,235 --> 00:07:49,385
-[Electric freight trains with containers of FOOD and FUEL, and power stations steaming.]
-
-262
-00:07:46,335 --> 00:07:49,270
-NARRATOR: Electric trains carried food and fuel.
-
-263
-00:07:49,540 --> 00:07:52,690
-[More feeds: home offices, a school in a shelter, farms under lamps, freight trains.]
-
-264
-00:07:49,640 --> 00:07:54,580
-NARRATOR: Anyone who could work from home, did. Everyone else worked underground.
-
-265
-00:07:54,850 --> 00:07:58,000
-[A disused tunnel turned farm: racks of lettuce and potatoes under pink lamps, and crates of mushrooms on an unlit shelf. Labels on every rack.]
-
-266
-00:07:54,950 --> 00:07:58,915
-NARRATOR: We grew lettuce, because it's ready in a month. Potatoes.
-
-267
-00:07:59,265 --> 00:08:02,375
-NARRATOR: And mushrooms, which don't need any light at all.
-
-268
-00:08:02,645 --> 00:08:05,450
-[A small kid glares at the chalk menu: lettuce, potatoes, lettuce, mushrooms, …lettuce.]
-
-269
-00:08:02,745 --> 00:08:05,330
-NARRATOR: Everyone got very sick of lettuce.
-
-270
-00:08:05,600 --> 00:08:08,750
-[Seven a.m. The big lamps in the station roof warm up from orange to gold.]
-
-271
-00:08:05,700 --> 00:08:10,085
-NARRATOR: At seven every morning, the engineers turned on the big lamps.
-
-272
-00:08:10,355 --> 00:08:12,955
-[Faces turned up into the gold light. Mira jumps. Ito smiles.]
-
-273
-00:08:10,455 --> 00:08:12,835
-MR. ITO: We'll call it sunrise.
-
-274
-00:08:13,105 --> 00:08:16,255
-[In a parked carriage turned classroom, Mira (the tallest child in the room) shows four much smaller kids her drawing from the last morning.]
-
-275
-00:08:13,955 --> 00:08:17,695
-MIRA: It's yellow. And round. And it's warm on your face.
-
-276
-00:08:17,965 --> 00:08:21,115
-[A small kid holds up her own drawing: a grey sun.]
-
-277
-00:08:18,065 --> 00:08:21,330
-NARRATOR: The littlest ones had started drawing it grey.
-
-278
-00:08:22,200 --> 00:08:25,350
-[Mira looks at the grey sun, then folds her own drawing carefully back into her pocket.]
-
-279
-00:08:22,300 --> 00:08:25,720
-NARRATOR: I kept my drawing in my pocket. All year.
-
-280
-00:08:26,390 --> 00:08:29,540
-[Biscuit, noticeably rounder, receives snacks from a ring of adoring kids.]
-
-281
-00:08:26,490 --> 00:08:29,735
-NARRATOR: Biscuit got a fan club. And a bigger belly.
-
-282
-00:08:30,005 --> 00:08:33,155
-[A new sign goes up on the platform wall: CLINIC.]
-
-283
-00:08:30,105 --> 00:08:33,940
-NARRATOR: That month, the hospital opened a clinic in our station.
-
-284
-00:08:34,210 --> 00:08:36,270
-[Reverse: narrator answers.]
-
-285
-00:08:34,310 --> 00:08:36,150
-NARRATOR: Mum asked to work there.
-
-286
-00:08:36,420 --> 00:08:39,570
-[A woman in a navy coat over nurse’s scrubs walks along the platform with her bag, past the new CLINIC sign. She sets the bag down. Mira and Kai run.]
-
-287
-00:08:36,520 --> 00:08:37,410
-MIRA: Mum!
-
-288
-00:08:39,820 --> 00:08:42,765
-[Reverse: narrator answers.]
-
-289
-00:08:39,920 --> 00:08:41,845
-NARRATOR: And then she was home.
-
-290
-00:08:42,915 --> 00:08:45,880
-[Mum turns to Ito, who has kept the children safe for a month.]
-
-291
-00:08:43,015 --> 00:08:45,760
-NARRATOR: Thank you. For keeping them alive.
-
-292
-00:08:46,030 --> 00:08:49,180
-[Reverse: mum answers.]
-
-293
-00:08:46,130 --> 00:08:49,335
-NARRATOR: For looking after them, all this time.
-
-294
-00:08:49,605 --> 00:08:52,755
-[Ito, quietly.]
-
-295
-00:08:49,705 --> 00:08:52,720
-MR. ITO: No. They kept me alive.
-
-296
-00:08:53,390 --> 00:08:56,240
-[A typed letter under the lamp: the Council cannot support further observations, nor any transmission. His thumb covers the name.]
-
-297
-00:08:56,390 --> 00:08:59,440
-[The receiver at his ear. Down the line, a colleague laughs. He says nothing.]
-
-298
-00:08:59,590 --> 00:09:02,575
-[Day 40. Ito’s workbench in the station, his radio and his bag on it. Mira asks the question he would not answer.]
-
-299
-00:08:59,690 --> 00:09:02,455
-MIRA: Mr. Ito, you never answered me.
-
-300
-00:09:02,725 --> 00:09:04,575
-[Reverse: mira answers.]
-
-301
-00:09:02,825 --> 00:09:04,110
-MIRA: Who built it?
-
-302
-00:09:04,725 --> 00:09:07,875
-[Kai, backing her up.]
-
-303
-00:09:04,825 --> 00:09:07,850
-NARRATOR: Whoever it was, it must have taken them ages.
-
-304
-00:09:08,120 --> 00:09:11,270
-[Ito turns to the bag on his bench and takes out an old photograph.]
-
-305
-00:09:08,220 --> 00:09:12,195
-MR. ITO: Much longer than that. It's very old. Here.
-
-306
-00:09:12,765 --> 00:09:15,915
-[An old eclipse photograph in Ito’s hand: three faint, perfectly straight lines crossing the corona.]
-
-307
-00:09:12,865 --> 00:09:17,585
-MR. ITO: Nineteen-nineteen. A total eclipse. Look at the lines.
-
-308
-00:09:17,855 --> 00:09:20,240
-[A window blind with its slats open, sunlight streaming through. Beside it, the Sun in a ring of the same slats, edge-on, light pouring between them.]
-
-309
-00:09:17,955 --> 00:09:20,120
-MR. ITO: It was always there.
-
-310
-00:09:20,390 --> 00:09:23,540
-[Continues.]
-
-311
-00:09:20,490 --> 00:09:23,670
-MR. ITO: Edge-on, like the slats of a blind.
-
-312
-00:09:23,940 --> 00:09:27,090
-[Every slat turns at once. The window goes dark. The Sun’s light is trapped inside.]
-
-313
-00:09:24,040 --> 00:09:28,820
-MR. ITO: On the morning the Sun went out, every slat turned.
-
-314
-00:09:29,490 --> 00:09:31,750
-[Mira, sharp.]
-
-315
-00:09:29,590 --> 00:09:31,630
-MIRA: You've seen those lines before.
-
-316
-00:09:31,900 --> 00:09:35,050
-[Ito, not meeting her eyes. He puts the photograph back in the bag.]
-
-317
-00:09:32,000 --> 00:09:36,695
-MR. ITO: Once. A long time ago. Nobody listened.
-
-318
-00:09:37,365 --> 00:09:40,515
-[The two of them in the lamplight. Mira watches his back.]
-
-319
-00:09:37,465 --> 00:09:41,605
-NARRATOR: I believed him. It was true. It just wasn't all of it.
-
-320
-00:09:42,475 --> 00:09:45,625
-[Day 100. The heaters’ orange glow fades; frost creeps over the tiles; breath smokes. The lamps stay on.]
-
-321
-00:09:42,575 --> 00:09:46,390
-NARRATOR: On Day 100, it was fifty below up top.
-
-322
-00:09:46,660 --> 00:09:49,810
-[Close on the station’s big air heater: its orange glow fades out, and frost creeps across the grille.]
-
-323
-00:09:46,760 --> 00:09:51,235
-NARRATOR: The heaters that warmed the air coming down into the station froze.
-
-324
-00:09:51,505 --> 00:09:53,355
-[Ito turns to the family, then follows the engineers toward the frozen air plant, torch in hand.]
-
-325
-00:09:51,605 --> 00:09:53,020
-MR. ITO: Let me help.
-
-326
-00:09:53,505 --> 00:09:56,655
+00:06:29,780 --> 00:06:32,930
 [Reverse: ito answers.]
 
-327
-00:09:53,605 --> 00:09:56,970
-MR. ITO: I know a little about old machines.
+220
+00:06:29,880 --> 00:06:33,685
+MR. ITO: You can't see it, you can't smell it, and it kills.
 
-328
-00:09:57,240 --> 00:09:59,550
-[That night. Under every blanket they own, Kai, Mira and Mum huddle together. Breath smoking even down here.]
+221
+00:06:33,955 --> 00:06:36,760
+[Down the stairs: neighbours coughing into their sleeves, Kai with the torch, Mira at his heels, Ito banging on doors, Biscuit ahead.]
 
-329
-00:09:57,340 --> 00:09:59,430
-NARRATOR: That was the coldest night.
+222
+00:06:34,055 --> 00:06:36,640
+NARRATOR: Mr. Ito got the whole floor out.
 
-330
-00:09:59,700 --> 00:10:02,850
-[The station, quiet. People sit close together in the cold, not talking. A man kneels beside a shivering neighbour.]
+223
+00:06:36,910 --> 00:06:39,880
+[The street door bangs open into the week’s big snowstorm. Biscuit bolts into the dark. Kai lunges, torch swinging.]
 
-331
-00:09:59,800 --> 00:10:04,905
-NARRATOR: All over the world, many people didn't make it through that winter.
+224
+00:06:37,010 --> 00:06:39,760
+NARRATOR: At the street door, Biscuit panicked.
 
-332
-00:10:05,775 --> 00:10:08,925
-[Kai’s face in the cold blue light. For once, no joke.]
+225
+00:06:40,030 --> 00:06:42,335
+[Mira screams his name into the storm. Nothing comes back.]
 
-333
-00:10:05,875 --> 00:10:08,045
-NARRATOR: Mira? How does this end?
+226
+00:06:40,130 --> 00:06:41,215
+MIRA: BISCUIT!
 
-334
-00:10:09,115 --> 00:10:12,015
-[Mira, small and certain.]
+227
+00:06:42,485 --> 00:06:45,075
+[That night. Kai walks the snowy street alone with a torch, streetlights glowing through the snow.]
 
-335
-00:10:09,215 --> 00:10:11,295
-MIRA: With the Sun coming back.
+228
+00:06:42,585 --> 00:06:44,955
+NARRATOR: Biscuit! Come on, boy! Please!
 
-336
-00:10:12,165 --> 00:10:15,315
-[Morning. The heaters glow orange again, the frost melts off the tiles, and the whole station cheers.]
+229
+00:06:45,225 --> 00:06:48,160
+[Kai turns on the spot, sweeping the torch. Nothing.]
 
-337
-00:10:12,265 --> 00:10:17,425
-NARRATOR: By morning, Mr. Ito and the engineers had the heaters running again.
+230
+00:06:45,325 --> 00:06:48,040
+NARRATOR: The fire brigade put the fire out.
 
-338
-00:10:17,695 --> 00:10:19,545
-[Later. Ito at his bench with wires and a little dish. Mira leans in.]
-
-339
-00:10:17,795 --> 00:10:19,205
-MIRA: What are you building?
-
-340
-00:10:19,695 --> 00:10:22,845
-[Ito, holding it up, eyes on the ceiling as if he can see through it.]
-
-341
-00:10:19,795 --> 00:10:23,065
-MR. ITO: Something to listen with. And to answer.
-
-342
-00:10:23,735 --> 00:10:26,885
-[Day 300. The station’s big screen: a beam traced up from the Sun to one star in Cassiopeia, ringed.]
-
-343
-00:10:23,835 --> 00:10:28,720
-NEWS ANCHOR: After months of searching, astronomers have found where the Sun's light is going.
-
-344
-00:10:28,990 --> 00:10:32,140
-[The beam reaches the star; a red ring and its name: HD 219134, 21 light-years.]
-
-345
-00:10:29,090 --> 00:10:34,830
-NEWS ANCHOR: One beam, aimed at a star called HD 219134.
-
-346
-00:10:35,100 --> 00:10:38,250
-[The station crowd, from behind, watching the big screen over the platform: a glowing speck inside the beam. Ito slowly turns around.]
-
-347
-00:10:35,200 --> 00:10:39,265
-NEWS ANCHOR: And there's something inside it, coming toward us and slowing down.
-
-348
-00:10:39,935 --> 00:10:42,570
-[In the crowd under the screen, Ito goes white. Barely a whisper.]
-
-349
-00:10:40,035 --> 00:10:41,450
-MR. ITO: They're coming.
-
-350
-00:10:42,720 --> 00:10:45,870
-[The news: the beam, the star, and a glowing speck inside the beam labelled SOMETHING INSIDE · COMING THIS WAY · SLOWING.]
-
-351
-00:10:42,820 --> 00:10:46,185
-NEWS ANCHOR: At this rate, it will stop in sixty-five days.
-
-352
-00:10:46,455 --> 00:10:49,605
-[Continues.]
-
-353
-00:10:46,555 --> 00:10:49,770
-NEWS ANCHOR: Scientists hope the Sun will come back when it does.
-
-354
-00:10:50,440 --> 00:10:52,875
-[Kai and Mira beside him. Mira watches Ito. He says nothing more.]
-
-355
-00:10:50,540 --> 00:10:52,455
-NARRATOR: I didn't ask who he meant.
-
-356
-00:10:53,025 --> 00:10:56,175
-[The shell from far away, a needle of light leaving it toward one faint star.]
-
-357
-00:10:53,125 --> 00:10:58,180
-NARRATOR: All the Sun's light, pushing against one small thing, coming our way.
-
-358
-00:10:59,050 --> 00:11:01,700
-[At the transmitter. His finger hovers over the key. He looks at the chart: 21.]
-
-359
-00:11:01,850 --> 00:11:03,300
-[He presses it, once.]
-
-360
-00:11:03,450 --> 00:11:06,600
-[Day 365, 6:20 a.m. Up the frozen escalator steps: Kai hauls Mr. Ito’s big transmitter dish on his back, step by step, Mira behind him.]
-
-361
-00:11:03,550 --> 00:11:09,665
-NARRATOR: On Day 365, the escalators to the surface had frozen solid.
-
-362
-00:11:09,935 --> 00:11:13,085
-[Closer: Kai, red-faced, climbing step after frozen step with the dish, without a word.]
-
-363
-00:11:10,035 --> 00:11:13,095
-NARRATOR: Kai carried Mr. Ito's dish all the way up.
-
-364
-00:11:13,365 --> 00:11:15,550
+231
+00:06:48,310 --> 00:06:51,460
 [Reverse: narrator answers.]
 
-365
-00:11:13,465 --> 00:11:15,430
-NARRATOR: He didn't complain once.
+232
+00:06:48,410 --> 00:06:52,035
+NARRATOR: Kai searched all night, and came back without him.
 
-366
-00:11:15,700 --> 00:11:18,360
-[The surface. All of them in full cold gear, tiny under the brightest Milky Way anyone has ever seen; the dish on its tripod beside them.]
+233
+00:06:52,305 --> 00:06:55,405
+[Day 8, seven in the evening. Mum on the nightly video call, in the same scrubs, more tired.]
 
-367
-00:11:15,800 --> 00:11:18,240
-NARRATOR: Half the station came up with us.
+234
+00:06:52,405 --> 00:06:55,285
+NARRATOR: Mira, sweetheart, listen to me.
 
-368
-00:11:18,510 --> 00:11:21,660
-[Closer: the family bundled in every layer they own, breath freezing in the starlight.]
+235
+00:06:55,555 --> 00:06:58,290
+[Reverse: mum answers.]
 
-369
-00:11:18,610 --> 00:11:22,250
-NARRATOR: It was seventy below, so we wore everything we owned.
+236
+00:06:55,655 --> 00:06:58,170
+NARRATOR: Biscuit is a clever dog.
 
-370
-00:11:22,520 --> 00:11:24,750
-[Mira grins up at Kai.]
+237
+00:06:58,440 --> 00:07:01,590
+[In the warm room, Mira holds Kai’s phone in both hands, listening to Mum.]
 
-371
-00:11:22,620 --> 00:11:24,630
-MIRA: One whole lap around the Sun.
+238
+00:06:58,540 --> 00:07:01,545
+NARRATOR: Clever dogs find warm places.
 
-372
-00:11:24,900 --> 00:11:26,780
-[Reverse: mira answers.]
+239
+00:07:02,215 --> 00:07:04,775
+[Mira turns to Kai.]
 
-373
-00:11:25,000 --> 00:11:26,660
-MIRA: Happy birthday, Earth!
+240
+00:07:02,315 --> 00:07:04,655
+MIRA: Kai, where would it still be warm?
 
-374
-00:11:26,930 --> 00:11:30,080
-[Ito checks his watch: 6:30. He looks east.]
-
-375
-00:11:27,030 --> 00:11:32,010
-MR. ITO: It started at 6:52, exactly one year ago.
-
-376
-00:11:32,280 --> 00:11:35,430
-[Ito looks east. Mira looks at him.]
-
-377
-00:11:32,380 --> 00:11:36,070
-MR. ITO: I think it stops at 6:52 today.
-
-378
-00:11:36,340 --> 00:11:39,490
-[6:31. Ito’s little receiver dish clicks in his hands. His face changes.]
-
-379
-00:11:36,440 --> 00:11:40,505
-MR. ITO: Listen. Something near the Sun is calling us.
-
-380
-00:11:40,775 --> 00:11:42,625
-[Pulses: one, then two, then three. Kai counts along.]
-
-381
-00:11:40,875 --> 00:11:41,685
-NARRATOR: One.
-
-382
-00:11:42,775 --> 00:11:44,625
+241
+00:07:04,925 --> 00:07:07,885
 [Reverse: kai answers.]
 
+242
+00:07:05,025 --> 00:07:07,465
+NARRATOR: I don't know. But I'm going to find him.
+
+243
+00:07:08,035 --> 00:07:10,485
+[Kai, back out on the frosty street. Somewhere near the metro, a single bark (a little "WOOF!" pops out of the dark). His head snaps round.]
+
+244
+00:07:08,135 --> 00:07:10,095
+NARRATOR: Kai went straight back out.
+
+245
+00:07:10,635 --> 00:07:13,095
+[The torch beam finds a line of fresh paw prints in the snow, toes pointing toward the metro.]
+
+246
+00:07:10,735 --> 00:07:12,975
+NARRATOR: Paw prints. Fresh ones.
+
+247
+00:07:13,245 --> 00:07:16,395
+[The prints lead across the street to a cloud of steam rising from a metro entrance.]
+
+248
+00:07:13,345 --> 00:07:18,700
+NARRATOR: They led to the only warm thing on the street: air rising from the metro.
+
+249
+00:07:18,970 --> 00:07:22,120
+[Biscuit is curled against the warm grate, frost on his whiskers. He sees Kai. His tail explodes. Kai drops the torch in the snow and grabs him.]
+
+250
+00:07:20,820 --> 00:07:23,685
+NARRATOR: You clever, clever dog. You scared me.
+
+251
+00:07:23,955 --> 00:07:27,105
+[Cut-away of the ground: frozen surface, then the metro tunnels, then warm rock below.]
+
+252
+00:07:24,055 --> 00:07:29,805
+NARRATOR: A few metres down, the ground stays at about ten degrees, Sun or no Sun.
+
+253
+00:07:30,075 --> 00:07:33,225
+[Kai picks up his torch. Biscuit trots toward the metro stairs and looks back. Come on.]
+
+254
+00:07:30,175 --> 00:07:33,790
+NARRATOR: Biscuit hadn't run away. He'd found the way down.
+
+255
+00:07:34,060 --> 00:07:37,210
+[Down the metro stairs: Kai carrying Mira on his back, Ito with his bag, and behind them a line of torches.]
+
+256
+00:07:34,160 --> 00:07:37,370
+NARRATOR: By morning, half the street had followed him down.
+
+257
+00:07:37,640 --> 00:07:40,790
+[Feeds from around the world: tents in metro halls, families on escalators, shelters cut into rock.]
+
+258
+00:07:37,740 --> 00:07:41,420
+NARRATOR: All over the world, cities moved underground.
+
+259
+00:07:41,690 --> 00:07:44,840
+[Day 30. The metro is a town: tents on the platforms, string lights, laundry lines.]
+
+260
+00:07:41,790 --> 00:07:45,575
+NARRATOR: By Day 30, Harbour Street station was a town.
+
+261
+00:07:45,845 --> 00:07:48,995
+[The station’s big screen: a power station steaming, an electric freight train, someone working from home, an underground farm.]
+
+262
+00:07:45,945 --> 00:07:50,655
+NARRATOR: The power stations kept running, on coal, gas and nuclear.
+
+263
+00:07:50,925 --> 00:07:54,075
+[Electric freight trains with containers of FOOD and FUEL, and power stations steaming.]
+
+264
+00:07:51,025 --> 00:07:53,960
+NARRATOR: Electric trains carried food and fuel.
+
+265
+00:07:54,230 --> 00:07:57,380
+[More feeds: home offices, a school in a shelter, farms under lamps, freight trains.]
+
+266
+00:07:54,330 --> 00:07:59,270
+NARRATOR: Anyone who could work from home, did. Everyone else worked underground.
+
+267
+00:07:59,540 --> 00:08:02,690
+[A disused tunnel turned farm: racks of lettuce and potatoes under pink lamps, and crates of mushrooms on an unlit shelf. Labels on every rack.]
+
+268
+00:07:59,640 --> 00:08:03,605
+NARRATOR: We grew lettuce, because it's ready in a month. Potatoes.
+
+269
+00:08:03,955 --> 00:08:07,065
+NARRATOR: And mushrooms, which don't need any light at all.
+
+270
+00:08:07,335 --> 00:08:10,140
+[A small kid glares at the chalk menu: lettuce, potatoes, lettuce, mushrooms, …lettuce.]
+
+271
+00:08:07,435 --> 00:08:10,020
+NARRATOR: Everyone got very sick of lettuce.
+
+272
+00:08:10,290 --> 00:08:13,440
+[Seven a.m. The big lamps in the station roof warm up from orange to gold.]
+
+273
+00:08:10,390 --> 00:08:14,775
+NARRATOR: At seven every morning, the engineers turned on the big lamps.
+
+274
+00:08:15,045 --> 00:08:17,645
+[Faces turned up into the gold light. Mira jumps. Ito smiles.]
+
+275
+00:08:15,145 --> 00:08:17,525
+MR. ITO: We'll call it sunrise.
+
+276
+00:08:17,795 --> 00:08:20,945
+[In a parked carriage turned classroom, Mira (the tallest child in the room) shows four much smaller kids her drawing from the last morning.]
+
+277
+00:08:18,645 --> 00:08:22,385
+MIRA: It's yellow. And round. And it's warm on your face.
+
+278
+00:08:22,655 --> 00:08:25,805
+[A small kid holds up her own drawing: a grey sun.]
+
+279
+00:08:22,755 --> 00:08:26,020
+NARRATOR: The littlest ones had started drawing it grey.
+
+280
+00:08:26,890 --> 00:08:30,040
+[Mira looks at the grey sun, then folds her own drawing carefully back into her pocket.]
+
+281
+00:08:26,990 --> 00:08:30,410
+NARRATOR: I kept my drawing in my pocket. All year.
+
+282
+00:08:31,080 --> 00:08:34,230
+[Biscuit, noticeably rounder, receives snacks from a ring of adoring kids.]
+
+283
+00:08:31,180 --> 00:08:34,425
+NARRATOR: Biscuit got a fan club. And a bigger belly.
+
+284
+00:08:34,695 --> 00:08:37,845
+[A new sign goes up on the platform wall: CLINIC.]
+
+285
+00:08:34,795 --> 00:08:38,630
+NARRATOR: That month, the hospital opened a clinic in our station.
+
+286
+00:08:38,900 --> 00:08:40,960
+[Reverse: narrator answers.]
+
+287
+00:08:39,000 --> 00:08:40,840
+NARRATOR: Mum asked to work there.
+
+288
+00:08:41,110 --> 00:08:44,260
+[A woman in a navy coat over nurse’s scrubs walks along the platform with her bag, past the new CLINIC sign. She sets the bag down. Mira and Kai run.]
+
+289
+00:08:41,210 --> 00:08:42,100
+MIRA: Mum!
+
+290
+00:08:44,510 --> 00:08:47,455
+[Reverse: narrator answers.]
+
+291
+00:08:44,610 --> 00:08:46,535
+NARRATOR: And then she was home.
+
+292
+00:08:47,605 --> 00:08:50,570
+[Mum turns to Ito, who has kept the children safe for a month.]
+
+293
+00:08:47,705 --> 00:08:50,450
+NARRATOR: Thank you. For keeping them alive.
+
+294
+00:08:50,720 --> 00:08:53,870
+[Reverse: mum answers.]
+
+295
+00:08:50,820 --> 00:08:54,025
+NARRATOR: For looking after them, all this time.
+
+296
+00:08:54,295 --> 00:08:57,445
+[Ito, quietly.]
+
+297
+00:08:54,395 --> 00:08:57,410
+MR. ITO: No. They kept me alive.
+
+298
+00:08:58,080 --> 00:09:00,930
+[A typed letter under the lamp: the Council cannot support further observations, nor any transmission. His thumb covers the name.]
+
+299
+00:09:01,080 --> 00:09:04,130
+[The receiver at his ear. Down the line, a colleague laughs. He says nothing.]
+
+300
+00:09:04,280 --> 00:09:07,265
+[Day 40. Ito’s workbench in the station, his radio and his bag on it. Mira asks the question he would not answer.]
+
+301
+00:09:04,380 --> 00:09:07,145
+MIRA: Mr. Ito, you never answered me.
+
+302
+00:09:07,415 --> 00:09:09,265
+[Reverse: mira answers.]
+
+303
+00:09:07,515 --> 00:09:08,800
+MIRA: Who built it?
+
+304
+00:09:09,415 --> 00:09:12,565
+[Kai, backing her up.]
+
+305
+00:09:09,515 --> 00:09:12,540
+NARRATOR: Whoever it was, it must have taken them ages.
+
+306
+00:09:12,810 --> 00:09:15,960
+[Ito turns to the bag on his bench and takes out an old photograph.]
+
+307
+00:09:12,910 --> 00:09:16,885
+MR. ITO: Much longer than that. It's very old. Here.
+
+308
+00:09:17,455 --> 00:09:20,605
+[An old eclipse photograph in Ito’s hand: three faint, perfectly straight lines crossing the corona.]
+
+309
+00:09:17,555 --> 00:09:22,275
+MR. ITO: Nineteen-nineteen. A total eclipse. Look at the lines.
+
+310
+00:09:22,545 --> 00:09:24,930
+[A window blind with its slats open, sunlight streaming through. Beside it, the Sun in a ring of the same slats, edge-on, light pouring between them.]
+
+311
+00:09:22,645 --> 00:09:24,810
+MR. ITO: It was always there.
+
+312
+00:09:25,080 --> 00:09:28,230
+[Continues.]
+
+313
+00:09:25,180 --> 00:09:28,360
+MR. ITO: Edge-on, like the slats of a blind.
+
+314
+00:09:28,630 --> 00:09:31,780
+[Every slat turns at once. The window goes dark. The Sun’s light is trapped inside.]
+
+315
+00:09:28,730 --> 00:09:33,510
+MR. ITO: On the morning the Sun went out, every slat turned.
+
+316
+00:09:34,180 --> 00:09:36,440
+[Mira, sharp.]
+
+317
+00:09:34,280 --> 00:09:36,320
+MIRA: You've seen those lines before.
+
+318
+00:09:36,590 --> 00:09:39,740
+[Ito, not meeting her eyes. He puts the photograph back in the bag.]
+
+319
+00:09:36,690 --> 00:09:41,385
+MR. ITO: Once. A long time ago. Nobody listened.
+
+320
+00:09:42,055 --> 00:09:45,205
+[The two of them in the lamplight. Mira watches his back.]
+
+321
+00:09:42,155 --> 00:09:46,295
+NARRATOR: I believed him. It was true. It just wasn't all of it.
+
+322
+00:09:47,165 --> 00:09:50,315
+[Day 100. The heaters’ orange glow fades; frost creeps over the tiles; breath smokes. The lamps stay on.]
+
+323
+00:09:47,265 --> 00:09:51,080
+NARRATOR: On Day 100, it was fifty below up top.
+
+324
+00:09:51,350 --> 00:09:54,500
+[Close on the station’s big air heater: its orange glow fades out, and frost creeps across the grille.]
+
+325
+00:09:51,450 --> 00:09:55,925
+NARRATOR: The heaters that warmed the air coming down into the station froze.
+
+326
+00:09:56,195 --> 00:09:58,045
+[Ito turns to the family, then follows the engineers toward the frozen air plant, torch in hand.]
+
+327
+00:09:56,295 --> 00:09:57,710
+MR. ITO: Let me help.
+
+328
+00:09:58,195 --> 00:10:01,345
+[Reverse: ito answers.]
+
+329
+00:09:58,295 --> 00:10:01,660
+MR. ITO: I know a little about old machines.
+
+330
+00:10:01,930 --> 00:10:04,240
+[That night. Under every blanket they own, Kai, Mira and Mum huddle together. Breath smoking even down here.]
+
+331
+00:10:02,030 --> 00:10:04,120
+NARRATOR: That was the coldest night.
+
+332
+00:10:04,390 --> 00:10:07,540
+[The station, quiet. People sit close together in the cold, not talking. A man kneels beside a shivering neighbour.]
+
+333
+00:10:04,490 --> 00:10:09,595
+NARRATOR: All over the world, many people didn't make it through that winter.
+
+334
+00:10:10,465 --> 00:10:13,615
+[Kai’s face in the cold blue light. For once, no joke.]
+
+335
+00:10:10,565 --> 00:10:12,735
+NARRATOR: Mira? How does this end?
+
+336
+00:10:13,805 --> 00:10:16,705
+[Mira, small and certain.]
+
+337
+00:10:13,905 --> 00:10:15,985
+MIRA: With the Sun coming back.
+
+338
+00:10:16,855 --> 00:10:20,005
+[Morning. The heaters glow orange again, the frost melts off the tiles, and the whole station cheers.]
+
+339
+00:10:16,955 --> 00:10:22,115
+NARRATOR: By morning, Mr. Ito and the engineers had the heaters running again.
+
+340
+00:10:22,385 --> 00:10:24,235
+[Later. Ito at his bench with wires and a little dish. Mira leans in.]
+
+341
+00:10:22,485 --> 00:10:23,895
+MIRA: What are you building?
+
+342
+00:10:24,385 --> 00:10:27,535
+[Ito, holding it up, eyes on the ceiling as if he can see through it.]
+
+343
+00:10:24,485 --> 00:10:27,755
+MR. ITO: Something to listen with. And to answer.
+
+344
+00:10:28,425 --> 00:10:31,575
+[Day 300. The station’s big screen: a beam traced up from the Sun to one star in Cassiopeia, ringed.]
+
+345
+00:10:28,525 --> 00:10:33,410
+NEWS ANCHOR: After months of searching, astronomers have found where the Sun's light is going.
+
+346
+00:10:33,680 --> 00:10:36,830
+[The beam reaches the star; a red ring and its name: HD 219134, 21 light-years.]
+
+347
+00:10:33,780 --> 00:10:39,520
+NEWS ANCHOR: One beam, aimed at a star called HD 219134.
+
+348
+00:10:39,790 --> 00:10:42,940
+[The station crowd, from behind, watching the big screen over the platform: a glowing speck inside the beam. Ito slowly turns around.]
+
+349
+00:10:39,890 --> 00:10:43,955
+NEWS ANCHOR: And there's something inside it, coming toward us and slowing down.
+
+350
+00:10:44,625 --> 00:10:47,260
+[In the crowd under the screen, Ito goes white. Barely a whisper.]
+
+351
+00:10:44,725 --> 00:10:46,140
+MR. ITO: They're coming.
+
+352
+00:10:47,410 --> 00:10:50,560
+[The news: the beam, the star, and a glowing speck inside the beam labelled SOMETHING INSIDE · COMING THIS WAY · SLOWING.]
+
+353
+00:10:47,510 --> 00:10:50,875
+NEWS ANCHOR: At this rate, it will stop in sixty-five days.
+
+354
+00:10:51,145 --> 00:10:54,295
+[Continues.]
+
+355
+00:10:51,245 --> 00:10:54,460
+NEWS ANCHOR: Scientists hope the Sun will come back when it does.
+
+356
+00:10:55,130 --> 00:10:57,565
+[Kai and Mira beside him. Mira watches Ito. He says nothing more.]
+
+357
+00:10:55,230 --> 00:10:57,145
+NARRATOR: I didn't ask who he meant.
+
+358
+00:10:57,715 --> 00:11:00,865
+[The shell from far away, a needle of light leaving it toward one faint star.]
+
+359
+00:10:57,815 --> 00:11:02,870
+NARRATOR: All the Sun's light, pushing against one small thing, coming our way.
+
+360
+00:11:03,740 --> 00:11:06,390
+[At the transmitter. His finger hovers over the key. He looks at the chart: 21.]
+
+361
+00:11:06,540 --> 00:11:07,990
+[He presses it, once.]
+
+362
+00:11:08,140 --> 00:11:11,290
+[Day 365, 6:20 a.m. Up the frozen escalator steps: Kai hauls Mr. Ito’s big transmitter dish on his back, step by step, Mira behind him.]
+
+363
+00:11:08,240 --> 00:11:14,355
+NARRATOR: On Day 365, the escalators to the surface had frozen solid.
+
+364
+00:11:14,625 --> 00:11:17,775
+[Closer: Kai, red-faced, climbing step after frozen step with the dish, without a word.]
+
+365
+00:11:14,725 --> 00:11:17,785
+NARRATOR: Kai carried Mr. Ito's dish all the way up.
+
+366
+00:11:18,055 --> 00:11:20,240
+[Reverse: narrator answers.]
+
+367
+00:11:18,155 --> 00:11:20,120
+NARRATOR: He didn't complain once.
+
+368
+00:11:20,390 --> 00:11:23,050
+[The surface. All of them in full cold gear, tiny under the brightest Milky Way anyone has ever seen; the dish on its tripod beside them.]
+
+369
+00:11:20,490 --> 00:11:22,930
+NARRATOR: Half the station came up with us.
+
+370
+00:11:23,200 --> 00:11:26,350
+[Closer: the family bundled in every layer they own, breath freezing in the starlight.]
+
+371
+00:11:23,300 --> 00:11:26,940
+NARRATOR: It was seventy below, so we wore everything we owned.
+
+372
+00:11:27,210 --> 00:11:29,440
+[Mira grins up at Kai.]
+
+373
+00:11:27,310 --> 00:11:29,320
+MIRA: One whole lap around the Sun.
+
+374
+00:11:29,590 --> 00:11:31,470
+[Reverse: mira answers.]
+
+375
+00:11:29,690 --> 00:11:31,350
+MIRA: Happy birthday, Earth!
+
+376
+00:11:31,620 --> 00:11:34,770
+[Ito checks his watch: 6:30. He looks east.]
+
+377
+00:11:31,720 --> 00:11:36,700
+MR. ITO: It started at 6:52, exactly one year ago.
+
+378
+00:11:36,970 --> 00:11:40,120
+[Ito looks east. Mira looks at him.]
+
+379
+00:11:37,070 --> 00:11:40,760
+MR. ITO: I think it stops at 6:52 today.
+
+380
+00:11:41,030 --> 00:11:44,180
+[6:31. Ito’s little receiver dish clicks in his hands. His face changes.]
+
+381
+00:11:41,130 --> 00:11:45,195
+MR. ITO: Listen. Something near the Sun is calling us.
+
+382
+00:11:45,465 --> 00:11:47,315
+[Pulses: one, then two, then three. Kai counts along.]
+
 383
-00:11:42,875 --> 00:11:43,435
-NARRATOR: Two.
+00:11:45,565 --> 00:11:46,375
+NARRATOR: One.
 
 384
-00:11:44,775 --> 00:11:46,625
+00:11:47,465 --> 00:11:49,315
 [Reverse: kai answers.]
 
 385
-00:11:44,875 --> 00:11:45,585
-NARRATOR: Three!
+00:11:47,565 --> 00:11:48,125
+NARRATOR: Two.
 
 386
-00:11:46,775 --> 00:11:49,285
-[The receiver’s screen. The counter passes three and keeps climbing, faster and faster.]
+00:11:49,465 --> 00:11:51,315
+[Reverse: kai answers.]
 
 387
-00:11:46,875 --> 00:11:48,665
-NARRATOR: Then it didn't stop.
+00:11:49,565 --> 00:11:50,275
+NARRATOR: Three!
 
 388
-00:11:49,435 --> 00:11:52,095
-[Kai stops counting.]
+00:11:51,465 --> 00:11:53,975
+[The receiver’s screen. The counter passes three and keeps climbing, faster and faster.]
 
 389
-00:11:49,535 --> 00:11:51,975
-NARRATOR: That's not three. That's hundreds.
+00:11:51,565 --> 00:11:53,355
+NARRATOR: Then it didn't stop.
 
 390
-00:11:52,245 --> 00:11:55,395
-[Ito, reading the counter as it stops.]
+00:11:54,125 --> 00:11:56,785
+[Kai stops counting.]
 
 391
-00:11:52,345 --> 00:11:56,375
-MR. ITO: One thousand, six hundred and seventy-nine.
+00:11:54,225 --> 00:11:56,665
+NARRATOR: That's not three. That's hundreds.
 
 392
-00:11:56,945 --> 00:11:59,330
-[Kai, deadpan.]
+00:11:56,935 --> 00:12:00,085
+[Ito, reading the counter as it stops.]
 
 393
-00:11:57,045 --> 00:11:59,010
-NARRATOR: Why that exact number?
+00:11:57,035 --> 00:12:00,805
+MR. ITO: It's stopped. And listen: they come in rows.
 
 394
-00:11:59,480 --> 00:12:02,630
-[Ito, not looking up.]
-
-395
-00:11:59,580 --> 00:12:04,350
-MR. ITO: Because it's twenty-three times seventy-three. And nothing else.
-
-396
-00:12:04,920 --> 00:12:08,070
-[Ito, not looking up.]
-
-397
-00:12:05,020 --> 00:12:12,075
-MR. ITO: We used the same trick ourselves, in 1974, to send a picture into space.
-
-398
-00:12:12,645 --> 00:12:15,370
-[Mira’s eyes go wide. She is the artist.]
-
-399
-00:12:12,745 --> 00:12:14,950
-MIRA: Like squares on graph paper.
-
-400
-00:12:15,520 --> 00:12:17,505
-[Reverse: mira answers.]
-
-401
-00:12:15,620 --> 00:12:16,885
-MIRA: It's a picture!
-
-402
-00:12:17,655 --> 00:12:20,805
-[The pulses fall into a grid, 23 across and 73 down, filling row by row.]
-
-403
-00:12:17,755 --> 00:12:21,675
-MR. ITO: Twenty-three across. Seventy-three down.
-
-404
-00:12:21,945 --> 00:12:25,095
-[The finished picture, framed at the top: rows of dots counting one to ten.]
-
-405
-00:12:22,045 --> 00:12:25,500
-NARRATOR: At the top: counting, from one to ten.
-
-406
-00:12:25,770 --> 00:12:28,920
-[Lower: a tall figure with a crest and three-fingered hands. Beside it, small, a human.]
-
-407
-00:12:25,870 --> 00:12:30,040
-NARRATOR: Then one of them. And one of us, beside them, much smaller.
-
-408
-00:12:30,710 --> 00:12:33,860
-[Lower still: their star with its planets, one raised; the beam; our Sun inside its shell; Earth.]
-
-409
-00:12:30,810 --> 00:12:34,605
-NARRATOR: Their star. And their ship, parked beside our Sun.
-
-410
-00:12:35,475 --> 00:12:37,810
-[Mira turns to Ito. He is staring at the little screen.]
-
-411
-00:12:35,575 --> 00:12:37,690
-MIRA: Mr. Ito? What is it?
-
-412
-00:12:37,960 --> 00:12:40,395
-[Ito, quietly.]
-
-413
-00:12:38,060 --> 00:12:39,875
-MR. ITO: It's a reply.
-
-414
-00:12:40,545 --> 00:12:42,395
-[Mira, not understanding.]
-
-415
-00:12:40,645 --> 00:12:41,660
-MIRA: To who?
-
-416
-00:12:42,545 --> 00:12:45,130
-[Ito, finally.]
-
-417
-00:12:42,645 --> 00:12:44,010
-MR. ITO: To me.
-
-418
-00:12:45,280 --> 00:12:48,430
-[The Morse key again. One… two-two… three-three-three: the same rhythm as the pulses.]
-
-419
-00:12:48,880 --> 00:12:52,030
-[He walks out of the dome. Over the far ridge, the sky goes gold, and the Sun rises.]
-
-420
-00:12:53,480 --> 00:12:55,530
-[Close: his hand on the dome railing in the sunrise. Tap. Tap. Tap.]
-
-421
-00:12:55,680 --> 00:12:58,530
-[His face in the sunrise, round glasses glinting.]
-
-422
-00:12:58,680 --> 00:13:01,830
-[Match cut: the same face, forty-three years older, in starlight, tapping his receiver three times.]
-
-423
-00:12:58,780 --> 00:13:04,605
-NARRATOR: The young man in the observatory was Mr. Ito, in 1983.
-
-424
-00:13:05,275 --> 00:13:08,425
-[The star chart again: the three lines meeting at one star. 21.]
-
-425
-00:13:05,375 --> 00:13:10,145
-NARRATOR: He found lines in old eclipse photos. They pointed to one star.
-
-426
-00:13:10,415 --> 00:13:12,825
-[Ito turns to Mira and tells her, plainly.]
-
-427
-00:13:10,515 --> 00:13:12,705
-MR. ITO: It was a signpost.
-
-428
-00:13:12,975 --> 00:13:16,125
+00:12:01,075 --> 00:12:04,225
 [Reverse: ito answers.]
 
+395
+00:12:01,175 --> 00:12:04,065
+MR. ITO: Every row is the same length.
+
+396
+00:12:04,635 --> 00:12:06,515
+[Kai, deadpan.]
+
+397
+00:12:04,735 --> 00:12:06,195
+NARRATOR: Rows of what?
+
+398
+00:12:06,665 --> 00:12:09,650
+[Ito, not looking up.]
+
+399
+00:12:06,765 --> 00:12:09,530
+MR. ITO: Loud beeps and soft beeps.
+
+400
+00:12:09,800 --> 00:12:12,950
+[Reverse: ito answers.]
+
+401
+00:12:09,900 --> 00:12:13,855
+MR. ITO: Like squares that are filled in, or left empty.
+
+402
+00:12:14,425 --> 00:12:17,575
+[Ito, not looking up.]
+
+403
+00:12:14,525 --> 00:12:18,415
+MR. ITO: We sent a message like this ourselves, once.
+
+404
+00:12:18,685 --> 00:12:21,835
+[Reverse: ito answers.]
+
+405
+00:12:18,785 --> 00:12:21,525
+MR. ITO: In 1974.
+
+406
+00:12:22,095 --> 00:12:25,245
+[Mira’s eyes go wide. She is the artist.]
+
+407
+00:12:22,195 --> 00:12:26,090
+MIRA: Filled squares and empty squares? That's just graph paper.
+
+408
+00:12:26,660 --> 00:12:28,645
+[Reverse: mira answers.]
+
+409
+00:12:26,760 --> 00:12:28,025
+MIRA: It's a picture!
+
+410
+00:12:28,795 --> 00:12:31,945
+[The pulses fall into a grid, 23 across and 73 down, filling row by row.]
+
+411
+00:12:28,895 --> 00:12:31,740
+MR. ITO: Row by row. Let's see it.
+
+412
+00:12:32,795 --> 00:12:35,945
+[The finished picture, framed at the top: rows of dots counting one to ten.]
+
+413
+00:12:32,895 --> 00:12:36,350
+NARRATOR: At the top: counting, from one to ten.
+
+414
+00:12:36,620 --> 00:12:39,770
+[Lower: a tall figure with a crest and three-fingered hands. Beside it, small, a human.]
+
+415
+00:12:36,720 --> 00:12:40,890
+NARRATOR: Then one of them. And one of us, beside them, much smaller.
+
+416
+00:12:41,560 --> 00:12:44,710
+[Lower still: their star with its planets, one raised; the beam; our Sun inside its shell; Earth.]
+
+417
+00:12:41,660 --> 00:12:45,455
+NARRATOR: Their star. And their ship, parked beside our Sun.
+
+418
+00:12:46,325 --> 00:12:48,660
+[Mira turns to Ito. He is staring at the little screen.]
+
+419
+00:12:46,425 --> 00:12:48,540
+MIRA: Mr. Ito? What is it?
+
+420
+00:12:48,810 --> 00:12:51,245
+[Ito, quietly.]
+
+421
+00:12:48,910 --> 00:12:50,725
+MR. ITO: It's a reply.
+
+422
+00:12:51,395 --> 00:12:53,245
+[Mira, not understanding.]
+
+423
+00:12:51,495 --> 00:12:52,510
+MIRA: To who?
+
+424
+00:12:53,395 --> 00:12:55,980
+[Ito, finally.]
+
+425
+00:12:53,495 --> 00:12:54,860
+MR. ITO: To me.
+
+426
+00:12:56,130 --> 00:12:59,280
+[The Morse key again. One… two-two… three-three-three: the same rhythm as the pulses.]
+
+427
+00:12:59,730 --> 00:13:02,880
+[He walks out of the dome. Over the far ridge, the sky goes gold, and the Sun rises.]
+
+428
+00:13:04,330 --> 00:13:06,380
+[Close: his hand on the dome railing in the sunrise. Tap. Tap. Tap.]
+
 429
-00:13:13,075 --> 00:13:17,940
-MR. ITO: It meant: if you can see this, call us. So I did.
+00:13:06,530 --> 00:13:09,380
+[His face in the sunrise, round glasses glinting.]
 
 430
-00:13:18,210 --> 00:13:21,360
-[His young hand on the key.]
+00:13:09,530 --> 00:13:12,680
+[Match cut: the same face, forty-three years older, in starlight, tapping his receiver three times.]
 
 431
-00:13:18,310 --> 00:13:21,475
-NARRATOR: The astronomers he worked for told him not to.
+00:13:09,630 --> 00:13:15,455
+NARRATOR: The young man in the observatory was Mr. Ito, in 1983.
 
 432
-00:13:21,745 --> 00:13:24,895
-[Continues.]
+00:13:16,125 --> 00:13:19,275
+[The star chart again: the three lines meeting at one star. 21.]
 
 433
-00:13:21,845 --> 00:13:24,890
-NARRATOR: He knocked anyway. One. Two. Three.
+00:13:16,225 --> 00:13:20,995
+NARRATOR: He found lines in old eclipse photos. They pointed to one star.
 
 434
-00:13:25,560 --> 00:13:28,710
-[The top of their picture again: the counting rows, one to ten.]
+00:13:21,265 --> 00:13:23,675
+[Ito turns to Mira and tells her, plainly.]
 
 435
-00:13:25,660 --> 00:13:31,040
-MR. ITO: And they counted on, all the way to ten, so I'd know it was them.
+00:13:21,365 --> 00:13:23,555
+MR. ITO: It was a signpost.
 
 436
-00:13:31,310 --> 00:13:34,460
-[Earth and a star 21 light-years apart. The knock crosses out: 1983 → 2004. The answer crosses back: 2004 → 2026.]
+00:13:23,825 --> 00:13:26,975
+[Reverse: ito answers.]
 
 437
-00:13:31,410 --> 00:13:34,445
-NARRATOR: His knock took twenty-one years to reach them.
+00:13:23,925 --> 00:13:28,790
+MR. ITO: It meant: if you can see this, call us. So I did.
 
 438
-00:13:34,715 --> 00:13:37,865
-[Continues.]
+00:13:29,060 --> 00:13:32,210
+[His young hand on the key.]
 
 439
-00:13:34,815 --> 00:13:39,860
-NARRATOR: They set off the day it arrived. It took them twenty-three years to get here.
+00:13:29,160 --> 00:13:32,325
+NARRATOR: The astronomers he worked for told him not to.
 
 440
-00:13:40,130 --> 00:13:43,280
-[Diagram: their ship with a huge sail, arriving at almost light speed; the beam of all the Sun’s light pushing on the sail from the front; the speed bar falling to zero over twelve months.]
-
-441
-00:13:40,230 --> 00:13:43,795
-MR. ITO: Something that fast can't stop by itself.
-
-442
-00:13:46,530 --> 00:13:49,680
+00:13:32,595 --> 00:13:35,745
 [Continues.]
 
+441
+00:13:32,695 --> 00:13:35,740
+NARRATOR: He knocked anyway. One. Two. Three.
+
+442
+00:13:36,410 --> 00:13:39,560
+[The top of their picture again: the counting rows, one to ten.]
+
 443
-00:13:46,630 --> 00:13:51,850
-MR. ITO: It needs a push from the front. Only a whole star pushes that hard.
+00:13:36,510 --> 00:13:41,890
+MR. ITO: And they counted on, all the way to ten, so I'd know it was them.
 
 444
-00:13:52,120 --> 00:13:55,270
-[The shell around the Sun, slowly turning.]
+00:13:42,160 --> 00:13:45,310
+[Earth and a star 21 light-years apart. The knock crosses out: 1983 → 2004. The answer crosses back: 2004 → 2026.]
 
 445
-00:13:52,220 --> 00:13:58,550
-MR. ITO: They built that shell long ago, as a harbour, so one day they could stop here.
+00:13:42,260 --> 00:13:45,295
+NARRATOR: His knock took twenty-one years to reach them.
 
 446
-00:13:58,820 --> 00:14:01,405
+00:13:45,565 --> 00:13:48,715
 [Continues.]
 
 447
-00:13:58,920 --> 00:14:01,285
-MR. ITO: How, nobody knows.
+00:13:45,665 --> 00:13:50,710
+NARRATOR: They set off the day it arrived. It took them twenty-three years to get here.
 
 448
-00:14:01,555 --> 00:14:04,705
-[Ito looks east, where the Sun should be.]
+00:13:50,980 --> 00:13:54,130
+[Diagram: their ship with a huge sail, arriving at almost light speed; the beam of all the Sun’s light pushing on the sail from the front; the speed bar falling to zero over twelve months.]
 
 449
-00:14:01,655 --> 00:14:05,560
-MR. ITO: So for one year, our Sun was their brake.
+00:13:51,080 --> 00:13:54,645
+MR. ITO: Something that fast can't stop by itself.
 
 450
-00:14:05,830 --> 00:14:08,980
-[Ito turns back to the family.]
+00:13:57,380 --> 00:14:00,530
+[Continues.]
 
 451
-00:14:05,930 --> 00:14:08,910
-MR. ITO: In a few minutes they'll have stopped.
+00:13:57,480 --> 00:14:02,700
+MR. ITO: It needs a push from the front. Only a whole star pushes that hard.
 
 452
-00:14:09,180 --> 00:14:12,140
-[Reverse: ito answers.]
+00:14:02,970 --> 00:14:06,120
+[The shell around the Sun, slowly turning.]
 
 453
-00:14:09,280 --> 00:14:12,020
-MR. ITO: And they won't need it any more.
+00:14:03,070 --> 00:14:09,400
+MR. ITO: They built that shell long ago, as a harbour, so one day they could stop here.
 
 454
-00:14:12,290 --> 00:14:15,440
-[Ito, quietly.]
+00:14:09,670 --> 00:14:12,255
+[Continues.]
 
 455
-00:14:12,390 --> 00:14:15,970
-MR. ITO: I knew they might come, any year now.
+00:14:09,770 --> 00:14:12,135
+MR. ITO: How, nobody knows.
 
 456
-00:14:16,240 --> 00:14:19,390
-[Reverse: ito answers.]
+00:14:12,405 --> 00:14:15,555
+[Ito looks east, where the Sun should be.]
 
 457
-00:14:16,340 --> 00:14:19,255
-MR. ITO: That's why my bag was packed.
+00:14:12,505 --> 00:14:16,410
+MR. ITO: So for one year, our Sun was their brake.
 
 458
-00:14:19,925 --> 00:14:21,930
-[Mira, frowning, asks the obvious question.]
+00:14:16,680 --> 00:14:19,830
+[Ito turns back to the family.]
 
 459
-00:14:20,025 --> 00:14:21,810
-MIRA: Then why didn't they warn us?
+00:14:16,780 --> 00:14:19,760
+MR. ITO: In a few minutes they'll have stopped.
 
 460
-00:14:22,080 --> 00:14:25,230
-[Ito, gently.]
+00:14:20,030 --> 00:14:22,990
+[Reverse: ito answers.]
 
 461
-00:14:22,180 --> 00:14:26,370
-MR. ITO: Because a warning can't travel faster than light.
+00:14:20,130 --> 00:14:22,870
+MR. ITO: And they won't need it any more.
 
 462
-00:14:26,840 --> 00:14:29,625
-[Wider: Mira takes that in; Mum puts a hand on her shoulder.]
+00:14:23,140 --> 00:14:26,290
+[Ito, quietly.]
 
 463
-00:14:26,940 --> 00:14:29,505
-MR. ITO: They were almost that fast.
+00:14:23,240 --> 00:14:26,820
+MR. ITO: I knew they might come, any year now.
 
 464
-00:14:29,775 --> 00:14:32,925
+00:14:27,090 --> 00:14:30,240
 [Reverse: ito answers.]
 
 465
-00:14:29,875 --> 00:14:32,465
-MR. ITO: It would have arrived with them.
+00:14:27,190 --> 00:14:30,105
+MR. ITO: That's why my bag was packed.
 
 466
-00:14:33,135 --> 00:14:35,860
-[Mira asks the hardest question.]
+00:14:30,775 --> 00:14:32,780
+[Mira, frowning, asks the obvious question.]
 
 467
-00:14:33,235 --> 00:14:35,340
-MIRA: Did they know it would hurt us?
+00:14:30,875 --> 00:14:32,660
+MIRA: Then why didn't they warn us?
 
 468
-00:14:36,010 --> 00:14:38,620
-[Ito has no answer.]
+00:14:32,930 --> 00:14:36,080
+[Ito, gently.]
 
 469
-00:14:36,110 --> 00:14:37,700
-MR. ITO: I don't know.
+00:14:33,030 --> 00:14:37,220
+MR. ITO: Because a warning can't travel faster than light.
 
 470
-00:14:38,770 --> 00:14:41,920
-[Mira steps in and takes his arm.]
+00:14:37,690 --> 00:14:40,475
+[Wider: Mira takes that in; Mum puts a hand on her shoulder.]
 
 471
-00:14:38,870 --> 00:14:41,610
-MR. ITO: I'm so sorry, Mira.
+00:14:37,790 --> 00:14:40,355
+MR. ITO: They were almost that fast.
 
 472
-00:14:42,880 --> 00:14:45,320
-[Reverse: mira answers.]
-
-473
-00:14:42,980 --> 00:14:45,200
-MIRA: It's okay. You didn't know.
-
-474
-00:14:45,470 --> 00:14:48,620
-[The picture again. The camera slides to the bottom: an empty square, pulsing.]
-
-475
-00:14:45,570 --> 00:14:49,325
-NARRATOR: At the bottom of their picture was an empty square.
-
-476
-00:14:49,995 --> 00:14:52,155
-[Mira, very still.]
-
-477
-00:14:50,095 --> 00:14:51,435
-MIRA: It's our turn.
-
-478
-00:14:52,305 --> 00:14:55,455
-[On every phone: radio observatories around the world, all showing the same pulses.]
-
-479
-00:14:52,405 --> 00:14:56,610
-NARRATOR: Every radio telescope on Earth got the same picture.
-
-480
-00:14:57,080 --> 00:15:00,230
-[On every phone: feeds from capitals, crowds outside parliaments, placards, arguments, all at the same minute.]
-
-481
-00:14:57,180 --> 00:15:00,790
-NARRATOR: Every government started arguing about what to say back.
-
-482
-00:15:01,360 --> 00:15:04,380
-[Mira takes the folded drawing out of her pocket and holds it up to Ito.]
-
-483
-00:15:02,510 --> 00:15:04,260
-MIRA: Can we send this?
-
-484
-00:15:04,530 --> 00:15:07,680
-[Ito looks at the drawing for a long moment.]
-
-485
-00:15:04,630 --> 00:15:07,570
-MR. ITO: Yes. I think we can.
-
-486
-00:15:08,240 --> 00:15:11,390
-[Mira’s crayon sun under Ito’s lamp, then the same picture as squares: a sun with rays, a little girl standing under it.]
-
-487
-00:15:08,340 --> 00:15:11,220
-NARRATOR: My drawing, from the morning it went out.
-
-488
-00:15:12,840 --> 00:15:15,990
-[Continues.]
-
-489
-00:15:12,940 --> 00:15:16,805
-NARRATOR: A big yellow sun. And me, standing under it.
-
-490
-00:15:17,575 --> 00:15:20,055
-[Kai, suddenly very sixteen. Ito, perfectly calm, sets his little receiver down and steps to the transmitter.]
-
-491
-00:15:17,675 --> 00:15:19,935
-NARRATOR: Are we even allowed to do this?
-
-492
-00:15:20,205 --> 00:15:22,740
+00:14:40,625 --> 00:14:43,775
 [Reverse: ito answers.]
 
+473
+00:14:40,725 --> 00:14:43,315
+MR. ITO: It would have arrived with them.
+
+474
+00:14:43,985 --> 00:14:46,710
+[Mira asks the hardest question.]
+
+475
+00:14:44,085 --> 00:14:46,190
+MIRA: Did they know it would hurt us?
+
+476
+00:14:46,860 --> 00:14:49,470
+[Ito has no answer.]
+
+477
+00:14:46,960 --> 00:14:48,550
+MR. ITO: I don't know.
+
+478
+00:14:49,620 --> 00:14:52,770
+[Mira reaches out to him.]
+
+479
+00:14:49,720 --> 00:14:52,460
+MR. ITO: I'm so sorry, Mira.
+
+480
+00:14:53,730 --> 00:14:56,170
+[Reverse: mira answers.]
+
+481
+00:14:53,830 --> 00:14:56,050
+MIRA: It's okay. You didn't know.
+
+482
+00:14:56,320 --> 00:14:59,470
+[The picture again. The camera slides to the bottom: an empty square, pulsing.]
+
+483
+00:14:56,420 --> 00:15:00,175
+NARRATOR: At the bottom of their picture was an empty square.
+
+484
+00:15:00,845 --> 00:15:03,005
+[Mira, very still.]
+
+485
+00:15:00,945 --> 00:15:02,285
+MIRA: It's our turn.
+
+486
+00:15:03,155 --> 00:15:06,305
+[On every phone: radio observatories around the world, all showing the same pulses.]
+
+487
+00:15:03,255 --> 00:15:07,460
+NARRATOR: Every radio telescope on Earth got the same picture.
+
+488
+00:15:07,930 --> 00:15:11,080
+[On every phone: feeds from capitals, crowds outside parliaments, placards, arguments, all at the same minute.]
+
+489
+00:15:08,030 --> 00:15:11,640
+NARRATOR: Every government started arguing about what to say back.
+
+490
+00:15:12,210 --> 00:15:15,230
+[Mira takes the folded drawing out of her pocket and holds it up to Ito.]
+
+491
+00:15:13,360 --> 00:15:15,110
+MIRA: Can we send this?
+
+492
+00:15:15,380 --> 00:15:18,530
+[Ito looks at the drawing for a long moment.]
+
 493
-00:15:20,305 --> 00:15:22,020
-MR. ITO: Probably not.
+00:15:15,480 --> 00:15:18,420
+MR. ITO: Yes. I think we can.
 
 494
-00:15:22,890 --> 00:15:26,040
-[6:47. Ito presses the key. The transmitter light goes red.]
+00:15:19,090 --> 00:15:22,240
+[Mira’s crayon sun under Ito’s lamp, then the same picture as squares: a sun with rays, a little girl standing under it.]
 
 495
-00:15:22,990 --> 00:15:27,220
-NARRATOR: He pressed the key, the way he had in 1983.
+00:15:19,190 --> 00:15:22,070
+NARRATOR: My drawing, from the morning it went out.
 
 496
-00:15:27,490 --> 00:15:29,800
-[Wide. Five small figures in the snow, the transmitter glowing. A clock counting down to 6:52.]
-
-497
-00:15:27,590 --> 00:15:29,280
-NARRATOR: Five minutes to go.
-
-498
-00:15:29,950 --> 00:15:33,100
-[All over the world, people on rooftops in the dark, looking up at the same patch of sky.]
-
-499
-00:15:30,050 --> 00:15:33,690
-NARRATOR: The whole world was watching the same patch of sky.
-
-500
-00:15:33,960 --> 00:15:35,810
-[Mira, scared. Mum pulls her in.]
-
-501
-00:15:34,060 --> 00:15:35,445
-MIRA: What if he's wrong?
-
-502
-00:15:35,960 --> 00:15:39,025
-[Reverse: mum answers.]
-
-503
-00:15:36,060 --> 00:15:38,605
-NARRATOR: Then we'll wait. Together.
-
-504
-00:15:39,175 --> 00:15:42,325
-[Ito, eyes on the east. He taps the transmitter three times.]
-
-505
-00:15:44,175 --> 00:15:47,325
-[Space. The shell’s slats turn, all together, edge-on. Light pours out between them.]
-
-506
-00:15:48,375 --> 00:15:50,630
-[Low in the east, the Sun is simply there. Gold light floods across the snow and their faces.]
-
-507
-00:15:48,475 --> 00:15:49,710
-MIRA: There it is!
-
-508
-00:15:50,780 --> 00:15:53,930
-[Earth from space: the whole day side lights up at once.]
-
-509
-00:15:50,880 --> 00:15:55,505
-NARRATOR: Everywhere it was daytime, the Sun came back at the same moment.
-
-510
-00:15:55,775 --> 00:15:57,825
-[Sydney, 3:52 PM: the surfer on the frozen beach, in the sun again.]
-
-511
-00:15:57,975 --> 00:15:59,825
-[Chennai, 11:22 AM: the farmer in the frosted paddy, arms up.]
-
-512
-00:15:59,975 --> 00:16:01,825
-[Manila: the boy at the bus stop, laughing in the light.]
-
-513
-00:16:01,975 --> 00:16:05,005
-[The news: New York at night, still dark, a city waiting for an ordinary sunrise.]
-
-514
-00:16:02,075 --> 00:16:04,885
-NARRATOR: In New York it was the middle of the night.
-
-515
-00:16:05,155 --> 00:16:08,305
+00:15:23,690 --> 00:15:26,840
 [Continues.]
 
+497
+00:15:23,790 --> 00:15:27,655
+NARRATOR: A big yellow sun. And me, standing under it.
+
+498
+00:15:28,425 --> 00:15:30,905
+[Kai, suddenly very sixteen. Ito, perfectly calm, sets his little receiver down and steps to the transmitter.]
+
+499
+00:15:28,525 --> 00:15:30,785
+NARRATOR: Are we even allowed to do this?
+
+500
+00:15:31,055 --> 00:15:33,590
+[Reverse: ito answers.]
+
+501
+00:15:31,155 --> 00:15:32,870
+MR. ITO: Probably not.
+
+502
+00:15:33,740 --> 00:15:36,890
+[6:47. Ito presses the key. The transmitter light goes red.]
+
+503
+00:15:33,840 --> 00:15:38,070
+NARRATOR: He pressed the key, the way he had in 1983.
+
+504
+00:15:38,340 --> 00:15:40,650
+[Wide. Five small figures in the snow, the transmitter glowing. A clock counting down to 6:52.]
+
+505
+00:15:38,440 --> 00:15:40,130
+NARRATOR: Five minutes to go.
+
+506
+00:15:40,800 --> 00:15:43,950
+[All over the world, people on rooftops in the dark, looking up at the same patch of sky.]
+
+507
+00:15:40,900 --> 00:15:44,540
+NARRATOR: The whole world was watching the same patch of sky.
+
+508
+00:15:44,810 --> 00:15:46,660
+[Mira, scared. Mum pulls her in.]
+
+509
+00:15:44,910 --> 00:15:46,295
+MIRA: What if he's wrong?
+
+510
+00:15:46,810 --> 00:15:49,875
+[Reverse: mum answers.]
+
+511
+00:15:46,910 --> 00:15:49,455
+NARRATOR: Then we'll wait. Together.
+
+512
+00:15:50,025 --> 00:15:53,175
+[Ito, eyes on the east. He taps the transmitter three times.]
+
+513
+00:15:55,025 --> 00:15:58,175
+[Space. The shell’s slats turn, all together, edge-on. Light pours out between them.]
+
+514
+00:15:59,225 --> 00:16:01,480
+[Low in the east, the Sun is simply there. Gold light floods across the snow and their faces.]
+
+515
+00:15:59,325 --> 00:16:00,560
+MIRA: There it is!
+
 516
-00:16:05,255 --> 00:16:09,655
-NARRATOR: They got their sunrise a few hours later, the ordinary way.
+00:16:01,630 --> 00:16:04,780
+[Earth from space: the whole day side lights up at once.]
 
 517
-00:16:10,325 --> 00:16:13,475
-[The family in the sunlight. Mira holds her drawing up beside the real Sun.]
+00:16:01,730 --> 00:16:06,355
+NARRATOR: Everywhere it was daytime, the Sun came back at the same moment.
 
 518
-00:16:10,425 --> 00:16:16,400
-NARRATOR: At 6:52, exactly one year after it went out, we were standing in sunlight.
+00:16:06,625 --> 00:16:08,675
+[Sydney, 3:52 PM: the surfer on the frozen beach, in the sun again.]
 
 519
-00:16:17,670 --> 00:16:20,820
-[A memory, warm as home movie: the same roof, every dawn for forty-three years. Mr. Ito, young, then greying, then old, taps his telescope three times as the Sun comes up.]
+00:16:08,825 --> 00:16:10,675
+[Chennai, 11:22 AM: the farmer in the frosted paddy, arms up.]
 
 520
-00:16:17,770 --> 00:16:23,050
-NARRATOR: Every morning for forty-three years, Mr. Ito watched the sunrise.
+00:16:10,825 --> 00:16:12,675
+[Manila: the boy at the bus stop, laughing in the light.]
 
 521
-00:16:23,920 --> 00:16:27,070
-[Close on his face in the early light.]
+00:16:12,825 --> 00:16:15,855
+[The news: New York at night, still dark, a city waiting for an ordinary sunrise.]
 
 522
-00:16:24,020 --> 00:16:27,130
-NARRATOR: I used to think it was because he liked it.
+00:16:12,925 --> 00:16:15,735
+NARRATOR: In New York it was the middle of the night.
 
 523
-00:16:28,200 --> 00:16:31,350
-[Wider: the old man alone on the roof at dawn, tapping the telescope three times.]
+00:16:16,005 --> 00:16:19,155
+[Continues.]
 
 524
-00:16:28,300 --> 00:16:30,705
-NARRATOR: He was waiting for an answer.
+00:16:16,105 --> 00:16:20,505
+NARRATOR: They got their sunrise a few hours later, the ordinary way.
 
 525
-00:16:32,175 --> 00:16:35,325
-[7:03. Ito’s little receiver clicks again: one… two… three.]
+00:16:21,175 --> 00:16:24,325
+[The family in the sunlight. Mira holds her drawing up beside the real Sun.]
 
 526
-00:16:32,275 --> 00:16:36,850
-NARRATOR: Sixteen minutes after we sent my drawing, the dish clicked again.
+00:16:21,275 --> 00:16:27,250
+NARRATOR: At 6:52, exactly one year after it went out, we were standing in sunlight.
 
 527
-00:16:39,575 --> 00:16:42,725
-[The end screen: the shell turning, its three pulses, THE REPLY, and room for the subscribe and next-video cards.]
+00:16:28,520 --> 00:16:31,670
+[A memory, warm as home movie: the same roof, every dawn for forty-three years. Mr. Ito, young, then greying, then old, taps his telescope three times as the Sun comes up.]
 
 528
-00:16:39,675 --> 00:16:42,615
+00:16:28,620 --> 00:16:33,900
+NARRATOR: Every morning for forty-three years, Mr. Ito watched the sunrise.
+
+529
+00:16:34,770 --> 00:16:37,920
+[Close on his face in the early light.]
+
+530
+00:16:34,870 --> 00:16:37,980
+NARRATOR: I used to think it was because he liked it.
+
+531
+00:16:39,050 --> 00:16:42,200
+[Wider: the old man alone on the roof at dawn, tapping the telescope three times.]
+
+532
+00:16:39,150 --> 00:16:41,555
+NARRATOR: He was waiting for an answer.
+
+533
+00:16:43,025 --> 00:16:46,175
+[7:03. Ito’s little receiver clicks again: one… two… three.]
+
+534
+00:16:43,125 --> 00:16:47,700
+NARRATOR: Sixteen minutes after we sent my drawing, the dish clicked again.
+
+535
+00:16:50,425 --> 00:16:53,575
+[The end screen: the shell turning, its three pulses, THE REPLY, and room for the subscribe and next-video cards.]
+
+536
+00:16:50,525 --> 00:16:53,465
 NARRATOR: What would you have sent? Tell us in the comments.
