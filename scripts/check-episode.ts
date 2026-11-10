@@ -8,7 +8,7 @@
 //      logline / tags / pinned comment
 // Exit code 1 on any failure.
 import {execSync} from 'node:child_process';
-import {existsSync, readFileSync, rmSync} from 'node:fs';
+import {existsSync, readdirSync, readFileSync, rmSync} from 'node:fs';
 import {join} from 'node:path';
 import {loadEpisode, ROOT} from './load-episode';
 
@@ -144,8 +144,18 @@ const surfaces: [string, string][] = [
   ['tags', episode.tags.join(' · ')],
   ['pinned comment', episode.pinnedComment],
 ];
+// the three thumbnail concepts in the treatment are packaging too (vol/moon B and C live only there and in the tsx)
+const treatmentPath = join(ROOT, 'episodes', readdirSync(join(ROOT, 'episodes')).find((d) => d.startsWith(`${id}-`)) ?? id, 'treatment.md');
+if (existsSync(treatmentPath)) {
+  const m = readFileSync(treatmentPath, 'utf8').match(/## Thumbnails\n([\s\S]*?)(\n## |$)/);
+  if (m) m[1].split('\n').filter((l) => l.trim()).forEach((l, i) => surfaces.push([`thumbnail concept ${i + 1}`, l]));
+}
+// series-wide reveal words: a thumbnail or title that says someone knew, hid or lied gives away the mystery's owner
+// (the CEO rejected "HE KNEW" on File 001; "SHE KNEW" reached File 002's treatment before this line existed)
+const REVEAL = ['knew', 'secret', 'secretly', 'lied', 'lying', 'liar', 'hid', 'hiding', 'hidden truth', 'the truth', 'betrayed', 'traitor', 'twist', 'behind it'];
 for (const [where, text] of surfaces) {
   const low = ` ${text.toLowerCase()} `;
+  for (const w of REVEAL) if (new RegExp(`[^a-z]${w}[^a-z]`).test(low)) fails.push(`spoiler: reveal word "${w}" in ${where} (docs/00 K1: never say who knows)`);
   for (const sp of spoilers) if (new RegExp(`[^a-z]${sp.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[^a-z]`).test(low)) fails.push(`spoiler: "${sp}" in ${where}`);
 }
 if (!spoilers.length) fails.push('spoilers: episode.spoilers is empty (docs/00 K1)');

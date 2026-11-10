@@ -58,9 +58,9 @@ Payoff: On Day 200 the last tide stops on Nana's white line, the town is standin
 A year later: the rebuilt town high on the hill, a Moon three times too big over a sea that climbs thirty metres and falls again, and a new tide log open on the chapel wall in a child's handwriting: "Day 1. High tide on time."
 
 ## Thumbnails
-1. A giant Moon filling the sky over a flooded harbour street, one girl at a window — "DAY 1"
+1. A giant Moon filling the sky over a flooded harbour street, a girl in a yellow raincoat looking up at it — "DAY 1"
 2. Earth from space with the Moon enormous beside it and the oceans bulging toward it — "TOO CLOSE"
-3. An old woman painting a white line on stone steps while the sea is still far below — "SHE KNEW"
+3. A girl on the harbour wall, the Moon filling half the sky and its road of light on the sea — "IT'S STILL COMING"
 
 ## Why someone subscribes after this
 Every Blink File takes one impossible morning, counts the days honestly with real science, and saves its best secret for the last two minutes.

@@ -643,7 +643,7 @@ export const moon02: Episode = {
   file: 'FILE 002',
   title: 'The Moon Got Closer Every Night',
   youtubeTitle: 'The Moon Got Closer Every Night. Day 1 to Day 200 by the Sea',
-  titleAlternates: ['What If the Moon Came Closer Every Night? Day 1 to Day 200', 'The Moon Started Getting Bigger. My Nana Knew Where It Would Stop'],
+  titleAlternates: ['What If the Moon Came Closer Every Night? Day 1 to Day 200', 'The Moon Got Bigger Every Night. Then the Sea Came Up Our Street'],
   thumbnailText: 'DAY 1',
   commentPrompt: 'What would you carry up the hill first?',
   story: {
