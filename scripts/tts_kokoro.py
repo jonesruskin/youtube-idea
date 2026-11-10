@@ -74,21 +74,21 @@ def padded(fn):
         return out[n:n + len(audio)] if len(out) >= n + len(audio) else out[n:]
     return run
 
-def ffmpeg_fx(audio, fx):
+def ffmpeg_fx(audio, fx, feel_pitch=1.0):
     """Child voice = pitch up with formants shifted too; radio = band-limited, saturated, with a bed of static."""
     with tempfile.TemporaryDirectory() as d:
         src, dst = os.path.join(d, "in.wav"), os.path.join(d, "out.wav")
         sf.write(src, audio, SR)
         if fx == "child":
-            af = "rubberband=pitch=1.2:tempo=1.0:formant=shifted,highpass=f=120"
+            af = f"rubberband=pitch={1.2 * feel_pitch:.4f}:tempo=1.0:formant=shifted,highpass=f=120"
         elif fx == "teen":
-            af = "rubberband=pitch=1.06:tempo=1.0:formant=preserved,highpass=f=90"
+            af = f"rubberband=pitch={1.06 * feel_pitch:.4f}:tempo=1.0:formant=preserved,highpass=f=90"
         elif fx == "tv":
             af = "highpass=f=140,lowpass=f=6500,acompressor=threshold=0.15:ratio=4:attack=3:release=80"
         elif fx == "boy":
-            af = "rubberband=pitch=1.12:tempo=1.0:formant=preserved,highpass=f=110"
+            af = f"rubberband=pitch={1.12 * feel_pitch:.4f}:tempo=1.0:formant=preserved,highpass=f=110"
         elif fx == "elder":
-            af = "rubberband=pitch=0.94:tempo=1.0:formant=preserved,highpass=f=70"
+            af = f"rubberband=pitch={0.94 * feel_pitch:.4f}:tempo=1.0:formant=preserved,highpass=f=70"
         else:
             af = "highpass=f=350,lowpass=f=3200,acompressor=threshold=0.1:ratio=6:attack=2:release=60,volume=1.6,alimiter=limit=0.7"
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-af", af, "-ar", str(SR), dst], check=True)
@@ -101,7 +101,7 @@ def ffmpeg_fx(audio, fx):
     return out
 
 # Delivery marks (src/engine/delivery.ts): *stress*, " / " beat, " // " long beat. Bump to re-voice everything.
-DELIVERY_VERSION = 7
+DELIVERY_VERSION = 8
 STRESS = re.compile(r"\*([^*]+)\*")
 BEATS = {"/": 0.24, "//": 0.6}  # plus ≈0.11 s of phrase edges
 
@@ -268,10 +268,10 @@ def main():
         tail = min(len(audio) / SR, (words[-1]["e"] if words else len(audio) / SR) + 0.28)
         audio = audio[int(head * SR):int(tail * SR)]
         words = [{**w, "s": round(w["s"] - head, 3), "e": round(w["e"] - head, 3)} for w in words]
-        if abs(fv["pitch"] - 1.0) > 0.004:
-            audio = pitch_shift(audio, fv["pitch"])
+        # ONE pitch pass at most (two rubberband passes in a row smear into a chorus: "double voices", CEO v5.3):
+        # the feeling's pitch is folded into the age filter below; a voice with no filter gets no pitch pass at all.
         if cfg["fx"]:
-            audio = ffmpeg_fx(audio, cfg["fx"])
+            audio = ffmpeg_fx(audio, cfg["fx"], fv["pitch"])
         peak = float(np.max(np.abs(audio))) or 1.0
         audio = audio * (0.89 / peak) * fv["level"]  # consistent level per line, scaled by the feeling (a whisper is quieter)
         sf.write(abs_, audio, SR, subtype="PCM_16")

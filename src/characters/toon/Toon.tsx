@@ -23,6 +23,9 @@ export type ToonState = {
   outfit: Outfit;
   hoodUp: boolean;
   hold?: PropKind;
+  /** 0–1 size of the held props while they are being taken out or put away (they grow from / shrink into the hand). */
+  holdScale?: number;
+  holdLScale?: number;
   holdL?: PropKind;
   breath: number; // 0..1 cold-breath puff phase visibility
   frame: number;
@@ -375,7 +378,7 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
         {/* far arm (behind the body) */}
         <Stroke dd={LA.d} w={armW} color={top} />
         {hand(LA.hx, LA.hy, 'lh')}
-        {s.holdL && <g transform={`translate(${LA.hx},${LA.hy})`}><HeldProp kind={s.holdL} R={R} frame={s.frame} /></g>}
+        {s.holdL && <g transform={`translate(${LA.hx},${LA.hy}) scale(${s.holdLScale ?? 1})`}><HeldProp kind={s.holdL} R={R} frame={s.frame} /></g>}
         {/* legs */}
         <Stroke dd={LL.d} w={legW} color={legs} />
         <Stroke dd={RL.d} w={legW} color={legs} />
@@ -452,7 +455,7 @@ export const Toon: React.FC<{d: ToonDesign; s: ToonState}> = ({d, s}) => {
           </g>
         )}
         {hand(RA.hx, RA.hy, 'rh')}
-        {s.hold && <g transform={`translate(${RA.hx},${RA.hy})`}><HeldProp kind={s.hold} R={R} frame={s.frame} /></g>}
+        {s.hold && <g transform={`translate(${RA.hx},${RA.hy}) scale(${s.holdScale ?? 1})`}><HeldProp kind={s.hold} R={R} frame={s.frame} /></g>}
       </g>
     </g>
   );
@@ -540,13 +543,14 @@ const Seat: React.FC<{kind: SeatKind; top: number; floor: number; w: number; R: 
         <path d={`M${x0 - R * 0.4},${top + R * 0.15} L${x0 - R * 0.4},${floor} M${x1 + R * 0.4},${top + R * 0.15} L${x1 + R * 0.4},${floor}`} stroke={ink} strokeWidth={leg + sw} />
       </g>
     );
-  // chair: seat, four legs (two visible), and a backrest behind the sitter
+  // chair: seat, four legs (two visible), and a backrest behind the sitter. The backrest ends at the sitter's
+  // shoulders (0.7 R): sized by the head radius it once stood as tall as the person in it (CEO v5.3).
   const back = side ? x0 : x0;
   return (
     <g>
-      <path d={`M${back + R * 0.05},${top} L${back + R * 0.05},${top - R * 1.5}`} stroke={ink} strokeWidth={leg + sw * 1.4} strokeLinecap="round" />
-      <path d={`M${back + R * 0.05},${top} L${back + R * 0.05},${top - R * 1.5}`} stroke={woodD} strokeWidth={leg} strokeLinecap="round" />
-      {!side && <rect x={x0} y={top - R * 1.4} width={x1 - x0} height={R * 0.5} rx={R * 0.1} fill={wood} stroke={ink} strokeWidth={sw * 0.8} />}
+      <path d={`M${back + R * 0.05},${top} L${back + R * 0.05},${top - R * 0.7}`} stroke={ink} strokeWidth={leg + sw * 1.4} strokeLinecap="round" />
+      <path d={`M${back + R * 0.05},${top} L${back + R * 0.05},${top - R * 0.7}`} stroke={woodD} strokeWidth={leg} strokeLinecap="round" />
+      {!side && <rect x={x0} y={top - R * 0.72} width={x1 - x0} height={R * 0.34} rx={R * 0.1} fill={wood} stroke={ink} strokeWidth={sw * 0.8} />}
       <path d={`M${x0 + R * 0.1},${top} L${x0 + R * 0.1},${floor} M${x1 - R * 0.1},${top} L${x1 - R * 0.1},${floor}`} stroke={ink} strokeWidth={leg + sw * 1.2} />
       <path d={`M${x0 + R * 0.1},${top} L${x0 + R * 0.1},${floor} M${x1 - R * 0.1},${top} L${x1 - R * 0.1},${floor}`} stroke={woodD} strokeWidth={leg} />
       <rect x={x0} y={top - R * 0.05} width={x1 - x0} height={R * 0.18} rx={R * 0.05} fill={wood} stroke={ink} strokeWidth={sw * 0.8} />

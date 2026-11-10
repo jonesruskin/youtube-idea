@@ -2,8 +2,9 @@
 // Usage: npm run lint:episode ep01
 import {buildTimeline, formatTimestamp, wordCount} from '../src/engine/timeline';
 import {loadEpisode} from './load-episode';
-import {blinkAt, hashStr} from '../src/characters/toon/acting';
+import {blinkAt, designOf, hashStr} from '../src/characters/toon/acting';
 import {FEELS, type Feel} from '../src/engine/delivery';
+import {HERO_PX} from '../src/characters/toon/design';
 
 const id = process.argv[2] ?? 'ep01';
 const {episode, voice} = await loadEpisode(id);
@@ -565,6 +566,42 @@ if (episode.style === 'cinema') {
       };
       const fam = (st: ReturnType<typeof stateAt>) => st.filter((c) => MAIN_CAST.includes(c.who));
       const end = stateAt(1e9);
+      // ── v5.3 face gate (CEO: "Mira's face gets blocked behind her Mom"): nobody in the family may have their head
+      // behind a person drawn in front of them (later in the cast list), at the end of the shot or at any line.
+      {
+        const order = new Map(cast0.map((c, i) => [c.who, i]));
+        const geo = (who: string) => {
+          const c0 = cast0.find((c) => c.who === who)!;
+          const d = designOf(who);
+          if (!d) return null;
+          const H = HERO_PX * d.height * (c0.depth ?? 1);
+          return {H, r: H * d.head, y: c0.y}; // head radius = head share of the height (toon heads are big)
+        };
+        const check = (st: ReturnType<typeof stateAt>, when: string) => {
+          for (const a of fam(st)) {
+            const ga = geo(a.who);
+            if (!ga) continue;
+            for (const b of st) {
+              if (b === a || (order.get(b.who) ?? 0) < (order.get(a.who) ?? 0)) continue;
+              const gb = geo(b.who);
+              if (!gb) continue;
+              // head circles: a's face is covered if b's head overlaps it by more than a sliver, or b's body crosses it
+              const ay = ga.y - ga.H + ga.r;
+              const by = gb.y - gb.H + gb.r;
+              const dist = Math.hypot(a.x - b.x, ay - by);
+              const behindBody = ay > by + gb.r && ay < gb.y && Math.abs(a.x - b.x) < 0.7 * ga.r + 0.45 * gb.r;
+              if (dist < 0.98 * (ga.r + gb.r) || behindBody) {
+                errors.push(`Face: ${a.who}'s face is behind ${b.who} in "${s.id}" (${when}; ${Math.round(Math.abs(a.x - b.x))} px apart): move them apart or list ${a.who} after ${b.who}.`);
+                return;
+              }
+            }
+          }
+        };
+        check(end, 'end of shot');
+        for (const l of s.timedLines ?? []) check(stateAt(l.startInShot + 0.3), 'at a line');
+      }
+      // a prop taken out or put away on the first frames of a shot is missed: give the eye 0.4 s first
+      for (const a of acts) if ((a.take !== undefined || a.put !== undefined) && a.t < 0.4 && MAIN_CAST.includes(a.who)) errors.push(`Props: ${a.who} ${a.take !== undefined ? 'takes' : 'puts away'} ${a.prop} on the cut in "${s.id}" (at ${a.t.toFixed(1)}s): start it at 0.5 s or later so it is seen.`);
       for (const c of fam(end)) {
         const others = fam(end).filter((o) => o !== c).sort((a, b) => Math.abs(a.x - c.x) - Math.abs(b.x - c.x));
         const near = others[0];
@@ -587,6 +624,31 @@ if (episode.style === 'cinema') {
         if (fe && FEELS[fe] && !FEELS[fe].faces.includes(sp.expr)) errors.push(`Delivery: ${l.speaker} says "${l.text}" (${fe}) with a ${sp.expr} face in "${s.id}" (faces for ${fe}: ${FEELS[fe].faces.join('/')}).`);
         if (listeners.length && !listeners.some((c) => faces(sp.facing, sp.x, c.x) || c.facing === sp.facing)) errors.push(`Facing: ${l.speaker} talks with their back to everyone near them in "${s.id}".`);
       }
+    }
+  }
+  // ── v5.3 place gate (CEO: "one minute they are in the supermarket and the other they are talking in their house.
+  // It has to explain or say something"). Whenever the story moves to a different place, the first shot there (or a
+  // cutaway just before it) must orient the viewer: an on-screen place/day tag (`hud`) or a spoken bridge (`bridge`:
+  // words that really are in that shot's line). Cutting back to a place seen in the last 8 shots is an intercut. ──
+  {
+    const recent: string[] = [];
+    let last = '';
+    let pending = false; // a cutaway since the last stage shot carried a tag or a bridge
+    for (const s of tl.shots as any[]) {
+      const said = (s.lines ?? []).map((l: any) => l.text).join(' ').toLowerCase();
+      if (s.bridge && !said.includes(String(s.bridge).toLowerCase())) errors.push(`Place: "${s.id}" declares the bridge "${s.bridge}" but no line in the shot says it.`);
+      const oriented = !!s.hud || !!s.bridge;
+      if (s.scene !== 'stage') {
+        if (oriented) pending = true;
+        continue;
+      }
+      if (s.thread) continue; // a memory thread has its own look (and may stay unlabelled on purpose until its reveal)
+      const loc = `${s.thread ?? ''}:${s.props?.set}`;
+      if (last && loc !== last && !recent.slice(-8).includes(loc) && !oriented && !pending)
+        errors.push(`Place: the story moves to "${s.props?.set}" in "${s.id}" with nothing telling the viewer: add a place/day tag (hud) or a spoken bridge.`);
+      recent.push(loc);
+      last = loc;
+      pending = false;
     }
   }
   // ── v5.2 delivery gate: every line says how it is said. A feeling on every line; stress or a beat marked on every

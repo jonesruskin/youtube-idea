@@ -161,6 +161,8 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
   let x = c.x;
   let y = c.y;
   let facing: Facing = c.facing ?? 'front';
+  let holdScale = 1;
+  let holdLScale = 1;
   let poseName = (c.pose ?? 'stand') as string;
   let pose = POSES[(c.pose as PoseName) ?? 'stand'] ?? POSES.stand;
   const startExpr = (c.expr ?? 'neutral') as Expr;
@@ -213,13 +215,28 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
       const arm = a.give ? [90, 10] : [18, 30]; // forward to the other person, or down to a pocket / bag / table
       if (a.left) pose = {...pose, lArm: [pose.lArm[0] + (arm[0] - pose.lArm[0]) * reachK, pose.lArm[1] + (arm[1] - pose.lArm[1]) * reachK] as [number, number]};
       else pose = {...pose, rArm: [pose.rArm[0] + (arm[0] - pose.rArm[0]) * reachK, pose.rArm[1] + (arm[1] - pose.rArm[1]) * reachK] as [number, number]};
-      if (k >= 0.5) {
-        if (a.give || a.put) {
+      // the prop never pops: taken from a pocket / bag / table it grows out of the hand while the arm comes back up
+      // (k 0.45 → 0.85), and put away it shrinks into the hand as the arm goes down (k 0.15 → 0.5). A give stays whole.
+      const kk = Math.min(1, k);
+      if (a.put) {
+        if (kk >= 0.5) {
           if (a.left) holdL = undefined;
           else hold = undefined;
-        } else if (a.take && a.prop) {
-          if (a.left) holdL = a.prop;
-          else hold = a.prop;
+        } else if (a.left) holdLScale = 1 - Math.max(0, (kk - 0.15) / 0.35);
+        else holdScale = 1 - Math.max(0, (kk - 0.15) / 0.35);
+      } else if (a.give) {
+        if (kk >= 0.5) {
+          if (a.left) holdL = undefined;
+          else hold = undefined;
+        }
+      } else if (a.take && a.prop && kk >= 0.45) {
+        const g = Math.min(1, (kk - 0.45) / 0.4);
+        if (a.left) {
+          holdL = a.prop;
+          holdLScale = g;
+        } else {
+          hold = a.prop;
+          holdScale = g;
         }
       }
     }
@@ -267,7 +284,7 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
       pose = blendPose(pose, rest, easeIO(k));
     }
   }
-  return {x, y, facing, poseName, pose, face, look, turn, hold, holdL, hoodUp, opacity, wag, moving, loops, watchGlow, events};
+  return {x, y, facing, poseName, pose, face, look, turn, hold, holdL, holdScale, holdLScale, hoodUp, opacity, wag, moving, loops, watchGlow, events};
 };
 
 /** Renders a shot's cast at the current frame (back-to-front by ground line). */
@@ -466,6 +483,8 @@ export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; fr
           outfit: c.outfit ?? 'home',
           hoodUp: r.hoodUp,
           hold: r.hold,
+          holdScale: r.holdScale,
+          holdLScale: r.holdLScale,
           holdL: r.holdL,
           breath: c.breath ? 1 : 0,
           frame: frame + i * 7,

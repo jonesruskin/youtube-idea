@@ -100,6 +100,9 @@ export type Shot = {
   transition?: 'cut' | 'fade' | 'whip' | 'flash' | 'pullback' | 'zoomThrough' | 'iris' | 'frost' | 'fog' | 'match';
   /** Score cue from this shot onward (cinema episodes; scripts/score_cinema.py). */
   cue?: string;
+  /** The words in this shot's own line that tell the viewer where/when we now are ("the next morning", "down to the
+   *  harbour"). Every change of place needs a place/day tag (`hud`) or this (lint: place gate). */
+  bridge?: string;
   /** Slide 2.39:1 letterbox bars in for this shot (reserved for the biggest moments). */
   letterbox?: boolean;
   /** Real science the shot SHOWS visually; the source goes to the YouTube description, never on screen. */
