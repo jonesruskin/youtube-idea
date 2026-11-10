@@ -8,6 +8,7 @@ import {Street} from './env/ep01/street';
 import {SUN_SCENES} from './env/sun';
 import {SEA_SCENES} from './env/sea';
 import {VOL_SCENES} from './env/vol';
+import './env/moon';
 
 /** Scene keys used by episode scripts → components. New episodes add environments here. */
 export const SCENES: Record<string, React.FC> = {
