@@ -45,6 +45,25 @@ const SETTINGS: Record<Speaker, {stability: number; similarity_boost: number; st
   MUM_RADIO: {stability: 0.5, similarity_boost: 0.8, style: 0.35},
   MAN: {stability: 0.3, similarity_boost: 0.75, style: 0.6},
   SCIENTIST: {stability: 0.6, similarity_boost: 0.8, style: 0.2},
+  TOMAS: {stability: 0.45, similarity_boost: 0.8, style: 0.45},
+  LOLA: {stability: 0.42, similarity_boost: 0.8, style: 0.5},
+  ROSA: {stability: 0.48, similarity_boost: 0.8, style: 0.4},
+  ROSA_RADIO: {stability: 0.6, similarity_boost: 0.8, style: 0.25},
+  OFFICER: {stability: 0.6, similarity_boost: 0.8, style: 0.2},
+  CLERK: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  ANA: {stability: 0.4, similarity_boost: 0.8, style: 0.5},
+  LUI: {stability: 0.42, similarity_boost: 0.8, style: 0.45},
+  SIONE: {stability: 0.48, similarity_boost: 0.8, style: 0.4},
+  MELE: {stability: 0.48, similarity_boost: 0.8, style: 0.4},
+  MELE_PHONE: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  TEACHER: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  COLLEAGUE: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  JAZ: {stability: 0.42, similarity_boost: 0.8, style: 0.45},
+  // File 002 (moon02)
+  WREN: {stability: 0.38, similarity_boost: 0.8, style: 0.55},
+  NANA: {stability: 0.5, similarity_boost: 0.82, style: 0.45},
+  TESS: {stability: 0.45, similarity_boost: 0.8, style: 0.45},
+  PELL: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
 };
 
 const voiceFor = (s: Speaker) => {

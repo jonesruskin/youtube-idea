@@ -2,7 +2,7 @@
 // Usage: npm run lint:episode ep01
 import {buildTimeline, formatTimestamp, wordCount} from '../src/engine/timeline';
 import {loadEpisode} from './load-episode';
-import {blinkAt, designOf, hashStr} from '../src/characters/toon/acting';
+import {blinkAt, designOf, hashStr, type Who} from '../src/characters/toon/acting';
 import {FEELS, type Feel} from '../src/engine/delivery';
 import {HERO_PX} from '../src/characters/toon/design';
 import {afterWalks, cutHeads, frameCamera, isNamed} from '../src/engine/framing';
@@ -576,7 +576,7 @@ if (episode.style === 'cinema') {
         const order = new Map(cast0.map((c, i) => [c.who, i]));
         const geo = (who: string) => {
           const c0 = cast0.find((c) => c.who === who)!;
-          const d = designOf(who);
+          const d = designOf(who as Who);
           if (!d) return null;
           const H = HERO_PX * d.height * (c0.depth ?? 1);
           return {H, r: H * d.head, y: c0.y}; // head radius = head share of the height (toon heads are big)
