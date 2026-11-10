@@ -30,7 +30,7 @@ If the Sun went out tomorrow, what's the first thing you'd do? Tell us below �
 
 THE BLINK FILES — one impossible year, seen by a different person each time. Every clue is real physics. Subscribe for the next File.
 
-This is a work of fiction. Everything that follows from its one impossible event is real physics. Earth imagery: NASA Blue Marble / Black Marble (public domain).
+This is a work of fiction. Everything that follows from its one impossible event is real physics. Earth imagery: NASA Blue Marble / Black Marble (public domain). Moon: NASA Lunar Reconnaissance Orbiter (LROC), via the NASA SVS CGI Moon Kit (public domain). Planet maps: Solar System Scope (CC BY 4.0), from NASA mission data.
 #whatif #space #survival #animation #theblinkfiles
 
 ⚠️ SPOILERS BELOW — watch to the end first.
@@ -56,7 +56,7 @@ THE REAL SCIENCE IN THIS STORY
 ```
 
 ## Tags
-what if the sun disappeared, what if the sun went out, day 1 to day 365, survival, what if, space, science, animation, sun disappeared, what if the sun disappeared for a year, the sun, earth without the sun, plot twist, the blink files
+what if the sun disappeared, what if the sun went out, day 1 to day 365, survival, what if, space, science, animation, sun disappeared, what if the sun disappeared for a year, the sun, earth without the sun, sci-fi mystery, the blink files
 
 ## Pinned comment
 Did you catch the clue in the first ten seconds? 👀 (No spoilers in the replies, please, for people still watching!)
