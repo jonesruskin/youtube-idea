@@ -36,10 +36,18 @@ const Label: React.FC<{x: number; y: number; t: string; s?: number; c?: string; 
 );
 /** p.headline turns any view into a news broadcast: a LIVE bug and a lower third (both inside the safe area). */
 let HEADLINE: string | undefined;
-const Frame: React.FC<{children: React.ReactNode; bg?: string}> = ({children, bg = '#070B1E'}) => (
+/** Every insert drifts: a slow push-in (6% over the whole insert, continued across autoSplit parts) so no frame is a
+ *  still picture (qa_motion idle gate). The news lower third and vignette stay fixed, like a real broadcast. */
+const Frame: React.FC<{children: React.ReactNode; bg?: string; still?: boolean}> = ({children, bg = '#070B1E', still}) => {
+  const {t, dur, props: p} = useShot();
+  const part = p.part as [number, number] | undefined;
+  const k0 = clamp(t / Math.max(0.5, dur));
+  const k = part ? (part[0] + k0) / part[1] : k0;
+  const z = still ? 1 : 1 + 0.06 * k;
+  return (
   <AbsoluteFill style={{background: bg}}>
     <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="100%">
-      {children}
+      <g transform={`translate(${W / 2},${H / 2}) scale(${z}) translate(${-W / 2 + (still ? 0 : 12 * k)},${-H / 2 + (still ? 0 : 6 * k)})`}>{children}</g>
       {HEADLINE && (
         <g>
           <rect x={1580} y={150} width={150} height={52} rx={8} fill="#C2464F" />
@@ -54,7 +62,8 @@ const Frame: React.FC<{children: React.ReactNode; bg?: string}> = ({children, bg
       <Vignette amount={0.4} full />
     </svg>
   </AbsoluteFill>
-);
+  );
+};
 const Stars: React.FC<{frame: number; seed?: number}> = ({frame, seed = 3}) => {
   const r = rnd(seed);
   return (
@@ -348,7 +357,7 @@ export const MoonScene: React.FC = () => {
     const size = Math.min(120, Math.floor((1700 / longest - 8) / 0.9));
     const grow = 1.4 + 1.2 * ease(clamp(k * 1.2));
     return (
-      <Frame bg="#03050F">
+      <Frame bg="#03050F" still={!title}>
         <Stars frame={frame} seed={21} />
         <MoonDisc x={960} y={title ? 330 : 300} k={title ? grow : 2.2} base={62} tod="night" />
         {title ? (

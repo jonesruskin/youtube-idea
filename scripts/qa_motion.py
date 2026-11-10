@@ -29,7 +29,8 @@ for s in tl["shots"]:
     moving = (d > 6).mean(axis=(1, 2))
     score = float(np.median(moving))
     rows.append((s["id"], s["end"] - s["start"], score))
-    if score < 0.004 and s["end"] - s["start"] > 2.5:
+    # the end screen holds still on purpose: YouTube's clickable end-screen elements sit on its fixed boxes
+    if score < 0.004 and s["end"] - s["start"] > 2.5 and s.get("scene") != "end":
         flagged.append((s["id"], score))
 
 for sid, dur, sc in rows:
