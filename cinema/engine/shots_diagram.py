@@ -171,7 +171,7 @@ class System(Shot):
         ring = np.zeros((H, W), np.uint8)
         cv2.circle(ring, (int(bh[0] * 4), int(bh[1] * 4)), int(46 * 4), 255, 1, cv2.LINE_AA, 2)
         img += (ring.astype(np.float32) / 255.0)[..., None] * np.array(ACC, np.float32) * 0.7
-        cards.label(img, "BLACK HOLE · 10 M☉" if "☉" in "☉" else "BLACK HOLE", bh[0] + 58, bh[1] - 6, ACC, 0.95, 18)
+        cards.label(img, "BLACK HOLE · 10 SUNS", bh[0] + 58, bh[1] - 6, ACC, 0.95, 18)
         # HUD: clock and scale bar
         cards.label(img, _fmt_t(ty), 140, 120, (1.0, 0.97, 0.93), 0.95, 30, kind="mono6", tracking=0.18)
         cards.label(img, "N-BODY SIMULATION", 140, 162, (0.7, 0.74, 0.82), 0.7, 16, tracking=0.3)
@@ -379,7 +379,7 @@ class Galaxy(Shot):
             F = P(self.found)
             for (qx, qy) in F:
                 glow_dot(img, qx, qy, ACC, 2.0, 2.0 * k2)
-            cards.label(img, "VIOLET · EACH DOT ≈ 70,000 BLACK HOLES", 140, 120, (0.75, 0.6, 1.0), k * 0.85, 18)
+            cards.label(img, "VIOLET · EACH DOT = ~70,000 BLACK HOLES", 140, 120, (0.75, 0.6, 1.0), k * 0.85, 18)
             cards.label(img, "ORANGE · THE FEW DOZEN WE'VE FOUND", 140, 152, ACC, k2 * 0.85, 18)
         return img
 
