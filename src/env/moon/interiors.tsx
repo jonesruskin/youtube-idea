@@ -197,7 +197,7 @@ registerSet('chapelin', {
             </defs>
             <g clipPath={`url(#${id})`}>
               <SkyBox tod={tod} frame={c.frame} />
-              <MoonDisc x={960} y={300} k={c.p.moon ?? 2.5} tod={tod} />
+              {c.p.moon !== 0 && <MoonDisc x={960} y={300} k={c.p.moon ?? 2.5} tod={tod} />}
               <SeaBand y={560 - Math.min(120, (((c.p.sea ?? 20) as number) - 20) * 8)} tod={tod} frame={c.frame} moonX={960} />
             </g>
             <path d="M780,620 L780,200 Q960,-60 1140,200 L1140,620 Z" fill="none" stroke={INK} strokeWidth={8} />

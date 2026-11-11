@@ -50,7 +50,22 @@ export const TextAudit: React.FC = () => {
         }
         return o;
       };
-      const texts: {t: string; q: number[][]; o: number; k: string; cover: number; cols: number; clip: number[][]; by: string}[] = [];
+      const texts: {t: string; q: number[][]; o: number; k: string; cover: number; cols: number; clip: number[][]; by: string; g: number; root: number}[] = [];
+      // which drawn label each text belongs to (lines of one tag share a parent group; two labels never do)
+      const groups = new Map<Element, number>();
+      // the outermost <svg> a text sits in: the scene, a place tag and a callout are separate layers
+      const roots = new Map<Element, number>();
+      const rootOf = (el: Element) => {
+        let r: Element = el;
+        for (let e: Element | null = el; e; e = e.parentElement) if (e.tagName.toLowerCase() === 'svg') r = e;
+        if (!roots.has(r)) roots.set(r, roots.size);
+        return roots.get(r)!;
+      };
+      const groupOf = (el: Element) => {
+        const p = el.parentElement ?? el;
+        if (!groups.has(p)) groups.set(p, groups.size);
+        return groups.get(p)!;
+      };
       document.querySelectorAll('text').forEach((el) => {
         if (el.closest('defs, clipPath, mask, symbol')) return;
         const t = (el.textContent ?? '').trim();
@@ -97,7 +112,7 @@ export const TextAudit: React.FC = () => {
             const r = e.getBoundingClientRect();
             clip.push([Math.round(r.x * sx), Math.round(r.y * sy), Math.round(r.width * sx), Math.round(r.height * sy)]);
           }
-        texts.push({t: t.slice(0, 40), q: q.map(([x, y]) => [Math.round(x * sx), Math.round(y * sy)]), o: Math.round(o * 100) / 100, k, cover: n ? hid / n : 0, cols, clip, by});
+        texts.push({t: t.slice(0, 40), q: q.map(([x, y]) => [Math.round(x * sx), Math.round(y * sy)]), o: Math.round(o * 100) / 100, k, cover: n ? hid / n : 0, cols, clip, by, g: groupOf(el), root: rootOf(el)});
       });
       const bars = [...document.querySelectorAll('[data-letterbox]')].map((b) => b.getBoundingClientRect().height * sy);
       console.log('TEXTAUDIT ' + JSON.stringify({f, bar: Math.max(0, ...bars), texts}));

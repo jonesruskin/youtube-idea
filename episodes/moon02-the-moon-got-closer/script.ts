@@ -63,9 +63,9 @@ const TOWN = (o: Record<string, object> = {}) => [
  *  "has always been right there"; one asks Wren's own question; the teller's book is the navy tide log. */
 const FRAME = {thread: 'frame', cue: 'curious'};
 const KIDS = (o: Record<string, object> = {}) => [
-  c('extra:70', 1000, 930, {pose: 'sitHug', facing: 'left', expr: 'focused', outfit: 'home', ...o.a}),
-  c('extra:71', 1210, 930, {pose: 'sitHug', facing: 'left', expr: 'focused', outfit: 'home', ...o.b}),
-  c('extra:72', 1420, 930, {pose: 'sitHug', facing: 'left', expr: 'focused', outfit: 'home', ...o.c}),
+  c('extra:70', 1000, 930, {pose: 'sitChair', seat: 'chair', facing: 'left', expr: 'focused', outfit: 'home', ...o.a}),
+  c('extra:71', 1210, 930, {pose: 'sitChair', seat: 'chair', facing: 'left', expr: 'focused', outfit: 'home', ...o.b}),
+  c('extra:72', 1420, 930, {pose: 'sitChair', seat: 'chair', facing: 'left', expr: 'focused', outfit: 'home', ...o.c}),
 ];
 
 export const rawShots: Shot[] = [
@@ -100,7 +100,7 @@ export const rawShots: Shot[] = [
   }),
 
   // ══ DAY 1 ═══════════════════════════════════════════════════════════════════════════════════
-  sh('frame-start', stage('chapelin', 'day', push(1.3, 1.42, 1200, 640), KIDS(), [{at: 0.4, who: 'extra:71', look: [-1, -0.3]}, {at: 'l0+0.4', who: 'extra:70', look: [-1, -0.2]}], {}), {
+  sh('frame-start', stage('chapelin', 'day', push(1.3, 1.42, 1200, 640), KIDS(), [{at: 0.4, who: 'extra:71', look: [-1, -0.3]}, {at: 'l0+0.4', who: 'extra:70', look: [-1, -0.2]}], {moon: 0, sea: 20}), {
     ...FRAME,
     beats: ['heart'],
     dev: 'someone is telling this story to children (who and when is not said)',
@@ -423,7 +423,7 @@ export const rawShots: Shot[] = [
     lines: [N('(calm) So by Day 90, this is what we knew. / The Moon came closer every night. / Something we couldn\'t see was slowing it down. / And every tide was higher than the last.'), N('(curious) What *nobody* knew was where it would stop.')],
     min: 9,
   }),
-  sh('frame-hit', stage('chapelin', 'day', push(1.4, 1.52, 1210, 640), KIDS({a: {expr: 'scared'}, b: {expr: 'smile'}}), [{at: 'l1+0.3', who: 'extra:71', look: [-1, 0]}, {at: 'l1+0.6', who: 'extra:70', expr: 'focused'}], {}), {
+  sh('frame-hit', stage('chapelin', 'day', push(1.4, 1.52, 1210, 640), KIDS({a: {expr: 'scared'}, b: {expr: 'smile'}}), [{at: 'l1+0.3', who: 'extra:71', look: [-1, 0]}, {at: 'l1+0.6', who: 'extra:70', expr: 'focused'}], {moon: 0, sea: 20}), {
     ...FRAME,
     beats: ['laugh'],
     dev: 'a child asks Wren’s own question; another says the Moon has always been right there',
@@ -654,7 +654,7 @@ export const rawShots: Shot[] = [
   }),
 
   // ══ DAY 200 ═════════════════════════════════════════════════════════════════════════════════
-  sh('frame-sea', stage('chapelin', 'day', push(1.5, 1.66, 1210, 660), KIDS({a: {expr: 'worried'}, b: {expr: 'worried'}, c: {expr: 'worried'}}), [{at: 'l0+0.5', who: 'extra:72', look: [-1, -0.2]}], {}), {
+  sh('frame-sea', stage('chapelin', 'day', push(1.5, 1.66, 1210, 660), KIDS({a: {expr: 'worried'}, b: {expr: 'worried'}, c: {expr: 'worried'}}), [{at: 'l0+0.5', who: 'extra:72', look: [-1, -0.2]}], {moon: 0, sea: 20}), {
     ...FRAME,
     dev: 'the children lean in for the last night',
     action: 'The children, leaning in, not breathing.',
@@ -716,8 +716,7 @@ export const rawShots: Shot[] = [
   ], [{at: 'l0+0.3', who: 'extra:70', look: [-1, -0.3]}, {at: 'l1+0.2', who: 'wrenOld', look: [1, 0.2]}, {at: 'l1+0.8', who: 'extra:71', expr: 'laugh'}], {moon: 3, sea: 30}), {
     twist: 6,
     thread: 'frame',
-    hud: {place: 'THE CHAPEL SCHOOL', time: '2096'},
-    callout: {text: 'SEVENTY YEARS LATER', at: 'l0+1.8', pos: 'top'},
+    hud: {place: 'THE CHAPEL SCHOOL', time: '2096 · SEVENTY YEARS LATER'},
     cue: 'reveal',
     sfx: 'chime',
     dev: 'the teller is Wren at eighty, in 2096; the giant Moon is all these children have ever known',
@@ -841,6 +840,7 @@ export const moon02: Episode = {
       film: 'The Village (2004)',
       reveal: 'seventy-years',
       plants: ['frame-start', 'frame-hit', 'frame-sea', 'title'],
+      hide: ['moon'],
       how: 'the story is told to children by an unseen teller; the reveal shows it is 2096, the teller is Wren at eighty, and the giant Moon is all the children have known',
     },
   },

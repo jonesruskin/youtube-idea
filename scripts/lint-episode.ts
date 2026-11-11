@@ -753,6 +753,11 @@ if (episode.style === 'cinema') {
         if (!r.twist) errors.push(`Film twist: the reveal "${ft.reveal}" is not marked as a twist.`);
         if (r.start < tl.duration * 0.5) errors.push(`Film twist: the reveal "${ft.reveal}" comes in the first half (${formatTimestamp(r.start)}); a film twist pays off late.`);
         const before = (ft.plants ?? []).filter((id) => sh.find((s) => s.id === id && s.start < r.start));
+        // a clue must not be the answer: what the reveal shows (moon02: the giant Moon through the window) stays out of
+        // every plant shot, all its parts included (v5.6: the frame scenes showed it and gave the twist away)
+        for (const k of ((ft as any).hide ?? []) as string[])
+          for (const s of sh.filter((x) => (ft.plants ?? []).includes(String(x.id).split('~')[0]) && x.scene === 'stage'))
+            if (s.props?.[k] !== 0 && s.props?.[k] !== false) errors.push(`Film twist: "${s.id}" is a clue but shows "${k}" (${JSON.stringify(s.props?.[k] ?? 'the set default')}), which gives the reveal away; set ${k}: 0.`);
         if (before.length < 3) errors.push(`Film twist: only ${before.length} fair clue(s) before the reveal (bar ≥ 3).`);
       }
     }

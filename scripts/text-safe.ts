@@ -14,7 +14,7 @@ import {renderFrames, selectComposition} from '@remotion/renderer';
 import {buildTimeline} from '../src/engine/timeline';
 import {loadEpisode, ROOT} from './load-episode';
 
-type T = {t: string; q: number[][]; o: number; k: string; cover: number; cols?: number; clip: number[][]; v?: P};
+type T = {t: string; q: number[][]; o: number; k: string; cover: number; cols?: number; clip: number[][]; v?: P; g?: number; root?: number};
 type Sample = {f: number; bar: number; texts: T[]};
 type P = number[][];
 
@@ -70,6 +70,26 @@ export const auditText = async (serveUrl: string, id: string, browserExecutable:
       if (log.text.startsWith('TEXTAUDIT ')) samples.push(JSON.parse(log.text.slice(10)));
     },
   });
+  // dense pass (every 3rd frame) where captions change: around every callout's entrance, which can briefly collide with
+  // a place/day tag that is still fading out (v5.6: "SEVENTY YEARS LATER" over "2096" for 0.3 s, between 0.5 s samples)
+  if (!process.env.AUDIT_RANGE) {
+    for (const sh of tl.shots as any[]) {
+      if (!sh.callout) continue;
+      const at = typeof sh.callout.at === 'number' ? sh.callout.at : (() => {
+        const m = /^l(\d+)([+-][\d.]+)?$/.exec(String(sh.callout.at ?? 0));
+        const l = m ? sh.timedLines[Number(m[1])] : undefined;
+        return (l ? l.startInShot : 0) + (m && m[2] ? Number(m[2]) : 0);
+      })();
+      const f0 = Math.max(0, Math.round((sh.start + at - 0.4) * comp.fps));
+      const f1 = Math.min(comp.durationInFrames - 1, Math.round((sh.start + Math.min(sh.duration, at + 2.6)) * comp.fps));
+      if (f1 <= f0) continue;
+      await renderFrames({serveUrl, composition: comp, inputProps: comp.props, browserExecutable, imageFormat: 'none', everyNthFrame: 3, frameRange: [f0, f1], concurrency: Number(process.env.CONCURRENCY ?? 4), outputDir: null, onStart: () => undefined, onFrameUpdate: () => undefined,
+        onBrowserLog: (log) => {
+          if (log.text.startsWith('TEXTAUDIT ')) samples.push(JSON.parse(log.text.slice(10)));
+        },
+      });
+    }
+  }
   samples.sort((a, b) => a.f - b.f);
   const shotAt = (f: number) => tl.shots.find((s) => f / comp.fps >= s.start && f / comp.fps < s.end)?.id ?? '?';
   const area = (a: T) => areaOf(a.q);
@@ -97,7 +117,17 @@ export const auditText = async (serveUrl: string, id: string, browserExecutable:
         const b = s.texts[q];
         // set signs may overlap each other (parallax); a label drawn on top of a set sign (later = on top) is fine
         if (a.t === b.t || a.o < 0.6 || b.o < 0.6 || (a.k === 'set' && b.k === 'set') || (a.k === 'set' && b.k !== 'set')) continue;
-        if (a.v!.length && b.v!.length && overlap(a.v!, b.v!) > 0.25 * Math.min(area(a), area(b))) note(`overlap|${shot}|${[a.t, b.t].sort().join(' ⟷ ')}`, i);
+        // two lines of one label (same parent group) may touch; two different labels may not (CEO v5.6: a callout over the place tag)
+        if (a.g !== undefined && a.g === b.g) continue;
+        // labels in different overlay layers (a callout, a place tag, a caption) need breathing room: grown by 14 px they may
+        // not touch (a callout laid over a place tag's box once passed because the letters themselves barely met); text
+        // inside one picture (a table on a page) keeps the plain overlap rule
+        const grow = (q: P) => {
+          const xs = q.map((p) => p[0]);
+          const ys = q.map((p) => p[1]);
+          return box(Math.min(...xs) - 14, Math.min(...ys) - 14, Math.max(...xs) - Math.min(...xs) + 28, Math.max(...ys) - Math.min(...ys) + 28);
+        };
+        if (a.v!.length && b.v!.length && (overlap(a.v!, b.v!) > 0.08 * Math.min(area(a), area(b)) || (a.root !== b.root && overlap(grow(a.v!), grow(b.v!)) > 0.02 * Math.min(area(a), area(b))))) note(`overlap|${shot}|${[a.t, b.t].sort().join(' ⟷ ')}`, i);
       }
   });
   const errors: string[] = [];

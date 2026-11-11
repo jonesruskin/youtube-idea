@@ -165,7 +165,7 @@ export type Story = {
   finalImage: string;
   /** The File's film-twist device, drawn at random by scripts/pick-twist.ts (docs/19): never one of the last three
    *  Files'. `reveal` is the twist shot; `plants` are the fair clues before it (3+). */
-  filmTwist?: {device: string; film: string; reveal: string; plants: string[]; how: string};
+  filmTwist?: {device: string; film: string; reveal: string; plants: string[]; how: string; /** set props that would give the reveal away; every plant shot must set each one to 0/false */ hide?: string[]};
 };
 
 export type Episode = {
