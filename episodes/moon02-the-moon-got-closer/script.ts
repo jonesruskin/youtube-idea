@@ -56,9 +56,17 @@ const TOWN = (o: Record<string, object> = {}) => [
   c(TS, 1620, 930, {facing: 'left', expr: 'worried', ...o.tess}),
 ];
 
-/** The 1953 thread: the North Sea flood of 31 January 1953, seen through Nana at seven. Sepia memory film, its own
- *  music box. It explains why Nana guards the book, why the Board's words land so hard, and why she bought the chapel. */
-const Y53 = {thread: '1953', look: 'memory' as const, cue: 'memory'};
+/** The frame (film-twist device: The Village, drawn at random, docs/19): the story is being told to a circle of children
+ *  in a stone room. We never see the teller or a date, so the viewer assumes Wren is telling it a few years on. The
+ *  reveal (seventy-years): it is 2096, Wren is eighty, the chapel is the school, and to the children a Moon three times
+ *  too big and a 35-metre tide are simply normal. Plants: the narrator speaks of "back then"; the children say the Moon
+ *  "has always been right there"; one asks Wren's own question; the teller's book is the navy tide log. */
+const FRAME = {thread: 'frame', cue: 'curious'};
+const KIDS = (o: Record<string, object> = {}) => [
+  c('extra:70', 1000, 930, {pose: 'sitHug', facing: 'left', expr: 'focused', outfit: 'home', ...o.a}),
+  c('extra:71', 1210, 930, {pose: 'sitHug', facing: 'left', expr: 'focused', outfit: 'home', ...o.b}),
+  c('extra:72', 1420, 930, {pose: 'sitHug', facing: 'left', expr: 'focused', outfit: 'home', ...o.c}),
+];
 
 export const rawShots: Shot[] = [
   // ══ COLD OPEN ═══════════════════════════════════════════════════════════════════════════════
@@ -86,11 +94,19 @@ export const rawShots: Shot[] = [
   }),
   sh('title', sc('title', {titleLines: ['THE MOON GOT CLOSER', 'EVERY NIGHT'], motif: 'moon'}), {
     min: 3.6,
+    dev: 'a ten-year-old’s two hundred days begin',
     action: 'Title: the Moon swelling over the words.',
     lines: [N('(wistful) I was ten. / This is what the next two hundred days were *like*.')],
   }),
 
   // ══ DAY 1 ═══════════════════════════════════════════════════════════════════════════════════
+  sh('frame-start', stage('chapelin', 'day', push(1.3, 1.42, 1200, 640), KIDS(), [{at: 0.4, who: 'extra:71', look: [-1, -0.3]}, {at: 'l0+0.4', who: 'extra:70', look: [-1, -0.2]}], {}), {
+    ...FRAME,
+    beats: ['heart'],
+    dev: 'someone is telling this story to children (who and when is not said)',
+    action: 'A stone room in daylight. Three children sitting on the floor, hugging their knees, looking up at someone just out of the picture.',
+    lines: [L('PUPIL')('(curious) Start from the *beginning*, Miss.')],
+  }),
   sh('d1-gauge', stage('quay', 'day', push(1.0, 1.1, 760, 540), [
     c(NN, 470, 930, {facing: 'left', expr: 'focused', hold: 'tideLog', pose: 'hold'}),
     c(WR, 680, 930, {facing: 'left', expr: 'focused'}),
@@ -133,19 +149,9 @@ export const rawShots: Shot[] = [
     c(WR, 900, 930, {facing: 'left', expr: 'focused'}),
   ], [{at: 'l0+0.4', who: NN, look: [0.8, 0]}, {at: 'l0+1.2', who: WR, look: [-0.8, 0.2]}, {at: 'l1+0.3', who: NN, expr: 'smile'}], {sea: 1.2, moon: 1}), {
     beats: ['heart'],
+    dev: 'the book is older than the harbour, older than anyone',
     action: 'Wren and Nana at the kitchen table.',
     lines: [W('(curious) Nana, why do you still *do* the book? / The harbour has a computer.'), NA("(dry) The computer wasn't here in eighteen eighty-five. / The *book* was.")],
-  }),
-  sh('1953-lamp', stage('quay', 'night', push(1.2, 1.32, 640, 580), [
-    c(RS, 470, 930, {facing: 'left', expr: 'focused', pose: 'hold', hold: 'tideLog', outfit: 'cold'}),
-    c(OY, 660, 930, {facing: 'left', expr: 'awe', pose: 'torch', hold: 'torch', outfit: 'cold'}),
-  ], [{at: 'l0+0.6', who: OY, look: [-0.8, 0.4]}, {at: 'l1+0.1', who: RS, expr: 'smile'}, {at: 'l1+0.3', who: RS, look: [0.8, 0.2]}, {at: 'l1+0.6', who: OY, look: [-0.8, -0.2]}], {sea: 1.3, moon: 1, noStall: true}), {
-    ...Y53,
-    hud: {place: 'QUAY STREET', time: 'JANUARY 1953'},
-    transition: 'fade',
-    dev: 'Nana learned the book at seven from her mother, Rose',
-    action: 'A winter night in 1953, sepia. A young woman in a long coat writes the tide by lamplight at the same gauge; a little girl in a red coat holds the torch for her.',
-    lines: [N('(wistful) Nana learned the book from her mother, Rose, / the winter she was *seven*.'), RO('(tender) Every tide, Odile. Even in the dark. / The sea *remembers*, so we must.')],
   }),
   sh('d1-moonrise', stage('quay', 'dusk', push(1.3, 1.45, 1000, 560), [
     c(NN, 900, 930, {facing: 'left', expr: 'worried'}),
@@ -155,6 +161,7 @@ export const rawShots: Shot[] = [
     hud: {place: 'QUAY STREET', time: '9:10 PM'},
     timeJump: true,
     beats: ['wow'],
+    dev: 'Wren sees it: the Moon is bigger',
     action: 'That evening. The Moon comes up over the harbour mouth. Wren points.',
     lines: [W("(awed) Nana, *look*. / It's bigger."), NA('(worried) Yes. / It *is*.')],
   }),
@@ -243,18 +250,6 @@ export const rawShots: Shot[] = [
     beats: ['heart'],
     action: 'Laughter. Nana turns and walks out; Wren follows.',
     lines: [N('(sad) They laughed. / Nana put on her hat, and we *left*.')],
-  }),
-  sh('1953-board', stage('boardroom', 'day', move([1.0, 1100, 560], [1.25, 900, 590]), [
-    c(OY, 560, 930, {facing: 'right', expr: 'worried', outfit: 'cold'}),
-    c(RS, 800, 930, {facing: 'right', expr: 'determined', pose: 'hold', hold: 'tideLog', outfit: 'cold'}),
-    c(BOARD53, 1500, 930, {facing: 'left', expr: 'focused'}),
-  ], [{at: 'l0+0.5', who: RS, look: [1, -0.1]}, {at: 'l0+1.4', who: OY, look: [0.6, -0.3]}, {at: 'l1+0.2', who: BOARD53, expr: 'smile'}, {at: 'l1+0.8', who: OY, look: [0.8, -0.3]}], {}), {
-    ...Y53,
-    hud: {place: 'HARBOUR BOARD', time: 'JANUARY 1953'},
-    transition: 'fade',
-    dev: 'in 1953 the Board told Rose the same thing',
-    action: 'The same panelled room, sepia, 1953. Rose stands where Nana stood, the book in her hands, little Odile behind her. A man behind the long table, smiling.',
-    lines: [N("(sad) In January nineteen fifty-three, Rose's book said a great sea was coming. / She took it to the Harbour Board."), OF('(amused) A spring tide, Mrs Marsh. / It will *settle*.'), N('(sad) The same words. // Seventy-three years apart.')],
   }),
   sh('d12-coat', stage('nanakitchen', 'day', push(1.3, 1.42, 700, 600), [
     c(WR, 560, 930, {facing: 'left', expr: 'focused', pose: 'reach'}),
@@ -420,36 +415,6 @@ export const rawShots: Shot[] = [
     action: 'The news: the whole Earth from space, its oceans pulled into two bulges toward a Moon that is far too close.',
     lines: [N("(sad) It wasn't just us. Every port on Earth closed. / Whole cities moved inland, *one* street at a time."), N('(awed) In some bays the shape of the coast made it worse. / Places that already had big tides got the *biggest*.')],
   }),
-  // the world, the same night (one instant: 9:30 PM in Chennai is 11 PM in the Mekong Delta and midnight in Manila)
-  sh('world-chennai', stage('montage', 'beach', push(1.1, 1.24, 1000, 640), [
-    c('extra:64', 880, 1060, {facing: 'right', outfit: 'home', pose: 'lookUp', expr: 'awe'}, 1.0),
-    c('extra:65', 1080, 1060, {facing: 'left', outfit: 'home', pose: 'point', expr: 'awe'}, 1.0),
-  ], [{at: 0.6, who: 'extra:65', look: [0.4, -1]}], {dark: 0, boardX: 4000, skyMoon: {k: 1.7, at: [1340, 250]}}), {
-    hud: {place: 'CHENNAI', time: '9:30 PM'},
-    transition: 'whip',
-    cue: 'wonder',
-    beats: ['wow'],
-    dev: 'the whole world under the same Moon',
-    action: 'Marina Beach at night, packed with families. Everyone looking up at a Moon half as big again, the sea further up the sand than anyone remembers.',
-    lines: [N('(awed) In Chennai, families came down to Marina Beach every night, / just to watch it *rise*.')],
-    min: 5,
-  }),
-  sh('world-mekong', stage('montage', 'field', push(1.1, 1.25, 900, 640), [c('extra:62', 900, 930, {pose: 'lookUp', facing: 'right', outfit: 'home', expr: 'worried'}, 1.3)], [{at: 0.8, who: 'extra:62', look: [0.6, -1]}], {dark: 0, skyMoon: {k: 1.7, at: [1300, 240]}}), {
-    hud: {place: 'MEKONG DELTA', time: '11:00 PM'},
-    transition: 'whip',
-    science: {text: 'Rising seas push salt water up river deltas and into rice fields; the Mekong Delta already loses crops to salt intrusion in dry years.', source: 'FAO; Mekong River Commission'},
-    action: 'A rice paddy in the moonlight, silver with water. A farmer looks from the sky to the flooded rows.',
-    lines: [N('(sad) In the Mekong Delta, the sea came into the rice fields / twice a *day*.')],
-    min: 4.5,
-  }),
-  sh('world-manila', stage('montage', 'bus', push(1.0, 1.12, 900, 600), [c('extra:17', 1000, 960, {facing: 'right', outfit: 'home', expr: 'awe', pose: 'lookUp'}, 1.4)], [{at: 1.2, who: 'extra:17', expr: 'smile'}], {dark: 0, skyMoon: {k: 1.7, at: [1350, 240]}}), {
-    hud: {place: 'MANILA', time: '12:00 AM'},
-    transition: 'whip',
-    beats: ['laugh'],
-    action: 'A night bus stopped at a stop, its driver leaning out of the window to look up.',
-    lines: [N('(amused) And in Manila, the night buses ran late, / because the drivers kept stopping to look *up*.')],
-    min: 4,
-  }),
   sh('recap', moon('orbit', {from: 384000, to: 245000}), {
     cue: 'curious',
     dev: 'what we know so far, in one breath',
@@ -457,6 +422,13 @@ export const rawShots: Shot[] = [
     beats: ['loop'],
     lines: [N('(calm) So by Day 90, this is what we knew. / The Moon came closer every night. / Something we couldn\'t see was slowing it down. / And every tide was higher than the last.'), N('(curious) What *nobody* knew was where it would stop.')],
     min: 9,
+  }),
+  sh('frame-hit', stage('chapelin', 'day', push(1.4, 1.52, 1210, 640), KIDS({a: {expr: 'scared'}, b: {expr: 'smile'}}), [{at: 'l1+0.3', who: 'extra:71', look: [-1, 0]}, {at: 'l1+0.6', who: 'extra:70', expr: 'focused'}], {}), {
+    ...FRAME,
+    beats: ['laugh'],
+    dev: 'a child asks Wren’s own question; another says the Moon has always been right there',
+    action: 'The children again. The smallest is scared; the boy next to her rolls his eyes at her.',
+    lines: [L('PUPIL')('(scared) Miss? / Is it going to *hit* them?'), L('PUPIL2')("(amused) It can't hit, silly. / It's always been *right* there.")],
   }),
   sh('will-it-hit', stage('marketst', 'night', push(1.5, 1.65, 1000, 600), [
     c(WR, 900, 930, {facing: 'right', expr: 'scared'}),
@@ -531,42 +503,6 @@ export const rawShots: Shot[] = [
       NA("(determined) They'll believe the sea before they believe me. / So I'm getting the hill ready for when they *do*."),
     ],
   }),
-  sh('1953-night', stage('quay', 'night', move([1.15, 760, 560], [1.25, 1300, 560]), [
-    c(RS, 700, 930, {facing: 'right', expr: 'scared', pose: 'carry', outfit: 'cold'}),
-    c(OY, 700, 930, {carriedBy: RS, expr: 'scared', outfit: 'cold'}),
-  ], [{at: 0.2, who: RS, to: 1500, dur: 4.2, gait: 'run'}], {sea: 2.4, moon: 1, noStall: true}), {
-    ...Y53,
-    cue: 'dread',
-    sfx: 'surge',
-    transition: 'fade',
-    dev: '31 January 1953: the sea comes over the quay in the dark',
-    science: {text: 'On the night of 31 January 1953 a North Sea storm surge flooded the east coast of England; 307 people died in England and more than 1,800 in the Netherlands.', source: 'Met Office, The 1953 East Coast Flood'},
-    action: 'Sepia. The quay at night, the sea pouring over the wall. Rose runs through knee-deep water with Odile on her back.',
-    lines: [N('(grieving) On the night of the thirty-first of January, / the sea came over the quay wall in the *dark*.'), N('(grieving) Not everyone on Quay Street got out in time.')],
-    min: 7,
-  }),
-  sh('1953-steps', stage('hill', 'night', push(1.2, 1.32, 960, 600), [
-    c(RS, 900, 930, {facing: 'left', expr: 'sad', pose: 'hug', outfit: 'cold'}),
-    c(OY, 1060, 930, {facing: 'left', expr: 'scared', outfit: 'cold'}),
-  ], [{at: 'l0+0.6', who: OY, look: [-1, 0.6]}, {at: 'l1+0.4', who: RS, look: [-1, 0.5]}], {sea: 3, moon: 1, line: 0}), {
-    ...Y53,
-    beats: ['heart'],
-    dev: 'Rose carried her up to the chapel, the highest ground in the town',
-    action: 'Sepia. The chapel steps at night, high above the drowned quay. Rose holding Odile close, both looking down.',
-    lines: [N('(tender) Rose carried her up the hill to the old chapel, / the highest ground in Saltmouth.'), N('(tender) They watched the town from these steps until *morning*.')],
-  }),
-  sh('why-chapel', stage('chapelin', 'night', push(1.6, 1.78, 1100, 600), [
-    c(NN, 1000, 930, {facing: 'right', expr: 'sad'}),
-    c(WR, 1260, 930, {facing: 'left', expr: 'sad', pose: 'hold', hold: 'tideLog'}),
-  ], [{at: 'l0+0.4', who: NN, look: [0.6, 0.4]}, {at: 'l1+0.6', who: WR, expr: 'awe'}], {moon: 1.75, sea: 6}), {
-    twist: 5,
-    cue: 'memory',
-    sfx: 'chime',
-    beats: ['heart'],
-    dev: 'why the chapel: it is where her mother carried her in 1953',
-    action: 'Nana, quietly, looking past Wren at the chapel door.',
-    lines: [NA('(grieving) My mother carried me up those steps, / the night of the big sea. I was seven. / They told her it would settle, too.'), N('(wistful) We thought she bought the chapel because of her sums. / She bought it because it had saved her *once*.')],
-  }),
   sh('d120-street', stage('marketst', 'night', move([1.0, 1200, 560], [1.2, 860, 520]), [], [], {sea: 7.9, moon: 1.8}), {
     chapter: 'Day 120',
     hud: day(120, 210000),
@@ -584,6 +520,18 @@ export const rawShots: Shot[] = [
     action: 'The top of the steps on Market Street. Wren and Mum look down over the drowned roofs of Quay Street toward No. 3.',
     lines: [N("(grieving) From the steps, I watched it reach my bedroom window. / Then I couldn't see my window any *more*.")],
   }),
+  sh('why-chapel', stage('chapelin', 'night', push(1.6, 1.78, 1100, 600), [
+    c(NN, 1000, 930, {facing: 'right', expr: 'sad'}),
+    c(WR, 1260, 930, {facing: 'left', expr: 'sad', pose: 'hold', hold: 'tideLog'}),
+  ], [{at: 'l0+0.4', who: NN, look: [0.6, 0.4]}, {at: 'l1+0.6', who: WR, expr: 'awe'}], {moon: 1.8, sea: 7.9}), {
+    hud: {place: 'THE CHAPEL', time: 'DAY 120 · NIGHT'},
+    timeJump: true,
+    cue: 'memory',
+    beats: ['heart'],
+    dev: 'Nana tells Wren about the night of the big sea',
+    action: 'Nana, quietly, looking past Wren at the chapel door.',
+    lines: [NA('(grieving) My mother carried me up those steps, / the night of the big sea. I was seven.'), NA('(sad) She told them it was coming. / They said it would *settle*.')],
+  }),
   sh('d118-pell', stage('marketst', 'day', push(1.2, 1.55, 2200, 600, 2360, 620), [c(PL, 2390, 930, {facing: 'left', expr: 'worried'})], [{at: 'l1+0.4', who: PL, look: [-0.8, 0.6]}], {sea: 7.75, moon: 1.8, car: false}), {
     hud: {place: 'HARBOUR BOARD', time: 'DAY 121'},
     timeJump: true,
@@ -593,6 +541,7 @@ export const rawShots: Shot[] = [
     lines: [N('(dry) The next day, the sea came into the Harbour Board.'), PE('(tired) It will *settle*.'), N('(dry) He still said it. / Just *quieter*.')],
   }),
   sh('ground', stage('chapelin', 'day', push(1.5, 1.95, 560, 720), [], [], {moon: 1.8, sea: 7}), {
+    hud: {place: 'THE CHAPEL', time: 'DAY 122'},
     dev: 'the solid ground rises and falls too',
     science: {text: 'The solid Earth has a tide of its own: the ground rises and falls about 30 cm twice a day, and with the Moon at 210,000 km that becomes nearly two metres.', source: 'International Earth Rotation and Reference Systems Service'},
     action: 'Close on the trestle in the chapel: the cups beside the tea urn, trembling in their saucers.',
@@ -705,6 +654,12 @@ export const rawShots: Shot[] = [
   }),
 
   // ══ DAY 200 ═════════════════════════════════════════════════════════════════════════════════
+  sh('frame-sea', stage('chapelin', 'day', push(1.5, 1.66, 1210, 660), KIDS({a: {expr: 'worried'}, b: {expr: 'worried'}, c: {expr: 'worried'}}), [{at: 'l0+0.5', who: 'extra:72', look: [-1, -0.2]}], {}), {
+    ...FRAME,
+    dev: 'the children lean in for the last night',
+    action: 'The children, leaning in, not breathing.',
+    lines: [L('PUPIL')('(scared) Did it stop, Miss? / At the *line*?')],
+  }),
   sh('d200-wait', stage('hill', 'night', push(1.0, 1.06, 900, 560), TOWN(), [{at: 0.8, who: WR, look: [-1, 0.5]}, {at: 1.4, who: PL, look: [-1, 0.6]}], {sea: 33.6, moon: 3, line: 1, chapelLit: true}), {
     chapter: 'Day 200',
     hud: day(200, 128000),
@@ -730,7 +685,7 @@ export const rawShots: Shot[] = [
     lines: [N('(awed) It touched the white line. // And it *stopped*.')],
   }),
   sh('leaves', moon('leaves', {from: 128000, to: 128000}), {
-    twist: 6,
+    twist: 5,
     dev: 'the visitor escapes; the Moon stays where it was left',
     action: 'From above: something small leaves its last loop and flies off the edge of the picture. The Moon goes on round its new, small path.',
     lines: [N('(awed) That night, the visitor made its last loop. It had stolen all the speed it needed, / and it flew off into the *dark*.'), N("(wistful) We thought it would take the Moon with it. / It didn't. It left the Moon exactly where it *was*.")],
@@ -755,14 +710,30 @@ export const rawShots: Shot[] = [
     action: 'A bright morning a year on. Wren, a little taller, at the white line with the ledger; Nana beside her; the sea high and blue below.',
     lines: [N('(warm) We built the town again, above the line. / The tide still climbs thirty-five metres, twice a day, and falls *back*.')],
   }),
-  sh('final', stage('hill', 'night', push(1.0, 1.12, 760, 540, 700, 500), [
-    c(WR, 980, 930, {facing: 'left', expr: 'awe', pose: 'hold', hold: 'tideLog'}),
-    c(NN, 1180, 930, {facing: 'left', expr: 'smile'}),
-  ], [{at: 1.0, who: NN, look: [-1, -0.6]}], {sea: 34, moon: 3, line: 1, chapelLit: true}), {
-    timeJump: true,
-    dev: 'the new sky',
+  sh('seventy-years', stage('chapelin', 'day', move([1.4, 1210, 640], [1.05, 900, 560]), [
+    c('wrenOld', 700, 930, {pose: 'sitChair', seat: 'chair', facing: 'right', expr: 'smile', hold: 'tideLog'}),
+    ...KIDS({a: {expr: 'focused'}, b: {expr: 'smile'}, c: {expr: 'smile'}}),
+  ], [{at: 'l0+0.3', who: 'extra:70', look: [-1, -0.3]}, {at: 'l1+0.2', who: 'wrenOld', look: [1, 0.2]}, {at: 'l1+0.8', who: 'extra:71', expr: 'laugh'}], {moon: 3, sea: 30}), {
+    twist: 6,
+    thread: 'frame',
+    hud: {place: 'THE CHAPEL SCHOOL', time: '2096'},
+    callout: {text: 'SEVENTY YEARS LATER', at: 'l0+1.8', pos: 'top'},
+    cue: 'reveal',
+    sfx: 'chime',
+    dev: 'the teller is Wren at eighty, in 2096; the giant Moon is all these children have ever known',
+    action: 'The camera rises from the children to the teller: an old woman in a mustard cardigan and Nana’s glasses, the navy book open on her knee. Behind her, through the chapel window, a Moon three times too big over a high sea.',
+    lines: [L('PUPIL')('(curious) Miss? / Was the Moon really that *small*?'), L('WRENOLD')('(amused) Smaller than your *thumbnail*, love.'), N("(wistful) I'm eighty now. / The same age Nana was when she gave me the *book*.")],
+    min: 10,
+  }),
+  sh('final', stage('hill', 'night', push(1.0, 1.12, 900, 540, 860, 500), [
+    c('wrenOld', 980, 930, {facing: 'left', expr: 'smile', pose: 'hold', hold: 'tideLog'}),
+    c('extra:70', 1140, 930, {facing: 'left', expr: 'awe', outfit: 'home'}),
+    c('extra:71', 1300, 930, {facing: 'left', expr: 'awe', outfit: 'home'}),
+  ], [{at: 1.0, who: 'extra:70', look: [-1, -0.6]}], {sea: 34, moon: 3, line: 1, chapelLit: true}), {
+    thread: 'frame',
+    dev: 'the new sky, and the people who have only ever known it',
     beats: ['heart'],
-    action: 'Night. The two of them on the top step, small under the enormous Moon rising out of the sea.',
+    action: 'Night on the chapel steps. Old Wren with the book and two of the children, small under the enormous Moon rising out of the sea.',
     lines: [N('(wistful) People ask if I miss the old Moon. / I do. // But nobody who has seen this one rise would give it *back*.')],
   }),
   sh('end', sc('end', {motif: 'moon', prompt: 'WHAT WOULD YOU CARRY UP THE HILL FIRST? TELL US BELOW ↓'}), {
@@ -841,7 +812,7 @@ const CRAFT: Record<string, Partial<Shot> & {min?: number; tail?: number}> = {
 };
 for (const s of rawShots) Object.assign(s, CRAFT[s.id] ?? {});
 
-const SPEAKER_CAST = {WREN: WR, NANA: NN, TESS: TS, PELL: PL, MAN: '*', ROSE: RS, OFFICIAL: BOARD53};
+const SPEAKER_CAST = {WREN: WR, NANA: NN, TESS: TS, PELL: PL, MAN: '*', WRENOLD: 'wrenOld', PUPIL: 'extra:70', PUPIL2: 'extra:71'};
 
 export const moon02: Episode = {
   id: 'moon02',
@@ -860,11 +831,18 @@ export const moon02: Episode = {
       {shot: 'news-slow', thought: 'the Moon was falling towards us', but: 'nothing falls that slowly: something is stealing its speed, loop by loop'},
       {shot: 'roche', thought: 'the Moon would hit the Earth', but: 'a moon orbits and can never fall in; it would break up long before it touched'},
       {shot: 'confront', thought: 'Nana was losing her mind on the hill at night', but: 'she worked out the final tide on Day 9, told them on Day 10, and was building the refuge alone'},
-      {shot: 'why-chapel', thought: 'Nana bought the chapel because her sums said so', but: 'it is where her mother carried her in the 1953 flood: the one place the sea never reached'},
       {shot: 'leaves', thought: 'the visitor would take the Moon away or drop it on us', but: 'it sped up until it escaped, and the Moon stayed exactly where it was left'},
+      {shot: 'seventy-years', thought: 'Wren was telling us this a few years after it happened', but: 'it is 2096: she is eighty, the chapel is a school, and to the children she is telling, a Moon three times too big has always been normal'},
     ],
     heart: {want: 'Wren wants her street, her Nana and her sea to stay as they are', cost: 'she loses the street, and learns the one person everyone laughed at was telling the truth', payoff: 'page-one'},
     finalImage: 'final',
+    filmTwist: {
+      device: 'village',
+      film: 'The Village (2004)',
+      reveal: 'seventy-years',
+      plants: ['frame-start', 'frame-hit', 'frame-sea', 'title'],
+      how: 'the story is told to children by an unseen teller; the reveal shows it is 2096, the teller is Wren at eighty, and the giant Moon is all the children have known',
+    },
   },
   logline:
     'One evening the Moon rises a little too big over a harbour town, and the tide comes in forty centimetres too high. Ten-year-old Wren’s grandmother has kept the tide log since she was seven, and she stops letting anyone read it. A survival story told day by day, with real science.',

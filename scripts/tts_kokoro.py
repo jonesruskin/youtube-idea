@@ -55,6 +55,9 @@ VOICES = {
     "TESS": {"voice": "af_sarah", "speed": 0.96, "fx": None},
     "PELL": {"voice": "bm_lewis", "speed": 0.95, "fx": None, "lang": "b"},
     "ROSE": {"voice": "bf_lily", "speed": 0.92, "fx": None, "lang": "b"},
+    "WRENOLD": {"voice": "bf_isabella", "speed": 0.8, "fx": None, "lang": "b"},
+    "PUPIL": {"voice": "af_bella", "speed": 1.0, "fx": "child"},
+    "PUPIL2": {"voice": "am_puck", "speed": 1.0, "fx": "boy"},
     "OFFICIAL": {"voice": "bm_george", "speed": 0.94, "fx": None, "lang": "b"},
 }
 

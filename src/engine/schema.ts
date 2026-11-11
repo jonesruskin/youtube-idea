@@ -47,6 +47,9 @@ export type Speaker =
   | 'WREN'
   | 'NANA'
   | 'ROSE'
+  | 'WRENOLD'
+  | 'PUPIL'
+  | 'PUPIL2'
   | 'OFFICIAL'
   | 'TESS'
   | 'PELL';
@@ -160,6 +163,9 @@ export type Story = {
   heart: {want: string; cost: string; payoff: string};
   /** The last picture the viewer takes away. */
   finalImage: string;
+  /** The File's film-twist device, drawn at random by scripts/pick-twist.ts (docs/19): never one of the last three
+   *  Files'. `reveal` is the twist shot; `plants` are the fair clues before it (3+). */
+  filmTwist?: {device: string; film: string; reveal: string; plants: string[]; how: string};
 };
 
 export type Episode = {

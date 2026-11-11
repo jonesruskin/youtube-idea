@@ -65,6 +65,9 @@ const SETTINGS: Record<Speaker, {stability: number; similarity_boost: number; st
   TESS: {stability: 0.45, similarity_boost: 0.8, style: 0.45},
   PELL: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
   ROSE: {stability: 0.45, similarity_boost: 0.82, style: 0.45},
+  WRENOLD: {stability: 0.55, similarity_boost: 0.82, style: 0.35},
+  PUPIL: {stability: 0.4, similarity_boost: 0.8, style: 0.5},
+  PUPIL2: {stability: 0.4, similarity_boost: 0.8, style: 0.55},
   OFFICIAL: {stability: 0.6, similarity_boost: 0.8, style: 0.25},
 };
 

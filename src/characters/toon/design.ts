@@ -34,7 +34,7 @@ export type ToonDesign = {
   watch?: boolean;
 };
 
-export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'tomas' | 'lola' | 'rosa' | 'captain' | 'officer' | 'ana' | 'lui' | 'sione' | 'mele' | 'teacher' | 'kaur' | 'wren' | 'nana' | 'tess' | 'pell' | 'odileYoung' | 'rose', ToonDesign> = {
+export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'tomas' | 'lola' | 'rosa' | 'captain' | 'officer' | 'ana' | 'lui' | 'sione' | 'mele' | 'teacher' | 'kaur' | 'wren' | 'nana' | 'tess' | 'pell' | 'odileYoung' | 'rose' | 'wrenOld', ToonDesign> = {
   you: {
     id: 'you',
     height: 1,
@@ -347,6 +347,23 @@ export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum'
     rim: '#BFD8FF',
     speaker: 'NANA',
   },
+  // Wren at eighty, in 2096 (moon02's frame, revealed at the end): Nana's glasses and bun, grey now, a mustard
+  // cardigan the colour of the raincoat she wore at ten
+  wrenOld: {
+    id: 'wrenOld',
+    height: 0.86,
+    head: 0.2,
+    build: 0.95,
+    skin: '#C99570',
+    skinShade: '#A87650',
+    hair: 'bun',
+    hairColor: '#D8D4D8',
+    glasses: true,
+    elder: true,
+    outfits: {home: ['#D9A72C', '#B8891E', '#3A4A6A', '#2A2A2A'], cold: ['#D9A72C', '#B8891E', '#3A4A6A', '#2A2A2A']},
+    rim: '#FFE08A',
+    speaker: 'WRENOLD',
+  },
   // Odile at seven, January 1953 (the memory thread): Nana's round face and glasses-free eyes, dark hair in pigtails,
   // a red knitted coat
   odileYoung: {
@@ -361,7 +378,7 @@ export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum'
     outfits: {home: ['#B2473E', '#8E3530', '#3A3F52', '#2A2A2A'], cold: ['#B2473E', '#8E3530', '#3A3F52', '#2A2A2A']},
     rim: '#FFD08A',
   },
-  // Rose Marsh, 34 in 1953: Nana's mother, who kept the tide book before her; long grey coat, dark bun
+  // Rose Hale, 34 in 1953: Nana's mother (Nana became a Marsh when she married), who kept the tide book before her; long grey coat, dark bun
   rose: {
     id: 'rose',
     height: 0.93,

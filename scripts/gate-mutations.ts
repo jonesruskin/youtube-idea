@@ -33,6 +33,7 @@ export const MUTATIONS: Record<string, M> = {
   offSurface: {caught: 'v5.5 · a character standing where there is no floor (on the stairs\' air, off the quay)', expect: /Ground: .* (nothing to stand on|walks off the surface)/, apply: (e) => { const s: any = (e.shots as any[]).find((x: any) => x.props?.set === 'quay' || x.props?.set === 'stairs'); s.props.cast[0].x = s.props.set === 'quay' ? 100 : -900; }},
   bland: {caught: 'v5.5 · a bland File: no transitions, no sound effects, one music cue', expect: /Craft: .*transitions a minute/, apply: (e) => { for (const s of e.shots as any[]) { s.transition = undefined; s.sfx = undefined; } }},
   hurried: {caught: 'v5.5 · a hurried File: talk wall to wall, nothing held', expect: /Craft: .*(without words|of the film is talk)/, apply: (e) => { for (const s of e.shots as any[]) { s.min = undefined; s.tail = undefined; s.lead = 0; if ((s.lines ?? []).length) s.lines = [...s.lines, ...s.lines].map((l: any) => ({...l, pause: 0})); } }},
+  noFilmTwist: {caught: 'v5.5 · a File with no film-twist device (or a repeat of a recent one)', expect: /Film twist: /, apply: (e) => { delete (e as any).story.filmTwist; }},
   cropHead: {caught: "v5.3 · Mira's head half cut off by the frame edge", expect: /Frame: .* head is cut by/, apply: (e) => { shot(e, 'a-picture~2').props.cam = [[0, 3.2, 940, 620], [1, 3.65, 940, 620]]; }},
   shortFilm: {caught: 'v5.1 · episode under the 8-minute mid-roll floor', expect: /Runtime .* is under 8:00/, apply: (e) => { e.shots = e.shots.slice(0, 60); }},
 };

@@ -43,7 +43,10 @@ export const registerSet = (name: string, def: SetDef) => {
 };
 
 export const useSetCtx = (): SetCtx => {
-  const {t, gframe: frame, dur, props, shot} = useShot();
+  const {t, frame: lframe, gframe, dur, props, shot} = useShot();
+  // stage scenes run on the film clock (seamless one-take joins, docs/00 P15); diagrams and inserts keep the shot clock,
+  // because they grow things from their own first frame (a Board's slow zoom is scale(1 + frame × k))
+  const frame = shot.scene === 'stage' ? gframe : lframe;
   const lines = shot.timedLines as any[];
   const at = (spec: unknown, fallback = 0) => (spec === undefined || spec === true ? fallback : typeof spec === 'number' || typeof spec === 'string' ? resolveAt(spec, lines) : fallback);
   const ramp = (spec: unknown, len = 0.6, fallback = 0) =>

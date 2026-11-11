@@ -2086,6 +2086,13 @@ export const sun01: Episode = {
     ],
     heart: {want: 'Mira wants the Sun, and her mum, back', cost: 'a year underground, and the truth about the man who kept her safe', payoff: 'family-sun'},
     finalImage: 'waiting-answer',
+    filmTwist: {
+      device: 'maharaja',
+      film: 'Maharaja (2024)',
+      reveal: 'ito-face',
+      plants: ['obs-dish', 'obs-room-1', 'obs-room-2', 'obs-phone', 'obs-hesitate'],
+      how: 'the 1983 observatory thread is intercut with the present; the young man is Mr. Ito (THE SAME MAN)',
+    },
   },
   titleAlternates: ['What If the Sun Went Out? A Family Survives Day 1 to Day 365', 'The Sun Disappeared at 6:52 AM. This Is What Happened Next'],
   thumbnailText: "IT'S 7 AM.",

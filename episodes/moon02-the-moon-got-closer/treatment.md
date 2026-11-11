@@ -37,11 +37,11 @@ Answer: The white line is where her Day 9 sum said the last high tide would stop
 2. We thought the scientists could find the visitor with telescopes, but it is a black hole smaller than a grain of sand, and the only instrument big enough to detect it is the Moon itself.
 3. We thought the Moon would hit the Earth, but it never can: a moon that came close enough would be pulled apart long before it touched, and ours will stop far short of that.
 4. We thought Nana was losing her mind on the hill at night, but she had worked out the final tide on Day 9 and was building the town's refuge alone.
-5. We thought Nana bought the roofless chapel because her sums told her to, but it is where her mother carried her up the hill in the January 1953 flood: the one place the sea never reached.
-6. We thought the visitor would take the Moon away with it or drop it on us, but every loop made the visitor faster until it flew off into the dark, and the Moon stayed exactly where it was left.
+5. We thought the visitor would take the Moon away with it or drop it on us, but every loop made the visitor faster until it flew off into the dark, and the Moon stayed exactly where it was left.
+6. We thought Wren was telling us this a few years after it happened, but it is 2096: she is eighty, the chapel is a school, and to the children she is telling, a Moon three times too big has always been normal.
 
-## Second storyline
-January 1953, sepia memory film with its own music box: Nana at seven holds the torch while her mother Rose writes the tide; Rose warns the Harbour Board and is told "it will settle"; the real North Sea surge of 31 January 1953 comes over the quay in the dark; Rose carries her up to the chapel. It explains the book, the Board's words, and the chapel, and pays off as twist 5.
+## Second storyline (film-twist device: The Village, drawn at random, docs/19)
+An unseen teller tells this story to three children sitting on a stone floor. No face, no date: the viewer assumes Wren is telling it a few years after Day 200. Clues: "back then"; the children say the Moon "has always been right there"; one asks Wren's own question, "Is it going to hit them?"; the teller's book is the navy tide log. Reveal (twist 6): the camera rises to the teller, Wren at eighty, in 2096; the chapel is the school, and through its window the Moon three times too big is all these children have ever known. "SEVENTY YEARS LATER."
 
 ## Science
 1. The pull that raises tides grows with the cube of closeness: halve the Moon's distance and the tides are eight times higher. — Source: Newton, Principia (1687); NOAA Tides and Water Levels

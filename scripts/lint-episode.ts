@@ -8,6 +8,7 @@ import {HERO_PX} from '../src/characters/toon/design';
 import {afterWalks, cutHeads, frameCamera, isNamed} from '../src/engine/framing';
 import {GROUNDS, groundAt, hasGround} from '../src/engine/grounds';
 import {craftOf} from './craft-report';
+import {catalogue, recentDevices} from './pick-twist';
 
 const id = process.argv[2] ?? 'ep01';
 const {episode, voice} = await loadEpisode(id);
@@ -732,6 +733,29 @@ if (episode.style === 'cinema') {
       [k.science >= 8, `${k.science} sourced science facts (bar ≥ 8)`],
     ];
     for (const [ok, why] of need) if (!ok) errors.push(`Craft: ${why}.`);
+  }
+  // ── v5.5 film-twist gate (CEO: "using the same Maharaja film styled template for consecutive episodes won't be good…
+  // insert random film twists into the story for each video"). Each cinema File carries one film-twist device drawn
+  // by scripts/pick-twist.ts (docs/19): it must be in the catalogue, not used by the three Files before it, revealed in a
+  // twist shot in the second half, with 3+ fair clues before the reveal. ──
+  if ((episode as any).style === 'cinema' && (episode as any).story) {
+    const ft = (episode as any).story.filmTwist as {device: string; reveal: string; plants: string[]} | undefined;
+    const sh = tl.shots as any[];
+    if (!ft) errors.push('Film twist: no story.filmTwist; draw one with scripts/pick-twist.ts (docs/19).');
+    else {
+      const {devices} = catalogue();
+      if (!devices.some((d) => d.id === ft.device)) errors.push(`Film twist: "${ft.device}" is not in the catalogue (docs/19).`);
+      const recent = recentDevices(episode.id);
+      if (recent.includes(ft.device)) errors.push(`Film twist: "${ft.device}" was used in one of the last three Files (${recent.join(', ')}); the audience will see it coming. Draw again.`);
+      const r = sh.find((s) => s.id === ft.reveal);
+      if (!r) errors.push(`Film twist: the reveal shot "${ft.reveal}" does not exist.`);
+      else {
+        if (!r.twist) errors.push(`Film twist: the reveal "${ft.reveal}" is not marked as a twist.`);
+        if (r.start < tl.duration * 0.5) errors.push(`Film twist: the reveal "${ft.reveal}" comes in the first half (${formatTimestamp(r.start)}); a film twist pays off late.`);
+        const before = (ft.plants ?? []).filter((id) => sh.find((s) => s.id === id && s.start < r.start));
+        if (before.length < 3) errors.push(`Film twist: only ${before.length} fair clue(s) before the reveal (bar ≥ 3).`);
+      }
+    }
   }
   // ── v5.5 one-take gate (CEO: "if a scene is taking place in a house, then there shouldn't be any cuts if it isn't
   // absolutely necessary - it can be taken in one shot with different camera movements and angles"). Inside one scene
