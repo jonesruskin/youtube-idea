@@ -8,3 +8,5 @@ renders/*-hq.mp4
 research/niche-scan/data/*.json
 __pycache__/
 renders/*-raw.mov
+# in-progress web-copy encodes (renamed into place when complete)
+*.web.mp4
