@@ -76,7 +76,18 @@ export const buildTimeline = (episode: Episode, voice: VoiceMap = {}): Timeline 
     });
     const spoken = cursor + (shot.tail ?? 0) + (timedLines.length ? pad - LINE_GAP : 0);
     const duration = Math.max(shot.min ?? 2, spoken);
-    shots.push({...shot, index, start, end: start + duration, duration, timedLines});
+    // camera keys timed to lines ('l1-0.4', from src/engine/flow.ts) become fractions of this shot now its length is known
+    const camRaw = (shot.props as {cam?: unknown[][]} | undefined)?.cam;
+    const props = camRaw && camRaw.some((k) => typeof k[0] === 'string')
+      ? {...shot.props, cam: camRaw.map((k) => {
+          if (typeof k[0] !== 'string') return k;
+          const m = /^l(\d+)([+-][\d.]+)?$/.exec(k[0] as string);
+          const l = m ? timedLines[Number(m[1])] : undefined;
+          const sec = (l ? l.startInShot : 0) + (m && m[2] ? Number(m[2]) : 0);
+          return [Math.max(0, Math.min(1, sec / duration)), ...k.slice(1)];
+        }).sort((a, b) => (a[0] as number) - (b[0] as number))}
+      : shot.props;
+    shots.push({...shot, props, index, start, end: start + duration, duration, timedLines} as TimedShot);
     all.push(...timedLines);
     t += duration;
   });

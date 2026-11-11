@@ -4,6 +4,7 @@ import {Actors, actorAt, designOf, resolveAt, type Act, type CastEntry} from '..
 import {HERO_PX} from '../../characters/toon/design';
 import {useShot} from '../../engine/shot-context';
 import {frameCamera} from '../../engine/framing';
+import {groundAt, groundWalking} from '../../engine/grounds';
 import {HeldProp, type PropKind} from '../../characters/toon/props';
 import {Cine, Plane, ScreenPlane, type CamKey} from '../../fx/cinema/camera';
 
@@ -41,7 +42,7 @@ export const registerSet = (name: string, def: SetDef) => {
 };
 
 export const useSetCtx = (): SetCtx => {
-  const {t, frame, dur, props, shot} = useShot();
+  const {t, gframe: frame, dur, props, shot} = useShot();
   const lines = shot.timedLines as any[];
   const at = (spec: unknown, fallback = 0) => (spec === undefined || spec === true ? fallback : typeof spec === 'number' || typeof spec === 'string' ? resolveAt(spec, lines) : fallback);
   const ramp = (spec: unknown, len = 0.6, fallback = 0) =>
@@ -50,7 +51,7 @@ export const useSetCtx = (): SetCtx => {
 };
 
 export const Stage: React.FC = () => {
-  const {progress, frame, props} = useShot();
+  const {progress, gframe: frame, props} = useShot();
   const def = SETS[props.set];
   if (!def) throw new Error(`Unknown set "${props.set}"`);
   const c = useSetCtx();
@@ -69,7 +70,7 @@ export const Stage: React.FC = () => {
             ))}
           <Plane depth={1}>
             <Items items={(props.items as Item[]) ?? []} c={c} />
-            <Actors cast={(props.cast as CastEntry[]) ?? []} acts={(props.acts as Act[]) ?? []} />
+            <Actors cast={(props.cast as CastEntry[]) ?? []} acts={(props.acts as Act[]) ?? []} ground={(x, d, w) => (w ? groundWalking : groundAt)(props.set, props.v ?? '', x, d, props)} />
           </Plane>
           {def.light && <Plane depth={1}>{def.light(c)}</Plane>}
           {layers

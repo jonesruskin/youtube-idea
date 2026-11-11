@@ -89,6 +89,12 @@ export type Shot = {
   tail?: number;
   /** Time has passed since the previous shot in the same place (props and positions may differ across this cut). */
   timeJump?: boolean;
+  /** Set by src/engine/flow.ts: this shot continues the previous one's take seamlessly (no cut is seen). */
+  flow?: boolean;
+  /** Keep a cut inside a scene, with the reason (docs/00 P15: a same-scene cut needs one). */
+  cut?: string;
+  /** Set by flow.ts when it keeps a same-scene cut because the scene really changes (the reason). */
+  takeBreak?: string;
   /** Minimum shot length in seconds (for wordless visual beats). */
   min?: number;
   /** Chapter title — starts a YouTube chapter at this shot. */

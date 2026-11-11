@@ -1,5 +1,6 @@
 import type {Line, Shot} from './schema';
 import {line} from './delivery';
+import {groundAt} from './grounds';
 
 /**
  * Pacing helper (docs/00 Q6): turn a stage shot that carries several lines into a sequence of camera setups, one
@@ -34,7 +35,7 @@ const lineOf = (at: unknown) => {
   return m ? {k: Number(m[1]), off: m[2] ?? ''} : null;
 };
 
-const applyActs = (cast: Cast[], acts: Act[]) => {
+export const applyActs = (cast: Cast[], acts: Act[], set = '', v = '') => {
   const out = cast.map((c) => ({...c}));
   for (const a of acts) {
     const c = out.find((x) => x.who === a.who);
@@ -42,7 +43,13 @@ const applyActs = (cast: Cast[], acts: Act[]) => {
     if (a.pose !== undefined) c.pose = a.pose;
     if (a.expr !== undefined) c.expr = a.expr;
     if (a.facing !== undefined) c.facing = a.facing;
-    if (a.to !== undefined) c.x = Array.isArray(a.to) ? (a.to as number[])[0] : (a.to as number);
+    if (a.to !== undefined) {
+      c.x = Array.isArray(a.to) ? (a.to as number[])[0] : (a.to as number);
+      // where the walk ends, the feet are on whatever surface is there (a landing, a step), docs/00 P14
+      const gy = groundAt(set, v, c.x, c.depth ?? 1.2);
+      if (gy !== null && !c.seat && (c as {ground?: boolean}).ground !== false) c.y = gy;
+      else if (Array.isArray(a.to)) c.y = (a.to as number[])[1];
+    }
     if (a.take !== undefined && a.prop) c.hold = a.prop;
     if (a.give !== undefined && a.prop) {
       // a hand-over: the giver's hand empties and the receiver holds it in every later setup
@@ -52,6 +59,7 @@ const applyActs = (cast: Cast[], acts: Act[]) => {
     }
     if (a.put !== undefined && c.hold === a.prop) c.hold = undefined;
     if ('seat' in a) c.seat = a.seat;
+    if (a.hoodUp !== undefined) c.hoodUp = a.hoodUp;
   }
   return out;
 };
@@ -130,7 +138,7 @@ export const autoSplit = (shots0: Shot[], speakerCast: Record<string, string>, s
           ...(s.thread ? {thread: s.thread} : {}),
         } as Shot);
       }
-      cast = applyActs(cast, mine);
+      cast = applyActs(cast, mine, p.set, p.v ?? '');
     });
   }
   return out;

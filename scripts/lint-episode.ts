@@ -6,6 +6,7 @@ import {blinkAt, designOf, hashStr, type Who} from '../src/characters/toon/actin
 import {FEELS, type Feel} from '../src/engine/delivery';
 import {HERO_PX} from '../src/characters/toon/design';
 import {afterWalks, cutHeads, frameCamera, isNamed} from '../src/engine/framing';
+import {GROUNDS, groundAt, hasGround} from '../src/engine/grounds';
 
 const id = process.argv[2] ?? 'ep01';
 const {episode, voice} = await loadEpisode(id);
@@ -319,7 +320,7 @@ if (episode.style === 'cinema') {
       }
       const pos = new Map<string, [number, number, number]>();
       for (const c of cast) {
-        if (!MAIN.includes(c.who) || (c.opacity ?? 1) < 0.5) continue;
+        if (!MAIN.includes(c.who) || (c.opacity ?? 1) < 0.5 || c.left) continue;
         let x = c.x;
         for (const a of (p.acts ?? []) as any[]) if (a.who === c.who && a.to !== undefined) x = Array.isArray(a.to) ? a.to[0] : a.to;
         const h = c.who === 'biscuit' ? 90 : 330 * c.depth * (c.who === 'mira' ? 0.62 : 1) * (String(c.pose ?? '').startsWith('sit') || c.pose === 'lie' ? 0.6 : 1);
@@ -670,6 +671,60 @@ if (episode.style === 'cinema') {
         }
       }
     });
+  }
+  // ── v5.5 grounding gate (CEO: "characters not properly standing on the surface like stairs, floor, etcetera").
+  // Every set used declares where people can stand (src/engine/grounds.ts). Everyone standing in the cast plane must be
+  // on a surface where they are placed, where every walk ends and all along the way; their y must be that surface
+  // (the renderer plants feet on it, and the framing maths uses y). Exempt: seated, carried, `ground: false`
+  // (swimming, surfing, in a vehicle) and other planes (depth ≠ the set's cast depth). ──
+  {
+    const missing = new Set<string>();
+    for (const s of tl.shots as any[]) {
+      if (s.scene !== 'stage') continue;
+      const p = s.props ?? {};
+      if (!hasGround(p.set)) {
+        if (!missing.has(p.set)) errors.push(`Ground: set "${p.set}" (first in "${s.id}") declares no ground; add its surfaces to src/engine/grounds.ts.`);
+        missing.add(p.set);
+        continue;
+      }
+      const g = GROUNDS[p.set];
+      for (const c of (p.cast ?? []) as any[]) {
+        if (c.seat || c.carriedBy || c.ground === false || Math.abs((c.depth ?? 1.2) - g.depth) > 0.05 || (c.opacity ?? 1) < 0.2) continue;
+        const at = groundAt(p.set, p.v ?? '', c.x, c.depth, p);
+        if (at === null) errors.push(`Ground: ${c.who} stands at x ${Math.round(c.x)} in "${s.id}" where "${p.set}" has nothing to stand on.`);
+        else if (Math.abs(at - c.y) > 12) errors.push(`Ground: ${c.who} is placed at y ${Math.round(c.y)} in "${s.id}" but the surface there is y ${at} (${c.y < at ? 'floating' : 'sunk'} ${Math.round(Math.abs(at - c.y))} px).`);
+        let x = c.x;
+        for (const a of ((p.acts ?? []) as any[]).filter((a) => a.who === c.who && a.to !== undefined)) {
+          const tx = Array.isArray(a.to) ? a.to[0] : a.to;
+          for (let k = 1; k <= 12; k++) {
+            const xx = x + ((tx - x) * k) / 12;
+            if (groundAt(p.set, p.v ?? '', xx, c.depth, p) === null) {
+              errors.push(`Ground: ${c.who} walks off the surface at x ${Math.round(xx)} in "${s.id}" (walk ${Math.round(x)} → ${Math.round(tx)}).`);
+              break;
+            }
+          }
+          x = tx;
+        }
+      }
+    }
+  }
+  // ── v5.5 one-take gate (CEO: "if a scene is taking place in a house, then there shouldn't be any cuts if it isn't
+  // absolutely necessary - it can be taken in one shot with different camera movements and angles"). Inside one scene
+  // (same set, variant and thread; no time jump or new day/place tag) every boundary must be seamless (flow.ts) unless
+  // the script states why it cuts (`cut: '…'`) or the engine had to (the set state changes, someone takes another's
+  // place). Every episode runs its shots through flow(). ──
+  {
+    const sh = tl.shots as any[];
+    for (let i = 1; i < sh.length; i++) {
+      const a = sh[i - 1];
+      const b = sh[i];
+      if (a.scene !== 'stage' || b.scene !== 'stage' || b.flow || b.cut) continue;
+      const pa = a.props ?? {};
+      const pb = b.props ?? {};
+      if (pa.set !== pb.set || (pa.v ?? '') !== (pb.v ?? '') || (a.thread ?? '') !== (b.thread ?? '') || b.timeJump || b.hud) continue;
+      if (b.takeBreak && !/^(first shot)$/.test(b.takeBreak)) continue;
+      errors.push(`Take: "${b.id}" cuts inside the scene in "${pa.set}" (after "${a.id}"): make it one take (run the shots through flow()) or give the cut a reason (cut: '…').`);
+    }
   }
   // ── v5.3 place gate (CEO: "one minute they are in the supermarket and the other they are talking in their house.
   // It has to explain or say something"). Whenever the story moves to a different place, the first shot there (or a

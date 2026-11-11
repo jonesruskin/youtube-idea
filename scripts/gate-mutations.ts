@@ -28,6 +28,9 @@ export const MUTATIONS: Record<string, M> = {
   angryHero: {caught: 'v4 · faces wrong for the character', expect: /Expression: mira is angry/, apply: (e) => { who(shot(e, 'mum-thanks'), 'mira').expr = 'angry'; }},
   radioMum: {caught: 'v4.2 · Mum on a radio instead of a phone in 2026', expect: /World: /, apply: (e) => { shot(e, 'hosp-wide').lines[0].text = 'The phone networks are down, so I am on the radio.'; }},
   clippedTime: {caught: 'v4.2 · clipped numbers ("seven-oh-four")', expect: /Dialogue: .* clips a time/, apply: (e) => { shot(e, 'jupiter-out').lines[0].text = 'At eight-oh-four, it did.'; }},
+  sceneCut: {caught: 'v5.5 · a cut inside a scene that could be one take', expect: /Take: .* cuts inside the scene/, apply: (e) => { const s = e.shots.find((x: any) => x.flow); s.flow = false; }},
+  floating: {caught: 'v5.5 · a character floating above the floor', expect: /Ground: .*\((floating|sunk)/, apply: (e) => { const s = e.shots.find((x: any) => x.props?.set === 'kitchen' && (x.props?.cast ?? []).some((c: any) => !c.seat && c.who !== 'biscuit')); s.props.cast.find((c: any) => !c.seat && c.who !== 'biscuit').y -= 80; }},
+  offSurface: {caught: 'v5.5 · a character standing where there is no floor (on the stairs\' air, off the quay)', expect: /Ground: .* (nothing to stand on|walks off the surface)/, apply: (e) => { const s = e.shots.find((x: any) => x.props?.set === 'quay' || x.props?.set === 'stairs'); s.props.cast[0].x = s.props.set === 'quay' ? 100 : -900; }},
   cropHead: {caught: "v5.3 · Mira's head half cut off by the frame edge", expect: /Frame: .* head is cut by/, apply: (e) => { shot(e, 'a-picture~2').props.cam = [[0, 3.2, 940, 620], [1, 3.65, 940, 620]]; }},
   shortFilm: {caught: 'v5.1 · episode under the 8-minute mid-roll floor', expect: /Runtime .* is under 8:00/, apply: (e) => { e.shots = e.shots.slice(0, 60); }},
 };

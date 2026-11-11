@@ -1,6 +1,7 @@
 import type {Line, Shot, Episode} from '../../src/engine/schema';
 import {line} from '../../src/engine/delivery';
 import {autoSplit} from '../../src/engine/autosplit';
+import {flow} from '../../src/engine/flow';
 
 /**
  * THE BLINK FILES · File 001 — "The Sun Went Out" (v4)
@@ -374,7 +375,7 @@ const shots: Shot[] = [
     lines: [I("(determined) Up to the roof. / Kai, bring my *telescope*.", 0, 'up')],
   }),
   sh('six-floors', stage('stairs', 'climb', move([1.2, 300, 580], [1.25, 160, 540]), [
-    c(IT, -60, 680, {outfit: 'home', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', facing: 'left'}),
+    c(IT, -60, 760, {outfit: 'home', hold: 'torchOff', pose: 'relaxed', holdL: 'bag', facing: 'left'}),
     c(Y, 420, 940, {pose: 'carry', hold: 'tubeCase', facing: 'left', expr: 'focused'}),
     c(MI, 560, 940, {facing: 'left', expr: 'smile'}),
   ], [
@@ -890,14 +891,14 @@ const shots: Shot[] = [
     lines: [I("(urgent) A fire indoors makes *carbon monoxide*. / You can't see it, you can't smell it, / and it *kills*.")],
   }),
   sh('evacuate', stage('stairs', 'evac', move([1.2, 700, 600], [1.2, 1300, 640]), [
-    c(IT, 120, 940, {...COLD, facing: 'right'}),
-    c(MI, 250, 940, {...COLD, facing: 'right', expr: 'scared'}),
+    c(IT, 120, 840, {...COLD, facing: 'right'}),
+    c(MI, 250, 880, {...COLD, facing: 'right', expr: 'scared'}),
     c(Y, 400, 940, {...COLD, hold: 'torch', pose: 'hold', facing: 'right'}),
     c(B, 520, 940, {}),
     c('extra:40', 700, 940, {...COLD, facing: 'right', pose: 'coverMouth'}),
     c('extra:41', 860, 940, {...COLD, facing: 'right', hold: 'blanket'}),
-    c('extra:42', -120, 940, {...COLD, facing: 'right', pose: 'coverMouth', expr: 'scared'}),
-    c('extra:44', -300, 940, {...COLD, facing: 'right', hold: 'bag'}),
+    c('extra:42', -120, 760, {...COLD, facing: 'right', pose: 'coverMouth', expr: 'scared'}),
+    c('extra:44', -300, 680, {...COLD, facing: 'right', hold: 'bag'}),
   ], [
     {at: 0, who: 'extra:40', to: 1900, gait: 'run', dur: 2.4},
     {at: 0, who: 'extra:41', to: 2050, gait: 'run', dur: 2.5},
@@ -1320,11 +1321,13 @@ const shots: Shot[] = [
     c('extra:33', 420, 900, {outfit: 'cold', breath: true, facing: 'back'}),
     c('extra:34', 640, 900, {outfit: 'cold', breath: true, facing: 'back', expr: 'sad'}),
   ], [{at: 0.6, who: 'extra:33', to: 330, dur: 1.4}, {at: 2.0, who: 'extra:33', pose: 'kneel'}, {at: 0.3, who: 'extra:30', loop: 'shiver', dur: 3}], {frozen: true}), {
+    cut: 'a cutaway to the other families in the station, away from ours',
     action: 'The station, quiet. People sit close together in the cold, not talking. A man kneels beside a shivering neighbour.',
     lines: [N("(grieving) All over the world, / many people didn't make it through that *winter*.", 0.6)],
   }),
   sh('how-it-ends', stage('metro', 'city', push(3.0, 3.4, 940, 600), [c(MI, 1040, 900, {...COLD, pose: 'sitHug', expr: 'cold'}), c(Y, 940, 900, {...COLD, hoodUp: true, pose: 'sitHug', facing: 'front', expr: 'sad'})], [{at: 'l0+1.2', who: Y, look: [0.8, 0.3]}], {frozen: true}), {
     midroll: true,
+    cut: 'back from the cutaway to our family, close',
     beats: ['heart', 'loop'],
     action: 'Kai’s face in the cold blue light. For once, no joke.',
     lines: [K("(sad) Mira? / How does this *end*?", 0.8)],
@@ -2146,5 +2149,6 @@ export const sun01: Episode = {
   fps: 30,
   style: 'cinema',
   // v5.2 pacing: the performed lines run longer, so dialogue plays shot / reverse and long narration gets two setups
-  shots: autoSplit(shots, {KAI: 'you', MIRA: 'mira', ITO: 'ito', MUM: 'mum'}, ['farm'], {sentences: true, characters: true}),
+  // one take per scene (docs/00 P15): autoSplit gives each line its angle, flow joins a scene's shots into one take
+  shots: flow(autoSplit(shots, {KAI: 'you', MIRA: 'mira', ITO: 'ito', MUM: 'mum'}, ['farm'], {sentences: true, characters: true}), {KAI: 'you', MIRA: 'mira', ITO: 'ito', MUM: 'mum'}),
 };

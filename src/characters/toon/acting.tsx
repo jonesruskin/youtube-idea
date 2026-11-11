@@ -288,11 +288,18 @@ export const actorAt = (c: CastEntry, acts: Act[], t: number, frame: number, lin
 };
 
 /** Renders a shot's cast at the current frame (back-to-front by ground line). */
-export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; frameOffset?: number}> = ({cast, acts = [], only}) => {
-  const {t, frame, shot} = useShot();
+/** `ground(x, depth, walking)`: the surface under x (src/engine/grounds.ts); standing characters' feet are planted on it
+ *  (docs/00 P14). Seated, carried and `ground: false` entries keep their own y. */
+export const Actors: React.FC<{cast: CastEntry[]; acts?: Act[]; only?: Who[]; frameOffset?: number; ground?: (x: number, depth: number, walking: boolean) => number | null}> = ({cast, acts = [], only, ground}) => {
+  const {t, gframe: frame, shot} = useShot();
   const lines = shot.timedLines as unknown as LineInfo[];
   const list = cast.filter((c) => !only || only.includes(c.who)).sort((a, b) => a.y * a.depth - b.y * b.depth || a.depth - b.depth);
-  const resolved = list.map((c, i) => actorAt(c, acts, t, frame, lines, i));
+  const resolved = list.map((c, i) => {
+    const r = actorAt(c, acts, t, frame, lines, i);
+    if (!ground || c.seat || c.carriedBy || (c as {ground?: boolean}).ground === false || r.poseName.startsWith('sit')) return r;
+    const gy = ground(r.x, c.depth, !!r.moving);
+    return gy === null ? r : {...r, y: gy};
+  });
   // piggyback riders follow their carrier: on the back, hips at the carrier's waist
   list.forEach((c, i) => {
     if (!c.carriedBy) return;

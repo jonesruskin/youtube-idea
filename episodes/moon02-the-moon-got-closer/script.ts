@@ -1,6 +1,7 @@
 import type {Line, Shot, Episode} from '../../src/engine/schema';
 import {line} from '../../src/engine/delivery';
 import {autoSplit} from '../../src/engine/autosplit';
+import {flow} from '../../src/engine/flow';
 
 /**
  * THE BLINK FILES · File 002 — "The Moon Got Closer Every Night"
@@ -465,8 +466,8 @@ export const rawShots: Shot[] = [
 
   // ══ DAY 150 ═════════════════════════════════════════════════════════════════════════════════
   sh('d150-crowd', stage('hill', 'dusk', push(1.0, 1.08, 1000, 560), [
-    c('extra:21', 520, 930, {facing: 'right', expr: 'worried', outfit: 'cold'}),
-    c(WR, 780, 930, {facing: 'right', expr: 'determined', pose: 'hold', hold: 'tideLog'}),
+    c('extra:21', 590, 930, {facing: 'right', expr: 'worried', outfit: 'cold'}),
+    c(WR, 800, 930, {facing: 'right', expr: 'determined', pose: 'hold', hold: 'tideLog'}),
     c(PL, 1080, 930, {facing: 'left', expr: 'worried'}),
     c('extra:36', 1320, 930, {facing: 'left', expr: 'worried', outfit: 'cold'}),
     c(NN, 1560, 930, {facing: 'left', expr: 'focused'}),
@@ -691,5 +692,6 @@ export const moon02: Episode = {
   costumeByDay: false,
   noAngry: [WR, NN, TS],
   dialogueLedger: 'episodes/moon02-the-moon-got-closer/dialogue-review.md',
-  shots: autoSplit(rawShots, SPEAKER_CAST, [], {sentences: true, characters: true}),
+  // one take per scene (docs/00 P15): autoSplit gives each line its angle, flow joins a scene's shots into one take
+  shots: flow(autoSplit(rawShots, SPEAKER_CAST, [], {sentences: true, characters: true}), SPEAKER_CAST),
 } as Episode;

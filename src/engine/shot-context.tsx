@@ -39,5 +39,8 @@ export const useShot = () => {
   const ramp = (from: number, len = 0.6, ease = Easing.inOut(Easing.cubic)) =>
     interpolate(t, [from, from + len], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease});
   const props = (shot.props ?? {}) as Record<string, any>;
-  return {shot, fps, frame, t, dur, progress, speaking, lineAt, ramp, props};
+  /** Frame on the film clock: idle motion (breathing, handheld drift, waves, flicker) runs on this, so a seamless
+   *  boundary between two shots of one take (src/engine/flow.ts) never resets it. */
+  const gframe = frame + Math.round(((shot as {start?: number}).start ?? 0) * fps);
+  return {shot, fps, frame, gframe, t, dur, progress, speaking, lineAt, ramp, props};
 };

@@ -13,7 +13,7 @@ const out = {
   fps: episode.fps,
   duration: tl.duration,
   voiced: Object.keys(voice).length > 0,
-  shots: tl.shots.map((s) => ({id: s.id, scene: s.scene, start: s.start, end: s.end, cue: s.cue ?? null, mood: s.mood ?? null, sfx: s.sfx ?? null, transition: s.transition ?? 'cut', props: s.props ?? {}})),
+  shots: tl.shots.map((s) => ({id: s.id, scene: s.scene, start: s.start, end: s.end, cue: s.cue ?? null, mood: s.mood ?? null, sfx: s.sfx ?? null, transition: s.transition ?? 'cut', flow: s.flow ?? false, cut: s.cut ?? null, props: s.props ?? {}})),
   lines: tl.lines.map((l) => ({key: l.key, speaker: l.speaker, text: l.text, say: l.say, feel: l.feel, fv: l.feel ? {speed: FEELS[l.feel].speed, pitch: FEELS[l.feel].pitch, level: FEELS[l.feel].level} : null, start: l.start, end: l.end})),
 };
 process.stdout.write(JSON.stringify(out, null, 1));
