@@ -46,6 +46,8 @@ export type Speaker =
   | 'JAZ'
   | 'WREN'
   | 'NANA'
+  | 'ROSE'
+  | 'OFFICIAL'
   | 'TESS'
   | 'PELL';
 
@@ -71,7 +73,7 @@ export type Mood =
   | 'triumph'
   | 'silence';
 
-export type Sfx = 'static' | 'whoosh' | 'impact' | 'riser' | 'chime' | 'decloak' | 'thunder' | 'powercut' | 'stamp' | 'float' | 'crash' | 'sneeze' | 'cheer' | 'horn' | 'siren';
+export type Sfx = 'static' | 'whoosh' | 'impact' | 'riser' | 'chime' | 'decloak' | 'thunder' | 'powercut' | 'stamp' | 'float' | 'crash' | 'sneeze' | 'cheer' | 'horn' | 'siren' | 'surge' | 'bell' | 'rumble';
 
 /** Retention beats the linter tracks: something to laugh at, wonder at, feel, or wonder about. */
 export type Beat = 'laugh' | 'wow' | 'heart' | 'loop';

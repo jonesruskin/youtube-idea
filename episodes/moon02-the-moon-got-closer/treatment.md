@@ -37,7 +37,11 @@ Answer: The white line is where her Day 9 sum said the last high tide would stop
 2. We thought the scientists could find the visitor with telescopes, but it is a black hole smaller than a grain of sand, and the only instrument big enough to detect it is the Moon itself.
 3. We thought the Moon would hit the Earth, but it never can: a moon that came close enough would be pulled apart long before it touched, and ours will stop far short of that.
 4. We thought Nana was losing her mind on the hill at night, but she had worked out the final tide on Day 9 and was building the town's refuge alone.
-5. We thought the visitor would take the Moon away with it or drop it on us, but every loop made the visitor faster until it flew off into the dark, and the Moon stayed exactly where it was left.
+5. We thought Nana bought the roofless chapel because her sums told her to, but it is where her mother carried her up the hill in the January 1953 flood: the one place the sea never reached.
+6. We thought the visitor would take the Moon away with it or drop it on us, but every loop made the visitor faster until it flew off into the dark, and the Moon stayed exactly where it was left.
+
+## Second storyline
+January 1953, sepia memory film with its own music box: Nana at seven holds the torch while her mother Rose writes the tide; Rose warns the Harbour Board and is told "it will settle"; the real North Sea surge of 31 January 1953 comes over the quay in the dark; Rose carries her up to the chapel. It explains the book, the Board's words, and the chapel, and pays off as twist 5.
 
 ## Science
 1. The pull that raises tides grows with the cube of closeness: halve the Moon's distance and the tides are eight times higher. — Source: Newton, Principia (1687); NOAA Tides and Water Levels
@@ -46,6 +50,7 @@ Answer: The white line is where her Day 9 sum said the last high tide would stop
 4. A gravity slingshot trades speed between a small body and a big one; spacecraft like Voyager used it to gain speed from planets. — Source: NASA Jet Propulsion Laboratory
 5. A black hole a third as heavy as the Moon would be smaller than a grain of sand and completely dark; such primordial black holes are a real, unconfirmed hypothesis. — Source: Hawking (1971); Scholtz and Unwin (2020)
 6. The shape of a bay can multiply a tide: the Bay of Fundy's reach 16 metres today. — Source: Canadian Hydrographic Service
+7. On the night of 31 January 1953 a North Sea storm surge flooded the east coast of England; 307 people died in England and more than 1,800 in the Netherlands. — Source: Met Office, The 1953 East Coast Flood
 7. A moon that comes closer than about 18,000 km to the Earth is torn apart by tides (the Roche limit); that is how rings form. — Source: Édouard Roche (1848)
 8. The solid ground rises and falls about 30 centimetres twice a day with the Moon, and nobody feels it. — Source: International Earth Rotation and Reference Systems Service
 

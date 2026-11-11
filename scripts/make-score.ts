@@ -226,6 +226,9 @@ const SFX: Record<Sfx, (t: number) => void> = {
       tone(t + k * 0.6 + 0.3, 0.3, 950, 650, 0.045, () => 1);
     }
   },
+  surge: (t) => SFX.whoosh(t),
+  bell: (t) => SFX.chime(t),
+  rumble: (t) => SFX.thunder(t),
 };
 for (const s of tl.shots) if (s.sfx) SFX[s.sfx](s.start);
 

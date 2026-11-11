@@ -767,7 +767,7 @@ def render(tl):
     for r in regions:
         c, s, e = r["cue"], r["start"], r["end"]
         L = e - s
-        if c == "y1982":
+        if c in ("y1982", "memory"):
             # 1982: a lonely music box playing the theme slowly, tape hiss, a cold room tone. The same tune Mr. Ito
             # hums in the present (the audio clue), in a different instrument.
             mix.add("fx", s, (filt(sos_bp(2000, 9000), rng.standard_normal(int((L + 1) * SR)).astype(np.float32)) * 0.012)[:, None].repeat(2, 1), 1.0)
@@ -1106,6 +1106,25 @@ def render(tl):
         elif fx == "thunder":
             mix.add("hits", t0 + 0.05, boom(1.0, 6), 1.1)
             mix.add("fx", t0, wind(3.0, 1.6, 1.4), 0.9)
+        elif fx == "surge":
+            # a wave breaking over stone: a rising hiss, the crash, the long drag back
+            n = int(3.2 * SR)
+            tt = np.arange(n) / SR
+            env_s = np.clip(tt / 0.7, 0, 1) ** 2 * np.exp(-np.maximum(0, tt - 0.75) * 1.4)
+            x = filt(sos_lp(1800), pink(n)) * env_s.astype(np.float32)
+            mix.add("fx", t0 + 0.1, pan((x * 1.6).astype(np.float32), 0.15), 1.0)
+            mix.add("hits", t0 + 0.8, boom(0.9, 2.2), 0.55)
+        elif fx == "bell":
+            # the chapel bell, once, with its long hum
+            mix.add("music", t0 + 0.2, bell("D4", 6, 0.9, ratio=2.76), 0.9)
+            mix.add("music", t0 + 0.2, bell("D3", 7, 0.5, ratio=2.0), 0.6)
+        elif fx == "rumble":
+            # the ground tide: felt more than heard, a low swell and cups rattling
+            n = int(4 * SR)
+            x = filt(sos_lp(90), brown(n)) * np.sin(np.linspace(0, np.pi, n)).astype(np.float32)
+            mix.add("fx", t0, pan((x * 2.2).astype(np.float32), 0), 1.0)
+            for k in range(6):
+                mix.add("fx", t0 + 1.0 + k * 0.33, tick(k % 2 == 0, 0.5), 0.35)
         elif fx == "stamp":
             for k in range(3):
                 mix.add("hits", t0 + 0.1 + k * 0.28, taiko(0.8), 0.9)

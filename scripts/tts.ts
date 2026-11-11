@@ -64,6 +64,8 @@ const SETTINGS: Record<Speaker, {stability: number; similarity_boost: number; st
   NANA: {stability: 0.5, similarity_boost: 0.82, style: 0.45},
   TESS: {stability: 0.45, similarity_boost: 0.8, style: 0.45},
   PELL: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  ROSE: {stability: 0.45, similarity_boost: 0.82, style: 0.45},
+  OFFICIAL: {stability: 0.6, similarity_boost: 0.8, style: 0.25},
 };
 
 const voiceFor = (s: Speaker) => {

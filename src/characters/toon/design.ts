@@ -34,7 +34,7 @@ export type ToonDesign = {
   watch?: boolean;
 };
 
-export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'tomas' | 'lola' | 'rosa' | 'captain' | 'officer' | 'ana' | 'lui' | 'sione' | 'mele' | 'teacher' | 'kaur' | 'wren' | 'nana' | 'tess' | 'pell', ToonDesign> = {
+export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum' | 'tomas' | 'lola' | 'rosa' | 'captain' | 'officer' | 'ana' | 'lui' | 'sione' | 'mele' | 'teacher' | 'kaur' | 'wren' | 'nana' | 'tess' | 'pell' | 'odileYoung' | 'rose', ToonDesign> = {
   you: {
     id: 'you',
     height: 1,
@@ -331,7 +331,7 @@ export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum'
     rim: '#FFE08A',
     speaker: 'WREN',
   },
-  // Nana Odile, 72: keeper of the family tide log; navy fisherman's jumper
+  // Nana Odile, 80 (seven in the 1953 flood): keeper of the family tide log; navy fisherman's jumper
   nana: {
     id: 'nana',
     height: 0.84,
@@ -346,6 +346,34 @@ export const CAST: Record<'you' | 'mira' | 'ito' | 'itoYoung' | 'itoMid' | 'mum'
     outfits: {home: ['#2B4A6F', '#1E3552', '#6B5A4A', '#2A2A2A'], cold: ['#2B4A6F', '#1E3552', '#6B5A4A', '#2A2A2A']},
     rim: '#BFD8FF',
     speaker: 'NANA',
+  },
+  // Odile at seven, January 1953 (the memory thread): Nana's round face and glasses-free eyes, dark hair in pigtails,
+  // a red knitted coat
+  odileYoung: {
+    id: 'odileYoung',
+    height: 0.6,
+    head: 0.27,
+    build: 0.85,
+    skin: '#C99570',
+    skinShade: '#A87650',
+    hair: 'pigtails',
+    hairColor: '#3A2418',
+    outfits: {home: ['#B2473E', '#8E3530', '#3A3F52', '#2A2A2A'], cold: ['#B2473E', '#8E3530', '#3A3F52', '#2A2A2A']},
+    rim: '#FFD08A',
+  },
+  // Rose Marsh, 34 in 1953: Nana's mother, who kept the tide book before her; long grey coat, dark bun
+  rose: {
+    id: 'rose',
+    height: 0.93,
+    head: 0.19,
+    build: 0.95,
+    skin: '#C99570',
+    skinShade: '#A87650',
+    hair: 'bun',
+    hairColor: '#2E1C14',
+    outfits: {home: ['#6E6A62', '#55524B', '#3A3F52', '#2A2A2A'], cold: ['#6E6A62', '#55524B', '#3A3F52', '#2A2A2A']},
+    rim: '#FFD08A',
+    speaker: 'ROSE',
   },
   // Tess, 38: Wren's mum, lifeboat coxswain; orange sea jacket
   tess: {

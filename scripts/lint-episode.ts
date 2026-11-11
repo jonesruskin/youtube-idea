@@ -7,6 +7,7 @@ import {FEELS, type Feel} from '../src/engine/delivery';
 import {HERO_PX} from '../src/characters/toon/design';
 import {afterWalks, cutHeads, frameCamera, isNamed} from '../src/engine/framing';
 import {GROUNDS, groundAt, hasGround} from '../src/engine/grounds';
+import {craftOf} from './craft-report';
 
 const id = process.argv[2] ?? 'ep01';
 const {episode, voice} = await loadEpisode(id);
@@ -79,7 +80,10 @@ if (episode.style === 'cinema') {
   cinemaReport.push(`avg shot ${avg.toFixed(2)}s`);
   // Narrated story files carry complete, explanatory lines (standards D1–D3), so they may run a little longer per
   // shot than clipped dialogue; no single shot may hold more than one long line (lint warns at 7 s; split those).
-  const gate = (episode as {pacing?: number}).pacing ?? 4.0;
+  // one-take episodes (docs/00 P15) are not judged by cuts: their camera and acting must stay alive (the idle gate
+  // below, qa_motion on the render). The old 4 s average pushed every scene into a cut per line (CEO: too many cuts).
+  const oneTake = (tl.shots as any[]).some((s) => s.flow);
+  const gate = (episode as {pacing?: number}).pacing ?? (oneTake ? 5.5 : 4.0);
   if (avg > gate) errors.push(`Average shot is ${avg.toFixed(2)}s (gate ${gate}s): split the longest shots.`);
   // a long shot must have acting or a camera move
   for (const s of tl.shots) {
@@ -707,6 +711,27 @@ if (episode.style === 'cinema') {
         }
       }
     }
+  }
+  // ── v5.5 craft gate (CEO: "The Sun video has lot of substance, nice camera transitions and movements, nice
+  // background music relevant to the scenes, nicely progressing story… The Moon video… looks bland… difficult to follow
+  // with not much explaining done and feels hurried"). File 001 is the bar; every File must reach it (small margin).
+  // Only for the narrated 'cinema' Files with a story contract. ──
+  if ((episode as any).style === 'cinema' && (episode as any).story) {
+    const k = craftOf(episode.id, tl as any);
+    const need: [boolean, string][] = [
+      [k.wpm <= 150, `speech runs at ${k.wpm} words a minute (bar ≤ 150): it feels hurried; slow the voices or say less`],
+      [k.narratorWpm <= 156, `the narrator runs at ${k.narratorWpm} words a minute (bar ≤ 156)`],
+      [k.talkShare <= 0.84, `${Math.round(k.talkShare * 100)}% of the film is talk (bar ≤ 84%): leave room to look and feel`],
+      [k.breathingRoomSec >= tl.duration * 0.12, `only ${k.breathingRoomSec} s without words (bar ≥ 12% of the film): hold the big pictures`],
+      [k.transitionsPerMin >= 0.8 && k.transitionKinds >= 3, `${k.transitionsPerMin} transitions a minute, ${k.transitionKinds} kinds (bar ≥ 0.8, ≥ 3 kinds: fades on time jumps, whips between places, a flash on reveals, a match cut)`],
+      [k.sfxPerMin >= 0.5, `${k.sfxPerMin} sound effects a minute (bar ≥ 0.5): the world should be heard, not only seen`],
+      [k.cueChangesPerMin >= 1.8 && k.cueKinds >= 12, `the music changes ${k.cueChangesPerMin} times a minute with ${k.cueKinds} cue kinds (bar ≥ 1.8 and ≥ 12): each scene needs music for its own feeling`],
+      [k.insertsPerMin >= 2.5, `${k.insertsPerMin} inserts, diagrams or news a minute (bar ≥ 2.5): show the evidence and the explanation`],
+      [k.secPerTwist >= 100, `a twist every ${k.secPerTwist} s (bar ≥ 100 s): give each reversal time to be explained and felt`],
+      [k.threads >= 1, 'no second storyline (bar: one thread of its own, like File 001\'s 1983, that pays off as a twist)'],
+      [k.science >= 8, `${k.science} sourced science facts (bar ≥ 8)`],
+    ];
+    for (const [ok, why] of need) if (!ok) errors.push(`Craft: ${why}.`);
   }
   // ── v5.5 one-take gate (CEO: "if a scene is taking place in a house, then there shouldn't be any cuts if it isn't
   // absolutely necessary - it can be taken in one shot with different camera movements and angles"). Inside one scene

@@ -49,7 +49,7 @@ The Roche limit (where a moon is pulled apart) is about 18,000 km: seven times c
 ## 4. Characters: where everyone is, and why
 Saltmouth: a harbour town of about 4,000. Quay Street 2 m above the sea, Market Street 6 m, the churchyard wall 22 m, the ruined chapel on Chapel Hill 35 m (its steps run from 28 m to 35 m).
 
-| Days | Wren (10) | Nana Odile (72) | Mum, Tess (lifeboat coxswain) | Mr. Pell (harbour board) |
+| Days | Wren (10) | Nana Odile (80; seven in the January 1953 flood) | Mum, Tess (lifeboat coxswain) | Mr. Pell (harbour board) |
 |---|---|---|---|---|
 | 1–9 | Quay Street house; school | Keeps the tide log at the gauge at 6 a.m. and 6 p.m.; finds the extra tide; on Day 9 works out the final height | On call at the lifeboat station on the quay | Tells the town it is a spring tide |
 | 10–60 | Helps Nana carry things up the hill "for airing" | Buys the chapel (Day 5–12); moves beds, tools, food; paints the white line (Day 60) | Rescues: cars, a fishing boat | Promises it will settle; refuses to move the town |
@@ -189,3 +189,11 @@ At most two may be OPEN.
 98. Does anyone stand in front of anyone's face? No; face gate (page-one, d200-wait)
 99. Does the visitor ever appear on screen? Only as a marked speck in diagrams (sling, grain, leaves)
 100. Is there a second open question? How it was caught between the Earth and the Moon **OPEN (series)**
+101. Who taught Nana the book? Her mother, Rose Marsh, in the winter of 1953, when Nana was seven (1953-lamp, d1-gauge)
+102. Why does the Board's "it will settle" hurt Nana so much? Its chairman said the same words to her mother in January 1953, days before the flood (1953-board, d10-board)
+103. What happened in 1953? The real North Sea surge of 31 January 1953 came over the quay wall at night; not everyone on Quay Street got out (1953-night)
+104. Why did Nana buy a roofless chapel? It is where her mother carried her that night: the highest ground in Saltmouth, the one place the sea never reached (1953-steps, why-chapel, d12-deeds)
+105. How old is Nana? Eighty: seven in January 1953 (1953-lamp, why-chapel)
+106. What does a closer Moon mean for a harbour town? The Moon lifts the sea; a closer Moon lifts it higher (d1-means, cube)
+107. Why does a Moon that loses speed come closer? A slower moon swings into a lower orbit (robbed, sling)
+108. What did everyone know by Day 90? The Moon came closer every night, something unseen was slowing it, and every tide was higher; nobody knew where it would stop (recap)
