@@ -1,0 +1,4 @@
+# Python 3.12 (spaCy has no 3.13 wheels yet). Install torch CPU first: --index-url https://download.pytorch.org/whl/cpu torch
+kokoro
+soundfile
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl

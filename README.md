@@ -1,5 +1,7 @@
 # THE BLINK FILES
 
+> **New: cinematic pipeline.** [`cinema/`](cinema/README.md) holds the photoreal space-documentary pipeline: neural narration, real gravitational lensing, ray-cast planets, N-body simulations and an original score. The flagship episode **"What If a Black Hole Passed Through Our Solar System?"** (8:20) is in [`renders/ep_blackhole/`](renders/ep_blackhole/) with its thumbnail, captions and full upload metadata. The flat-character Remotion pipeline below is kept for reference.
+
 > *Betelgeuse died. With its last light, the people who lived there sent their powers to Earth — twelve gifts, for twelve ordinary people.*
 
 A YouTube channel of animated space-science stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev) and voiced with ElevenLabs.

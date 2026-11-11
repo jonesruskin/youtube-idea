@@ -5,3 +5,7 @@ public/audio/
 .cache/
 *.log
 renders/*-hq.mp4
+cinema/build/
+cinema/assets/cache/
+cinema/assets/tex/
+__pycache__/
