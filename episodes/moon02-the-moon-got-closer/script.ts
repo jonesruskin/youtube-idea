@@ -420,6 +420,36 @@ export const rawShots: Shot[] = [
     action: 'The news: the whole Earth from space, its oceans pulled into two bulges toward a Moon that is far too close.',
     lines: [N("(sad) It wasn't just us. Every port on Earth closed. / Whole cities moved inland, *one* street at a time."), N('(awed) In some bays the shape of the coast made it worse. / Places that already had big tides got the *biggest*.')],
   }),
+  // the world, the same night (one instant: 9:30 PM in Chennai is 11 PM in the Mekong Delta and midnight in Manila)
+  sh('world-chennai', stage('montage', 'beach', push(1.1, 1.24, 1000, 640), [
+    c('extra:64', 880, 1060, {facing: 'right', outfit: 'home', pose: 'lookUp', expr: 'awe'}, 1.0),
+    c('extra:65', 1080, 1060, {facing: 'left', outfit: 'home', pose: 'point', expr: 'awe'}, 1.0),
+  ], [{at: 0.6, who: 'extra:65', look: [0.4, -1]}], {dark: 0, boardX: 4000, skyMoon: {k: 1.7, at: [1340, 250]}}), {
+    hud: {place: 'CHENNAI', time: '9:30 PM'},
+    transition: 'whip',
+    cue: 'wonder',
+    beats: ['wow'],
+    dev: 'the whole world under the same Moon',
+    action: 'Marina Beach at night, packed with families. Everyone looking up at a Moon half as big again, the sea further up the sand than anyone remembers.',
+    lines: [N('(awed) In Chennai, families came down to Marina Beach every night, / just to watch it *rise*.')],
+    min: 5,
+  }),
+  sh('world-mekong', stage('montage', 'field', push(1.1, 1.25, 900, 640), [c('extra:62', 900, 930, {pose: 'lookUp', facing: 'right', outfit: 'home', expr: 'worried'}, 1.3)], [{at: 0.8, who: 'extra:62', look: [0.6, -1]}], {dark: 0, skyMoon: {k: 1.7, at: [1300, 240]}}), {
+    hud: {place: 'MEKONG DELTA', time: '11:00 PM'},
+    transition: 'whip',
+    science: {text: 'Rising seas push salt water up river deltas and into rice fields; the Mekong Delta already loses crops to salt intrusion in dry years.', source: 'FAO; Mekong River Commission'},
+    action: 'A rice paddy in the moonlight, silver with water. A farmer looks from the sky to the flooded rows.',
+    lines: [N('(sad) In the Mekong Delta, the sea came into the rice fields / twice a *day*.')],
+    min: 4.5,
+  }),
+  sh('world-manila', stage('montage', 'bus', push(1.0, 1.12, 900, 600), [c('extra:17', 1000, 960, {facing: 'right', outfit: 'home', expr: 'awe', pose: 'lookUp'}, 1.4)], [{at: 1.2, who: 'extra:17', expr: 'smile'}], {dark: 0, skyMoon: {k: 1.7, at: [1350, 240]}}), {
+    hud: {place: 'MANILA', time: '12:00 AM'},
+    transition: 'whip',
+    beats: ['laugh'],
+    action: 'A night bus stopped at a stop, its driver leaning out of the window to look up.',
+    lines: [N('(amused) And in Manila, the night buses ran late, / because the drivers kept stopping to look *up*.')],
+    min: 4,
+  }),
   sh('recap', moon('orbit', {from: 384000, to: 245000}), {
     cue: 'curious',
     dev: 'what we know so far, in one breath',

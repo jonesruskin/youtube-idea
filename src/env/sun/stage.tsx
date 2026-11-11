@@ -4,6 +4,7 @@ import {Actors, actorAt, designOf, resolveAt, type Act, type CastEntry} from '..
 import {HERO_PX} from '../../characters/toon/design';
 import {useShot} from '../../engine/shot-context';
 import {frameCamera} from '../../engine/framing';
+import {Body} from '../../fx/bodies';
 import {groundAt, groundWalking} from '../../engine/grounds';
 import {HeldProp, type PropKind} from '../../characters/toon/props';
 import {Cine, Plane, ScreenPlane, type CamKey} from '../../fx/cinema/camera';
@@ -55,7 +56,10 @@ export const Stage: React.FC = () => {
   const def = SETS[props.set];
   if (!def) throw new Error(`Unknown set "${props.set}"`);
   const c = useSetCtx();
-  const layers = def.layers(c);
+  // any set can show the Moon in its sky (docs/00 P13: the real near side, in the show's style): props.skyMoon
+  const sm = props.skyMoon as {k?: number; at?: [number, number]} | undefined;
+  const layers0 = def.layers(c);
+  const layers: Layer[] = sm ? [layers0[0], {depth: 0.15, node: <Body name="moon" x={sm.at?.[0] ?? 1300} y={sm.at?.[1] ?? 260} r={70 * (sm.k ?? 1.5)} glow={1} tint="#FFF1CC" tintAmount={0.18} />}, ...layers0.slice(1)] : layers0;
   const keys = frameCamera((props.cam as CamKey[]) ?? [[0, 1, 960, 540]], (props.cast as CastEntry[]) ?? [], (props.acts as any[]) ?? []);
   return (
     <AbsoluteFill style={{background: '#000'}}>
