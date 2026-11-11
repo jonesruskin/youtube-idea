@@ -14,4 +14,4 @@ Everything needed to publish this episode. Big files are stored with Git LFS (`g
 - **Runtime:** 10:53
 - **Voice:** Kokoro-82M, free local voices (placeholder: to be replaced with ElevenLabs once the picture is approved)
 - **Music and sound:** synthesised score and sound design (scripts/score_cinema.py)
-- **Built from:** commit `0989c6f`
+- **Built from:** commit `9e1ebac`
