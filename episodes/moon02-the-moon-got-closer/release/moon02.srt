@@ -1,600 +1,681 @@
 1
-00:00:00,150 --> 00:00:05,380
+00:00:00,150 --> 00:00:06,380
 By the hundred-and-twentieth night, the sea
 came up Market Street to meet it.
 
 2
-00:00:05,750 --> 00:00:09,080
+00:00:06,750 --> 00:00:10,655
 The first night, we just
 thought it was beautiful.
 
 3
-00:00:09,450 --> 00:00:13,670
+00:00:11,750 --> 00:00:16,870
 I was ten. This is what the next
 two hundred days were like.
 
 4
-00:00:14,040 --> 00:00:17,255
+00:00:17,240 --> 00:00:19,250
+Start from the beginning, Miss.
+
+5
+00:00:19,620 --> 00:00:23,460
 My Nana wrote down the high
 tide twice a day.
 
-5
-00:00:17,625 --> 00:00:20,170
+6
+00:00:23,830 --> 00:00:26,775
 So had her mother. And hers.
 
-6
-00:00:20,540 --> 00:00:24,410
+7
+00:00:27,145 --> 00:00:31,265
 Forty centimetres over the
 table. That's not right.
 
-7
-00:00:24,780 --> 00:00:27,270
+8
+00:00:31,635 --> 00:00:34,125
 Spring tide, Odile! Put your wellies on!
 
-8
-00:00:27,640 --> 00:00:29,855
+9
+00:00:34,495 --> 00:00:36,860
 Not in my book it isn't.
 
-9
-00:00:30,225 --> 00:00:33,890
+10
+00:00:37,230 --> 00:00:41,745
 In our kitchen, Mum's pager went
 off before the toast did.
 
-10
-00:00:34,260 --> 00:00:36,325
+11
+00:00:42,115 --> 00:00:44,505
 She drove the lifeboat.
 
-11
-00:00:36,695 --> 00:00:40,460
+12
+00:00:44,875 --> 00:00:48,740
 Nana, why do you still do the book?
 The harbour has a computer.
 
-12
-00:00:40,830 --> 00:00:45,400
+13
+00:00:49,110 --> 00:00:53,830
 The computer wasn't here in eighteen
 eighty-five. The book was.
 
-13
-00:00:45,770 --> 00:00:47,810
+14
+00:00:54,200 --> 00:00:56,320
 Nana, look. It's bigger.
 
-14
-00:00:48,180 --> 00:00:49,925
+15
+00:01:00,200 --> 00:01:02,020
 Yes. It is.
 
-15
-00:00:50,295 --> 00:00:55,170
-NEWS ANCHOR: Observatories measure the Moon's
-distance every night, with lasers. Tonight it is
-
 16
-00:00:55,170 --> 00:00:58,360
+00:01:02,390 --> 00:01:04,005
+NEWS ANCHOR: Good evening.
+
+17
+00:01:04,390 --> 00:01:08,630
+Tonight the Moon is closer to the Earth
+than it has ever been measured.
+
+18
+00:01:09,000 --> 00:01:13,875
+Observatories measure the Moon's distance
+every night, with lasers. Tonight it is
+
+19
+00:01:13,875 --> 00:01:17,065
 thirty-two thousand kilometres
 closer than yesterday.
 
-17
-00:00:58,730 --> 00:01:01,095
+20
+00:01:17,435 --> 00:01:19,800
 Nobody can yet say why.
 
-18
-00:01:01,465 --> 00:01:04,705
+21
+00:01:20,170 --> 00:01:22,435
+Nana? What does closer mean?
+
+22
+00:01:22,805 --> 00:01:27,825
+The Moon is what lifts the sea, love.
+A closer Moon lifts it higher.
+
+23
+00:01:28,195 --> 00:01:31,835
 That night, Nana wrote in the
 book for a long time.
 
-19
-00:01:05,075 --> 00:01:07,465
+24
+00:01:33,405 --> 00:01:35,945
 Then she locked it in the bread bin.
 
-20
-00:01:07,835 --> 00:01:10,950
+25
+00:01:36,315 --> 00:01:39,805
 On Day 3 she added a column of her own.
 
-21
-00:01:11,320 --> 00:01:14,510
+26
+00:01:40,175 --> 00:01:43,665
 A small tide that came when
 the Moon wasn't there.
 
-22
-00:01:14,880 --> 00:01:17,720
+27
+00:01:44,035 --> 00:01:47,400
 A closer Moon pulls harder on the sea.
 
-23
-00:01:18,090 --> 00:01:21,705
+28
+00:01:48,570 --> 00:01:52,835
 Come half as close, and the tide
 is eight times higher.
 
-24
-00:01:22,075 --> 00:01:26,040
+29
+00:01:53,205 --> 00:01:57,545
 On Day 9, Nana did sums until
 the kettle boiled dry.
 
-25
-00:01:26,410 --> 00:01:28,525
+30
+00:01:57,915 --> 00:02:00,105
 Nana? It's four in the morning.
 
-26
-00:01:28,895 --> 00:01:31,965
+31
+00:02:00,475 --> 00:02:03,695
 Go back to bed, love. I'm nearly done.
 
-27
-00:01:32,335 --> 00:01:38,405
+32
+00:02:04,065 --> 00:02:10,385
 It is a high spring tide, and it will
 settle. The Board sees no cause for alarm.
 
-28
-00:01:38,775 --> 00:01:42,520
+33
+00:02:10,755 --> 00:02:14,775
 It won't settle, Arthur. It
 will come up Chapel Hill.
 
-29
-00:01:42,890 --> 00:01:45,655
+34
+00:02:15,145 --> 00:02:18,085
 We've heard your floods before, Odile.
 
-30
-00:01:46,025 --> 00:01:49,395
+35
+00:02:18,455 --> 00:02:22,475
 They laughed. Nana put on
 her hat, and we left.
 
-31
-00:01:49,765 --> 00:01:53,255
+36
+00:02:22,845 --> 00:02:26,710
 On Day 12, I found a paper in Nana's coat.
 
-32
-00:01:53,625 --> 00:01:56,815
+37
+00:02:27,080 --> 00:02:30,345
 You bought the chapel? Nana,
 it hasn’t got a roof!
 
-33
-00:01:57,185 --> 00:01:59,125
+38
+00:02:30,715 --> 00:02:32,755
 It's got a good view.
 
-34
-00:01:59,495 --> 00:02:03,210
+39
+00:02:33,125 --> 00:02:37,240
 By Day 30, the sea came over
 the quay every night.
 
-35
-00:02:03,580 --> 00:02:07,395
+40
+00:02:39,125 --> 00:02:42,940
 NEWS ANCHOR: Scientists now expect the
 Moon to settle within the week.
 
-36
-00:02:07,765 --> 00:02:12,060
+41
+00:02:43,310 --> 00:02:48,355
 It didn't. Every promise on the
 news lasted about four days.
 
-37
-00:02:12,430 --> 00:02:13,840
+42
+00:02:48,725 --> 00:02:50,160
 Where's my bed?
 
-38
-00:02:14,430 --> 00:02:16,575
+43
+00:02:50,725 --> 00:02:52,970
 Up the hill. Airing.
 
-39
-00:02:16,945 --> 00:02:19,760
+44
+00:02:53,340 --> 00:02:56,280
 I'm not moving, Nana. This is my house.
 
-40
-00:02:20,130 --> 00:02:22,320
+45
+00:02:56,650 --> 00:02:58,915
 I know it is, love.
 
-41
-00:02:22,690 --> 00:02:24,905
+46
+00:02:59,285 --> 00:03:01,750
 Even the calendar went wrong.
 
-42
-00:02:25,275 --> 00:02:30,290
+47
+00:03:02,120 --> 00:03:07,710
 A closer Moon goes round faster: the
 month was down to twenty-two days.
 
-43
-00:02:30,660 --> 00:02:33,850
+48
+00:03:08,080 --> 00:03:11,820
 By Day 60 the tides had doubled.
 
-44
-00:02:34,220 --> 00:02:37,360
+49
+00:03:14,080 --> 00:03:17,920
 Quay Street was only ours at low water.
 
-45
-00:02:37,730 --> 00:02:42,420
+50
+00:03:18,290 --> 00:03:23,455
 And at low tide the sea went out so far,
 we could see the harbour floor.
 
-46
-00:02:42,790 --> 00:02:45,970
+51
+00:03:25,290 --> 00:03:28,945
 Crabs, bicycles, and somebody's piano.
 
-47
-00:02:46,340 --> 00:02:49,805
+52
+00:03:29,315 --> 00:03:33,480
 Mum's lifeboat went out
 eleven times that week.
 
-48
-00:02:50,175 --> 00:02:53,440
+53
+00:03:33,850 --> 00:03:37,465
 Mostly for people who had gone
 back for one more thing.
 
-49
-00:02:53,810 --> 00:02:55,420
+54
+00:03:37,835 --> 00:03:39,495
 What's the line for?
 
-50
-00:02:55,810 --> 00:02:57,250
+55
+00:03:40,865 --> 00:03:42,380
 For later.
 
-51
-00:02:57,810 --> 00:03:02,400
+56
+00:03:42,865 --> 00:03:48,480
 On Day 70, a scientist said the
 thing nobody had thought of.
 
-52
-00:03:02,770 --> 00:03:08,719
+57
+00:03:48,850 --> 00:03:54,799
 Nothing falls this slowly. The Moon isn't
 falling. Something is taking its speed
 
-53
-00:03:08,719 --> 00:03:10,875
+58
+00:03:54,799 --> 00:03:56,955
 away, a little on every loop.
 
-54
-00:03:11,245 --> 00:03:16,635
+59
+00:03:57,325 --> 00:04:03,565
 Spacecraft do it on purpose: swing past a
 planet, and steal a little of its speed.
 
-55
-00:03:17,005 --> 00:03:19,520
+60
+00:04:03,935 --> 00:04:06,850
 Something was doing it to our Moon.
 
-56
-00:03:19,890 --> 00:03:25,834
+61
+00:04:07,220 --> 00:04:09,430
+So the Moon is being robbed?
+
+62
+00:04:09,800 --> 00:04:15,195
+Of speed. A little every time round.
+And a slower Moon swings closer.
+
+63
+00:04:15,565 --> 00:04:21,509
 We can't see it, because it is a black hole
 smaller than a grain of sand, and a
 
-57
-00:03:25,834 --> 00:03:27,865
+64
+00:04:21,509 --> 00:04:23,540
 third as heavy as the Moon.
 
-58
-00:03:28,235 --> 00:03:30,700
+65
+00:04:23,910 --> 00:04:26,925
 No telescope could find it.
 
-59
-00:03:31,070 --> 00:03:35,275
+66
+00:04:29,910 --> 00:04:35,040
 The only things big enough to feel
 it were the Moon and the sea.
 
-60
-00:03:35,645 --> 00:03:38,685
+67
+00:04:35,410 --> 00:04:38,550
 Nana! A tide with no Moon.
 That's your column!
 
-61
-00:03:39,055 --> 00:03:40,040
+68
+00:04:38,920 --> 00:04:39,980
 Is it.
 
-62
-00:03:41,055 --> 00:03:43,045
+69
+00:04:40,920 --> 00:04:43,035
 She didn't even look up.
 
-63
-00:03:43,415 --> 00:03:44,955
+70
+00:04:43,405 --> 00:04:45,220
 Day 90.
 
-64
-00:03:45,415 --> 00:03:50,620
+71
+00:04:49,405 --> 00:04:55,635
 The lighthouse was an island twice a day,
 and the school moved up the hill.
 
-65
-00:03:50,990 --> 00:03:57,174
+72
+00:04:56,005 --> 00:05:03,663
 It wasn't just us. Every port on Earth closed.
 Whole cities moved inland, one street
 
-66
-00:03:57,174 --> 00:03:57,910
+73
+00:05:03,663 --> 00:05:04,575
 at a time.
 
-67
-00:03:58,280 --> 00:04:03,841
+74
+00:05:04,945 --> 00:05:11,682
 In some bays the shape of the coast made it
 worse. Places that already had big tides
 
-68
-00:04:03,841 --> 00:04:04,900
+75
+00:05:11,682 --> 00:05:12,965
 got the biggest.
 
-69
-00:04:05,270 --> 00:04:07,260
+76
+00:05:13,335 --> 00:05:19,501
+So by Day 90, this is what we knew. The Moon
+came closer every night. Something we
+
+77
+00:05:19,501 --> 00:05:25,065
+couldn't see was slowing it down. And
+every tide was higher than the last.
+
+78
+00:05:25,435 --> 00:05:28,350
+What nobody knew was where it would stop.
+
+79
+00:05:28,720 --> 00:05:30,885
+Miss? Is it going to hit them?
+
+80
+00:05:31,255 --> 00:05:34,370
+It can't hit, silly. It's
+always been right there.
+
+81
+00:05:34,740 --> 00:05:36,780
 Mum? Is it going to hit us?
 
-70
-00:04:07,630 --> 00:04:10,325
+82
+00:05:37,150 --> 00:05:39,970
 No, love. I promise you it can't.
 
-71
-00:04:10,695 --> 00:04:15,435
+83
+00:05:40,340 --> 00:05:46,030
 Mum was right. A moon doesn't fall onto
 its planet. It goes round it.
 
-72
-00:04:15,805 --> 00:04:20,552
+84
+00:05:47,200 --> 00:05:52,541
 And one that came really close would be
 pulled to pieces long before it touched.
 
-73
-00:04:20,552 --> 00:04:23,400
+85
+00:05:52,541 --> 00:05:55,745
 Ours was never going to come
 anywhere near that.
 
-74
-00:04:23,770 --> 00:04:26,580
+86
+00:05:56,115 --> 00:05:59,050
 You care more about that book
 than about our house!
 
-75
-00:04:26,950 --> 00:04:30,815
+87
+00:05:59,420 --> 00:06:03,710
 The book is how I know what's
 coming for our house, love.
 
-76
-00:04:31,185 --> 00:04:34,025
+88
+00:06:04,080 --> 00:06:07,545
 I didn't speak to her for three days.
 
-77
-00:04:34,395 --> 00:04:38,735
+89
+00:06:10,080 --> 00:06:14,970
 On Day 110, I found two pages
 she'd glued together.
 
-78
-00:04:39,105 --> 00:04:41,120
+90
+00:06:15,340 --> 00:06:17,555
 Her sum from Day 9.
 
-79
-00:04:41,490 --> 00:04:45,555
+91
+00:06:17,925 --> 00:06:22,490
 And at the bottom, the last high
 tide: thirty-five metres.
 
-80
-00:04:45,925 --> 00:04:51,019
+92
+00:06:22,860 --> 00:06:28,849
 And a letter from nineteen ninety-eight. She
 had warned them about a flood once
 
-81
-00:04:51,019 --> 00:04:51,470
+93
+00:06:28,849 --> 00:06:29,380
 before.
 
-82
-00:04:51,840 --> 00:04:55,130
+94
+00:06:29,750 --> 00:06:33,915
 They'd written back that there
 was no cause for alarm.
 
-83
-00:04:55,500 --> 00:04:58,415
+95
+00:06:34,285 --> 00:06:37,375
 You knew. Since Day 9. Why
 didn't you tell them?
 
-84
-00:04:58,785 --> 00:05:01,805
+96
+00:06:37,745 --> 00:06:40,890
 I did, love. Day 10. You were there.
 
-85
-00:05:02,175 --> 00:05:03,335
+97
+00:06:41,260 --> 00:06:42,520
 They laughed.
 
-86
-00:05:04,175 --> 00:05:08,932
+98
+00:06:43,260 --> 00:06:48,146
 They'll believe the sea before they believe
 me. So I'm getting the hill ready for
 
-87
-00:05:08,932 --> 00:05:09,695
+99
+00:06:48,146 --> 00:06:48,930
 when they do.
 
-88
-00:05:10,065 --> 00:05:13,905
+100
+00:06:49,300 --> 00:06:53,515
 On Day 120, the sea came up Market Street.
 
-89
-00:05:14,275 --> 00:05:17,815
+101
+00:06:56,300 --> 00:07:00,590
 From the steps, I watched it
 reach my bedroom window.
 
-90
-00:05:18,185 --> 00:05:21,000
+102
+00:07:03,300 --> 00:07:06,740
 Then I couldn't see my window any more.
 
-91
-00:05:21,370 --> 00:05:24,485
+103
+00:07:07,110 --> 00:07:13,315
+My mother carried me up those steps, the
+night of the big sea. I was seven.
+
+104
+00:07:13,685 --> 00:07:17,755
+She told them it was coming.
+They said it would settle.
+
+105
+00:07:18,125 --> 00:07:21,840
 The next day, the sea came
 into the Harbour Board.
 
-92
-00:05:24,855 --> 00:05:26,370
+106
+00:07:22,210 --> 00:07:23,800
 It will settle.
 
-93
-00:05:26,855 --> 00:05:29,400
+107
+00:07:24,210 --> 00:07:27,230
 He still said it. Just quieter.
 
-94
-00:05:29,770 --> 00:05:34,135
+108
+00:07:27,600 --> 00:07:33,065
 Even the ground rose and fell now.
 Two metres, twice a day.
 
-95
-00:05:34,505 --> 00:05:37,420
+109
+00:07:33,600 --> 00:07:37,240
 Nobody felt it. Only the cups did.
 
-96
-00:05:37,790 --> 00:05:42,905
+110
+00:07:37,610 --> 00:07:42,875
 Mr. Pell. This is my Nana's book. Every
 tide for a hundred and forty years.
 
-97
-00:05:43,275 --> 00:05:45,180
+111
+00:07:43,245 --> 00:07:45,225
 Wren, not now.
 
-98
-00:05:45,550 --> 00:05:50,490
+112
+00:07:45,595 --> 00:07:50,710
 Nana wrote down tonight's tide on Day 9.
 Fifteen metres. Go and look at it.
 
-99
-00:05:50,860 --> 00:05:53,625
+113
+00:07:51,080 --> 00:07:53,945
 Good Lord. She had it right.
 
-100
-00:05:53,995 --> 00:05:55,910
+114
+00:07:54,315 --> 00:07:56,305
 She had all of it right.
 
-101
-00:05:56,280 --> 00:05:58,250
+115
+00:07:56,675 --> 00:07:58,795
 Odile. Where does it stop?
 
-102
-00:05:58,620 --> 00:05:59,435
+116
+00:07:59,165 --> 00:08:00,030
 There.
 
-103
-00:06:00,620 --> 00:06:02,685
+117
+00:08:01,165 --> 00:08:03,280
 Then that's where we go.
 
-104
-00:06:03,055 --> 00:06:06,445
+118
+00:08:03,650 --> 00:08:07,665
 Four hundred people slept in
 the chapel that night.
 
-105
-00:06:06,815 --> 00:06:09,105
+119
+00:08:08,035 --> 00:08:10,775
 Mr. Pell carried the beds.
 
-106
-00:06:09,475 --> 00:06:14,715
+120
+00:08:11,145 --> 00:08:17,385
 On Day 160, the scientists finally
 had a number of their own.
 
-107
-00:06:15,085 --> 00:06:21,645
+121
+00:08:17,755 --> 00:08:24,315
 The visitor gets faster with every loop.
 Around Day 200, it will be fast enough to
 
-108
-00:06:21,645 --> 00:06:22,205
+122
+00:08:24,315 --> 00:08:24,875
 escape.
 
-109
-00:06:22,575 --> 00:06:27,635
+123
+00:08:25,245 --> 00:08:30,305
 And the Moon should stop at about a hundred
 and twenty-eight thousand kilometres.
 
-110
-00:06:28,005 --> 00:06:29,940
+124
+00:08:30,675 --> 00:08:32,665
 Nana. That's your number.
 
-111
-00:06:30,310 --> 00:06:31,925
+125
+00:08:33,035 --> 00:08:34,775
 I rounded up.
 
-112
-00:06:32,310 --> 00:06:38,403
+126
+00:08:35,145 --> 00:08:41,899
 By Day 180, the sea was at the churchyard
 wall, and the Moon was nearly three times
 
-113
-00:06:38,403 --> 00:06:38,990
+127
+00:08:41,899 --> 00:08:42,550
 as wide.
 
-114
-00:06:39,360 --> 00:06:44,542
+128
+00:08:42,920 --> 00:08:48,953
 Mum launched the lifeboat one last time, from
 a ramp cut into the hill, and brought
 
-115
-00:06:44,542 --> 00:06:46,665
+129
+00:08:48,953 --> 00:08:51,425
 a family back from the lighthouse.
 
-116
-00:06:47,035 --> 00:06:50,375
+130
+00:08:51,795 --> 00:08:55,885
 That night I saw Nana
 writing in the book again.
 
-117
-00:06:50,745 --> 00:06:55,285
+131
+00:08:57,455 --> 00:09:02,745
 Not the tide. Just our names.
 All four hundred of them.
 
-118
-00:06:55,655 --> 00:06:57,970
+132
+00:09:03,115 --> 00:09:05,505
 Nana? What if your sum is wrong?
 
-119
-00:06:58,340 --> 00:07:02,960
+133
+00:09:05,875 --> 00:09:10,670
 Then we go up one more step, love.
 And I buy a better pencil.
 
-120
-00:07:03,330 --> 00:07:05,095
+134
+00:09:11,040 --> 00:09:13,355
+Did it stop, Miss? At the line?
+
+135
+00:09:13,725 --> 00:09:15,890
 Day 200.
 
-121
-00:07:05,465 --> 00:07:09,430
+136
+00:09:19,725 --> 00:09:24,490
 The whole town stood on the chapel
 steps and watched it come.
 
-122
-00:07:09,800 --> 00:07:13,140
+137
+00:09:24,860 --> 00:09:28,450
 Two steps below the line. One.
 
-123
-00:07:13,510 --> 00:07:17,225
+138
+00:09:29,860 --> 00:09:34,175
 It touched the white line. And it stopped.
 
-124
-00:07:17,595 --> 00:07:22,925
+139
+00:09:36,860 --> 00:09:43,361
 That night, the visitor made its last loop.
 It had stolen all the speed it needed,
 
-125
-00:07:22,925 --> 00:07:24,875
+140
+00:09:43,361 --> 00:09:45,740
 and it flew off into the dark.
 
-126
-00:07:25,245 --> 00:07:30,617
+141
+00:09:46,110 --> 00:09:52,636
 We thought it would take the Moon with it. It
 didn't. It left the Moon exactly where
 
-127
-00:07:30,617 --> 00:07:31,065
+142
+00:09:52,636 --> 00:09:53,180
 it was.
 
-128
-00:07:31,435 --> 00:07:34,130
+143
+00:09:53,550 --> 00:09:56,445
 Your book now, love. Page one.
 
-129
-00:07:34,500 --> 00:07:36,940
+144
+00:09:56,815 --> 00:09:59,405
 Day 1. High tide: on time.
 
-130
-00:07:37,310 --> 00:07:40,150
+145
+00:09:59,775 --> 00:10:03,140
 We built the town again, above the line.
 
-131
-00:07:40,520 --> 00:07:45,260
+146
+00:10:03,510 --> 00:10:09,150
 The tide still climbs thirty-five
 metres, twice a day, and falls back.
 
-132
-00:07:45,630 --> 00:07:49,275
+147
+00:10:09,520 --> 00:10:12,235
+Miss? Was the Moon really that small?
+
+148
+00:10:19,520 --> 00:10:22,235
+Smaller than your thumbnail, love.
+
+149
+00:10:22,605 --> 00:10:28,075
+I'm eighty now. The same age Nana
+was when she gave me the book.
+
+150
+00:10:28,445 --> 00:10:32,840
 People ask if I miss the old Moon. I do.
 
-133
-00:07:49,645 --> 00:07:53,310
+151
+00:10:36,445 --> 00:10:40,935
 But nobody who has seen this one
 rise would give it back.
 
-134
-00:07:53,680 --> 00:07:57,500
+152
+00:10:41,305 --> 00:10:45,900
 What would you carry up the hill
 first? Tell us in the comments.

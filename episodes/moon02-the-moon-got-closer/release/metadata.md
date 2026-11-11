@@ -3,29 +3,29 @@
 **Title alternates for Test & Compare:** “What If the Moon Came Closer Every Night? Day 1 to Day 200” · “The Moon Got Bigger Every Night. Then the Sea Came Up Our Street”
 **Thumbnail text:** DAY 1
 **Thumbnails for Test & Compare:** thumbnail-a.png, thumbnail-b.png, thumbnail-c.png (upload all of them; YouTube serves each to a share of viewers and keeps the one with the best watch time)
-**End screen:** the last 12 s (from 7:53) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 7:57 to the end.
-**Runtime:** 8:05
+**End screen:** the last 12 s (from 10:41) are laid out for YouTube's end-screen elements. In Studio → End screen, put a *Video* element (best for viewer, or Part 2 when it's live) over the left "WATCH NEXT" frame and the *Subscribe* element over the right circle; set both to run from 10:44 to the end.
+**Runtime:** 10:53
 **Manual mid-roll positions:**  (set these in YouTube Studio → Monetization → Ad breaks; leave auto-placement OFF so ads land on our cliffhangers)
 
 ## Description (paste as-is)
 
 ```
-One evening the Moon rises a little too big over a harbour town, and the tide comes in forty centimetres too high. Ten-year-old Wren’s grandmother has kept the tide log for fifty years, and she stops letting anyone read it. A survival story told day by day, with real science.
+One evening the Moon rises a little too big over a harbour town, and the tide comes in forty centimetres too high. Ten-year-old Wren’s grandmother has kept the tide log since she was seven, and she stops letting anyone read it. A survival story told day by day, with real science.
 
 What would you carry up the hill first? Tell us below 👇
 
 0:00 The first night
-0:13 Day 1
-1:59 Day 30
-2:30 Day 60
-2:57 The visitor
-3:43 Day 90
-4:34 Day 110
-5:09 Day 120
-5:37 Day 150
-6:32 Day 180
-7:03 Day 200
-7:37 After
+0:19 Day 1
+2:32 Day 30
+3:07 Day 60
+3:42 The visitor
+4:43 Day 90
+6:09 Day 110
+6:49 Day 120
+7:37 Day 150
+8:34 Day 180
+9:13 Day 200
+9:59 After
 
 THE BLINK FILES — one impossible year, seen by a different person each time. Every clue is real physics. Subscribe for the next File.
 
