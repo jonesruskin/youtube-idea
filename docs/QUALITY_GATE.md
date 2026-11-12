@@ -64,5 +64,5 @@ Each item becomes a ✅ or a note in the QA report.
 3. **Camera discipline.** Every zoom or pan goes through `Cam`, so stars, planets and diagrams move together.
 4. **Fonts lie.** Check glyphs automatically, and never assume a mono font has math symbols.
 5. **Speech recognition misses sentences.** Transcribe line by line, and fall back to line-timing estimates.
-7. **Review the finished cut at full resolution, not only contact sheets.** Thumbnails hide collisions. The v2 full-res pass found 5 defects that were invisible at contact-sheet size, and two of them led to new automated checks.
 6. **Run the gate before the long render.** It caught 8 glyph defects, 6 clipped labels and a 0-second beat in minutes, not hours.
+7. **Review the finished cut at full resolution, not only contact sheets.** Thumbnails hide collisions. The v2 full-res pass found 5 defects that were invisible at contact-sheet size, and two of them led to new automated checks.
