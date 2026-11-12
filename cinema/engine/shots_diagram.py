@@ -112,7 +112,9 @@ class System(Shot):
             y = P[..., 0] * sr + P[..., 1] * cr
             return np.stack([W / 2 + x * sc, H / 2 + 40 + y * sc * np.cos(self.INC)], -1)
         bh = scr(s.bh(ty))
-        img, _ = space_frame(2600 + 200 * u, 1500, 1.0, lenses=[(bh[0], bh[1], 34)])
+        s0 = p.get("scale", (half, half))[0]
+        img, _ = space_frame(2600 + 200 * u, 1500, (s0 / half) ** 0.25, angle=3 * u, lenses=[(bh[0], bh[1], 34)])
+        self.last_scr = scr
         img *= 0.55
         lines = np.zeros((H, W), np.uint8)
         trails = np.zeros((H, W, 3), np.float32)
@@ -143,7 +145,7 @@ class System(Shot):
             if -50 < q[0] < W + 50 and -50 < q[1] < H + 50:
                 glow_dot(img, q[0], q[1], col, 2.4, 3.0)
                 glow_dot(img, q[0], q[1], col, 9, 0.15)
-                if sc * a > 60 or (name in ("Earth", "Venus") and sc * a > 30):
+                if (sc * a > 60 or (name in ("Earth", "Venus") and sc * a > 30)) and 40 < q[0] < W - 260 and 40 < q[1] < H - 40:
                     cards.label(img, name.upper(), q[0] + 14, q[1] - 12, col * 0.9 + 0.1, 0.85, 17)
         img += trails
         # Kuiper belt
@@ -156,7 +158,8 @@ class System(Shot):
         # Sun
         glow_dot(img, sunp[0], sunp[1], (1.0, 0.85, 0.6), 4, 6)
         glow_dot(img, sunp[0], sunp[1], (1.0, 0.7, 0.4), 30, 0.35)
-        cards.label(img, "SUN", sunp[0] + 16, sunp[1] + 16, (1.0, 0.85, 0.6), 0.8, 17)
+        if 30 < sunp[0] < W - 120 and 30 < sunp[1] < H - 40:
+            cards.label(img, "SUN", sunp[0] + 16, sunp[1] + 16, (1.0, 0.85, 0.6), 0.8, 17)
         # Black hole path (past solid, future dashed) and marker
         tt = np.clip(np.linspace(ty - 3 * max(0.03, half / 60), ty + 3 * max(0.03, half / 60), 200), simmod.T0, simmod.T1)
         P = scr(np.array([s.bh(x) - s.sun(x) + s.sun(ty) for x in tt]))
@@ -171,7 +174,10 @@ class System(Shot):
         ring = np.zeros((H, W), np.uint8)
         cv2.circle(ring, (int(bh[0] * 4), int(bh[1] * 4)), int(46 * 4), 255, 1, cv2.LINE_AA, 2)
         img += (ring.astype(np.float32) / 255.0)[..., None] * np.array(ACC, np.float32) * 0.7
-        cards.label(img, "BLACK HOLE · 10 SUNS", bh[0] + 58, bh[1] - 6, ACC, 0.95, 18)
+        if 30 < bh[0] < W - 360 and 30 < bh[1] < H - 40:
+            cards.label(img, "BLACK HOLE · 10 SUNS", bh[0] + 58, bh[1] - 6, ACC, 0.95, 18)
+        elif 30 < bh[0] < W - 30 and 30 < bh[1] < H - 40:
+            cards.label(img, "BLACK HOLE · 10 SUNS", bh[0] - 58, bh[1] - 6, ACC, 0.95, 18, anchor="rc")
         # HUD: clock and scale bar
         cards.label(img, _fmt_t(ty), 140, 120, (1.0, 0.97, 0.93), 0.95, 30, kind="mono6", tracking=0.18)
         cards.label(img, "N-BODY SIMULATION", 140, 162, (0.7, 0.74, 0.82), 0.7, 16, tracking=0.3)
@@ -186,7 +192,7 @@ class Orbit(Shot):
     exposure = 1.4
 
     def render(self, u, t, fi):
-        img, _ = space_frame(1500, 1800, 1.0)
+        img, _ = space_frame(1500 + 60 * u, 1800, 1.0 + 0.04 * u)
         img *= 0.45
         e = _lp(self.p.get("ecc", (0, 0.6)), smooth(span(u, 0.1, 0.6)))
         a = 330.0
@@ -336,7 +342,7 @@ class Galaxy(Shot):
         A = np.array([[ca, -sa], [sa * tilt, ca * tilt]]) * base
         off = np.array([W / 2, H / 2]) - A @ np.array([cx, cy])
         M = np.hstack([A, off[:, None]]).astype(np.float32)
-        bg, _ = space_frame(1200, 1200, 1.0)
+        bg, _ = space_frame(1200 + 80 * u, 1200, z ** 0.4, angle=ang * 0.2)
         img = bg * 0.25 + cv2.warpAffine(g, M, (W, H), flags=cv2.INTER_LINEAR)
 
         def P(pt):
@@ -369,6 +375,14 @@ class Galaxy(Shot):
             fl = np.stack([tw * 0.25, tw * 0.75, tw * 0.9], -1).astype(np.float32) * 0.7 * k
             img = splat_points(img, Q[:, 0], Q[:, 1], fl, sigma=0.9)
             cards.label(img, "FREE-FLOATING PLANETS · ILLUSTRATIVE", 140, 120, (0.6, 0.85, 1.0), k * 0.85, 18)
+        elif focus == "gaia":
+            gx, gy = P((fx + 30, fy - 24))
+            k = smooth(span(u, 0.25, 0.5))
+            L_ = np.zeros((H, W), np.uint8)
+            cv2.line(L_, (int(sx * 4), int(sy * 4)), (int(gx * 4), int(gy * 4)), 255, 1, cv2.LINE_AA, 2)
+            cv2.circle(L_, (int(gx * 4), int(gy * 4)), int((12 + 4 * np.sin(t * 2)) * 4), 255, 1, cv2.LINE_AA, 2)
+            img += (L_.astype(np.float32) / 255)[..., None] * np.array(ACC, np.float32) * k
+            cards.label(img, "~1,560 LIGHT-YEARS", gx + 24, gy - 10, ACC, k * 0.9, 16)
         elif focus == "blackholes":
             k = smooth(span(u, 0.08, 0.5))
             Q = P(self.bhs)
@@ -388,7 +402,7 @@ class Moon(Shot):
     """Earth loses the Moon: it slides off its orbit toward the black hole."""
 
     def render(self, u, t, fi):
-        img, _ = space_frame(4200 - 100 * u, 1900, 1.0)
+        img, _ = space_frame(4200 - 100 * u, 1900, 1.0 + 0.05 * u, angle=-1.5 * u)
         img *= 0.75
         ex, ey, ER = 560, 600, 250
         render_planet(img, ex, ey, ER, "earth", spin=4.0 + t * 0.06, tilt=0.4, light=(0.75, 0.25, 0.6))
@@ -397,7 +411,8 @@ class Moon(Shot):
         m = np.zeros((H, W), np.uint8)
         cv2.ellipse(m, (int(ex * 4), int(ey * 4)), (int(orb_r * 4), int(orb_r * 0.32 * 4)), -8, 0, 360, 255, 1, cv2.LINE_AA, 2)
         img += (m.astype(np.float32) / 255)[..., None] * np.array([0.6, 0.7, 0.9], np.float32) * 0.22
-        k = ease_in(span(u, 0.25, 1.0), 2.2)
+        d0, d1 = self.p.get("drift", (0.0, 1.0))
+        k = ease_in(span(lerp(d0, d1, u), 0.25, 1.0), 2.2)
         ang = np.radians(-20 + 50 * u)
         mx0 = ex + orb_r * np.cos(ang)
         my0 = ey + orb_r * 0.32 * np.sin(ang)

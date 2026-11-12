@@ -56,13 +56,15 @@ class Planet(Shot):
         p = self.p
         body = p["body"]
         zoom = _lp(p.get("zoom", (1, 1)), u)
-        img, _ = space_frame(2200 + 300 * u, 1100 + 80 * u, 1.0)
+        img, _ = space_frame(2200 + 300 * u, 1100 + 80 * u, zoom ** 0.7, angle=2 * u)
         img *= 0.9
         R = {"neptune": 330, "jupiter": 420, "saturn": 250}[body] * zoom
         (ax, ay), (bx, by) = p["path"]
         lu = smoother(span(u, 0.0, 1.0))
         lx, ly = lerp(ax, bx, lu) * W, H / 2 + lerp(ay, by, lu) * H
         pull = ease_in(span(u, 0.55, 1.0), 2.4) if body == "neptune" else ease_in(span(u, 0.7, 1.0), 2.0) * 0.35
+        if not p.get("pull", True):
+            pull = 0.0
         dirx, diry = (bx - ax), (by - ay)
         n = np.hypot(dirx, diry) + 1e-6
         pcx = W / 2 + 40 + dirx / n * pull * W * 0.55
@@ -83,7 +85,7 @@ class Earth(Shot):
     def render(self, u, t, fi):
         p = self.p
         zoom = _lp(p.get("zoom", (1, 1)), u)
-        img, _ = space_frame(1700 - 200 * u, 2100, 1.0)
+        img, _ = space_frame(1700 - 200 * u, 2100, zoom ** 0.7, angle=-2 * u)
         R = 420 * zoom
         spin = 3.2 + t * 0.05
         light = np.array([-0.8, 0.3, 0.55]) if not p.get("nightside") else np.array([0.9, 0.25, -0.45])
@@ -100,6 +102,11 @@ class Earth(Shot):
             kw["lights_fade"] = float(1 - smooth(span(f, 0.25, 0.95)))
             exposure = 0.35 - 0.2 * f
             light = np.array([-0.95, 0.15, 0.2])
+        if p.get("scorch"):
+            kw["scorch"] = p["scorch"]
+            exposure = 1.5
+        if p.get("lights_cut"):
+            kw["lights_cut"] = float(p["lights_cut"])
         render_planet(img, W / 2, H / 2 + 10, R, "earth", spin=spin, tilt=0.38, light=tuple(light), exposure=exposure, **kw)
         if p.get("lens"):
             lx, ly = p["lens"]
@@ -129,10 +136,12 @@ class Leave(Shot):
     """Earth leaves the Sun behind: sunlight falls with the inverse square of distance."""
 
     def render(self, u, t, fi):
+        ta, tb = self.p.get("t", (0.0, 1.0))
+        u = lerp(ta, tb, u)
         k = smoother(span(u, 0.05, 0.98))
         d = 10 ** lerp(0.0, 1.72, k)  # 1 AU → ~52 AU
         flux = 1.0 / d ** 2
-        img, _ = space_frame(4300 - 200 * u, 1300, 1.0)
+        img, _ = space_frame(4300 - 200 * u, 1300, 1.0 + 0.04 * u, angle=1.5 * u)
         img *= 0.8
         sx, sy = 1380, 360
         glow_dot(img, sx, sy, (1.0, 0.92, 0.8), 6 + 30 * flux ** 0.5, 40 * flux ** 0.5 + 3)
@@ -272,12 +281,12 @@ class Spaghetti(Shot):
         zc = yr * np.sin(inc) + z * np.cos(inc)
         cam_d = lerp(5.2, 3.6, smooth(ph))
         depth = cam_d + zc
-        fpx = 980
+        fpx = lerp(1000, 1750, smooth(span(ph, 0.25, 0.7)))
         sx = W / 2 + xr / depth * fpx
         sy = H / 2 + 60 - yc / depth * fpx
         te = 0.62 / cam_d * fpx * 0.9
         bx, by = W / 2, H / 2 + 60
-        img, _ = space_frame(2600 + 400 * ph, 1700, 1.0, lenses=[(bx, by, te)])
+        img, _ = space_frame(2600 + 400 * ph + np.degrees(yaw) * 3, 1700, (5.2 / cam_d) ** 0.5, lenses=[(bx, by, te)])
         img *= 0.7
         com = P.mean(0)
         spread = np.std(np.linalg.norm(P - com, axis=1))

@@ -5,6 +5,7 @@ import cv2
 from .core import TEX, clamp, smooth, span, blur, fast_blur
 
 _TEX = {}
+_CITYN = None
 _GRAN = None
 
 
@@ -34,16 +35,20 @@ def _rot(nx, ny, nz, tilt, lon):
 
 
 def render_planet(out, cx, cy, R, body="earth", spin=0.0, tilt=0.35, light=(-0.6, 0.25, 0.75),
-                  night=1.0, clouds=True, atmo=None, ice=0.0, scorch=0.0, lights_fade=1.0, exposure=1.0, roll=0.0):
+                  night=1.0, clouds=True, atmo=None, ice=0.0, scorch=0.0, lights_fade=1.0, exposure=1.0, roll=0.0,
+                  stretch=1.0, emit=None, lights_cut=0.0):
     """Composite a lit planet into `out` (HxWx3 float, additive-aware). Returns (out, alpha)."""
     H, W = out.shape[:2]
-    pad = int(R * 0.25) + 6
+    pad = int(R * 0.25 * max(1.0, stretch)) + int(R * (max(1.0, stretch) - 1)) + 6
     x0, x1 = int(max(0, cx - R - pad)), int(min(W, cx + R + pad))
     y0, y1 = int(max(0, cy - R - pad)), int(min(H, cy + R + pad))
     if x1 <= x0 or y1 <= y0:
         return out, np.zeros((H, W), np.float32)
     ys, xs = np.mgrid[y0:y1, x0:x1].astype(np.float32)
     dx, dy = (xs - cx) / R, -(ys - cy) / R
+    if stretch != 1.0:
+        dx = dx / stretch
+        dy = dy * stretch ** 0.5
     if roll:
         cr, sr = np.cos(roll), np.sin(roll)
         dx, dy = dx * cr - dy * sr, dx * sr + dy * cr
@@ -57,7 +62,7 @@ def render_planet(out, cx, cy, R, body="earth", spin=0.0, tilt=0.35, light=(-0.6
     ndl = dx * L[0] + dy * L[1] + nz * L[2]
     tw = 4096 if R > 300 else 2048
     names = dict(earth="8k_earth_daymap.jpg", neptune="2k_neptune.jpg", jupiter="8k_jupiter.jpg", moon="8k_moon.jpg",
-                 mars="2k_mars.jpg", saturn="8k_saturn.jpg", uranus="2k_uranus.jpg", sun="2k_sun.jpg")
+                 mars="2k_mars.jpg", saturn="8k_saturn.jpg", uranus="2k_uranus.jpg", sun="2k_sun.jpg", venus="2k_venus_atmosphere.jpg", mercury="2k_mercury.jpg")
     day = tex(names[body], tw)
     th, twd = day.shape[:2]
     u = ((lo / (2 * np.pi)) % 1.0) * twd
@@ -95,7 +100,18 @@ def render_planet(out, cx, cy, R, body="earth", spin=0.0, tilt=0.35, light=(-0.6
         if night > 0:
             nl = cv2.remap(tex("8k_earth_nightmap.jpg", tw), mu, mv, cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
             dark = (1 - smooth(span(ndl, -0.15, 0.1)))[..., None]
+            if lights_cut > 0:
+                global _CITYN
+                if _CITYN is None:
+                    from .core import fbm
+                    _CITYN = fbm(2048, 1024, scale=7, seed=55, octaves=2)
+                cn = cv2.remap(_CITYN, (mu * 2048 / twd).astype(np.float32), (mv * 1024 / th).astype(np.float32), cv2.INTER_NEAREST, borderMode=cv2.BORDER_WRAP)
+                nl = nl * (cn > lights_cut)[..., None]
             lit += nl * dark * np.array([1.6, 1.15, 0.65], np.float32) * night * lights_fade * 2.2
+    if emit is not None:
+        etex, ecol, estr = emit
+        ev = cv2.remap(etex, (mu * etex.shape[1] / twd).astype(np.float32), (mv * etex.shape[0] / th).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
+        lit += ev[..., None] * np.asarray(ecol, np.float32) * estr
     # limb darkening for gas giants
     if body in ("neptune", "jupiter", "uranus", "saturn"):
         lit *= (0.55 + 0.45 * nz ** 0.5)[..., None]
@@ -197,3 +213,18 @@ def render_rings(out, cx, cy, R, tilt=0.32, front=True, roll=-0.12, exposure=1.0
     reg = out[y0:y1, x0:x1]
     out[y0:y1, x0:x1] = reg * (1 - a[..., None] * 0.92) + c * a[..., None]
     return out
+
+
+_COAST = None
+
+
+def coast_mask():
+    """Coastline glow map (equirectangular, 2048x1024) derived from the day texture's ocean colour."""
+    global _COAST
+    if _COAST is None:
+        d = tex("8k_earth_daymap.jpg", 2048)
+        ocean = ((d[..., 2] - d[..., 0] * 1.1) > 0.02).astype(np.uint8)
+        ocean = cv2.morphologyEx(ocean, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+        edge = cv2.morphologyEx(ocean, cv2.MORPH_GRADIENT, np.ones((3, 3), np.uint8)).astype(np.float32)
+        _COAST = np.clip(cv2.GaussianBlur(edge, (0, 0), 1.2) * 2.5, 0, 1)
+    return _COAST

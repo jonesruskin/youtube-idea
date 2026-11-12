@@ -32,11 +32,29 @@ def font(kind, size):
     return _FONT[k]
 
 
+_CMAP = {}
+
+
+class MissingGlyph(Exception):
+    pass
+
+
+def check_glyphs(text, kind):
+    """Hard guard: every character must exist in the font, otherwise viewers see empty boxes (tofu)."""
+    if kind not in _CMAP:
+        from fontTools.ttLib import TTFont
+        _CMAP[kind] = set(TTFont(FONT_FILES[kind]).getBestCmap().keys())
+    missing = [c for c in text if c.strip() and ord(c) not in _CMAP[kind]]
+    if missing:
+        raise MissingGlyph(f"font '{kind}' has no glyph for {missing!r} in {text!r}")
+
+
 def sprite(text, kind, size, tracking=0.0):
     """Alpha mask (float32) of text, with letter-spacing in em."""
     k = (text, kind, size, round(tracking, 3))
     if k in _SPRITE:
         return _SPRITE[k]
+    check_glyphs(text, kind)
     f = font(kind, size)
     ss = 2  # supersample for crisp edges
     fs = font(kind, size * ss)
@@ -57,6 +75,13 @@ def sprite(text, kind, size, tracking=0.0):
     return a
 
 
+def _qa_log(msg):
+    p = os.environ.get("QA_LOG")
+    if p:
+        with open(p, "a") as f:
+            f.write(os.environ.get("QA_CTX", "?") + " | " + msg + "\n")
+
+
 def put(img, a, x, y, color=(1, 1, 1), alpha=1.0, anchor="c", glow=0.0):
     """Composite a text mask; (x,y) is the anchor point. Values are HDR-friendly (colour can exceed 1)."""
     if alpha <= 0.002:
@@ -74,6 +99,8 @@ def put(img, a, x, y, color=(1, 1, 1), alpha=1.0, anchor="c", glow=0.0):
         y0 = int(round(y - h))
     else:
         y0 = int(round(y - h / 2))
+    if alpha > 0.5 and (x0 < 24 or y0 < 16 or x0 + w > W - 24 or y0 + h > H - 16):
+        _qa_log(f"OFFSCREEN text at x={x0}..{x0 + w}, y={y0}..{y0 + h}")
     X0, Y0, X1, Y1 = max(0, x0), max(0, y0), min(W, x0 + w), min(H, y0 + h)
     if X1 <= X0 or Y1 <= Y0:
         return img
@@ -132,15 +159,15 @@ def card(img, c, lt, seg_dur):
         sl = sprite(c["text"], "light", 76, -0.01)
         put(img, sl, x - 2 + 30 * (1 - a_in), H - 222, WHITE, a, "lt")
     elif kind == "fate":
-        a_in = _reveal(lt, 0.2, 1.2)
-        a = a_in * (1 - smooth(span(lt, 4.2, 5.0)))
+        a_in = _reveal(lt, 0.15, 0.8)
+        a = a_in * (1 - smooth(span(lt, 2.2, 2.8)))
         if a <= 0:
             return img
-        img = dim_scrim(img, 0.45 * a)
-        put(img, sprite(c["num"], "mono6", 30, 0.5), W / 2, H / 2 - 78, ACC, a)
-        put(img, sprite(c["text"], "thin", 132, 0.06), W / 2, H / 2 + 22, WHITE, a, glow=0.15)
+        img = dim_scrim(img, 0.45 * a, y_center=H - 230)
+        put(img, sprite(c["num"], "mono6", 30, 0.5), W / 2, H - 330, ACC, a)
+        put(img, sprite(c["text"], "thin", 120, 0.06), W / 2, H - 240, WHITE, a, glow=0.15)
         lw = 220 * ease_out(span(lt, 0.4, 1.6))
-        hline(img, W / 2 - lw, W / 2 + lw, H / 2 + 112, WHITE, 0.5 * a, 1)
+        hline(img, W / 2 - lw, W / 2 + lw, H - 160, WHITE, 0.5 * a, 1)
     elif kind == "stat":
         a = _reveal(lt, at, 1.0) * fade_out
         if a <= 0:

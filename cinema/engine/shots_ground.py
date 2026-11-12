@@ -209,94 +209,125 @@ class Ground(Shot):
 
 
 class Tide(Shot):
-    exposure = 1.35
+    """Harbour at dusk: a city across the bay behind a quay wall; the sea climbs the wall, then the city."""
+    exposure = 1.4
     grade = ((0.01, 0.012, 0.03), (1.0, 0.98, 0.98))
 
     def __init__(self, p, dur, seg_start=0.0):
         super().__init__(p, dur, seg_start)
         rng = np.random.default_rng(14)
-        self.hor = int(H * 0.5)
-        self.base = int(H * 0.62)
-        S = 2
+        self.hor = int(H * 0.52)
+        self.quay = int(H * 0.60)          # top of the quay wall on the far shore (= normal city ground level)
+        S = 3
         img = Image.new("L", (W * S, H * S), 0)
-        win = np.zeros((H, W), np.float32)
         d = ImageDraw.Draw(img)
-        x = 700
-        self.bld = []
-        while x < W + 40:
-            bw = rng.integers(40, 110)
-            bh = rng.integers(60, 330) * (0.5 + 0.6 * ((x - 700) / (W - 700)))
-            d.rectangle([x * S, (self.base - bh) * S, (x + bw) * S, self.base * S + 200], fill=255)
-            if rng.random() < 0.2:
-                d.rectangle([(x + bw / 2 - 2) * S, (self.base - bh - 30) * S, (x + bw / 2 + 2) * S, (self.base - bh) * S], fill=255)
-            for wy in range(int(self.base - bh + 8), self.base - 4, 9):
-                for wx in range(x + 5, x + bw - 5, 8):
-                    if rng.random() < 0.38:
-                        win[wy:wy + 4, wx:wx + 3] = rng.uniform(0.4, 1.0)
-            x += bw + rng.integers(-6, 10)
+        win = np.zeros((H, W), np.float32)
+        far = Image.new("L", (W * S, H * S), 0)
+        df = ImageDraw.Draw(far)
+        # distant hazy skyline layer
+        x = -20
+        while x < W:
+            bw, bh = rng.integers(30, 70), rng.integers(30, 120)
+            df.rectangle([x * S, (self.quay - bh) * S, (x + bw) * S, (self.quay + 4) * S], fill=255)
+            x += bw + rng.integers(0, 12)
+        x = 520
+        while x < W + 60:
+            bw = int(rng.integers(46, 120))
+            bh = float(rng.integers(90, 360)) * (0.55 + 0.6 * ((x - 520) / (W - 520)))
+            top = self.quay - bh
+            d.rectangle([x * S, top * S, (x + bw) * S, (self.quay + 2) * S], fill=255)
+            # setbacks / crowns / antennas
+            if rng.random() < 0.5:
+                inset = bw * rng.uniform(0.15, 0.3)
+                h2 = rng.uniform(20, 70)
+                d.rectangle([(x + inset) * S, (top - h2) * S, (x + bw - inset) * S, top * S], fill=255)
+                top -= h2
+            if rng.random() < 0.3:
+                d.polygon([(x + bw * 0.3) * S, top * S, (x + bw * 0.5) * S, (top - rng.uniform(25, 60)) * S, (x + bw * 0.7) * S, top * S], fill=255)
+            if rng.random() < 0.25:
+                d.line([((x + bw / 2) * S, top * S), ((x + bw / 2) * S, (top - 50) * S)], fill=255, width=S * 2)
+            for wy in range(int(top + 10), self.quay - 6, 11):
+                for wx in range(x + 6, x + bw - 6, 9):
+                    if rng.random() < 0.3:
+                        win[wy:wy + 5, wx:wx + 4] = rng.uniform(0.35, 1.0)
+            x += bw + int(rng.integers(-10, 14))
         self.city_a = np.asarray(img.resize((W, H), Image.LANCZOS), np.float32) / 255.0
+        self.far_a = np.asarray(far.resize((W, H), Image.LANCZOS), np.float32) / 255.0 * 0.9
         self.win = win * self.city_a
         y = np.arange(H, dtype=np.float32)[:, None, None]
         hn = clamp(y / self.hor)
-        top, mid, low = hex2rgb("#060b22"), hex2rgb("#2a2c5a"), hex2rgb("#d47a4a")
-        self.sky = (np.where(hn < 0.55, lerp(top, mid, hn / 0.55), lerp(mid, low, ((hn - 0.55) / 0.45) ** 1.5)) * 0.6).astype(np.float32)
-        self.noise = [cv2.resize(fbm(W // 14, H // 2, scale=s, seed=40 + i, octaves=4), (W, H // 2), interpolation=cv2.INTER_CUBIC) for i, s in enumerate((14, 5))]
+        top_c, mid_c, low_c = hex2rgb("#050a20"), hex2rgb("#2a2c5a"), hex2rgb("#d0784a")
+        sky = np.where(hn < 0.55, lerp(top_c, mid_c, clamp(hn / 0.55)), lerp(mid_c, low_c, clamp((hn - 0.55) / 0.45) ** 1.5))
+        self.sky = (np.nan_to_num(sky) * 0.6).astype(np.float32)
+        self.noise = [cv2.resize(fbm(W // 14, H // 2, scale=sc, seed=40 + i, octaves=4), (W, H // 2), interpolation=cv2.INTER_CUBIC) for i, sc in enumerate((14, 5))]
+        self.lamps = [(x, H - 150) for x in range(120, W, 330)]
 
     def render(self, u, t, fi):
         rise = ease_in(span(u, 0.05, 0.95), 2.2)
         metres = 0.3 + rise * 38
-        lvl = self.base - 4 - rise * 150 + 4 * np.sin(t * 0.8)
+        if hasattr(self, "metres"):
+            metres = self.metres
+        # water line: normal sea sits 40 px below the quay top; 38 m reaches ~170 px up the buildings
+        lvl = self.quay + 40 - (metres / 38.0) * 210 + 3 * np.sin(t * 0.9)
         img = np.broadcast_to(self.sky, (H, W, 3)).copy()
-        stars, _ = space_frame(1800, 900, 1.6, angle=10)
+        stars, _ = space_frame(1800 + 20 * u, 900, 1.6, angle=10)
         img += stars * 0.35 * (1 - clamp(np.arange(H)[:, None, None] / self.hor) ** 1.5)
-        # the Moon low over the sea, and the tiny lens high above
         glow_dot(img, 420, 250, (1.0, 0.95, 0.85), 34, 0.06)
         mxs, mys = grid()
         mm = clamp(30 - np.sqrt((mxs - 420) ** 2 + (mys - 250) ** 2))
         img = img * (1 - mm[..., None]) + mm[..., None] * np.array([1.1, 1.05, 0.95], np.float32)
         img = lens_image(img, 1180, 140, 26, shadow=0.3)
-        # city above the water
+        hz = self.sky[self.hor - 4][0]
+        img = img * (1 - self.far_a[..., None]) + (hz * 0.55) * self.far_a[..., None]
         ys = np.arange(H, dtype=np.float32)[:, None]
-        above = clamp(lvl - ys + 0.5)
-        ca = self.city_a * above
-        lights = self.win * above * (0.8 + 0.2 * np.sin(fi * 0.05 + mxs * 0.01))
-        img = img * (1 - ca[..., None]) + np.array([0.012, 0.012, 0.02], np.float32) * ca[..., None]
-        img += lights[..., None] * np.array([1.6, 1.15, 0.6], np.float32) * 1.2
-        # water: reflection of everything above the waterline, rippled
+        ca = self.city_a
+        img = img * (1 - ca[..., None]) + (np.array([0.01, 0.011, 0.02], np.float32) + hz * 0.08) * ca[..., None]
+        img += (self.win * (0.85 + 0.15 * np.sin(fi * 0.05 + mxs * 0.013)))[..., None] * np.array([1.6, 1.15, 0.6], np.float32) * 1.1
+        # quay wall
+        quay = ((ys > self.quay) & (ys < self.quay + 70)).astype(np.float32)
+        img = img * (1 - quay[..., None]) + np.array([0.012, 0.012, 0.016], np.float32) * quay[..., None]
+        # sea
         Ly = int(lvl)
         water_h = H - Ly
-        n1 = self.noise[0][: water_h, :] if water_h <= H // 2 else cv2.resize(self.noise[0], (W, water_h))
-        n2 = self.noise[1][: water_h, :] if water_h <= H // 2 else cv2.resize(self.noise[1], (W, water_h))
+        n1 = cv2.resize(self.noise[0], (W, water_h)) if water_h != H // 2 else self.noise[0]
+        n2 = cv2.resize(self.noise[1], (W, water_h)) if water_h != H // 2 else self.noise[1]
         yy = np.arange(water_h, dtype=np.float32)[:, None]
         persp = (yy + 8) / water_h
-        off_x = (np.roll(n2, int(t * 40), axis=1) - 0.5) * 18 * persp
-        src_y = np.clip(Ly - yy * 0.9 - 1 + (n1 - 0.5) * 10 * persp, 0, H - 1)
+        off_x = (np.roll(n2, int(t * 40), axis=1) - 0.5) * 30 * persp
+        src_y = np.clip(Ly - yy * 0.9 - 1 + (n1 - 0.5) * 16 * persp, 0, H - 1)
         mx = (np.arange(W, dtype=np.float32)[None, :] + off_x).astype(np.float32)
         refl = cv2.remap(img, mx, np.broadcast_to(src_y, (water_h, W)).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
-        refl = cv2.blur(refl, (3, 15))
+        refl = cv2.blur(refl, (5, 31))
         sheen = smooth(span(np.roll(n2, int(t * 25), axis=1), 0.7, 0.85)) * 0.12 * (1 - persp)
-        water = refl * (0.38 - 0.2 * persp)[..., None] + np.array([0.005, 0.012, 0.022], np.float32) + sheen[..., None] * self.sky[min(H - 1, self.hor)][0]
+        water = refl * (0.32 - 0.18 * persp)[..., None] + np.array([0.004, 0.01, 0.02], np.float32) + sheen[..., None] * hz
+        # foam where the water meets walls and buildings
+        foam = np.exp(-yy / 3.0) * (0.5 + 0.5 * np.sin(np.arange(W)[None, :] * 0.05 + t * 3))
+        water += foam[..., None] * np.array([0.25, 0.26, 0.28], np.float32) * 0.5
         img[Ly:] = water
-        # foreground sea-wall railing silhouette
+        # near promenade railing + lamps (foreground, unchanged by the tide until the very end)
         rail = np.zeros((H, W), np.float32)
         rail[H - 120:H - 114, :] = 1
         rail[H - 60:, :] = 1
         for x in range(30, W, 130):
             rail[H - 120:H - 60, x:x + 6] = 1
-        img = img * (1 - rail[..., None]) + 0.002 * rail[..., None]
+        for (lx, ly) in self.lamps:
+            rail[ly - 160:ly, lx:lx + 5] = 1
+        img = img * (1 - rail[..., None]) + 0.003 * rail[..., None]
+        for (lx, ly) in self.lamps:
+            glow_dot(img, lx + 2, ly - 165, (1.0, 0.75, 0.4), 4, 2.0)
+            glow_dot(img, lx + 2, ly - 165, (1.0, 0.7, 0.35), 30, 0.12)
         # tide gauge HUD
-        a = smooth(span(u, 0.03, 0.12))
+        a = smooth(span(u, 0.0, 0.08)) if not hasattr(self, "metres") else 1.0
         gx, gy0, gy1 = 150, 260, 760
-        cards.hline(img, gx - 1, gx + 1, gy0, (0.8, 0.82, 0.9), 0, 1)
         img[gy0:gy1, gx:gx + 2] = img[gy0:gy1, gx:gx + 2] * (1 - 0.5 * a) + 0.5 * a
         for m in (0, 10, 20, 30, 40):
             yy_ = gy1 - (gy1 - gy0) * m / 40
             cards.hline(img, gx - 10, gx, yy_, (0.85, 0.88, 0.95), 0.6 * a, 1)
-            cards.label(img, f"{m} m", gx - 18, yy_, (0.75, 0.78, 0.86), 0.7 * a, 16, anchor="rc")
-        my = gy1 - (gy1 - gy0) * metres / 40
+            cards.label(img, f"{m} m", gx - 18, yy_, (0.75, 0.78, 0.86), 0.7 * a, 18, anchor="rc")
+        my = gy1 - (gy1 - gy0) * min(metres, 40) / 40
         img[int(my):gy1, gx - 2:gx + 4] = img[int(my):gy1, gx - 2:gx + 4] * (1 - a) + np.array([1.0, 0.62, 0.32], np.float32) * a
-        cards.label(img, "TIDE", gx + 24, my - 22, (0.75, 0.78, 0.86), a, 18)
-        cards.label(img, f"+{metres:.1f} m", gx + 24, my + 12, (1.0, 0.97, 0.93), a, 34, kind="light", tracking=0.02)
+        cards.label(img, "TIDE", gx + 24, my - 26, (0.75, 0.78, 0.86), a, 20)
+        cards.label(img, f"+{metres:.1f} m", gx + 24, my + 14, (1.0, 0.97, 0.93), a, 40, kind="light", tracking=0.02)
         return img
 
 

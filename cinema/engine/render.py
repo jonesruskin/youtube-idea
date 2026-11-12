@@ -13,9 +13,11 @@ from . import cards
 from .shots_space import Lens, Planet, Earth, Sun, Leave, Spaghetti
 from .shots_ground import Ground, Tide, Ice, Vent
 from .shots_diagram import System, Orbit, Galaxy, Moon
+from .ground2 import Night
+from . import beats as beatmod
 
 SHOTS = dict(lens=Lens, planet=Planet, earth=Earth, sun=Sun, leave=Leave, spaghetti=Spaghetti, ground=Ground,
-             tide=Tide, ice=Ice, vent=Vent, system=System, orbit=Orbit, galaxy=Galaxy, moon=Moon)
+             tide=Tide, ice=Ice, vent=Vent, system=System, orbit=Orbit, galaxy=Galaxy, moon=Moon, night=Night)
 
 
 def load(ep):
@@ -41,45 +43,96 @@ def boundary_fades(segs):
     return segs
 
 
-def frame(shot, seg, i, n):
-    lt = i / FPS
-    u = i / max(1, n - 1)
-    img = shot.render(u, seg["start"] + lt, i)
-    out = post(img, i + int(seg["start"] * FPS), **shot.post_kw()).astype(np.float32) / 255.0
-    if seg.get("card"):
-        out = cards.card(out, seg["card"], lt, seg["dur"])
-    k = 1.0
-    if seg["fade_in"]:
-        k *= smooth(span(lt, 0, seg["fade_in"]))
-    if seg["fade_out"]:
-        k *= 1 - smooth(span(lt, seg["dur"] - seg["fade_out"], seg["dur"]))
-    out = np.clip(out * k, 0, 1)
-    return (out * 255 + 0.5).astype(np.uint8)
+class SegRenderer:
+    """Renders one segment: either line-by-line beats (preferred) or the legacy single shot."""
+
+    def __init__(self, seg, ep):
+        self.seg = seg
+        self.n = int(round(seg["dur"] * FPS))
+        self.beats = None
+        bm = _beatsheet(ep)
+        if bm is not None and seg["id"] in bm.BEATS:
+            words = _words(ep).get(seg["id"], [])
+            self.beats = beatmod.layout(seg, bm.BEATS[seg["id"]], words)
+            self.ctxs = [beatmod.Ctx(b, seg) for b in self.beats]
+        else:
+            self.shot = SHOTS[seg["shot"]["type"]](seg["shot"], seg["dur"], seg["start"])
+
+    def frame(self, i):
+        seg = self.seg
+        lt = i / FPS
+        if self.beats is not None:
+            out = beatmod.render_frame(seg, self.beats, self.ctxs, lt, i)
+            c = seg.get("card") or {}
+            if c.get("kind") in ("chapter", "fate", "title", "endcard"):
+                out = cards.card(out, c, lt, seg["dur"])
+        else:
+            u = i / max(1, self.n - 1)
+            img = self.shot.render(u, seg["start"] + lt, i)
+            out = post(img, i + int(seg["start"] * FPS), **self.shot.post_kw()).astype(np.float32) / 255.0
+            if seg.get("card"):
+                out = cards.card(out, seg["card"], lt, seg["dur"])
+        k = 1.0
+        if seg["fade_in"]:
+            k *= smooth(span(lt, 0, seg["fade_in"]))
+        if seg["fade_out"]:
+            k *= 1 - smooth(span(lt, seg["dur"] - seg["fade_out"], seg["dur"]))
+        out = np.clip(out * k, 0, 1)
+        return (out * 255 + 0.5).astype(np.uint8)
+
+
+_BM, _WD = {}, {}
+
+
+def _beatsheet(ep):
+    if ep not in _BM:
+        p = os.path.join(ROOT, ep, "beats.py")
+        if os.path.exists(p):
+            import sys as _s
+            if ROOT not in _s.path:
+                _s.path.insert(0, ROOT)
+            _BM[ep] = importlib.import_module(ep + ".beats")
+        else:
+            _BM[ep] = None
+    return _BM[ep]
+
+
+def _words(ep):
+    if ep not in _WD:
+        p = os.path.join(ROOT, "build", ep, "voice", "words.json")
+        _WD[ep] = json.load(open(p)) if os.path.exists(p) else {}
+    return _WD[ep]
 
 
 def render_segment(args):
-    seg, outdir = args
+    seg, outdir, ep = args
     t0 = time.time()
-    n = int(round(seg["dur"] * FPS))
-    shot = SHOTS[seg["shot"]["type"]](seg["shot"], seg["dur"], seg["start"])
+    R = SegRenderer(seg, ep)
     path = os.path.join(outdir, seg["id"] + ".mp4")
     tmp = path + ".part.mp4"
     ff = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
                            "-c:v", "libx264", "-preset", "medium", "-crf", "16", "-pix_fmt", "yuv420p", "-tune", "grain", tmp], stdin=subprocess.PIPE)
-    for i in range(n):
-        ff.stdin.write(frame(shot, seg, i, n).tobytes())
+    for i in range(R.n):
+        ff.stdin.write(R.frame(i).tobytes())
     ff.stdin.close()
     ff.wait()
     os.replace(tmp, path)
-    return seg["id"], n, time.time() - t0
+    return seg["id"], R.n, time.time() - t0
 
 
-def stills(seg, outdir):
-    n = int(round(seg["dur"] * FPS))
-    shot = SHOTS[seg["shot"]["type"]](seg["shot"], seg["dur"], seg["start"])
-    for k, f in enumerate((0.12, 0.5, 0.9)):
-        i = int(f * (n - 1))
-        cv2.imwrite(os.path.join(outdir, f"{seg['id']}_{k}.jpg"), frame(shot, seg, i, n)[..., ::-1], [cv2.IMWRITE_JPEG_QUALITY, 90])
+def stills(seg, outdir, ep):
+    R = SegRenderer(seg, ep)
+    if R.beats is None:
+        for k, f in enumerate((0.12, 0.5, 0.9)):
+            i = int(f * (R.n - 1))
+            cv2.imwrite(os.path.join(outdir, f"{seg['id']}_{k}.jpg"), R.frame(i)[..., ::-1], [cv2.IMWRITE_JPEG_QUALITY, 88])
+        return seg["id"]
+    for bi, b in enumerate(R.beats):
+        os.environ["QA_CTX"] = f"{seg['id']}#{bi}"
+        for k, f in enumerate((0.15, 0.55, 0.92)):
+            i = int((b.t0 + f * (b.t1 - b.t0)) * FPS)
+            i = min(R.n - 1, max(0, i))
+            cv2.imwrite(os.path.join(outdir, f"{seg['id']}_{bi:02d}_{k}.jpg"), R.frame(i)[..., ::-1], [cv2.IMWRITE_JPEG_QUALITY, 88])
     return seg["id"]
 
 
@@ -106,7 +159,7 @@ def main():
         out = os.path.join(ROOT, "build", a.ep, "stills")
         os.makedirs(out, exist_ok=True)
         with Pool(a.jobs) as p:
-            for sid in p.imap_unordered(_still_job, [(s, out) for s in todo]):
+            for sid in p.imap_unordered(_still_job, [(s, out, a.ep) for s in todo]):
                 print("still", sid, flush=True)
         return
     out = os.path.join(ROOT, "build", a.ep, "segments")
@@ -114,7 +167,7 @@ def main():
     todo.sort(key=lambda s: -s["dur"])
     t0 = time.time()
     with Pool(a.jobs) as p:
-        for sid, n, dt in p.imap_unordered(render_segment, [(s, out) for s in todo]):
+        for sid, n, dt in p.imap_unordered(render_segment, [(s, out, a.ep) for s in todo]):
             print(f"{sid:8s} {n:5d} frames  {dt:6.1f}s  ({n / dt:.2f} fps)  elapsed {time.time() - t0:.0f}s", flush=True)
     # concatenate in story order
     lst = os.path.join(ROOT, "build", a.ep, "segments.txt")
