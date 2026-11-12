@@ -15,24 +15,45 @@ def ts(t, srt=True):
     return f"{h:02d}:{m:02d}:{s:06.3f}".replace(".", ",") if srt else (f"{m}:{int(s):02d}" if h == 0 else f"{h}:{m:02d}:{int(s):02d}")
 
 
-# captions: split each spoken line into chunks of <= 2 x 42 chars, timed by character share
+# captions: split each spoken line into balanced cues that wrap to <= 2 x 42 chars, preferring punctuation breaks
+def _wrap(c):
+    return textwrap.wrap(c, 42, break_on_hyphens=False)
+
+
+def split_line(text):
+    w = text.split()
+    n = len(w)
+    best = {0: (0.0, [])}
+    for i in range(1, n + 1):
+        cands = []
+        for j in range(i):
+            if j not in best:
+                continue
+            c = " ".join(w[j:i])
+            if len(_wrap(c)) > 2:
+                continue
+            cost = best[j][0] + 1000 + (60 - len(c)) ** 2 * 0.2   # fewer cues, each comfortably full
+            if i < n and not c.endswith((",", ".", "?", "!", ";", ":")):
+                cost += 400                                       # break at punctuation when possible
+            if len(c) < 14 and n > 1:
+                cost += 3000                                      # no orphan one-word cues
+            cands.append((cost, best[j][1] + [c]))
+        if cands:
+            best[i] = min(cands, key=lambda x: x[0])
+    return best[n][1]
+
+
 cues = []
 for seg in mod.SEGMENTS:
     t = segs[seg["id"]]
     for ln in t["lines"]:
-        words, chunks, cur = ln["text"].split(), [], ""
-        for w in words:
-            if len(cur) + len(w) + 1 > 84:
-                chunks.append(cur); cur = w
-            else:
-                cur = (cur + " " + w).strip()
-        chunks.append(cur)
+        chunks = split_line(ln["text"])
         a, b = t["start"] + ln["start"], t["start"] + ln["end"]
         total = sum(len(c) for c in chunks)
         x = a
         for c in chunks:
             d = (b - a) * len(c) / total
-            cues.append((x, x + d, "\n".join(textwrap.wrap(c, 42))))
+            cues.append((x, x + d, "\n".join(_wrap(c))))
             x += d
 with open(os.path.join(out, "captions.srt"), "w") as f:
     for i, (a, b, txt) in enumerate(cues, 1):
