@@ -132,7 +132,9 @@ def text(img, s, x, y, size=24, color=WHITE, alpha=1.0, anchor="lc", kind="mono"
     dx = max(0, 40 - x0) - max(0, x0 + w - (W - 40))
     dy = max(0, 24 - y0) - max(0, y0 + h - (H - 24))
     if QA["key"] is not None and alpha > 0.5:
-        _qa_overlap(s, x0 + dx, y0 + dy, w, h)
+        ys, xs = np.nonzero(spr > 0.25)  # tight ink box, not the padded sprite
+        if len(xs):
+            _qa_overlap(s, x0 + dx + xs.min(), y0 + dy + ys.min(), xs.max() - xs.min() + 1, ys.max() - ys.min() + 1)
     return cards.put(img, spr, x + dx, y + dy, color, alpha, anchor, glow)
 
 
@@ -140,7 +142,7 @@ def text(img, s, x, y, size=24, color=WHITE, alpha=1.0, anchor="lc", kind="mono"
 QA = {"key": None, "boxes": [], "last": None}
 
 
-def _qa_overlap(s, x0, y0, w, h, pad=4):
+def _qa_overlap(s, x0, y0, w, h, pad=1):
     if QA["key"] != QA["last"]:
         QA["last"], QA["boxes"] = QA["key"], []
     a = (x0 + pad, y0 + pad, x0 + w - pad, y0 + h - pad)

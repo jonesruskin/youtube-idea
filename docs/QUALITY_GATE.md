@@ -20,6 +20,7 @@ python tools/qa.py <ep> post                   # automated post-render gate → 
 | Exposure | No unintended near-black frames, and ≤ 5% clipped pixels | Murky or blown-out frames hurt retention |
 | Glyphs | The text renderer raises an error if a character is missing from its font | The ☉ and ≈ symbols showed up as empty boxes in v1 |
 | Safe area | No explainer text leaves the title-safe area; labels are shifted back inside automatically | Labels were clipped at the frame edge in v1 |
+| Text collisions | No two labels' ink boxes overlap in any still (checked on the tight glyph bounds) | v2 review: EUROPA sat on IO; "CAUSE: NOTHING VISIBLE" sat on the chart's axis title |
 | Word sync | ≥ 50% of words are confirmed by line-level speech recognition; otherwise timing falls back to an estimate from the line timings | Speech recognition missed whole sentences on one segment |
 | Runtime | ≥ 8:00 | Mid-roll ads |
 | Black frames | No black gap ≥ 1 s | Accidental dead air |
@@ -43,6 +44,8 @@ Each item becomes a ✅ or a note in the QA report.
 - [ ] Reflections are soft and rippled, never mirror copies. *(v1: the tide city looked like a barcode with a mirrored copy.)*
 - [ ] Silhouettes read at phone size: a person, telescope, tree or house is clear in 1 second.
 - [ ] No text overlaps a chapter or ending card, another label, or an important subject. *(v1: "The Wanderer" sat on top of the timeline; a stat collided with a planet.)*
+- [ ] Labels never sit on top of the planet or object they describe. Place moon labels radially *outward* from the parent, put long labels on 2 lines beside the subject, and send callouts toward empty sky. *(v2 review: "THE SUN IS LOSING" and "COLDER THAN ANTARCTICA" ran across Earth's limb, and Ganymede's subtitle crossed Jupiter.)*
+- [ ] No lighting artefacts: when a shot is dimmed (freeze, night, eclipse), highlights dim with it. *(v2 review: ocean glint stayed at full strength on a darkened Earth and read as a white smudge. Specular is now scaled by exposure.)*
 - [ ] Text is legible on a phone. Labels are ≥ 22 px at 1080p after scaling, with a dark panel behind busy areas.
 - [ ] Diagrams are honest about scale. If true scale doesn't fit, zoom out or use an inset, and never draw an off-screen circle. *(v1: the Moon-for-scale circle was bigger than the screen.)*
 - [ ] Colour language is consistent: orange = black hole or key value, blue = Earth or water, red = danger or "no", green = "yes" or survives.
@@ -61,4 +64,5 @@ Each item becomes a ✅ or a note in the QA report.
 3. **Camera discipline.** Every zoom or pan goes through `Cam`, so stars, planets and diagrams move together.
 4. **Fonts lie.** Check glyphs automatically, and never assume a mono font has math symbols.
 5. **Speech recognition misses sentences.** Transcribe line by line, and fall back to line-timing estimates.
+7. **Review the finished cut at full resolution, not only contact sheets.** Thumbnails hide collisions. The v2 full-res pass found 5 defects that were invisible at contact-sheet size, and two of them led to new automated checks.
 6. **Run the gate before the long render.** It caught 8 glyph defects, 6 clipped labels and a 0-second beat in minutes, not hours.

@@ -263,7 +263,7 @@ def ogle_curve_over(ctx, img, t, u):
     img = hud.chart(L, img, x0, y0, w, h, xs, ys, prog(t, 0.2, 2.5), ACC, fade(t, 0.05), "2011  –  2012", "BRIGHTNESS OF A DISTANT STAR")
     img = hud.dimension(L, img, (x0 + w * 0.3, y0 + h + 40), (x0 + w * 0.7, y0 + h + 40), "SEVERAL MONTHS", fade(t, 1.5), prog(t, 1.5), WHITE)
     ti = ctx.w("invisible")
-    img = text(img, "CAUSE: NOTHING VISIBLE", x0 + w * 0.5, y0 - 30, 22, RED, fade(t, ti), "c", kind="mono6", tracking=0.25)
+    img = text(img, "CAUSE: NOTHING VISIBLE", x0 + w, y0 - 30, 22, RED, fade(t, ti), "rc", kind="mono6", tracking=0.25)
     return L.composite(img, 0.5)
 
 
