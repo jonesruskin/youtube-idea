@@ -8,21 +8,31 @@ The old episodes looked like clip-art and had no voice. The channels that earn t
 2. **Imagery that looks real.** NASA-style planets, real starfields and believable physics. Now: ray-cast textured planets, a procedural Milky Way and real gravitational lensing.
 3. **Credibility you can screenshot.** Now: every orbit comes from an actual N-body simulation, and every fact is sourced in the description. The simulation produced the twists (the Moon stripped from Earth, Venus captured, Saturn keeping its rings), so the story is something nobody else can copy.
 
-## Pipeline
+## Pipeline (v2: line-by-line visuals + quality gate)
+Every narration line gets its own explanatory visual. `ep_blackhole/beats.py` is the beat sheet: each line maps to a scene plus overlay, timed to the spoken words. Nothing uploads until `tools/qa.py` passes; see [docs/QUALITY_GATE.md](../docs/QUALITY_GATE.md).
 ```bash
 # one-time: python3.12 venv with kokoro + soundfile + en_core_web_sm (voice); any python with numpy opencv-python-headless pillow scipy soundfile (render)
 python tools/voice.py ep_blackhole              # narration → build/ep_blackhole/voice/*.wav + timeline.json
-python -m engine.render ep_blackhole --stills   # 3 review stills per shot → build/ep_blackhole/stills
+python tools/words.py ep_blackhole              # word timings (line-by-line speech recognition, audio untouched)
+QA_LOG=build/ep_blackhole/qa_text.log python -m engine.render ep_blackhole --stills   # 3 stills per beat
+python tools/qa.py ep_blackhole pre             # QUALITY GATE before the long render (+ review sheets)
 python -m engine.render ep_blackhole            # all shots, 4 processes → picture.mp4   (~1.5 h on 4 CPUs)
 python tools/score.py ep_blackhole              # original score + SFX, ducked under the voice → mix.wav
 python tools/metadata.py ep_blackhole           # captions.srt + metadata.md (titles, chapters, mid-rolls, sources)
 python tools/thumbnail.py                       # thumbnail.png
 tools/finalize.sh ep_blackhole                  # mux, -14 LUFS, copy to renders/ep_blackhole/
+python tools/qa.py ep_blackhole post            # QUALITY GATE on the finished video
 ```
 
 ## Layout
 ```
-ep_blackhole/script.py   the episode as data: narration lines, shot per segment, cards, music cues, science notes
+ep_blackhole/script.py   the episode as data: narration lines, cards, music cues, science notes
+ep_blackhole/beats.py    BEAT SHEET: one explanatory visual per narration line, synced to words
+ep_blackhole/vis.py      episode scene + overlay builders (ray diagram, timeline, force arrows, tides, moons...)
+engine/beats.py          beat layout, word alignment, crossfades
+engine/hud.py            explainer graphics: self-drawing lines, arrows, dimensions, charts, counters, icons
+engine/ground2.py        night-sky sets with sky/land integration (observatory, ridge, garden, trails, seasons)
+engine/scenes2.py        Cam (camera rule), telescope view, city aerial, cross-section, cutaway, ice descent
 engine/core.py           maths, noise, star rendering, bloom/filmic tonemap/grain post chain
 engine/space.py          procedural Milky Way canvas + point-lens gravitational lensing (inverse ray mapping)
 engine/planet.py         ray-cast planets: day/night/clouds/specular/atmosphere, Saturn's rings, the filtered Sun
