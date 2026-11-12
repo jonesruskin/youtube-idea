@@ -131,7 +131,23 @@ def text(img, s, x, y, size=24, color=WHITE, alpha=1.0, anchor="lc", kind="mono"
     y0 = y if "t" in anchor else (y - h if "b" in anchor else y - h / 2)
     dx = max(0, 40 - x0) - max(0, x0 + w - (W - 40))
     dy = max(0, 24 - y0) - max(0, y0 + h - (H - 24))
+    if QA["key"] is not None and alpha > 0.5:
+        _qa_overlap(s, x0 + dx, y0 + dy, w, h)
     return cards.put(img, spr, x + dx, y + dy, color, alpha, anchor, glow)
+
+
+# QA: text-on-text collision detection (active only while rendering stills with QA_LOG set)
+QA = {"key": None, "boxes": [], "last": None}
+
+
+def _qa_overlap(s, x0, y0, w, h, pad=4):
+    if QA["key"] != QA["last"]:
+        QA["last"], QA["boxes"] = QA["key"], []
+    a = (x0 + pad, y0 + pad, x0 + w - pad, y0 + h - pad)
+    for (o, b) in QA["boxes"]:
+        if a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3]:
+            cards._qa_log(f"TEXT OVERLAP '{s}' collides with '{o}'")
+    QA["boxes"].append((s, a))
 
 
 def typed(s, p):

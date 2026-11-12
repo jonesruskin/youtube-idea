@@ -96,7 +96,7 @@ def render_planet(out, cx, cy, R, body="earth", spin=0.0, tilt=0.35, light=(-0.6
         hn = np.sqrt(hx * hx + hy * hy + hz * hz)
         ndh = (dx * hx + dy * hy + nz * hz) / hn
         spec = np.maximum(ndh, 0) ** 160 * 0.9 + np.maximum(ndh, 0) ** 24 * 0.035
-        lit += (spec * ocean * terminator)[..., None] * np.array([1.0, 0.95, 0.85], np.float32)
+        lit += (spec * ocean * terminator * min(1.0, exposure))[..., None] * np.array([1.0, 0.95, 0.85], np.float32)
         if night > 0:
             nl = cv2.remap(tex("8k_earth_nightmap.jpg", tw), mu, mv, cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
             dark = (1 - smooth(span(ndl, -0.15, 0.1)))[..., None]

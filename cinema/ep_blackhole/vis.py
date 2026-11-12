@@ -337,16 +337,19 @@ def jupiter_moons_overlay(ctx, img, t, u):
     grip = 0.78 * scale
     a = fade(t, 0.3)
     L.ellipse((jx, jy), cam.r(grip), cam.r(grip * 0.42), ACC, 0.8 * a, 2, dash=10)
-    img = text(img, "JUPITER'S GRIP", jx - cam.r(grip) - 20, jy, 18, ACC, a, "rc", kind="mono6")
+    img = text(img, "JUPITER'S GRIP", jx, jy + cam.r(grip * 0.42) + 28, 18, ACC, a, "c", kind="mono6")
     for k, (name, aa, s) in enumerate(MOONS):
         L.ellipse((jx, jy), cam.r(aa * scale), cam.r(aa * scale * 0.42), DIM, 0.25 * a, 1)
     tc = ctx.w("closest")
     for name in ("IO", "EUROPA"):
         X, Y = pos[name]
-        img = text(img, name, X + 18, Y - 16, 18, GREEN, fade(t, tc), "lc", kind="mono6")
+        d = np.array([X - jx, Y - jy], np.float32)
+        d /= max(1e-3, float(np.hypot(*d)))
+        img = text(img, name, X + d[0] * 20, Y + d[1] * 20 + (-10 if d[1] <= 0 else 10), 18, GREEN, fade(t, tc),
+                   "lc" if d[0] >= 0 else "rc", kind="mono6")
     tg = ctx.w("Ganymede")
     X, Y = pos["GANYMEDE"]
-    img = hud.callout(L, img, (X, Y), "GANYMEDE", "LARGEST MOON IN THE SOLAR SYSTEM", fade(t, tg), prog(t, tg), dx=-150, dy=-90, color=RED)
+    img = hud.callout(L, img, (X, Y), "GANYMEDE", "LARGEST MOON IN THE SOLAR SYSTEM", fade(t, tg), prog(t, tg), dx=-110, dy=-195, color=RED)
     return L.composite(img, 0.5)
 
 

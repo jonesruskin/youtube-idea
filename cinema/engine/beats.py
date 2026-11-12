@@ -3,6 +3,7 @@
 A segment is split into beats aligned to narration lines (optionally to a specific word), so every sentence
 has its own picture. Each beat = a HDR scene (rendered, then graded by `post`) + an optional overlay drawn on the
 graded image (crisp explainer graphics/text). Beats crossfade (default) or hard-cut."""
+import os
 import re
 import numpy as np
 from .core import FPS, post, smooth, span
@@ -122,5 +123,8 @@ def _one(seg, b, ctx, lt, fi):
     kw.update(pk)
     img = post(hdr, fi + int(seg["start"] * FPS), **kw).astype(np.float32) / 255.0
     if b.over is not None:
+        if os.environ.get("QA_LOG"):
+            from . import hud
+            hud.QA["key"] = (seg["id"], id(b), fi)
         img = b.over(ctx, img, t, u)
     return np.clip(img, 0, 1)

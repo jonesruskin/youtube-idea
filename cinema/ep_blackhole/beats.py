@@ -703,7 +703,7 @@ def tug_over(ctx, img, t, u):
     img = text(img, "SUN", ex - 600, ey + 50, 24, (1.0, 0.85, 0.5), 1.0, "c", kind="mono6", tracking=0.3)
     img = text(img, "BLACK HOLE", ex + 640, ey + 50, 24, ACC, 1.0, "c", kind="mono6", tracking=0.3)
     tl = ctx.w("losing")
-    img = text(img, "THE SUN IS LOSING", W / 2, H - 120, 26, RED, fade(t, tl), "c", kind="mono6", tracking=0.3)
+    img = text(img, "THE SUN IS LOSING", ex + 640, ey + 150, 26, RED, fade(t, tl), "c", kind="mono6", tracking=0.3)
     return img
 
 
@@ -965,7 +965,9 @@ def thermo_over(level0, level1, label, color, at=0.3, extra=None):
         lv = lerp(level0, level1, prog(t, at, max(0.5, ctx.dur - at - 0.4)))
         img = hud.icon_thermo(L, img, (180, 520), 240, lv, color, fade(t, at), None)
         img = L.composite(img, 0.4)
-        img = text(img, label, 120, 840, 26, color, fade(t, at), "lc", kind="mono6", tracking=0.15)
+        import textwrap  # wrap to ~12 chars so the label never runs into the planet
+        for k, ln in enumerate(textwrap.wrap(label, 12)):
+            img = text(img, ln, 90, 840 + 40 * k, 26, color, fade(t, at), "lc", kind="mono6", tracking=0.15)
         if extra:
             img = text(img, extra, 180, 900, 18, DIM, fade(t, at + 0.4), "lc")
         return img
@@ -1015,7 +1017,8 @@ def ice_thermo_over(ctx, img, t, u):
     lv = lerp(0.35, 0.05, prog(t, 0.2, ctx.dur - 0.4))
     img = hud.icon_thermo(L, img, (180, 560), 260, lv, BLUE, fade(t, 0.2), f"{v} °C")
     img = L.composite(img, 0.4)
-    img = text(img, "COLDEST EVER RECORDED ON EARTH: −89 °C", 140, H - 120, 20, DIM, fade(t, 0.5), "lc")
+    img = text(img, "COLDEST EVER RECORDED", 90, H - 170, 18, WHITE, fade(t, 0.5), "lc", tracking=0.15)
+    img = text(img, "ON EARTH: −89 °C", 90, H - 138, 18, WHITE, fade(t, 0.5), "lc", tracking=0.15)
     return img
 
 

@@ -68,7 +68,7 @@ def pre():
     if os.path.exists(log):
         lines = open(log).read().strip().splitlines()
         for l in sorted(set(lines)):
-            res("FAIL", "text-safe-area", l)
+            res("FAIL", "text-overlap" if "TEXT OVERLAP" in l else "text-safe-area", l)
     res("PASS", "coverage", f"{n_lines} narration lines → {n_beats} visual beats")
     # contact sheets for the human review
     ids = [s["id"] for s in segs]
