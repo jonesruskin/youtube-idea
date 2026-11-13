@@ -185,7 +185,10 @@ def card(img, c, lt, seg_dur):
         put(img, sprite(c["text"], "mono6", 34, 0.12), x, y, WHITE, a, "lt")
         put(img, sprite(c["sub"], "mono", 24, 0.12), x, y + 52, (0.75, 0.78, 0.85), a, "lt")
     elif kind == "title":
+        from .brand import CHANNEL, logo
         a = _reveal(lt, 0.3, 1.6) * (1 - smooth(span(lt, seg_dur - 0.9, seg_dur - 0.1)))
+        img = logo(img, W / 2, H / 2 - 190, 0.9, a * 0.9, lt)
+        put(img, sprite(CHANNEL + " PRESENTS", "mono6", 22, 0.6), W / 2, H / 2 - 130, (0.75, 0.78, 0.85), a)
         tr = 0.26 + 0.1 * (1 - ease_out(span(lt, 0.0, seg_dur), 2))
         put(img, sprite(c["text"], "thin", 100, round(tr, 3)), W / 2, H / 2 - 20, WHITE, a, glow=0.35)
         put(img, sprite(c["sub"].upper(), "mono", 24, 0.5), W / 2, H / 2 + 80, ACC, a * _reveal(lt, 1.0, 1.2))
@@ -199,8 +202,10 @@ def card(img, c, lt, seg_dur):
             box[y - bh // 2:y + bh // 2, x - bw // 2:x + bw // 2] = 1
             edge = box - np.pad(box[2:-2, 2:-2], 2)
             img += edge[..., None] * np.array([0.6, 0.6, 0.65], np.float32) * 0.5 * a
-        put(img, sprite("KEEP LOOKING", "mono6", 28, 0.5), W / 2, 240, ACC, a)
-        put(img, sprite("More from the dark", "light", 56, 0.0), W / 2, 300, WHITE, a)
+        from .brand import CHANNEL, TAGLINE, logo
+        img = logo(img, W / 2, 120, 1.1, a, lt)
+        put(img, sprite(CHANNEL, "light", 64, 0.32), W / 2, 210, WHITE, a, glow=0.2)
+        put(img, sprite(TAGLINE + "  ·  SUBSCRIBE", "mono6", 22, 0.45), W / 2, 280, ACC, a)
     return img
 
 

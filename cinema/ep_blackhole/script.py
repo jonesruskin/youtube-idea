@@ -12,6 +12,7 @@ Science notes (for the description / fact-check) live next to the lines that use
 """
 
 TITLE = "What If a Black Hole Passed Through Our Solar System?"
+FOLDER = "01_black_hole"
 
 SEGMENTS = [
     # ─────────────────────────────── COLD OPEN ───────────────────────────────
@@ -257,3 +258,27 @@ SEGMENTS = [
          lines=["There's a lot more out there in the dark. Subscribe, and we'll keep looking."],
          hold=3.5, card=dict(kind="endcard")),
 ]
+
+
+META = dict(
+    first_chapter="A star gets brighter",
+    extra_chapters={"end1": "Should you worry?"},
+    thumb_text="30 YEARS LEFT",
+    alts=["A Black Hole Is Coming. Here's Every Year Until It Arrives.",
+        "We Simulated a Black Hole Passing Through the Solar System",
+        "What If a Black Hole Passed Through Our Solar System?"],
+    tags="black hole, what if, black hole solar system, rogue black hole, space documentary, astronomy, n-body simulation, earth, end of the world, science explained",
+    hashtags="#space #blackhole #whatif #astronomy #science",
+    intro="""What would happen if a black hole ten times heavier than the Sun crossed our Solar System? Not a disaster movie — the actual physics, year by year, from the first flickering star to the three ways it could end.
+
+Every orbit in this video comes from a real N-body gravity simulation run for this story (10 solar masses, 45 km/s, passing the Sun at ~1 AU). In that simulation every planet is thrown out of the Solar System, the Moon is pulled away from Earth, and the black hole leaves carrying Venus.
+
+Which ending do you think is worst? Tell us in the comments.""",
+    sources="""• First isolated stellar-mass black hole, found by microlensing (OGLE-2011-BLG-0462): Sahu et al. 2022, ApJ 933, 83; Lam et al. 2022, ApJL 933, L23
+• Nearest known black hole, Gaia BH1 (~1,560 light-years): El-Badry et al. 2023, MNRAS 518, 1057
+• Free-floating planets may outnumber stars: Sumi et al. 2023, AJ 166, 108
+• A planet ejected into interstellar space can keep a liquid ocean under ice: Abbot & Switzer 2011, ApJL 735, L27 ("The Steppenwolf")
+• ~100 million stellar black holes in the Milky Way: standard population estimate (e.g. Olejak et al. 2020, A&A 638, A94)
+• Hill-sphere estimates (Moon, Ganymede, Saturn's rings), tidal-disruption radius and tide scaling: computed from the simulation's closest-approach distances.
+• Encounter rate: n·π·b²·v with gravitational focusing → ~10^17 years for a pass within 1 AU. Order-of-magnitude estimate.""",
+)

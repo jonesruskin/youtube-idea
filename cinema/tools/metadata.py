@@ -60,50 +60,35 @@ with open(os.path.join(out, "captions.srt"), "w") as f:
         f.write(f"{i}\n{ts(a)} --> {ts(b)}\n{txt}\n\n")
 
 # chapters
-chap = [(0.0, "A star gets brighter")]
+META = getattr(mod, "META", {})
+chap = [(0.0, META.get("first_chapter", "Intro"))]
 for seg in mod.SEGMENTS:
     c = seg.get("card") or {}
     if c.get("kind") in ("chapter", "fate"):
-        chap.append((segs[seg["id"]]["start"], f'{c["num"].replace(" – ", "-").title().replace("T-", "T-")}: {c["text"]}' if c["kind"] == "chapter" else f'{c["num"].title()}: {c["text"]}'))
-    if seg["id"] == "end1":
-        chap.append((segs[seg["id"]]["start"], "Should you worry?"))
+        num = c["num"].replace(" – ", "-")
+        lab = num.title().replace("Km", "km")
+        chap.append((segs[seg["id"]]["start"], f'{lab}: {c["text"]}'))
+    if seg["id"] in META.get("extra_chapters", {}):
+        chap.append((segs[seg["id"]]["start"], META["extra_chapters"][seg["id"]]))
 # mid-roll suggestions: natural pauses right before chapter cards, after 2:00, spaced >= 2 min
 mids, last = [], 0
 for t, _ in chap[1:]:
     if t > 200 and t - last >= 120:
         mids.append(t); last = t
 
-desc = f"""What would happen if a black hole ten times heavier than the Sun crossed our Solar System? Not a disaster movie — the actual physics, year by year, from the first flickering star to the three ways it could end.
-
-Every orbit in this video comes from a real N-body gravity simulation run for this story (10 solar masses, 45 km/s, passing the Sun at ~1 AU). In that simulation every planet is thrown out of the Solar System, the Moon is pulled away from Earth, and the black hole leaves carrying Venus.
-
-Which ending do you think is worst? Tell us in the comments.
-
-CHAPTERS
-""" + "\n".join(f"{ts(t, False)} {name}" for t, name in chap) + """
-
-THE SCIENCE (sources)
-• First isolated stellar-mass black hole, found by microlensing (OGLE-2011-BLG-0462): Sahu et al. 2022, ApJ 933, 83; Lam et al. 2022, ApJL 933, L23
-• Nearest known black hole, Gaia BH1 (~1,560 light-years): El-Badry et al. 2023, MNRAS 518, 1057
-• Free-floating planets may outnumber stars: Sumi et al. 2023, AJ 166, 108
-• A planet ejected into interstellar space can keep a liquid ocean under ice: Abbot & Switzer 2011, ApJL 735, L27 ("The Steppenwolf")
-• ~100 million stellar black holes in the Milky Way: standard population estimate (e.g. Olejak et al. 2020, A&A 638, A94)
-• Hill-sphere estimates (Moon, Ganymede, Saturn's rings), tidal-disruption radius and tide scaling: computed from the simulation's closest-approach distances.
-• Encounter rate: n·π·b²·v with gravitational focusing → ~10^17 years for a pass within 1 AU. Order-of-magnitude estimate.
+desc = META["intro"] + "\n\nCHAPTERS\n" + "\n".join(f"{ts(t, False)} {name}" for t, name in chap) + \
+    "\n\nTHE SCIENCE (sources)\n" + META["sources"] + """
 
 CREDITS
 Planet textures: Solar System Scope (CC BY 4.0) — solarsystemscope.com
 Narration voice: Kokoro-82M (Apache 2.0). Music and sound design: original, synthesised for this video.
 Simulation, animation and rendering: made in-house.
 
-#space #blackhole #whatif #astronomy #science
-"""
+""" + META["hashtags"] + "\n"
 title = mod.TITLE
-alts = ["A Black Hole Is Coming. Here's Every Year Until It Arrives.",
-        "We Simulated a Black Hole Passing Through the Solar System",
-        "What If a Black Hole Passed Through Our Solar System?"]
+alts = META["alts"]
 with open(os.path.join(out, "metadata.md"), "w") as f:
     f.write(f"# {title}\n\nRuntime: {ts(tl['total'], False)}\n\n## Title options (A/B test)\n" + "\n".join(f"- {a}" for a in alts) +
-            "\n\n## Thumbnail\n`thumbnail.png` — text: **30 YEARS LEFT**\n\n## Mid-roll ad breaks (at chapter boundaries)\n" +
-            "\n".join(f"- {ts(t, False)}" for t in mids) + "\n\n## Description\n```\n" + desc + "```\n\n## Tags\nblack hole, what if, black hole solar system, rogue black hole, space documentary, astronomy, n-body simulation, earth, end of the world, science explained\n")
+            f"\n\n## Thumbnail\n`thumbnail.png` — text: **{META['thumb_text']}**\n\n## Mid-roll ad breaks (at chapter boundaries)\n" +
+            "\n".join(f"- {ts(t, False)}" for t in mids) + "\n\n## Description\n```\n" + desc + "```\n\n## Tags\n" + META["tags"] + "\n")
 print(open(os.path.join(out, "metadata.md")).read()[:1500])

@@ -162,6 +162,17 @@ def ostinato(root, dur, bpm=96, gain=0.05):
     return out * gain * env_adsr(n, 1.0, 1.5)
 
 
+def groan(dur=3.0, gain=0.25):
+    """Metal under load: a low detuned sweep with crackle, ending in a crunch."""
+    n = int(dur * SR)
+    t = np.arange(n) / SR
+    f = 55 + 30 * np.sin(t * 1.3) + 18 * t
+    ph = np.cumsum(f) / SR
+    x = (np.sin(2 * np.pi * ph) + 0.6 * np.sin(2 * np.pi * ph * 1.51)) * env_adsr(n, 0.8, 0.3)
+    cr = highpass(rng.normal(0, 1, n), 1500) * (rng.random(n) < 0.004) * 6
+    return lowpass(x, 400) * gain + cr * 0.05 * env_adsr(n, 1.5, 0.2)
+
+
 # ───────────── cue library ─────────────
 def cue(name, dur):
     if name == "open":
@@ -201,6 +212,8 @@ def cue(name, dur):
 
 # ───────────── arrange ─────────────
 segs = {s["id"]: s for s in tl["segments"]}
+_wp = os.path.join(ROOT, "build", ep, "voice", "words.json")
+WORDS = json.load(open(_wp)) if os.path.exists(_wp) else {}
 music = np.zeros(N)
 sfx = np.zeros(N)
 regions = []
@@ -240,13 +253,29 @@ for k, seg in enumerate(mod.SEGMENTS):
     if c.get("kind") == "title":
         place(sfx, boom(6.0, 0.7), t["start"] + 0.2)
         place(sfx, bell(note("A4"), 5, 0.05), t["start"] + 0.4)
-    if seg["id"] in ("open3",):
+    if ep == "ep_blackhole" and seg["id"] in ("open3",):
         place(sfx, boom(5.0, 0.55), t["start"] + 0.1)
-    if seg["id"] == "c4d":
+    if ep == "ep_blackhole" and seg["id"] == "c4d":
         place(sfx, riser(3.0, 0.1), t["start"] + t["dur"] * 0.25)
         place(sfx, boom(6.0, 0.6), t["start"] + t["dur"] * 0.25 + 3.0)
     if c.get("kind") == "stat":
         place(sfx, bell(note("E5"), 2.5, 0.035), t["start"] + c.get("at", 0) * t["dur"] + 0.2)
+    for fx in seg.get("sfx", []):
+        tt = t["start"] + fx.get("at", 0.0) * t["dur"]
+        if "word" in fx:
+            ws = [w for w in WORDS.get(seg["id"], []) if w["w"].lower().strip(".,!?").startswith(fx["word"].lower())]
+            if ws:
+                tt = t["start"] + ws[0]["t0"]
+        tt += fx.get("offset", 0.0)
+        if fx["kind"] == "crush":
+            place(sfx, groan(2.2, 0.28), tt - 1.6)
+            place(sfx, boom(6.0, 0.75), tt + 0.45)
+        elif fx["kind"] == "boom":
+            place(sfx, boom(5.0, fx.get("gain", 0.55)), tt)
+        elif fx["kind"] == "riser":
+            place(sfx, riser(fx.get("dur", 3.0), 0.1), tt)
+        elif fx["kind"] == "bell":
+            place(sfx, bell(note(fx.get("note", "E5")), 3.0, 0.04), tt)
     st = seg["shot"]["type"]
     if k and st != prev_type and not c.get("kind") in ("chapter", "fate", "title"):
         place(sfx, whoosh(0.9, 0.035), t["start"] - 0.6)
