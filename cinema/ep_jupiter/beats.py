@@ -448,7 +448,7 @@ def diver_over(ctx, img, t, u):
     L = Layer()
     tp = ctx.w("pressure")
     td = ctx.w("diving")
-    x0, y0 = 760, 300
+    x0, y0 = 540, 300   # clear of the ship (x ~1090..1290) and the readout box (x < 460)
     img = hud.panel(img, x0 - 50, y0 - 60, x0 + 470, y0 + 470, fade(t, tp - 0.2), 0.55)
     img = text(img, f"{hud.counter(1, 6.6, prog(t, tp, 1.0), '{:.1f}')} × EARTH'S AIR", x0, y0, 30, WHITE, fade(t, tp), "lc", kind="mono6")
     L.rect(x0, y0 + 50, x0 + 420, y0 + 420, (0.2, 0.45, 0.7), fade(t, td) * 0.35, fill=True)

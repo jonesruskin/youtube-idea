@@ -74,3 +74,5 @@ Each item becomes a ✅ or a note in the QA report.
 3. **Long same-environment stretches need a shot list.** Vary framing (close, wide, high, low, left), add motion structure (plumes, shimmer, particles), and cut to a diagram every few beats.
 4. **Effects must start on their line.** The glow now begins at the Draper point, exactly when the narration says "the darkness starts to glow", not two beats early.
 5. **Check the phone-size thumbnail.** The first thumbnail was overexposed and the planet had no edge. The fix: pull back so the limb curves against black space, and boost saturation.
+6. **Check procedural textures at every zoom level.** The cutaway's noise tile was capped at 9,000 km, so with the whole planet on screen it repeated every ~70 px like wallpaper. Texture scale must follow the zoom, and a second rotated layer hides any period. The full-cut review caught it; stills at one zoom did not.
+7. **Panels must clear the ship, not just other text.** The diver panel passed the text-overlap check but sat on top of the ship and its beacon. Check the ship's screen box against every panel in its beats.

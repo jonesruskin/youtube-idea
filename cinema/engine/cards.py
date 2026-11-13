@@ -181,6 +181,10 @@ def card(img, c, lt, seg_dur):
         if a <= 0:
             return img
         x, y = 140, H - 190
+        # soft dark backing so the label reads over bright scenes (e.g. a planet's rim)
+        yy, xx = np.mgrid[y - 140:y + 140, 0:900].astype(np.float32)
+        sc = np.exp(-(((xx - 420) / 520) ** 2 + ((yy - (y + 20)) / 110) ** 2) ** 1.5) * 0.6 * a
+        img[y - 140:y + 140, 0:900] *= (1 - sc)[..., None]
         hline(img, x, x + 60 * a, y - 30, ACC, a, 2)
         put(img, sprite(c["text"], "mono6", 34, 0.12), x, y, WHITE, a, "lt")
         put(img, sprite(c["sub"], "mono", 24, 0.12), x, y + 52, (0.75, 0.78, 0.85), a, "lt")

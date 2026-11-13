@@ -515,10 +515,16 @@ def slice_disk(img, cx, cy, Rpx, t=0.0, mask_fn=None, alpha=1.0):
     # convective texture
     n = cached("jcells_slice", lambda: tile_fbm(1024, 140, 6, 77))
     kpp = RJ_KM / Rpx
-    tile = float(np.clip(kpp * 700, 30, 9000))           # noise tile size (km) adapts to the zoom
-    u = (((xs - cx) * kpp / tile + t * 0.01) * 1024) % 1024
-    v = (((ys - cy) * kpp / tile) * 1024) % 1024
-    tx = cv2.remap(n, u.astype(np.float32), v.astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
+    # one noise tile spans ~700 px on screen at any zoom (a fixed km cap made it repeat every ~70 px
+    # when the whole planet was visible); a second, rotated, incommensurate layer hides the period
+    tile = max(30.0, kpp * 700)
+    dx, dy = (xs - cx) * kpp / tile, (ys - cy) * kpp / tile
+    def samp(a, b):
+        return cv2.remap(n, ((a * 1024) % 1024).astype(np.float32), ((b * 1024) % 1024).astype(np.float32),
+                         cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
+    ca, sa = np.cos(0.61), np.sin(0.61)
+    tx = 0.6 * samp(dx + t * 0.01, dy) + 0.4 * samp((dx * ca - dy * sa) * 1.618 + 0.37, (dx * sa + dy * ca) * 1.618 + 0.11)
+    tx = (tx - 0.5) * 1.35 + 0.5
     col = col * (0.85 + 0.3 * tx[..., None])
     a = clamp((Rpx - r) * 1.0) * alpha
     if mask_fn is not None:
