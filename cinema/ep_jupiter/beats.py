@@ -1,4 +1,4 @@
-"""BEAT SHEET — "What If You Fell Into Jupiter?". One explanatory visual per narration line, synced to words.
+"""BEAT SHEET — a fall into Jupiter. One explanatory visual per narration line, synced to words.
 Descent beats read the fall simulation (vis.at), so the picture, the HUD and the narration always agree."""
 import numpy as np
 import cv2

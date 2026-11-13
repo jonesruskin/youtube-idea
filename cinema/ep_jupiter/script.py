@@ -1,5 +1,5 @@
 """
-NO BOTTOM — "What If You Fell Into Jupiter?"
+NO BOTTOM — a fall into Jupiter
 
 The episode as data (same format as ep_blackhole/script.py). Every descent number comes from ep_jupiter/model.py:
 a 12-tonne, 4-metre sealed ship released at rest at the 1-bar level, falling at drag-limited speed through a dry
@@ -244,13 +244,13 @@ META = dict(
     first_chapter="This is Jupiter",
     extra_chapters={"end1": "So that's the fall"},
     thumb_text="STILL NO GROUND",
-    # Titles: name the subject, withhold the outcome, stay under ~60 characters; not every episode is "What if".
+    # Titles: name the subject, withhold the outcome, stay under ~60 characters; never "What if" (the channel avoids that phrasing entirely).
     alts=["How Deep Can You Fall Into Jupiter? (Real Physics)",
           "There's No Ground on Jupiter. So Where Would You Stop?"],
-    tags="jupiter, falling into jupiter, what if you fell into jupiter, inside jupiter, jupiter atmosphere, gas giant, metallic hydrogen, galileo probe, juno, great red spot, diamond rain, space documentary, astronomy, planetary science, what if, space, science explained, gravity dial",
+    tags="jupiter, falling into jupiter, fall into jupiter, inside jupiter, jupiter atmosphere, gas giant, metallic hydrogen, galileo probe, juno, great red spot, diamond rain, space documentary, astronomy, planetary science, space, science explained, gravity dial",
     pinned="Our ship was crushed 579 km down, at the pressure of the Mariana Trench — and an uncrushable one would just float, 6 days in. How deep do you think a human could get before it's over?",
-    playlist="Gravity Dial: Simulated What Ifs",
-    hashtags="#space #jupiter #whatif #astronomy #science",
+    playlist="Gravity Dial: The Universe, Simulated",
+    hashtags="#space #jupiter #simulation #astronomy #science",
     intro="""What would actually happen if you fell into Jupiter? There's no ground to hit — so how far down would you get?
 
 Every number on screen comes from a physics simulation of the fall, anchored to the Galileo probe's real measurements: a 12-tonne, 4-metre sealed ship released at rest above the clouds. It passes the Galileo probe's final depth in 7 minutes, is crushed at the pressure of the Mariana Trench after 98 minutes — and an uncrushable version never reaches the centre at all. It floats.

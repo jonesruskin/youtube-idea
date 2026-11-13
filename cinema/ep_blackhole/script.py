@@ -1,5 +1,5 @@
 """
-THE DARK PASSAGE — "What If a Black Hole Passed Through Our Solar System?"
+THE DARK PASSAGE — a black hole passes through our solar system
 
 The episode as data. Each segment is one continuous shot with narration.
   shot:   which renderer to use + its parameters (see cinema/engine/shots.py)
@@ -264,13 +264,13 @@ META = dict(
     first_chapter="A star gets brighter",
     extra_chapters={"end1": "Should you worry?"},
     thumb_text="30 YEARS LEFT",
-    # Titles: name the subject, withhold the outcome, stay under ~60 characters; not every episode is "What if".
+    # Titles: name the subject, withhold the outcome, stay under ~60 characters; never "What if" (the channel avoids that phrasing entirely).
     alts=["A Black Hole Passes the Sun. Every Planet Gets Thrown Out.",
           "Earth Gets 30 Years' Warning. Then a Black Hole Arrives."],
-    tags="black hole, black hole solar system, what if a black hole entered our solar system, rogue black hole, black hole simulation, what if, space documentary, astronomy, astrophysics, n-body simulation, end of the world, earth ejected, solar system destroyed, gaia bh1, space, science explained, gravity dial",
+    tags="black hole, black hole solar system, black hole entering solar system, rogue black hole, black hole simulation, space documentary, astronomy, astrophysics, n-body simulation, end of the world, earth ejected, solar system destroyed, gaia bh1, space, science explained, gravity dial",
     pinned="In our simulation every planet is thrown out of the Solar System — and the black hole leaves carrying Venus. Which ending would you rather live through: the Fall, the Long Year, or the Wanderer?",
-    playlist="Gravity Dial: Simulated What Ifs",
-    hashtags="#space #blackhole #whatif #astronomy #science",
+    playlist="Gravity Dial: The Universe, Simulated",
+    hashtags="#space #blackhole #simulation #astronomy #science",
     intro="""What would happen if a black hole ten times heavier than the Sun crossed our Solar System? Not a disaster movie — the actual physics, year by year, from the first flickering star to the three ways it could end.
 
 Every orbit in this video comes from a real N-body gravity simulation run for this story (10 solar masses, 45 km/s, passing the Sun at ~1 AU). In that simulation every planet is thrown out of the Solar System, the Moon is pulled away from Earth, and the black hole leaves carrying Venus.

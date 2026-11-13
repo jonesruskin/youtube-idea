@@ -3,7 +3,7 @@ import numpy as np
 from .core import W, H, glow_dot, smooth
 
 CHANNEL = "GRAVITY DIAL"
-TAGLINE = "WHAT IF, SIMULATED"
+TAGLINE = "ONE DIAL. REAL PHYSICS."
 
 _A0, _A1 = np.radians(135), np.radians(405)   # gauge sweep: 270 degrees, gap at the bottom
 
