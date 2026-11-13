@@ -1,0 +1,730 @@
+1
+00:00:00,250 --> 00:00:01,414
+This is Jupiter.
+
+2
+00:00:01,734 --> 00:00:04,645
+You could fit more than thirteen hundred
+Earths inside it.
+
+3
+00:00:04,965 --> 00:00:07,317
+And in a few minutes, you're going to fall
+into it.
+
+4
+00:00:07,637 --> 00:00:08,844
+Not crash. Fall.
+
+5
+00:00:09,744 --> 00:00:13,988
+Because Jupiter has no ground. No surface.
+Nothing to land on.
+
+6
+00:00:14,308 --> 00:00:17,293
+Just sky, getting thicker and hotter, all
+the way down.
+
+7
+00:00:17,893 --> 00:00:20,399
+We ran your fall through a physics
+simulation,
+
+8
+00:00:20,399 --> 00:00:24,158
+built on real measurements from the probe
+that went there before you.
+
+9
+00:00:24,478 --> 00:00:27,122
+Every number on the side of your screen
+comes from it.
+
+10
+00:00:27,442 --> 00:00:29,497
+And it showed us something we didn't
+expect.
+
+11
+00:00:29,817 --> 00:00:33,812
+At some point, the falling just stops. And
+not because you hit anything.
+
+12
+00:00:39,312 --> 00:00:40,848
+First, you have to get there.
+
+13
+00:00:41,168 --> 00:00:45,181
+Jupiter is wrapped in the most intense
+radiation belts of any planet.
+
+14
+00:00:45,501 --> 00:00:48,547
+Without heavy shielding, they would kill
+you within hours.
+
+15
+00:00:48,867 --> 00:00:53,332
+NASA's Juno spacecraft keeps its
+electronics inside a titanium vault,
+
+16
+00:00:53,332 --> 00:00:55,661
+just to survive flying through them.
+
+17
+00:00:56,261 --> 00:00:57,487
+Then there's the speed.
+
+18
+00:00:57,807 --> 00:01:01,658
+Jupiter's gravity is so strong that
+anything falling in from
+
+19
+00:01:01,658 --> 00:01:05,574
+deep space hits the air at about sixty
+kilometres per second.
+
+20
+00:01:05,894 --> 00:01:09,443
+Fast enough to cross the Atlantic in about
+a minute and a half.
+
+21
+00:01:10,043 --> 00:01:13,562
+In nineteen ninety-five, a NASA probe did
+exactly that.
+
+22
+00:01:13,882 --> 00:01:17,236
+The Galileo probe hit the atmosphere so
+hard that the gas
+
+23
+00:01:17,236 --> 00:01:20,589
+in front of it became hotter than the
+surface of the Sun.
+
+24
+00:01:20,909 --> 00:01:24,591
+In about two minutes, most of the front of
+its heat shield burned away.
+
+25
+00:01:25,191 --> 00:01:29,769
+You won't do that. Your ship fires its
+engines and comes to a complete stop,
+
+26
+00:01:29,769 --> 00:01:31,094
+just above the clouds.
+
+27
+00:01:31,414 --> 00:01:35,963
+Twelve tonnes, four metres wide, built
+like the strongest submarines on Earth.
+
+28
+00:01:36,283 --> 00:01:38,994
+From here, the rules are simple. Engines
+off.
+
+29
+00:01:39,314 --> 00:01:40,041
+You fall.
+
+30
+00:01:41,141 --> 00:01:43,106
+The first thing you'd notice is your
+weight.
+
+31
+00:01:43,426 --> 00:01:46,340
+Jupiter's gravity is two and a half times
+Earth's.
+
+32
+00:01:46,340 --> 00:01:50,828
+Just lifting your arm would feel like
+lifting it underwater, with weights on.
+
+33
+00:01:51,148 --> 00:01:54,870
+Below you, a floor of white cloud
+stretches past every horizon.
+
+34
+00:01:55,190 --> 00:01:58,502
+It's ammonia ice, colder than minus one
+hundred degrees.
+
+35
+00:01:59,102 --> 00:02:00,178
+And it's all moving.
+
+36
+00:02:00,498 --> 00:02:04,329
+The winds up here blow at over five
+hundred kilometres per hour,
+
+37
+00:02:04,329 --> 00:02:06,904
+in bands that wrap around the whole
+planet.
+
+38
+00:02:07,224 --> 00:02:10,982
+One storm, the Great Red Spot, is wider
+than the entire Earth.
+
+39
+00:02:11,582 --> 00:02:13,168
+You drop into the white clouds.
+
+40
+00:02:13,488 --> 00:02:16,766
+The air up here is thin, so almost nothing
+slows you down.
+
+41
+00:02:17,086 --> 00:02:21,404
+In forty seconds, you're falling at more
+than two thousand kilometres per hour.
+
+42
+00:02:22,004 --> 00:02:25,700
+Under the white is a second layer of
+cloud. Brown, and orange.
+
+43
+00:02:26,020 --> 00:02:29,140
+It's ammonium hydrosulfide. If you opened
+a window,
+
+44
+00:02:29,140 --> 00:02:32,259
+it would smell like rotten eggs and
+cleaning fluid.
+
+45
+00:02:32,579 --> 00:02:36,689
+Chemicals like this, broken apart by
+sunlight, are thought to paint
+
+46
+00:02:36,689 --> 00:02:40,553
+Jupiter's stripes. Even now, nobody is
+sure exactly which ones.
+
+47
+00:02:41,153 --> 00:02:42,620
+Two and a half minutes in,
+
+48
+00:02:42,620 --> 00:02:45,383
+fifty kilometres down, you reach the third
+layer.
+
+49
+00:02:45,703 --> 00:02:48,747
+Water clouds. Real ones, like the clouds
+on Earth.
+
+50
+00:02:49,067 --> 00:02:51,301
+And for a moment, something strange
+happens.
+
+51
+00:02:51,621 --> 00:02:56,217
+The temperature outside your window climbs
+past twenty degrees. A warm spring day.
+
+52
+00:02:56,537 --> 00:02:59,330
+The pressure is about seven times Earth's
+air.
+
+53
+00:02:59,330 --> 00:03:01,941
+The same as diving sixty metres
+underwater.
+
+54
+00:03:02,541 --> 00:03:05,366
+But these are the clouds where Jupiter's
+storms are born.
+
+55
+00:03:05,686 --> 00:03:08,066
+Its thunderstorms are strong enough to
+fling
+
+56
+00:03:08,066 --> 00:03:10,663
+ice more than twenty kilometres up into
+the sky.
+
+57
+00:03:10,983 --> 00:03:14,609
+Up there, the ice meets ammonia gas and
+melts into slush.
+
+58
+00:03:14,609 --> 00:03:17,344
+Scientists call these hailstones
+mushballs.
+
+59
+00:03:17,664 --> 00:03:19,914
+And the storms crackle with lightning,
+
+60
+00:03:19,914 --> 00:03:23,586
+seen flickering on Jupiter's night side by
+passing spacecraft.
+
+61
+00:03:24,186 --> 00:03:27,434
+Below the water clouds, the last of the
+sunlight is gone.
+
+62
+00:03:27,754 --> 00:03:29,808
+From here on, it's completely dark.
+
+63
+00:03:30,128 --> 00:03:33,404
+The only light is the lightning, flashing
+somewhere around you.
+
+64
+00:03:34,404 --> 00:03:37,635
+Five and a half minutes in, a hundred
+kilometres down,
+
+65
+00:03:37,635 --> 00:03:40,327
+the air outside is hotter than boiling
+water.
+
+66
+00:03:40,647 --> 00:03:43,891
+You're still falling at more than eight
+hundred kilometres per hour.
+
+67
+00:03:44,211 --> 00:03:47,455
+But the air is getting thicker, and it's
+starting to hold you back.
+
+68
+00:03:48,055 --> 00:03:50,344
+At seven minutes, you pass a milestone.
+
+69
+00:03:50,664 --> 00:03:52,944
+This is where the Galileo probe went
+silent.
+
+70
+00:03:53,264 --> 00:03:56,143
+It drifted down on a parachute for almost
+an hour,
+
+71
+00:03:56,143 --> 00:03:60,000
+sending back everything it measured, until
+the heat overwhelmed it.
+
+72
+00:04:00,320 --> 00:04:04,270
+Twenty-two times Earth's air pressure. A
+hundred and fifty degrees.
+
+73
+00:04:04,590 --> 00:04:07,744
+Nothing we've ever built has been deeper
+inside Jupiter.
+
+74
+00:04:08,064 --> 00:04:12,408
+Everything from here on, nobody has ever
+measured. It comes from physics.
+
+75
+00:04:13,008 --> 00:04:15,913
+Half an hour in. Three hundred kilometres
+down.
+
+76
+00:04:16,233 --> 00:04:19,242
+The temperature outside passes five
+hundred degrees.
+
+77
+00:04:19,562 --> 00:04:22,277
+And then something happens that you'd
+never expect,
+
+78
+00:04:22,277 --> 00:04:24,140
+at the bottom of a pitch-black sky.
+
+79
+00:04:24,460 --> 00:04:25,957
+The darkness starts to glow.
+
+80
+00:04:26,557 --> 00:04:29,192
+Anything this hot gives off its own light.
+
+81
+00:04:29,192 --> 00:04:32,142
+A dull red, like the ring of an electric
+stove.
+
+82
+00:04:32,462 --> 00:04:36,243
+It's the air itself. Above you, below you,
+in every direction.
+
+83
+00:04:36,563 --> 00:04:40,256
+And the deeper you go, the brighter it
+gets. Red, then orange.
+
+84
+00:04:40,856 --> 00:04:42,848
+Meanwhile, the pressure keeps climbing.
+
+85
+00:04:43,168 --> 00:04:46,018
+Two hundred times Earth's air. Then three
+hundred.
+
+86
+00:04:46,338 --> 00:04:48,606
+Every square centimetre of your hull is
+
+87
+00:04:48,606 --> 00:04:51,106
+now holding up the weight of a grand
+piano.
+
+88
+00:04:51,706 --> 00:04:52,988
+An hour and a half in.
+
+89
+00:04:53,308 --> 00:04:56,400
+You're almost six hundred kilometres down.
+Outside,
+
+90
+00:04:56,400 --> 00:04:59,370
+it's over a thousand degrees, and glowing
+orange.
+
+91
+00:04:59,690 --> 00:05:02,688
+And the pressure reaches eleven hundred
+times Earth's air.
+
+92
+00:05:03,008 --> 00:05:06,101
+That's the pressure at the bottom of the
+Mariana Trench,
+
+93
+00:05:06,101 --> 00:05:08,089
+the deepest point in Earth's oceans.
+
+94
+00:05:08,689 --> 00:05:11,621
+It's the limit of the strongest submarines
+ever built.
+
+95
+00:05:11,941 --> 00:05:15,886
+Every square centimetre of your hull is
+now holding up a small car.
+
+96
+00:05:16,206 --> 00:05:20,342
+And right here, ninety-eight minutes after
+you let go, your ship gives way.
+
+97
+00:05:21,942 --> 00:05:23,806
+Here's what puts that in perspective.
+
+98
+00:05:24,126 --> 00:05:26,494
+You fell almost six hundred kilometres.
+
+99
+00:05:26,494 --> 00:05:29,167
+Jupiter is seventy thousand kilometres
+deep.
+
+100
+00:05:29,487 --> 00:05:32,323
+You didn't even make it one percent of the
+way to the centre.
+
+101
+00:05:32,923 --> 00:05:33,900
+So let's cheat.
+
+102
+00:05:34,220 --> 00:05:38,174
+Imagine your ship can't be crushed, and
+can't melt. It just keeps falling.
+
+103
+00:05:38,494 --> 00:05:39,738
+How far does it get?
+
+104
+00:05:40,058 --> 00:05:42,288
+This is where the simulation surprised us.
+
+105
+00:05:42,888 --> 00:05:45,034
+The air around you is now so dense,
+
+106
+00:05:45,034 --> 00:05:49,266
+it slows you to the speed of a car on a
+motorway. Then a car in town.
+
+107
+00:05:49,586 --> 00:05:51,411
+Hours pass. Then days.
+
+108
+00:05:51,731 --> 00:05:54,613
+Two thousand kilometres down. Three
+thousand.
+
+109
+00:05:54,933 --> 00:05:57,851
+The hydrogen around you is thousands of
+degrees,
+
+110
+00:05:57,851 --> 00:06:00,890
+and squeezed so hard it stops behaving
+like a gas.
+
+111
+00:06:01,490 --> 00:06:04,140
+There's no moment where you splash into an
+ocean.
+
+112
+00:06:04,460 --> 00:06:08,933
+The sky just gets thicker, and thicker,
+until it flows around you like a liquid.
+
+113
+00:06:09,253 --> 00:06:13,269
+And somewhere around five thousand
+kilometres down, your ship stops.
+
+114
+00:06:13,589 --> 00:06:15,109
+Not because it hit anything.
+
+115
+00:06:15,429 --> 00:06:19,385
+Because the hydrogen around it is now as
+dense as the ship itself.
+
+116
+00:06:19,985 --> 00:06:20,781
+You float.
+
+117
+00:06:21,101 --> 00:06:26,179
+Six and a half days after you let go, five
+thousand three hundred kilometres down,
+
+118
+00:06:26,179 --> 00:06:29,152
+in a glowing ocean with no surface and no
+floor.
+
+119
+00:06:29,472 --> 00:06:31,557
+Less than a tenth of the way to the
+centre.
+
+120
+00:06:31,877 --> 00:06:34,828
+Jupiter doesn't swallow you. It just won't
+let you sink.
+
+121
+00:06:36,228 --> 00:06:37,888
+But we can keep going without you.
+
+122
+00:06:38,208 --> 00:06:40,353
+Around ten thousand kilometres down,
+
+123
+00:06:40,353 --> 00:06:43,212
+the pressure passes a million times
+Earth's air.
+
+124
+00:06:43,532 --> 00:06:46,501
+And hydrogen, the simplest element in the
+universe,
+
+125
+00:06:46,501 --> 00:06:49,936
+turns into something that doesn't exist
+naturally on Earth.
+
+126
+00:06:50,256 --> 00:06:51,212
+A liquid metal.
+
+127
+00:06:51,812 --> 00:06:55,924
+Squeezed this hard, the electrons break
+free of their atoms and flow,
+
+128
+00:06:55,924 --> 00:06:57,711
+like they do in a copper wire.
+
+129
+00:06:58,031 --> 00:07:02,557
+This ocean of metal swirls as Jupiter
+spins once every ten hours.
+
+130
+00:07:02,877 --> 00:07:06,404
+And it generates the strongest magnetic
+field of any planet.
+
+131
+00:07:07,004 --> 00:07:09,616
+If you could see that magnetic field from
+Earth,
+
+132
+00:07:09,616 --> 00:07:12,011
+it would look about as big as the full
+Moon.
+
+133
+00:07:12,331 --> 00:07:14,993
+From more than six hundred million
+kilometres away.
+
+134
+00:07:15,593 --> 00:07:19,194
+Some scientists have even suggested that
+carbon from lightning
+
+135
+00:07:19,194 --> 00:07:23,144
+could be squeezed into diamonds, and sink
+through Jupiter like hail.
+
+136
+00:07:23,464 --> 00:07:25,133
+Nobody knows yet if it's true.
+
+137
+00:07:25,733 --> 00:07:27,786
+And at the very centre, there's a core.
+
+138
+00:07:28,106 --> 00:07:32,317
+Scientists expected a solid ball. Juno
+found something stranger.
+
+139
+00:07:32,317 --> 00:07:37,120
+A fuzzy core, partly dissolved, spread
+through a huge part of the planet.
+
+140
+00:07:37,440 --> 00:07:39,169
+Around twenty thousand degrees.
+
+141
+00:07:39,169 --> 00:07:42,348
+More than three times hotter than the
+surface of the Sun.
+
+142
+00:07:42,668 --> 00:07:45,392
+Under a pressure tens of millions of times
+Earth's air.
+
+143
+00:07:45,992 --> 00:07:47,060
+So that's the fall.
+
+144
+00:07:47,380 --> 00:07:50,398
+Seven minutes to go deeper than anything
+we've ever sent.
+
+145
+00:07:50,718 --> 00:07:53,792
+Ninety-eight minutes to crush the
+strongest ship we could build.
+
+146
+00:07:54,112 --> 00:07:57,082
+And six and a half days to come to rest,
+floating,
+
+147
+00:07:57,082 --> 00:08:00,765
+five thousand kilometres down, without
+ever touching a bottom.
+
+148
+00:08:01,365 --> 00:08:04,186
+Jupiter is made of almost the same stuff
+as the Sun.
+
+149
+00:08:04,506 --> 00:08:08,278
+It would need about eighty times more mass
+to start shining on its own.
+
+150
+00:08:08,598 --> 00:08:12,942
+Instead, it's the biggest thing in the
+Solar System that never became a star.
+
+151
+00:08:13,542 --> 00:08:15,909
+Next time, we leave the planets behind.
+
+152
+00:08:16,409 --> 00:08:18,670
+Because some planets don't have a star at
+all.
+
+153
+00:08:18,670 --> 00:08:20,684
+And one of them could be heading our way.
+
+154
+00:08:22,284 --> 00:08:24,171
+Subscribe, and fall with us again.
+
