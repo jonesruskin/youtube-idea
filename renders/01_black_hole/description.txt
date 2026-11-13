@@ -1,21 +1,3 @@
-# What If a Black Hole Passed Through Our Solar System?
-
-Runtime: 8:20
-
-## Title options (A/B test)
-- A Black Hole Is Coming. Here's Every Year Until It Arrives.
-- We Simulated a Black Hole Passing Through the Solar System
-- What If a Black Hole Passed Through Our Solar System?
-
-## Thumbnail
-`thumbnail.png` — text: **30 YEARS LEFT**
-
-## Mid-roll ad breaks (at chapter boundaries)
-- 4:12
-- 6:37
-
-## Description
-```
 What would happen if a black hole ten times heavier than the Sun crossed our Solar System? Not a disaster movie — the actual physics, year by year, from the first flickering star to the three ways it could end.
 
 Every orbit in this video comes from a real N-body gravity simulation run for this story (10 solar masses, 45 km/s, passing the Sun at ~1 AU). In that simulation every planet is thrown out of the Solar System, the Moon is pulled away from Earth, and the black hole leaves carrying Venus.
@@ -48,8 +30,6 @@ Planet textures: Solar System Scope (CC BY 4.0) — solarsystemscope.com
 Narration voice: Kokoro-82M (Apache 2.0). Music and sound design: original, synthesised for this video.
 Simulation, animation and rendering: made in-house.
 
-#space #blackhole #whatif #astronomy #science
-```
+Gravity Dial turns one dial on the universe each episode and runs the physics. Subscribe so you don't miss the next one.
 
-## Tags
-black hole, what if, black hole solar system, rogue black hole, space documentary, astronomy, n-body simulation, earth, end of the world, science explained
+#space #blackhole #simulation #astronomy #science

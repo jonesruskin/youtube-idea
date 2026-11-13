@@ -7,8 +7,8 @@ Everything needed to upload this episode to YouTube. Each field below is also a 
 | Video file | `upload.mp4` (1080p master, Git LFS) |
 | Title | **We Dropped a Ship Into Jupiter. Here's How Far It Got.** (54 chars) · `title.txt` |
 | Thumbnail | `thumbnail.png` (1280×720) · hook text: **STILL NO GROUND** |
-| Description | `description.txt` (2447 / 5000 chars, includes chapters, sources, credits, hashtags) |
-| Tags | `tags.txt` (275 / 500 chars) |
+| Description | `description.txt` (2451 / 5000 chars, includes chapters, sources, credits, hashtags) |
+| Tags | `tags.txt` (254 / 500 chars) |
 | Subtitles | `captions.srt` (English, synced to the narration) |
 | Pinned comment | `pinned_comment.txt` |
 | Runtime | 8:28 |
@@ -20,7 +20,7 @@ Upload with the main title, then add these as variants:
 3. There's No Ground on Jupiter. So Where Would You Stop?
 
 ## Studio settings
-- **Playlist:** Gravity Dial: Simulated What Ifs
+- **Playlist:** Gravity Dial: The Universe, Simulated
 - **Audience:** No, it's not made for kids
 - **Altered or synthetic content:** No. This is clearly animated, simulation-based science visualisation, which YouTube lists as not needing the label. The narration uses a synthetic voice that does not imitate any real person.
 - **Category:** Science & Technology

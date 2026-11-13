@@ -34,4 +34,4 @@ Simulation, animation and rendering: made in-house.
 
 Gravity Dial turns one dial on the universe each episode and runs the physics. Subscribe so you don't miss the next one.
 
-#space #jupiter #whatif #astronomy #science
+#space #jupiter #simulation #astronomy #science
