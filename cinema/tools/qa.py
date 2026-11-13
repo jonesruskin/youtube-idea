@@ -64,6 +64,26 @@ def pre():
                 res("WARN", "exposure", f"{sid}#{bi} very dark (mean {mid.mean():.1f}/255)")
             if (mid >= 254).mean() > 0.05:
                 res("WARN", "exposure", f"{sid}#{bi} {100 * (mid >= 254).mean():.0f}% of pixels clipped")
+    # variety: long runs of visually near-identical beats feel repetitive even when each beat is fine
+    seq = []
+    for seg in segs:
+        if seg["id"] not in bm.BEATS:
+            continue
+        for bi in range(len(bm.BEATS[seg["id"]])):
+            im = cv2.imread(os.path.join(D, f"{seg['id']}_{bi:02d}_1.jpg"))
+            if im is not None:
+                seq.append((f"{seg['id']}#{bi}", cv2.resize(im, (64, 36)).astype(np.float32)))
+    run = [seq[0][0]] if seq else []
+    for (pa, a_), (pb, b_) in zip(seq, seq[1:]):
+        same = np.mean(np.abs(a_ - b_)) < 9.0 and abs(a_.mean() - b_.mean()) < 8
+        if same:
+            run.append(pb)
+        else:
+            if len(run) >= 5:
+                res("WARN", "variety", f"{len(run)} near-identical beats in a row: {run[0]} … {run[-1]} — vary framing, scale or scene")
+            run = [pb]
+    if len(run) >= 5:
+        res("WARN", "variety", f"{len(run)} near-identical beats in a row: {run[0]} … {run[-1]}")
     log = os.path.join(B, "qa_text.log")
     if os.path.exists(log):
         lines = open(log).read().strip().splitlines()

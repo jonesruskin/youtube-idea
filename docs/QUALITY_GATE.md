@@ -20,6 +20,7 @@ python tools/qa.py <ep> post                   # automated post-render gate → 
 | Exposure | No unintended near-black frames, and ≤ 5% clipped pixels | Murky or blown-out frames hurt retention |
 | Glyphs | The text renderer raises an error if a character is missing from its font | The ☉ and ≈ symbols showed up as empty boxes in v1 |
 | Safe area | No explainer text leaves the title-safe area; labels are shifted back inside automatically | Labels were clipped at the frame edge in v1 |
+| Variety | No run of 5+ consecutive beats that look near-identical (mid-frame thumbnails compared) | Episode 2's first cut held one orange-haze composition for ~3 minutes |
 | Text collisions | No two labels' ink boxes overlap in any still (checked on the tight glyph bounds) | v2 review: EUROPA sat on IO; "CAUSE: NOTHING VISIBLE" sat on the chart's axis title |
 | Word sync | ≥ 50% of words are confirmed by line-level speech recognition; otherwise timing falls back to an estimate from the line timings | Speech recognition missed whole sentences on one segment |
 | Runtime | ≥ 8:00 | Mid-roll ads |
@@ -66,3 +67,10 @@ Each item becomes a ✅ or a note in the QA report.
 5. **Speech recognition misses sentences.** Transcribe line by line, and fall back to line-timing estimates.
 6. **Run the gate before the long render.** It caught 8 glyph defects, 6 clipped labels and a 0-second beat in minutes, not hours.
 7. **Review the finished cut at full resolution, not only contact sheets.** Thumbnails hide collisions. The v2 full-res pass found 5 defects that were invisible at contact-sheet size, and two of them led to new automated checks.
+
+## Lessons from Episode 2 (Jupiter)
+1. **Simulate first, then write the numbers.** Starting the fall above the clouds instead of at the 1-bar level changed three narrated numbers. The script was corrected before rendering, so narration and on-screen counters agree.
+2. **One clock for picture and HUD.** Every descent frame reads depth, speed, temperature and pressure from the simulation at the same sim time. The sim clock must never run backwards between beats, except in a deliberate flash-forward.
+3. **Long same-environment stretches need a shot list.** Vary framing (close, wide, high, low, left), add motion structure (plumes, shimmer, particles), and cut to a diagram every few beats.
+4. **Effects must start on their line.** The glow now begins at the Draper point, exactly when the narration says "the darkness starts to glow", not two beats early.
+5. **Check the phone-size thumbnail.** The first thumbnail was overexposed and the planet had no edge. The fix: pull back so the limb curves against black space, and boost saturation.
