@@ -16,7 +16,7 @@ Key simulation outputs (python ep_jupiter/model.py):
   1 Mbar at ~10,000 km (metallic hydrogen region); centre ~20,000 K, ~40 Mbar
 """
 
-TITLE = "What If You Fell Into Jupiter?"
+TITLE = "We Dropped a Ship Into Jupiter. Here's How Far It Got."
 FOLDER = "02_jupiter"
 
 SEGMENTS = [
@@ -243,11 +243,13 @@ SEGMENTS = [
 META = dict(
     first_chapter="This is Jupiter",
     extra_chapters={"end1": "So that's the fall"},
-    thumb_text="NO BOTTOM",
-    alts=["We Simulated Falling Into Jupiter. The Ending Surprised Us.",
-          "What If You Fell Into Jupiter? (Real Physics)",
-          "Falling Into Jupiter: Every Minute Until Your Ship Breaks"],
-    tags="jupiter, what if, falling into jupiter, gas giant, space documentary, astronomy, juno, galileo probe, metallic hydrogen, science explained",
+    thumb_text="STILL NO GROUND",
+    # Titles: name the subject, withhold the outcome, stay under ~60 characters; not every episode is "What if".
+    alts=["How Deep Can You Fall Into Jupiter? (Real Physics)",
+          "There's No Ground on Jupiter. So Where Would You Stop?"],
+    tags="jupiter, falling into jupiter, what if you fell into jupiter, inside jupiter, jupiter atmosphere, gas giant, metallic hydrogen, galileo probe, juno, great red spot, diamond rain, space documentary, astronomy, planetary science, what if, space, science explained, gravity dial",
+    pinned="Our ship was crushed 579 km down, at the pressure of the Mariana Trench — and an uncrushable one would just float, 6 days in. How deep do you think a human could get before it's over?",
+    playlist="Gravity Dial: Simulated What Ifs",
     hashtags="#space #jupiter #whatif #astronomy #science",
     intro="""What would actually happen if you fell into Jupiter? There's no ground to hit — so how far down would you get?
 

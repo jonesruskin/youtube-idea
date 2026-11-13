@@ -65,7 +65,7 @@ chap = [(0.0, META.get("first_chapter", "Intro"))]
 for seg in mod.SEGMENTS:
     c = seg.get("card") or {}
     if c.get("kind") in ("chapter", "fate"):
-        num = c["num"].replace(" – ", "-")
+        num = c["num"].replace(" – ", "-").replace(" + ", "+")
         lab = num.title().replace("Km", "km")
         chap.append((segs[seg["id"]]["start"], f'{lab}: {c["text"]}'))
     if seg["id"] in META.get("extra_chapters", {}):
@@ -84,11 +84,62 @@ Planet textures: Solar System Scope (CC BY 4.0) — solarsystemscope.com
 Narration voice: Kokoro-82M (Apache 2.0). Music and sound design: original, synthesised for this video.
 Simulation, animation and rendering: made in-house.
 
+Gravity Dial turns one dial on the universe each episode and runs the physics. Subscribe so you don't miss the next one.
+
 """ + META["hashtags"] + "\n"
 title = mod.TITLE
 alts = META["alts"]
-with open(os.path.join(out, "metadata.md"), "w") as f:
-    f.write(f"# {title}\n\nRuntime: {ts(tl['total'], False)}\n\n## Title options (A/B test)\n" + "\n".join(f"- {a}" for a in alts) +
-            f"\n\n## Thumbnail\n`thumbnail.png` — text: **{META['thumb_text']}**\n\n## Mid-roll ad breaks (at chapter boundaries)\n" +
-            "\n".join(f"- {ts(t, False)}" for t in mids) + "\n\n## Description\n```\n" + desc + "```\n\n## Tags\n" + META["tags"] + "\n")
-print(open(os.path.join(out, "metadata.md")).read()[:1500])
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from engine.brand import CHANNEL
+
+
+def put(name, text):
+    with open(os.path.join(out, name), "w") as f:
+        f.write(text if text.endswith("\n") else text + "\n")
+
+
+put("title.txt", title)
+put("description.txt", desc)
+put("tags.txt", META["tags"])
+put("pinned_comment.txt", META.get("pinned", ""))
+assert len(title) <= 100 and len(desc) <= 5000 and len(META["tags"]) <= 500, "YouTube field limits exceeded"
+chap_txt = "\n".join(f"- {ts(t, False)} {name}" for t, name in chap)
+md = f"""# {title}
+
+Everything needed to upload this episode to YouTube. Each field below is also a plain `.txt` file in this folder, ready to paste.
+
+| Field | Value / file |
+|---|---|
+| Video file | `upload.mp4` (1080p master, Git LFS) |
+| Title | **{title}** ({len(title)} chars) · `title.txt` |
+| Thumbnail | `thumbnail.png` (1280×720) · hook text: **{META['thumb_text']}** |
+| Description | `description.txt` ({len(desc)} / 5000 chars, includes chapters, sources, credits, hashtags) |
+| Tags | `tags.txt` ({len(META['tags'])} / 500 chars) |
+| Subtitles | `captions.srt` (English, synced to the narration) |
+| Pinned comment | `pinned_comment.txt` |
+| Runtime | {ts(tl['total'], False)} |
+
+## Title A/B test (Studio → Test & compare)
+Upload with the main title, then add these as variants:
+1. {title}
+""" + "\n".join(f"{k + 2}. {a}" for k, a in enumerate(alts)) + f"""
+
+## Studio settings
+- **Playlist:** {META.get('playlist', CHANNEL)}
+- **Audience:** No, it's not made for kids
+- **Altered or synthetic content:** No. This is clearly animated, simulation-based science visualisation, which YouTube lists as not needing the label. The narration uses a synthetic voice that does not imitate any real person.
+- **Category:** Science & Technology
+- **Video language / caption language:** English
+- **Captions:** Subtitles → Add → Upload file → "With timing" → `captions.srt`
+- **License:** Standard YouTube License · Allow embedding: on
+- **Comments:** On; hold potentially inappropriate comments for review
+- **Paid promotion:** No
+- **Monetisation / mid-roll ad breaks (chapter boundaries):** """ + ", ".join(ts(t, False) for t in mids) + f"""
+- **End screen (last 20 s):** the video already leaves two boxes and a subscribe area. Add: Subscribe element (centre), "Best for viewer" video (left), the other episode or playlist (right).
+- **Cards:** none needed for the first upload. Later, link the next episode at the end-of-video "Subscribe" line.
+
+## Chapters (already in the description)
+{chap_txt}
+"""
+put("UPLOAD.md", md)
+print(md[:1200])

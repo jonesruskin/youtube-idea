@@ -1,11 +1,23 @@
 # Episodes
 
-One folder per video, holding everything YouTube Studio needs: `upload.mp4` (the high-quality master to upload), `thumbnail.png`, `captions.srt` and `metadata.md`, plus a smaller `preview.mp4` for watching on GitHub.
+One folder per video, holding everything YouTube Studio needs. Open `UPLOAD.md` in a folder for the step-by-step upload sheet.
 
-| # | Folder | Video |
+| File | Use |
+|---|---|
+| `upload.mp4` | The high-quality master to upload (Git LFS) |
+| `title.txt` | Main title (alternates for Test & compare are in `UPLOAD.md`) |
+| `thumbnail.png` | 1280×720 thumbnail |
+| `description.txt` | Paste-ready description: hook, chapters, sources, credits, hashtags |
+| `tags.txt` | Paste-ready tags |
+| `captions.srt` | English subtitles, timed to the narration |
+| `pinned_comment.txt` | First comment to post and pin |
+| `UPLOAD.md` | Checklist: every Studio setting, title A/B variants, ad breaks, end screen |
+| `preview.mp4` | Smaller copy for watching on GitHub |
+
+| # | Folder | Title |
 |---|---|---|
-| 01 | [`01_black_hole`](01_black_hole) | What If a Black Hole Passed Through Our Solar System? |
-| 02 | [`02_jupiter`](02_jupiter) | What If You Fell Into Jupiter? |
+| 01 | [`01_black_hole`](01_black_hole) | We Let a Black Hole Loose in Our Solar System |
+| 02 | [`02_jupiter`](02_jupiter) | We Dropped a Ship Into Jupiter. Here's How Far It Got. |
 | – | [`legacy`](legacy) | Earlier flat-animation pilot (superseded) |
 
 Only the masters (`upload.mp4`) are stored with Git LFS. After cloning, run `git lfs pull` to download them. Previews are plain files under 95 MB.
