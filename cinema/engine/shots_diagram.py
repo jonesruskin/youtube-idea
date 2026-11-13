@@ -92,6 +92,8 @@ class System(Shot):
     ROT = np.radians(8)
 
     def render(self, u, t, fi):
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         s = S()
         p = self.p
         if not hasattr(self, "rot"):
@@ -113,7 +115,7 @@ class System(Shot):
             return np.stack([W / 2 + x * sc, H / 2 + 40 + y * sc * np.cos(self.INC)], -1)
         bh = scr(s.bh(ty))
         s0 = p.get("scale", (half, half))[0]
-        img, _ = space_frame(2600 + 200 * u, 1500, (s0 / half) ** 0.25, angle=3 * u, lenses=[(bh[0], bh[1], 34)])
+        img, _ = space_frame(2600 + 200 * ur, 1500, (s0 / half) ** 0.25, angle=3 * ur, lenses=[(bh[0], bh[1], 34)])
         self.last_scr = scr
         img *= 0.55
         lines = np.zeros((H, W), np.uint8)
@@ -192,7 +194,9 @@ class Orbit(Shot):
     exposure = 1.4
 
     def render(self, u, t, fi):
-        img, _ = space_frame(1500 + 60 * u, 1800, 1.0 + 0.04 * u)
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
+        img, _ = space_frame(1500 + 60 * ur, 1800, 1.0 + 0.04 * ur)
         img *= 0.45
         e = _lp(self.p.get("ecc", (0, 0.6)), smooth(span(u, 0.1, 0.6)))
         a = 330.0
@@ -328,6 +332,8 @@ class Galaxy(Shot):
         self.rog_ph = rng.random(5000)
 
     def render(self, u, t, fi):
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         g = galaxy_img()
         focus = self.p.get("focus")
         z = _lp(self.p.get("zoom", (1, 1)), u)
@@ -335,14 +341,14 @@ class Galaxy(Shot):
         cx = lerp(GS / 2, fx, clamp((z - 1) / 1.2))
         cy = lerp(GS / 2, fy, clamp((z - 1) / 1.2))
         base = W / GS * 1.05 * z
-        ang = 18 + 6 * u
+        ang = 18 + 6 * ur
         # oblique: squash y after rotation (warpAffine with a combined matrix)
         tilt = 0.58
         ca, sa = np.cos(np.radians(ang)), np.sin(np.radians(ang))
         A = np.array([[ca, -sa], [sa * tilt, ca * tilt]]) * base
         off = np.array([W / 2, H / 2]) - A @ np.array([cx, cy])
         M = np.hstack([A, off[:, None]]).astype(np.float32)
-        bg, _ = space_frame(1200 + 80 * u, 1200, z ** 0.4, angle=ang * 0.2)
+        bg, _ = space_frame(1200 + 80 * ur, 1200, z ** 0.4, angle=ang * 0.2)
         img = bg * 0.25 + cv2.warpAffine(g, M, (W, H), flags=cv2.INTER_LINEAR)
 
         def P(pt):
@@ -402,7 +408,9 @@ class Moon(Shot):
     """Earth loses the Moon: it slides off its orbit toward the black hole."""
 
     def render(self, u, t, fi):
-        img, _ = space_frame(4200 - 100 * u, 1900, 1.0 + 0.05 * u, angle=-1.5 * u)
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
+        img, _ = space_frame(4200 - 100 * ur, 1900, 1.0 + 0.05 * ur, angle=-1.5 * ur)
         img *= 0.75
         ex, ey, ER = 560, 600, 250
         render_planet(img, ex, ey, ER, "earth", spin=4.0 + t * 0.06, tilt=0.4, light=(0.75, 0.25, 0.6))
@@ -412,14 +420,15 @@ class Moon(Shot):
         cv2.ellipse(m, (int(ex * 4), int(ey * 4)), (int(orb_r * 4), int(orb_r * 0.32 * 4)), -8, 0, 360, 255, 1, cv2.LINE_AA, 2)
         img += (m.astype(np.float32) / 255)[..., None] * np.array([0.6, 0.7, 0.9], np.float32) * 0.22
         d0, d1 = self.p.get("drift", (0.0, 1.0))
-        k = ease_in(span(lerp(d0, d1, u), 0.25, 1.0), 2.2)
-        ang = np.radians(-20 + 50 * u)
+        dd = lerp(d0, d1, u)                       # story progress (continuous across beats)
+        k = ease_in(span(dd, 0.25, 1.0), 2.2)
+        ang = np.radians(-20 + 50 * dd)
         mx0 = ex + orb_r * np.cos(ang)
         my0 = ey + orb_r * 0.32 * np.sin(ang)
         mx = lerp(mx0, 1750, k)
         my = lerp(my0, 230, k)
         MR = 70 * (1 - 0.55 * k)
         render_planet(img, mx, my, MR, "moon", spin=1.0, tilt=0.1, light=(0.75, 0.25, 0.6), atmo=(0, 0, 0), exposure=1.1)
-        cards.label(img, "THE MOON", mx + MR + 14, my + MR * 0.4, (0.85, 0.88, 0.95), 0.8 * (1 - smooth(span(u, 0.85, 1))), 17)
+        cards.label(img, "THE MOON", mx + MR + 14, my + MR * 0.4, (0.85, 0.88, 0.95), 0.8 * (1 - smooth(span(dd, 0.85, 1))), 17)
         img = lens_image(img, 1700, 190, 70, shadow=0.32)
         return img

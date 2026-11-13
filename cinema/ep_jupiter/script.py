@@ -241,6 +241,7 @@ SEGMENTS = [
 ]
 
 META = dict(
+    slot=2, next_slot=3, next_teaser_keywords=["planet", "star"],     # EPISODES.md: #3 is the rogue planet
     first_chapter="This is Jupiter",
     extra_chapters={"end1": "So that's the fall"},
     thumb_text="STILL NO GROUND",

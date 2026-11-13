@@ -10,9 +10,19 @@ mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
 out = os.path.join(root, "build", ep, "voice"); os.makedirs(out, exist_ok=True)
 VOICE, SPEED, SR = os.environ.get("VOICE", "af_heart"), float(os.environ.get("SPEED", "0.94")), 24000
 p = KPipeline(lang_code="a")
+# reuse already-narrated segments whose text is unchanged, so adding a segment never alters existing narration
+_old_p = os.path.join(out, "timeline.json")
+OLD = {s["id"]: s for s in json.load(open(_old_p))["segments"]} if os.path.exists(_old_p) else {}
 timeline, t = [], 0.0
 LEAD = 0.25  # breath before first line of each segment
 for seg in mod.SEGMENTS:
+    o = OLD.get(seg["id"])
+    wav = os.path.join(out, seg["id"] + ".wav")
+    if o and [l["text"] for l in o["lines"]] == list(seg["lines"]) and os.path.exists(wav) and "--fresh" not in sys.argv:
+        timeline.append(dict(id=seg["id"], start=t, dur=o["dur"], lines=o["lines"]))
+        print(f'{seg["id"]:8s} {o["dur"]:6.2f}s  @ {t:7.2f}  (unchanged, reused)', flush=True)
+        t += o["dur"]
+        continue
     gap = seg.get("gap", 0.32)
     parts, lines, cur = [np.zeros(int(LEAD * SR), np.float32)], [], LEAD
     for i, text in enumerate(seg["lines"]):

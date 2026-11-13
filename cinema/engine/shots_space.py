@@ -30,11 +30,12 @@ class Shot:
 
 class Lens(Shot):
     def render(self, u, t, fi):
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         p = self.p
         zoom = _lp(p.get("zoom", (1, 1)), u)
         dx, dy = p.get("drift", (0, 0))
-        cx = 3050 + dx * W * (u - 0.5) * 2
-        cy = 1560 + dy * H * (u - 0.5) * 2
+        cx = 3050 + dx * W * (ur - 0.5) * 2
+        cy = 1560 + dy * H * (ur - 0.5) * 2
         mass = _lp(p.get("mass", (1, 1)), u)
         te = 150 * mass * zoom ** 0.5
         lx, ly = W * 0.5, H * 0.47
@@ -43,7 +44,7 @@ class Lens(Shot):
             ly = H * 0.5 + 60 * np.sin(u * 3)
         if p.get("earth"):
             lx, ly = W * 0.36, H * 0.33
-        img, _ = space_frame(cx, cy, zoom, angle=4 * (u - 0.5), lenses=[(lx, ly, te)])
+        img, _ = space_frame(cx, cy, zoom, angle=4 * (ur - 0.5), lenses=[(lx, ly, te)])
         if p.get("earth"):
             img *= 0.8
             render_planet(img, 1560, 1520 - 40 * smoother(u), 980, "earth", spin=1.9 + 0.05 * u, tilt=0.5, light=(-0.75, 0.45, 0.35))
@@ -53,10 +54,11 @@ class Lens(Shot):
 
 class Planet(Shot):
     def render(self, u, t, fi):
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         p = self.p
         body = p["body"]
         zoom = _lp(p.get("zoom", (1, 1)), u)
-        img, _ = space_frame(2200 + 300 * u, 1100 + 80 * u, zoom ** 0.7, angle=2 * u)
+        img, _ = space_frame(2200 + 300 * ur, 1100 + 80 * ur, zoom ** 0.7, angle=2 * ur)
         img *= 0.9
         R = {"neptune": 330, "jupiter": 420, "saturn": 250}[body] * zoom
         (ax, ay), (bx, by) = p["path"]
@@ -83,9 +85,10 @@ class Planet(Shot):
 
 class Earth(Shot):
     def render(self, u, t, fi):
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         p = self.p
         zoom = _lp(p.get("zoom", (1, 1)), u)
-        img, _ = space_frame(1700 - 200 * u, 2100, zoom ** 0.7, angle=-2 * u)
+        img, _ = space_frame(1700 - 200 * ur, 2100, zoom ** 0.7, angle=-2 * ur)
         R = 420 * zoom
         spin = 3.2 + t * 0.05
         light = np.array([-0.8, 0.3, 0.55]) if not p.get("nightside") else np.array([0.9, 0.25, -0.45])
@@ -111,7 +114,7 @@ class Earth(Shot):
         if p.get("lens"):
             lx, ly = p["lens"]
             r0, r1 = p.get("lens_r", (0.05, 0.08))
-            img = lens_image(img, lx * W - 60 * u, ly * H + 30 * u, lerp(r0, r1, smooth(u)) * W, shadow=0.3)
+            img = lens_image(img, lx * W - 60 * ur, ly * H + 30 * ur, lerp(r0, r1, smooth(u)) * W, shadow=0.3)
         return img
 
 
@@ -121,6 +124,8 @@ class Sun(Shot):
     bloom = 0.35
 
     def render(self, u, t, fi):
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         img = np.zeros((H, W, 3), np.float32)
         R = 440 + 25 * u
         render_sun_disk(img, W / 2, H / 2, R, t)
@@ -136,6 +141,8 @@ class Leave(Shot):
     """Earth leaves the Sun behind: sunlight falls with the inverse square of distance."""
 
     def render(self, u, t, fi):
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         ta, tb = self.p.get("t", (0.0, 1.0))
         u = lerp(ta, tb, u)
         k = smoother(span(u, 0.05, 0.98))
@@ -261,6 +268,8 @@ class Spaghetti(Shot):
     exposure = 1.3
 
     def render(self, u, t, fi):
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         pos, temp, lat, lon, rad = tde()
         a, b = self.p.get("phase", (0, 1))
         ph = lerp(a, b, u)

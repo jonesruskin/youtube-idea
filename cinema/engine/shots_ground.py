@@ -139,16 +139,18 @@ class Ground(Shot):
             self.city = None
 
     def render(self, u, t, fi):
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         p = self.p
         push = p.get("push", 0.05)
-        zs = 1.25 * (1 + push * smoother(u))
+        zs = 1.25 * (1 + push * smoother(ur))
         jx, jy = 3 * np.sin(t * 0.31), 2 * np.sin(t * 0.23 + 1)
         cx, cy = 2350 + jx / zs, 1250 + jy / zs
         sky_img, _ = space_frame(cx, cy, zs, angle=28)
         img = self.sky + sky_img * self.star_k
         # target stars (flare) – positions follow the sky camera
         def to_screen(x, y):
-            return W / 2 + (x - W / 2) * (1 + push * smoother(u)) + jx, H / 2 + (y - H / 2) * (1 + push * smoother(u)) + jy
+            return W / 2 + (x - W / 2) * (1 + push * smoother(ur)) + jx, H / 2 + (y - H / 2) * (1 + push * smoother(ur)) + jy
         for i, (x, y) in enumerate(self.STARS[:4]):
             sx, sy = to_screen(x, y)
             base = 0.55
@@ -180,7 +182,7 @@ class Ground(Shot):
             glow_dot(img, jxp, jyp, (1.0, 0.9, 0.75), 8, 0.12)
             cards.label(img, "JUPITER", jxp + 18, jyp + 2, (0.8, 0.82, 0.9), 0.7 * smooth(span(u, 0.05, 0.2)), 16)
         # foreground plate with parallax push
-        zf = 1 + push * 1.7 * smoother(u)
+        zf = 1 + push * 1.7 * smoother(ur)
         ox, oy = self.fg_off
         M = np.float32([[zf, 0, -ox * zf + (1 - zf) * W / 2 + jx * 1.6], [0, zf, -oy * zf + (1 - zf) * H + jy * 1.6]])
         far_a = cv2.warpAffine(self.far_a, M, (W, H), flags=cv2.INTER_LINEAR)
@@ -263,6 +265,8 @@ class Tide(Shot):
         self.lamps = [(x, H - 150) for x in range(120, W, 330)]
 
     def render(self, u, t, fi):
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         rise = ease_in(span(u, 0.05, 0.95), 2.2)
         metres = 0.3 + rise * 38
         if hasattr(self, "metres"):
@@ -270,7 +274,7 @@ class Tide(Shot):
         # water line: normal sea sits 40 px below the quay top; 38 m reaches ~170 px up the buildings
         lvl = self.quay + 40 - (metres / 38.0) * 210 + 3 * np.sin(t * 0.9)
         img = np.broadcast_to(self.sky, (H, W, 3)).copy()
-        stars, _ = space_frame(1800 + 20 * u, 900, 1.6, angle=10)
+        stars, _ = space_frame(1800 + 20 * ur, 900, 1.6, angle=10)
         img += stars * 0.35 * (1 - clamp(np.arange(H)[:, None, None] / self.hor) ** 1.5)
         glow_dot(img, 420, 250, (1.0, 0.95, 0.85), 34, 0.06)
         mxs, mys = grid()
@@ -360,7 +364,9 @@ class Ice(Shot):
         self.city = np.asarray(img.resize((W, H), Image.LANCZOS), np.float32) / 255.0
 
     def render(self, u, t, fi):
-        img, _ = space_frame(3300 + 60 * u, 1500, 1.15, angle=-12)
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
+        img, _ = space_frame(3300 + 60 * ur, 1500, 1.15, angle=-12)
         ys = np.arange(H, dtype=np.float32)[:, None, None]
         img = img * (1 - 0.5 * smooth(clamp((ys / self.hor - 0.7) / 0.3))) + lerp(hex2rgb("#01030a"), hex2rgb("#0a1626"), clamp(ys / self.hor) ** 3) * 0.6
         # the Sun, now just the brightest star
@@ -375,7 +381,7 @@ class Ice(Shot):
         z = 240.0 / yy
         xx = (np.arange(W, dtype=np.float32)[None, :] - W / 2) * z / 240.0
         mu = ((xx * 300 + 512) % 1024).astype(np.float32)
-        mv = ((z * 40 + u * 60) % 1024).astype(np.float32)
+        mv = ((z * 40 + ur * 60) % 1024).astype(np.float32)
         mv = np.broadcast_to(mv, (gh, W)).astype(np.float32)
         it = cv2.remap(self.ice, mu, mv, cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
         cr = cv2.remap(self.cracks, mu, mv, cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
@@ -430,6 +436,8 @@ class Vent(Shot):
         self.smoke = [fbm(512, 1024, scale=s_, seed=66 + i, octaves=5) for i, s_ in enumerate((60, 24))]
 
     def render(self, u, t, fi):
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         Wb, Hb = self.Wb, self.Hb
         ys = np.arange(Hb, dtype=np.float32)[:, None, None]
         img = np.zeros((Hb, Wb, 3), np.float32) + lerp(hex2rgb("#03101f"), hex2rgb("#000308"), clamp(ys / Hb)) * 0.6
@@ -474,6 +482,6 @@ class Vent(Shot):
         for bx, by, bp in self.bio:
             a = max(0, np.sin(t * 1.3 + bp * 20)) ** 8
             glow_dot(img, bx * Wb, by * Hb * 0.8, (0.2, 0.9, 1.0), 2.2, a * 0.5)
-        z = 1 + 0.08 * smoother(u)
-        M = np.float32([[z, 0, -(Wb - W) / 2 * z + (1 - z) * W / 2 - 30 * u], [0, z, -(Hb - H) / 2 * z + (1 - z) * H / 2]])
+        z = 1 + 0.08 * smoother(ur)
+        M = np.float32([[z, 0, -(Wb - W) / 2 * z + (1 - z) * W / 2 - 30 * ur], [0, z, -(Hb - H) / 2 * z + (1 - z) * H / 2]])
         return cv2.warpAffine(img, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)

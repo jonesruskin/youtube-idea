@@ -198,7 +198,11 @@ class Descent:
         return up(shade), up(hit.astype(np.float32)), up(np.minimum(dist, 1e4)), up(tn), up(hv)
 
     def render(self, z, v, T, t, ship=None, light_rate=0.0, cam_roll=0.0, sun=(0.22, 0.12), glow_boost=1.0,
-               flash_seed=None, deep=False, extra_flash=0.0):
+               flash_seed=None, deep=False, extra_flash=0.0, scroll=None, motion=None):
+        """scroll: how far the world has streamed UP past the camera (px, continuous, from fall_scroll(z));
+        motion: px it moved since the previous frame (sets streak length / motion blur). None → legacy speed-based."""
+        if scroll is None:
+            scroll, motion = t * v * 0.9, v * 0.9 / 30.0
         S = sunlight(z)
         e, gcol = thermal(T)
         e *= glow_boost
@@ -273,11 +277,13 @@ class Descent:
         for dk in inside:
             k = min(1.0, (z - dk["top"]) / 1.5, (dk["bot"] - z) / 1.5)
             k = smooth(clamp(k))
-            sp = v * 0.9
-            off = (t * sp) % 1024
+            off = scroll % 1024
             tu = self._scroll(self.turb, off, 1.0)
             tc = self._scroll(self.cells, off * 0.5, 2.0)
             dens = clamp(0.35 + 0.55 * tu * tc + 0.2 * tu)
+            mb = int(min(60, motion * 0.6))
+            if mb >= 3:      # streaking fog: motion blur along the fall, so speed reads without strobing
+                dens = cv2.blur(dens, (1, mb))
             St = sunlight(z)
             fc = np.asarray(dk["col"], np.float32) * (0.10 + 0.95 * St) * (0.55 + 0.6 * dens[..., None])
             if fl > 0:
@@ -285,7 +291,7 @@ class Descent:
             img = img * (1 - k * 0.92) + fc * k * 0.92
         # deep convective glow structure
         if e > 0.02:
-            off = (t * max(8.0, v) * 0.5) % 1024
+            off = (scroll * 0.5 + t * 4.0) % 2048
             tu = self._scroll(self.cells, off, 1.6, sx=0.6)
             tb = self._scroll(self.turb, off * 1.7, 0.8)
             plume = self._scroll(self.turb, off * 2.2, 2.4, sx=0.18)       # tall rising columns
@@ -301,7 +307,7 @@ class Descent:
             if fev is not None and flash_env(t, fev["t"]) > 0.4:
                 img = self._bolt(img, fev, yh, fl)
         # particles: ice / droplets / embers rushing up past the camera
-        img = self._particles(img, v, t, S, fogc, e, gcol, inside, z)
+        img = self._particles(img, scroll, motion, t, S, fogc, e, gcol, inside, z)
         if ship is not None:
             img = draw_ship(img, ship, S, fogc, e, gcol, fl)
         if cam_roll:
@@ -331,15 +337,21 @@ class Descent:
         g = fast_blur(mm, 6)
         return img + (mm * 3.0 + g * 2.5)[..., None] * np.array([0.85, 0.9, 1.0], np.float32) * min(1.0, fl)
 
-    def _particles(self, img, v, t, S, fogc, e, gcol, inside, z):
-        sp = v * 0.75  # px/s
+    def _particles(self, img, scroll, motion, t, S, fogc, e, gcol, inside, z):
+        """Ice / droplets / embers streaming UP past the falling camera. Each streak is exactly the distance the particle
+        moved this frame, bright at its leading (upper) end and fading behind it, so the direction is unambiguous."""
         n = int(self.np_ * (0.6 if inside else 0.25)) if e < 0.05 else int(self.np_ * 0.5)
-        y = (self.py[:n] - sp * t * (0.4 + self.pk[:n])) % (H + 300) - 150
+        par = 0.4 + self.pk[:n]                                   # parallax: near particles move faster
+        y = (self.py[:n] - scroll * 0.75 * par) % (H + 300) - 150
         x = self.px[:n] + np.sin(t * 0.7 + self.py[:n]) * 10
-        Lst = np.clip(sp * 0.035 * (0.4 + self.pk[:n]), 1.5, 140)
+        Lst = np.clip(motion * 0.75 * par, 1.5, 160)
         m = np.zeros((H, W), np.uint8)
         for xi, yi, li, ki in zip(x, y, Lst, self.pk[:n]):
-            cv2.line(m, (int(xi * 16), int(yi * 16)), (int(xi * 16), int((yi + li) * 16)), int(60 + 195 * ki), 1 + int(ki * 2), cv2.LINE_AA, 4)
+            a = 60 + 195 * ki
+            th = 1 + int(ki * 2)
+            X = int(xi * 16)
+            for s0, s1, g in ((0.0, 0.25, 1.0), (0.25, 0.6, 0.55), (0.6, 1.0, 0.22)):
+                cv2.line(m, (X, int((yi + li * s0) * 16)), (X, int((yi + li * s1) * 16)), int(a * g), th, cv2.LINE_AA, 4)
         mm = m.astype(np.float32) / 255.0
         col = fogc * 1.6 + np.array([0.6, 0.65, 0.7], np.float32) * S * 0.9 + gcol * e * 4.0
         return img + mm[..., None] * col * (0.28 + 0.5 * e)
@@ -454,8 +466,33 @@ def draw_ship(img, sh, S, fogc, e, gcol, fl):
 
 
 # ───────────────────────────── globe + belts ─────────────────────────────
-GRS_SPIN = 2 * np.pi * 0.37   # brings the Great Red Spot to the centre of the disk
+# Great Red Spot in the texture (8k_jupiter.jpg, measured): centre at longitude fraction 0.3699, latitude −20°;
+# the visible oval spans ~19° of longitude and ~9.5° of latitude.
+GRS_LON, GRS_LAT = 2 * np.pi * 0.3699, np.radians(-20.0)
+GRS_HALF_LON, GRS_HALF_LAT = np.radians(9.5), np.radians(4.8)
+GRS_SPIN = GRS_LON            # brings the Great Red Spot to the centre of the disk
 GRS_TILT = 0.33               # ~19° south
+
+
+def sphere_to_screen(cx, cy, R, lat, lon, spin, tilt):
+    """Inverse of planet._rot: a point on the globe (lat, texture longitude) → screen (x, y) and depth nz (>0 = visible)."""
+    a = lon - spin
+    cl = np.cos(lat)
+    nx, z1, y1 = cl * np.sin(a), cl * np.cos(a), np.sin(lat)
+    ct, st = np.cos(tilt), np.sin(tilt)
+    ny = y1 * ct + z1 * st
+    nz = -y1 * st + z1 * ct
+    return cx + nx * R, cy - ny * R, nz
+
+
+def grs_outline(cx, cy, R, spin, tilt, pad=1.15, n=96):
+    """Screen outline of the Great Red Spot for the globe as drawn: (points Nx2, centre (x, y), visible fraction)."""
+    th = np.linspace(0, 2 * np.pi, n)
+    lat = GRS_LAT + GRS_HALF_LAT * pad * np.sin(th)
+    lon = GRS_LON + GRS_HALF_LON * pad * np.cos(th)
+    x, y, nz = sphere_to_screen(cx, cy, R, lat, lon, spin, tilt)
+    gx, gy, gz = sphere_to_screen(cx, cy, R, GRS_LAT, GRS_LON, spin, tilt)
+    return np.stack([x, y], -1), (float(gx), float(gy)), float(np.mean(nz > 0))
 
 
 def globe(img, cx, cy, R, spin=GRS_SPIN, tilt=0.06, light=(-0.75, 0.2, 0.62), exposure=1.0):

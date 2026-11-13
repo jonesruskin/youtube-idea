@@ -4,7 +4,7 @@ One folder per video, holding everything YouTube Studio needs. Open `UPLOAD.md` 
 
 | File | Use |
 |---|---|
-| `upload.mp4` | The high-quality master to upload (Git LFS) |
+| `upload.mp4` | The high-quality master to upload (Git LFS). Added only after the preview is approved |
 | `title.txt` | Main title (alternates for Test & compare are in `UPLOAD.md`) |
 | `thumbnail.png` | 1280×720 thumbnail |
 | `description.txt` | Paste-ready description: hook, chapters, sources, credits, hashtags |
@@ -20,4 +20,6 @@ One folder per video, holding everything YouTube Studio needs. Open `UPLOAD.md` 
 | 02 | [`02_jupiter`](02_jupiter) | We Dropped a Ship Into Jupiter. Here's How Far It Got. |
 | – | [`legacy`](legacy) | Earlier flat-animation pilot (superseded) |
 
-Only the masters (`upload.mp4`) are stored with Git LFS. After cloning, run `git lfs pull` to download them. Previews are plain files under 95 MB.
+**Upload order:** see [`EPISODES.md`](../EPISODES.md). Each episode's ending teases the next one.
+
+Only the masters (`upload.mp4`) are stored with Git LFS, and only once a preview is approved. After cloning, run `git lfs pull` to download them. Previews are plain files under 95 MB.

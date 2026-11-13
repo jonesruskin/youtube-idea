@@ -17,6 +17,8 @@ P="$D/pass"
 ffmpeg -v error -y -i "$D/final.mp4" -c:v libx264 -preset slow -b:v 1350k -maxrate 2600k -bufsize 5200k -pass 1 -passlogfile "$P" -an -f mp4 /dev/null
 ffmpeg -v error -y -i "$D/final.mp4" -c:v libx264 -preset slow -b:v 1350k -maxrate 2600k -bufsize 5200k -pass 2 -passlogfile "$P" -c:a aac -b:a 128k -movflags +faststart "$OUT/preview.mp4"
 rm -f "$P"*
-cp "$D/upload.mp4" "$D/thumbnail.png" "$D/captions.srt" "$D/UPLOAD.md" "$D/title.txt" "$D/description.txt" "$D/tags.txt" "$D/pinned_comment.txt" "$OUT/"
+cp "$D/thumbnail.png" "$D/captions.srt" "$D/UPLOAD.md" "$D/title.txt" "$D/description.txt" "$D/tags.txt" "$D/pinned_comment.txt" "$OUT/"
+# The master goes into renders/ (and Git LFS) only after the founder approves the preview: MASTER=1 tools/finalize.sh <ep>
+if [ "${MASTER:-0}" = "1" ]; then cp "$D/upload.mp4" "$OUT/"; else rm -f "$OUT/upload.mp4"; fi
 rm -f "$OUT/metadata.md"
 ls -la "$OUT"

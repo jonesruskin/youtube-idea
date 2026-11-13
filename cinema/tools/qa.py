@@ -4,7 +4,7 @@ Any FAIL blocks upload. WARNs need a human decision, recorded in the report.
   python tools/qa.py ep_blackhole pre     # after `engine.render --stills` (uses QA_LOG + stills)
   python tools/qa.py ep_blackhole post    # after finalize (video + mix + captions + thumbnail)
 """
-import os, sys, json, re, subprocess, importlib
+import os, sys, json, re, subprocess, importlib, importlib.util
 import numpy as np, cv2
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
@@ -99,6 +99,76 @@ def pre():
     res("INFO", "review", f"contact sheets: build/{ep}/review/beats_*.jpg ({len(pages)} pages)")
 
 
+def _script():
+    spec = importlib.util.spec_from_file_location("script", os.path.join(ROOT, ep, "script.py"))
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m
+
+
+def continuity():
+    """Static continuity checks on the beat sheet (no render needed)."""
+    from engine.render import episode_layout, load, boundary_fades
+    lay = episode_layout(ep)
+    _, segs = load(ep)
+    segs = boundary_fades(segs)
+    D = os.path.join(B, "stills")
+    prev = None
+    n_cont = n_cut = 0
+    for s in segs:
+        if s["id"] not in lay:
+            prev = None
+            continue
+        seg, beats, ctxs = lay[s["id"]]
+        for bi, (b, c) in enumerate(zip(beats, ctxs)):
+            if prev is not None and not (bi == 0 and seg["fade_in"]):
+                if c.prev is not None:
+                    n_cont += 1
+                else:
+                    n_cut += 1
+                    # a cut must change the picture: compare the stills either side of it
+                    a = cv2.imread(os.path.join(D, f"{prev[0]}_{prev[1]:02d}_2.jpg"))
+                    z = cv2.imread(os.path.join(D, f"{s['id']}_{bi:02d}_0.jpg"))
+                    if a is not None and z is not None:
+                        a, z = [cv2.resize(cv2.cvtColor(x, cv2.COLOR_BGR2GRAY), (96, 54), interpolation=cv2.INTER_AREA).astype(np.float32) for x in (a, z)]
+                        cc = float(np.corrcoef(a.ravel(), z.ravel())[0, 1])
+                        if np.mean(np.abs(a - z)) < 14 and cc > 0.6:
+                            msg = f"{s['id']}#{bi}: scene change between two near-identical pictures (correlation {cc:.2f}, {b.name})"
+                            if b.cut:
+                                res("FAIL", "jump-cut", msg + " — hard cut: make it one continuous shot (same scene factory) or change the scene")
+                            else:
+                                res("WARN", "similar-dissolve", msg + " — dissolves; check it reads as a deliberate change")
+            prev = (s["id"], bi)
+    res("PASS", "continuity", f"{n_cont} beat changes inside continuous shots, {n_cut} real cuts")
+    # the fall: the camera falls with the ship, so the ship must never climb on screen during the descent
+    if ep == "ep_jupiter":
+        for sid, (seg, beats, ctxs) in lay.items():
+            for bi, (b, c) in enumerate(zip(beats, ctxs)):
+                sc = getattr(b.scene, "_inner", b.scene)
+                kw = getattr(sc, "_kw", None)
+                if not kw or "tau0" not in kw or kw["tau0"] == kw["tau1"]:
+                    continue
+                sp = kw.get("ship_move") or kw.get("ship")
+                if getattr(sp, "__name__", "") == "float_hold":
+                    continue          # the fall is over: a gentle buoyant bob is correct here
+                ys = [(sp(c, c.dur * f, f) if callable(sp) else sp)[1] for f in (0.0, 0.5, 1.0)]
+                if ys[-1] < ys[0] - 0.004:
+                    res("FAIL", "fall-direction", f"{sid}#{bi}: ship rises on screen during the fall ({ys[0]:.3f} → {ys[-1]:.3f})")
+    # the teaser must name the next episode in the published order (EPISODES.md)
+    mod = _script()
+    meta = getattr(mod, "META", {})
+    order = [l.split("|")[2].strip() for l in open(os.path.join(REPO, "EPISODES.md")) if re.match(r"\|\s*\d+\s*\|", l)]
+    slot = meta.get("slot")
+    if slot is None:
+        res("FAIL", "next-episode", "META['slot'] missing (the episode's position in EPISODES.md)")
+    elif slot < len(order):
+        txt = " ".join(" ".join(sg["lines"]) for sg in mod.SEGMENTS if sg["id"] in ("next", "end3")).lower()
+        kw_ = meta.get("next_teaser_keywords", [])
+        ok = "next time" in txt and all(k.lower() in txt for k in kw_) and meta.get("next_slot") == slot + 1
+        res("PASS" if ok else "FAIL", "next-episode",
+            f"teaser points to #{meta.get('next_slot')} ({order[meta.get('next_slot', 1) - 1] if meta.get('next_slot') else '?'}); next in order is #{slot + 1} ({order[slot]})")
+
+
 def ff(args):
     return subprocess.run(["ffmpeg", "-hide_banner", "-nostats"] + args, capture_output=True, text=True).stderr
 
@@ -142,6 +212,15 @@ def post():
             bad += 1
         last_end = b
     res("PASS" if bad == 0 else "WARN", "captions", f"{len(cap)} cues, {bad} break the rules (≤2 lines, ≤42 chars, ≥0.7 s, no overlap)")
+    # jump cuts: the picture changes abruptly but it is still the same scene (docs/QUALITY_GATE.md, lesson 8)
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    from jumpcuts import analyse
+    mod = _script()
+    allow = getattr(mod, "META", {}).get("qa_allow_jumps", [])   # human-verified exceptions (e.g. lightning flashes)
+    jumps, cuts = analyse(vid)
+    bad = [j for j in jumps if not any(abs(j[0] - a) < 0.5 for a in allow)]
+    res("FAIL" if bad else "PASS", "jump-cuts",
+        f"{len(cuts)} scene cuts; {len(bad)} same-scene jumps" + (": " + ", ".join(f"{a:.1f}s" for a, *_ in bad[:12]) if bad else ""))
     th = cv2.imread(os.path.join(B, "thumbnail.png"))
     sz = os.path.getsize(os.path.join(B, "thumbnail.png"))
     res("PASS" if th is not None and th.shape[:2] == (720, 1280) and sz < 2_000_000 else "FAIL", "thumbnail", f"{th.shape[1]}x{th.shape[0]}, {sz / 1e6:.2f} MB (YouTube: 1280x720, < 2 MB)")
@@ -149,6 +228,7 @@ def post():
 
 if mode == "pre":
     pre()
+    continuity()
 else:
     post()
 rep = os.path.join(B, f"qa_report_{mode}.md")

@@ -10,6 +10,7 @@ from engine import hud
 from engine.hud import Layer, text, fade, prog, typed, WHITE, ACC, BLUE, RED, GREEN, DIM
 from engine.jupiter import Descent, globe, belts, slice_disk, slice_color, GRS_SPIN, GRS_TILT, RJ_KM, thermal
 from ep_jupiter import model as M
+from engine.beats import scene_factory
 from ep_blackhole.vis import night  # noqa  (night-sky sets from engine.ground2)
 
 # ═══════════════════════════ simulation lookup ═══════════════════════════
@@ -64,7 +65,12 @@ def D():
     return _D["d"]
 
 
-def atmos(tau0, tau1, ship=(0.62, 0.55, 100), light=0.0, beams=None, crush=None, glow_boost=1.0, ease=None,
+# The camera falls WITH the ship, so the ship's height on screen is fixed: any upward move would read as climbing.
+SHIP_Y = 0.58
+
+
+@scene_factory(pairs=[("tau0", "tau1")], dyn=["ship", "thrust", "crush", "z_override", "v_override"])
+def atmos(tau0, tau1, ship=(0.62, SHIP_Y, 100), light=0.0, beams=None, crush=None, glow_boost=1.0, ease=None,
           z_override=None, v_override=None, thrust=0.0, roll=0.0, exposure=None, ship_move=None):
     """Descent scene for one beat. tau runs from tau0 to tau1 (sim seconds) across the beat."""
     def f(ctx, t, u, fi):
@@ -76,15 +82,22 @@ def atmos(tau0, tau1, ship=(0.62, 0.55, 100), light=0.0, beams=None, crush=None,
         ctx.state["tau"] = tau
         ctx.state["st"] = st
         gt = ctx.seg["start"] + ctx.beat.t0 + t
-        sx, sy, sr = ship if ship_move is None else ship_move(ctx, t, u)
-        bob = np.sin(gt * 1.3) * 6 + np.sin(gt * 3.1) * 2 * clamp(v / 1500)
+        sp = ship if ship_move is None else ship_move
+        sx, sy, sr = sp(ctx, t, u) if callable(sp) else sp
+        bob = np.sin(gt * 3.1) * 1.5 * clamp(v / 1500)      # buffeting only; no slow up/down drift
         e0, _ = thermal(st["T"])
         bm = clamp((z - 55) / 25) * (1 - 0.8 * clamp(e0 / 0.4)) if beams is None else beams
         cr = 0.0 if crush is None else crush(ctx, t, u)
-        sh = dict(x=W * sx + np.sin(gt * 0.4) * 10, y=H * sy + bob, r=sr, t=gt, beams=bm, crush=cr,
+        sh = dict(x=W * sx + np.sin(gt * 0.4) * 12, y=H * sy + bob, r=sr, t=gt, beams=bm, crush=cr,
                   hull_glow=clamp((st["T"] - 950) / 700) * (1 - cr))
+        # how far the world has streamed past: a function of depth, so it is continuous across beats, stops when the
+        # ship stops, and never runs backwards (the old speed×time version strobed and could appear to rise)
+        k_prev = max(0.0, k - (1.0 / 30.0) / max(1e-3, ctx.dur)) if ease is None else ease(max(0.0, min(u, 1.0) - (1.0 / 30.0) / max(1e-3, ctx.dur)))
+        z_prev = at(lerp_tau(tau0, tau1, k_prev))["z"] if z_override is None else z
+        scroll = fall_scroll(z)
+        motion = max(0.0, scroll - fall_scroll(z_prev))
         img = D().render(z, v, st["T"], gt, ship=sh if sr > 0 else None, light_rate=light, flash_seed=int(ctx.seg["start"] * 7) % 997,
-                         glow_boost=glow_boost, cam_roll=roll * np.sin(gt * 0.9))
+                         glow_boost=glow_boost, cam_roll=roll * np.sin(gt * 0.9), scroll=scroll, motion=motion)
         if callable(thrust) or thrust > 0:
             th = thrust if not callable(thrust) else thrust(ctx, t, u)
             if th > 0:
@@ -95,6 +108,12 @@ def atmos(tau0, tau1, ship=(0.62, 0.55, 100), light=0.0, beams=None, crush=None,
         ex = exposure if exposure is not None else (1.45 - 0.75 * clamp(e / 0.6) + 0.25 * clamp((z - 75) / 30) * (1 - clamp(e / 0.3)))
         return img, dict(exposure=ex, bloom=0.5)
     return f
+
+
+def fall_scroll(z):
+    """Screen pixels the world has streamed upward past the camera at depth z (km). Log-compressed: ~180 px per km near
+    the cloud tops, ~30 px per km at 400 km, so the apparent speed stays readable through a 5,000 km fall."""
+    return 13760.0 * np.log1p(max(0.0, z + 30.0) / 58.8)
 
 
 # ═══════════════════════════ the descent HUD ═══════════════════════════
@@ -170,14 +189,15 @@ def hud_descent(alpha=1.0, reveal_float=False, show_gauge=True):
 # ═══════════════════════════ space / globe ═══════════════════════════
 
 
-def space_globe(R=(400, 430), cx=None, cy=None, spin0=GRS_SPIN - 0.25, spin_rate=0.012, tilt=0.12, z=(1.0, 1.05),
+@scene_factory(vectors=["pan", "light", "canvas"], dyn=["belts_a"])
+def space_globe(R=(400, 430), cx=W / 2, cy=H / 2, spin0=GRS_SPIN - 0.25, spin_rate=0.012, tilt=0.12, z=(1.0, 1.05),
                 pan=(0, 0), belts_a=None, light=(-0.75, 0.2, 0.62), extra=None, stars_gain=1.0, canvas=(2300, 1300)):
     def f(ctx, t, u, fi):
-        cam = Cam(u, z=z, pan=pan, canvas=canvas)
+        cam = Cam(u, z=z, pan=pan, canvas=canvas, pan_u=ctx.ru(t))
         img = cam.stars(gain=stars_gain)
         k = smoother(min(u, 1))
         r = lerp(R[0], R[1], k)
-        X, Y = cam.p(W / 2 if cx is None else cx, H / 2 if cy is None else cy)
+        X, Y = cam.p(cx, cy)
         gt = ctx.seg["start"] + ctx.beat.t0 + t
         globe(img, X, Y, cam.r(r), spin=spin0 + gt * spin_rate, tilt=tilt, light=light)
         ba = belts_a(ctx, t, u) if belts_a else 0.0

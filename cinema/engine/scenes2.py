@@ -14,10 +14,11 @@ class Cam:
     """A 2D camera over a scene: zoom about the screen centre plus a slow pan. Use it for BOTH the starfield and
     everything placed in the scene."""
 
-    def __init__(self, u, z=(1.0, 1.08), pan=(0.0, 0.0), canvas=(2800, 1500), angle=(0.0, 0.0)):
+    def __init__(self, u, z=(1.0, 1.08), pan=(0.0, 0.0), canvas=(2800, 1500), angle=(0.0, 0.0), pan_u=None):
         k = smoother(u)
         self.z = lerp(z[0], z[1], k)
-        self.px, self.py = pan[0] * (k - 0.5), pan[1] * (k - 0.5)
+        kp = smoother(u if pan_u is None else pan_u)   # pan_u: progress through the whole continuous shot
+        self.px, self.py = pan[0] * (kp - 0.5), pan[1] * (kp - 0.5)
         self.canvas = canvas
         self.ang = lerp(angle[0], angle[1], k)
 

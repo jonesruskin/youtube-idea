@@ -9,15 +9,22 @@ from engine.scenes2 import Cam, scope_view, city_aerial, cross_section, earth_cu
 from engine import hud
 from engine.hud import Layer, text, fade, prog, WHITE, ACC, BLUE, RED, GREEN, DIM
 from engine import sim as simmod
+from engine.beats import scene_factory
 
 
+SHOT_VECTORS = ["lens", "lens_xy", "pan", "crawl", "canvas", "light", "focus"]
+
+
+@scene_factory(vectors=SHOT_VECTORS, keys=["typ", "set", "time", "body"])
 def shot(typ, **p):
-    """Scene from an existing shot class; instance cached per beat."""
+    """Scene from an existing shot class; instance cached per beat. Parameters are re-read every frame (they glide
+    between beats of one continuous shot); `_ur` is the progress through the whole shot, for camera drift."""
     def f(ctx, t, u, fi):
         from engine.render import SHOTS
         if "shot" not in ctx.state:
             ctx.state["shot"] = SHOTS[typ](dict(p), ctx.dur, ctx.seg["start"] + ctx.beat.t0)
         s = ctx.state["shot"]
+        s.p = dict(p, _ur=ctx.ru(t))
         dyn = p.get("_dyn")
         if dyn:
             dyn(ctx, s, t, u)
@@ -72,9 +79,10 @@ def big_label(s, at, y=H - 210, size=88, color=WHITE, sub=None, until=None):
 STARS_SCOPE = [(760, 600), (905, 520), (1050, 440), (1195, 360)]
 
 
+@scene_factory(keys=[])
 def scope_scene(zoom=2.4, flares=lambda ctx, t: [], lens_path=None, sweep=False):
     def f(ctx, t, u, fi):
-        cam = Cam(u, z=(1.0, 1.06), pan=(-40, 10) if not sweep else (-900, 120))
+        cam = Cam(ctx.ru(t), z=(1.0, 1.06), pan=(-40, 10) if not sweep else (-900, 120))
         img, _ = space_frame(3900 - cam.px / zoom, 2100 - cam.py / zoom, zoom * cam.z, angle=6)
         img *= 0.75
         lenses = []
@@ -110,22 +118,35 @@ def lightcurve(L, img, x0, y0, w, h, bumps, p, color=ACC, alpha=1.0, xlabel="TIM
 
 # ───────────── side-view ray diagram ─────────────
 def ray_scene(ctx, t, u, fi, bh_y=540.0, lens_on=True):
+    flare = 0.0
     if ctx.state.get("slide"):
+        # the hole is already in line (same shot as the beat before); Earth's flare builds as the narration says "front"
         tf = ctx.w("front")
-        bh_y = lerp(800.0, 540.0, smoother(span(t, 0.0, tf + 0.6)))
+        flare = smoother(span(t, 0.0, tf + 0.6))
     ctx.state["bh_y"] = bh_y
-    cam = Cam(u, z=(1.0, 1.04), pan=(0, 0), canvas=(1600, 2600))
+    gt = ctx.seg["start"] + ctx.beat.t0 + t
+    cam = Cam(ctx.ru(t), z=(1.0, 1.04), pan=(0, 0), canvas=(1600, 2600))
     img = cam.stars(lenses=[(cam.p(960, bh_y)[0], cam.p(960, bh_y)[1], 70)] if lens_on else [], gain=0.55)
     sx, sy = cam.p(250, 540)
-    al = 1 - clamp(abs(bh_y - 540) / 260)
+    al = flare
     glow_dot(img, sx, sy, (1.0, 0.95, 0.85), 5, 7)
     glow_dot(img, sx, sy, (1.0, 0.9, 0.7), 40, 0.25)
     if ctx.state.get("slide"):
         ex_, ey_ = cam.p(1680, 540)
         glow_dot(img, ex_, ey_, (1.0, 0.9, 0.7), 70, 0.9 * al ** 3)
     ex, ey = cam.p(1680, 540)
-    render_planet(img, ex, ey, cam.r(38), "earth", spin=2.0 + t * 0.1, tilt=0.4, light=(-0.9, 0.1, 0.4))
+    render_planet(img, ex, ey, cam.r(38), "earth", spin=2.0 + gt * 0.1, tilt=0.4, light=(-0.9, 0.1, 0.4))
     return img
+
+
+@scene_factory()
+def ray(slide=0.0):
+    """Side view of light rays passing the black hole. slide=1: the 'lined up' beat, where Earth's flare builds."""
+    def f(ctx, t, u, fi):
+        if slide > 0.5:
+            ctx.state["slide"] = True
+        return ray_scene(ctx, t, u, fi)
+    return f
 
 
 def ray_overlay(stage):
@@ -223,9 +244,10 @@ def timeline_overlay(show_branches=False, highlight=None, from_t=0.2):
     return f
 
 
+@scene_factory(vectors=["lens_xy", "pan", "canvas"])
 def dark_space(lens_xy=None, lens_r=60, gain=0.5, z=(1.0, 1.06), pan=(60, 0), canvas=(2600, 1500)):
     def f(ctx, t, u, fi):
-        cam = Cam(u, z=z, pan=pan, canvas=canvas)
+        cam = Cam(u, z=z, pan=pan, canvas=canvas, pan_u=ctx.ru(t))
         lenses = []
         if lens_xy:
             lx, ly = cam.p(*lens_xy)
@@ -239,14 +261,15 @@ FL_SUN, FL_EARTH, FL_BH = (330, 560), (700, 560), (1560, 560)
 
 
 def force_scene(ctx, t, u, fi):
-    cam = Cam(u, z=(1.0, 1.03), canvas=(3400, 1500))
+    gt = ctx.seg["start"] + ctx.beat.t0 + t
+    cam = Cam(ctx.ru(t), z=(1.0, 1.03), canvas=(3400, 1500))
     bx, by = cam.p(*FL_BH)
     img = cam.stars(lenses=[(bx, by, cam.r(85))], gain=0.5)
     sx, sy = cam.p(*FL_SUN)
     glow_dot(img, sx, sy, (1.0, 0.9, 0.7), 18, 8)
     glow_dot(img, sx, sy, (1.0, 0.8, 0.5), 90, 0.45)
     ex, ey = cam.p(*FL_EARTH)
-    render_planet(img, ex, ey, cam.r(40), "earth", spin=2.5 + t * 0.1, tilt=0.4, light=(-0.95, 0.1, 0.3))
+    render_planet(img, ex, ey, cam.r(40), "earth", spin=2.5 + gt * 0.1, tilt=0.4, light=(-0.95, 0.1, 0.3))
     return img
 
 
@@ -274,10 +297,12 @@ def force_overlay(stage):
 
 
 # ───────────── binocular view ─────────────
+@scene_factory(vectors=["crawl"])
 def binoc_scene(zoom=3.4, lens_r=95, crawl=(0, 0)):
     def f(ctx, t, u, fi):
-        cam = Cam(u, z=(1.0, 1.12), pan=crawl)
-        bimg, _ = space_frame(2350 + 160 * u, 1180, zoom * cam.z, angle=28, lenses=[(W * 0.52 + cam.px, H * 0.47 + cam.py, cam.r(lens_r))])
+        ur = ctx.ru(t)
+        cam = Cam(u, z=(1.0, 1.12), pan=crawl, pan_u=ur)
+        bimg, _ = space_frame(2350 + 160 * ur, 1180, zoom * cam.z, angle=28, lenses=[(W * 0.52 + cam.px, H * 0.47 + cam.py, cam.r(lens_r))])
         xs, ys = grid()
         r1 = np.sqrt((xs - W * 0.37) ** 2 + (ys - H / 2) ** 2)
         r2 = np.sqrt((xs - W * 0.63) ** 2 + (ys - H / 2) ** 2)
@@ -287,15 +312,17 @@ def binoc_scene(zoom=3.4, lens_r=95, crawl=(0, 0)):
 
 
 # ───────────── Saturn with its gravity bubble ─────────────
+@scene_factory()
 def saturn_scene(z=(1.0, 0.42), drift=0.0):
     def f(ctx, t, u, fi):
+        gt = ctx.seg["start"] + ctx.beat.t0 + t
         cam = Cam(u, z=z, pan=(0, 0), canvas=(3000, 1400))
         lx, ly = cam.p(1500, 330)
         img = cam.stars(lenses=[(lx, ly, cam.r(120))], gain=0.85)
         cx, cy = cam.p(860 + drift * 300 * smooth(u), 560)
         R = cam.r(170)
         render_rings(img, cx, cy, R, front=False)
-        render_planet(img, cx, cy, R, "saturn", spin=0.6 + t * 0.03, tilt=0.3, light=(-0.65, 0.1, 0.75), roll=0.12)
+        render_planet(img, cx, cy, R, "saturn", spin=0.6 + gt * 0.03, tilt=0.3, light=(-0.65, 0.1, 0.75), roll=0.12)
         render_rings(img, cx, cy, R, front=True)
         ctx.state["sat"] = (cx, cy, R, cam.z)
         return img
@@ -399,13 +426,14 @@ def glasses_mask():
     return clamp((1 - np.minimum(e1, e2)) * 30)
 
 
+@scene_factory(vectors=["focus"], keys=[])
 def sun_scene(z=(1.0, 1.0), focus=(0.0, 0.0), glasses=False, transit=(0.0, 1.0), R0=420, lens_te=62, shadow=0.16):
     def f(ctx, t, u, fi):
-        cam = Cam(u, z=z, pan=focus)
+        cam = Cam(u, z=z, pan=focus, pan_u=ctx.ru(t))
         img = np.zeros((H, W, 3), np.float32)
         cx, cy = cam.p(960 if not glasses else 960, 540)
         R = cam.r(R0)
-        render_sun_disk(img, cx, cy, R, ctx.seg["start"] + t)
+        render_sun_disk(img, cx, cy, R, ctx.seg["start"] + ctx.beat.t0 + t)
         a, b = transit
         k = lerp(a, b, smoother(u))
         lx = cx + R * lerp(-0.9, 0.8, k)
@@ -459,13 +487,15 @@ def bars_overlay(rows, at=0.3, x0=260, y0=420, w=1400, gap=110, scale_fn=None):
     return f
 
 
+@scene_factory()
 def timeline_scene(from_t=0.2):
     """Starfield + small rendered planets above the timeline milestones (synced with timeline_overlay)."""
     def f(ctx, t, u, fi):
-        cam = Cam(u, z=(1.0, 1.04), pan=(40, 0), canvas=(2600, 1500))
+        cam = Cam(ctx.ru(t), z=(1.0, 1.04), pan=(40, 0), canvas=(2600, 1500))
         lx, ly = cam.p(1650, 200)
         img = cam.stars(lenses=[(lx, ly, cam.r(40))], gain=0.45)
-        p = prog(t, from_t, 1.6)
+        tr = ctx.seg["start"] + ctx.beat.t0 + t - ctx.run_t0     # planets already shown earlier in this shot stay
+        p = max(prog(t, from_t, 1.6), prog(tr, 0.2, 1.6))
         for f_, body, r in ((0.46, "neptune", 30), (0.66, "saturn", 30), (0.86, "earth", 30)):
             a = smooth(span(p, f_ * 0.95, f_ * 0.95 + 0.06))
             if a <= 0:

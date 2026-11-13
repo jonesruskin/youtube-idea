@@ -50,11 +50,9 @@ class SegRenderer:
         self.seg = seg
         self.n = int(round(seg["dur"] * FPS))
         self.beats = None
-        bm = _beatsheet(ep)
-        if bm is not None and seg["id"] in bm.BEATS:
-            words = _words(ep).get(seg["id"], [])
-            self.beats = beatmod.layout(seg, bm.BEATS[seg["id"]], words)
-            self.ctxs = [beatmod.Ctx(b, seg) for b in self.beats]
+        lay = episode_layout(ep)
+        if seg["id"] in lay:
+            self.seg, self.beats, self.ctxs = lay[seg["id"]]
         else:
             self.shot = SHOTS[seg["shot"]["type"]](seg["shot"], seg["dur"], seg["start"])
 
@@ -81,7 +79,35 @@ class SegRenderer:
         return (out * 255 + 0.5).astype(np.uint8)
 
 
-_BM, _WD = {}, {}
+_BM, _WD, _LAY = {}, {}, {}
+
+
+def episode_layout(ep):
+    """Beats for every segment of the episode, laid out and linked into continuous shots (cached per process)."""
+    if ep not in _LAY:
+        _, segs = load(ep)
+        segs = boundary_fades(segs)
+        bm = _beatsheet(ep)
+        out, items = {}, []
+        for seg in segs:
+            if bm is not None and seg["id"] in bm.BEATS:
+                beats = beatmod.layout(seg, bm.BEATS[seg["id"]], _words(ep).get(seg["id"], []))
+                ctxs = [beatmod.Ctx(b, seg) for b in beats]
+                out[seg["id"]] = (seg, beats, ctxs)
+                items += [(seg, b, c) for b, c in zip(beats, ctxs)]
+            else:
+                items.append((seg, None, None))
+        # a legacy (non-beat) segment breaks continuity
+        chunk = []
+        for it in items + [(None, None, None)]:
+            if it[1] is None:
+                if chunk:
+                    beatmod.link_runs(chunk)
+                chunk = []
+            else:
+                chunk.append(it)
+        _LAY[ep] = out
+    return _LAY[ep]
 
 
 def _beatsheet(ep):

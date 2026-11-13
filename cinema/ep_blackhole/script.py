@@ -253,6 +253,11 @@ SEGMENTS = [
                 "it's almost certainly nothing.",
                 "Almost."],
          gap=0.7, hold=1.4),
+    # Teaser for the next upload (episode 2, Jupiter): the premise, not the outcome.
+    dict(id="next", shot=dict(type="space"),
+         lines=["Next time, we stop watching from a distance.",
+                "We drop a ship into the biggest planet we have. A world with no ground at all."],
+         gap=0.5, hold=1.0),
     dict(id="outro",
          shot=dict(type="ground", time="night", push=0.02, figure=True, dim=0.55),
          lines=["There's a lot more out there in the dark. Subscribe, and we'll keep looking."],
@@ -261,6 +266,7 @@ SEGMENTS = [
 
 
 META = dict(
+    slot=1, next_slot=2, next_teaser_keywords=["planet", "ground"],   # EPISODES.md: #2 is the Jupiter fall
     first_chapter="A star gets brighter",
     extra_chapters={"end1": "Should you worry?"},
     thumb_text="30 YEARS LEFT",

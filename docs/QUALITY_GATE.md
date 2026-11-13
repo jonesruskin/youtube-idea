@@ -76,3 +76,26 @@ Each item becomes a ✅ or a note in the QA report.
 5. **Check the phone-size thumbnail.** The first thumbnail was overexposed and the planet had no edge. The fix: pull back so the limb curves against black space, and boost saturation.
 6. **Check procedural textures at every zoom level.** The cutaway's noise tile was capped at 9,000 km, so with the whole planet on screen it repeated every ~70 px like wallpaper. Texture scale must follow the zoom, and a second rotated layer hides any period. The full-cut review caught it; stills at one zoom did not.
 7. **Panels must clear the ship, not just other text.** The diver panel passed the text-overlap check but sat on top of the ship and its beacon. Check the ship's screen box against every panel in its beats.
+
+## Lessons from the founder's review of Episodes 1–2 (now enforced by the gate)
+8. **No cut when only the diagram changes.** If the scene stays the same (same planet, same descent, same sky) and only
+   an overlay changes, there must be no cut and no dissolve of the picture. The engine links consecutive beats that
+   share a scene into **one continuous shot**: the camera glides from one framing to the next (1.4 s), and only the
+   overlays crossfade. Cuts are for a real change of place or view. Build new scenes with `@scene_factory` and keep
+   camera drift on `ctx.ru(t)` (progress through the whole shot), never on the beat's own `u`.
+   *Gate:* `tools/continuity.py <ep>` lists every boundary as CONT or CUT; `qa.py pre` fails a cut between
+   near-identical stills; `qa.py post` runs `tools/jumpcuts.py` on the finished video and fails any same-scene jump.
+9. **Annotations must be computed from the thing they point at.** The Great Red Spot circle was drawn at the disc
+   centre while the planet's rotation had moved the spot away. Every marker on a rendered body now comes from that
+   body's real position (`grs_outline()` projects the spot's measured texture coordinates through the same
+   rotation as the globe). Never hard-code "it's at the centre".
+10. **A fall must always read as a fall.** The camera falls with the ship, so the ship's height on screen is fixed
+    (`SHIP_Y`); it never moves up during the descent (it read as climbing). The world streams upward by an amount
+    tied to depth (`fall_scroll(z)`), so it is continuous across beats, stops when the ship stops and never runs
+    backwards; streaks are exactly one frame of motion, bright at the leading end. The old speed × time scroll
+    jumped every frame and strobed. *Gate:* `qa.py pre` fails any descent beat where the ship rises on screen.
+11. **The ending teases the next episode in the published order.** `EPISODES.md` is the order. Each script's META has
+    `slot`, `next_slot` and keywords the teaser must say. *Gate:* `qa.py pre` fails a teaser that points anywhere
+    but the next row.
+12. **Masters wait for approval.** Previews go to GitHub for review; the 1080p master is added to Git LFS only after
+    the founder approves (`MASTER=1 tools/finalize.sh <ep>`).

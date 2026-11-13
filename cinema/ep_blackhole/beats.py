@@ -2,7 +2,7 @@
 BEATS[segment_id] = [Beat(line, scene, overlay, at=word, cut=bool), ...]  (voice + dialogue unchanged)."""
 import numpy as np
 import cv2
-from engine.beats import Beat as B
+from engine.beats import Beat as B, scene_factory, dimmed
 from engine.core import (W, H, clamp, smooth, smoother, span, lerp, ease_in, ease_out, glow_dot, star_spikes, blur,
                          fast_blur, grid, hex2rgb, splat_points)
 from engine.space import space_frame, lens_image
@@ -429,15 +429,17 @@ def nowhere_over(ctx, img, t, u):
 
 
 # ── w2: underground ───────────────────────────────────────────────────────────────────
-def dig_scene(ctx, t, u, fi):
-    td = ctx.w("Dig")
-    return cross_section(t, dig=ease_out(span(t, td, td + 2.0)) * 0.3, shelters=0.0, lights=0.0), dict(exposure=1.6)
+def bunker_scene(ctx, t, u, fi):
+    """One continuous cross-section for both beats: the digging starts, then the shelters fill in, on the words."""
+    ts = ctx.beat.t0 + t                                    # segment time, so both beats share one clock
+    sw = lambda w: ctx.w(w) + ctx.beat.t0
+    td, tsh, tn, tg = sw("Dig"), sw("Shelters"), sw("nuclear"), sw("geothermal")
+    dig = ease_out(span(ts, td, td + 2.0)) * 0.3 + 0.7 * smooth(span(ts, tsh - 0.2, tsh + 2.3))
+    return cross_section(ts, dig=dig, shelters=smooth(span(ts, tsh + 0.2, tsh + 2.8)), lights=smooth(span(ts, tn, tn + 1)),
+                         heat=smooth(span(ts, tg, tg + 1))), dict(exposure=1.6)
 
 
-def shelter_scene(ctx, t, u, fi):
-    tn, tg = ctx.w("nuclear"), ctx.w("geothermal")
-    return cross_section(t, dig=0.3 + 0.7 * smooth(span(t, 0, 2.5)), shelters=smooth(span(t, 0.4, 3.0)) * 1.0, lights=smooth(span(t, tn, tn + 1)),
-                         heat=smooth(span(t, tg, tg + 1))), dict(exposure=1.6)
+dig_scene = shelter_scene = bunker_scene
 
 
 def shelter_over(ctx, img, t, u):
@@ -1031,9 +1033,10 @@ def airsnow_over(ctx, img, t, u):
     return img
 
 
+@scene_factory(pairs=[("d0", "d1")])
 def descent_scene(d0, d1):
     def f(ctx, t, u, fi):
-        return ice_column(lerp(d0, d1, smoother(u)), t), dict(exposure=1.7)
+        return ice_column(lerp(d0, d1, smoother(u)), ctx.seg["start"] + ctx.beat.t0 + t), dict(exposure=1.7)
     return f
 
 
@@ -1152,6 +1155,41 @@ def search_over(ctx, img, t, u):
 
 
 # ═══════════════════════════════════ THE BEAT SHEET ═══════════════════════════════════
+# ── next episode teaser (Jupiter) ────────────────────────────────────────────────────────
+def next_scene(ctx, t, u, fi):
+    """Jupiter emerging from the dark, slow push-in. One continuous shot for the whole teaser."""
+    from engine.jupiter import globe, GRS_SPIN
+    gt = ctx.seg["start"] + ctx.beat.t0 + t
+    cam = Cam(ctx.ru(t), z=(1.0, 1.10), canvas=(2400, 1300))
+    img = cam.stars(gain=0.7)
+    X, Y = cam.p(W / 2 + 280, H / 2 + 20)
+    R = cam.r(300)
+    a = smooth(span(gt - ctx.run_t0, 0.2, 2.6))
+    if a > 0:
+        tmp = img.copy()
+        globe(tmp, X, Y, R, spin=GRS_SPIN - 0.5 + gt * 0.01, tilt=0.12, light=(-0.75, 0.2, 0.62))
+        img = img * (1 - a) + tmp * a
+    ctx.state["nx"] = (X, Y, R)
+    return img, dict(exposure=1.35, bloom=0.45)
+
+
+def next_drop_over(ctx, img, t, u):
+    """A tiny ship falls toward the planet; the caption names the premise, not the outcome."""
+    X, Y, R = ctx.state["nx"]
+    L = Layer()
+    td = ctx.w("drop")
+    p = smoother(clamp((t - td) / 3.0))
+    s0 = np.array([X - R * 2.2, Y - R * 1.15])
+    s1 = np.array([X - R * 0.35, Y - R * 0.62])
+    pts = np.array([s0 + (s1 - s0) * k + np.array([0, -50 * np.sin(np.pi * k)]) for k in np.linspace(0, 1, 60)])
+    a = fade(t, td - 0.2)
+    L.polyline(pts, WHITE, 0.7 * a, 2, progress=p, dash=10)
+    q = pts[min(59, int(p * 59))]
+    L.circle((q[0], q[1]), 6, WHITE, a, th=2)
+    img = text(img, "NEXT: A PLANET WITH NO GROUND", W / 2, H - 110, 24, ACC, fade(t, ctx.w("ground") - 0.2), "c", kind="mono6", tracking=0.2)
+    return L.composite(img, 0.5)
+
+
 DS = dark_space
 
 BEATS = {
@@ -1160,29 +1198,28 @@ BEATS = {
         B(1, scope_scene(flares=o1b_flares), o1b_over, covers=[1, 2], name="telescope view: not exploding, not burning, just brighter"),
     ],
     "open2": [
-        B(0, scope_scene(flares=o2_flares), o2_over_a, cut=True, name="next star flares weeks later + light curve"),
-        B(1, scope_scene(flares=o2b_flares), o2_over_b, cut=True, name="then the next one"),
+        B(0, scope_scene(flares=o2_flares), o2_over_a, name="next star flares weeks later + light curve"),
+        B(1, scope_scene(flares=o2b_flares), o2_over_b, name="then the next one"),
         B(2, scope_scene(flares=o2c_flares, lens_path=((640, 680), (1320, 300))), o2_over_c, name="invisible thing moving, stars light up as it passes"),
     ],
     "open3": [
         B(0, o3a_scene, o3a_over, name="not a planet (crossed), not a comet (crossed), no light"),
-        B(1, shot("lens", zoom=(1.0, 1.45), drift=(0.04, 0.0), mass=(0.7, 1.0)), tag("A BLACK HOLE", at="black"), cut=True, name="black hole reveal push-in"),
+        B(1, shot("lens", zoom=(1.0, 1.45), drift=(0.04, 0.0), mass=(0.7, 1.0)), tag("A BLACK HOLE", at="black"), name="black hole reveal push-in"),
         B(2, o3c_scene, o3c_over, name="ten Suns appear and are crushed together"),
         B(2, o3d_scene, o3d_over, at="sixty", name="60 km ball over a city for scale (lenses city lights)"),
     ],
     "open4": [
         B(0, shot("system", view="far", t=(-32.0, -31.0), scale=(420, 330), label_bh=True), o4a_over, name="trajectory heading for the Solar System"),
         B(1, timeline_scene(), timeline_overlay(), name="30-year timeline of the story"),
-        B(2, timeline_scene(-10), timeline_overlay(show_branches="words", from_t=-10), cut=True, name="three possible endings branch off"),
-        B(3, timeline_scene(-10), timeline_overlay(show_branches=True, highlight="likely", from_t=-10), cut=True, name="the most likely one highlighted"),
+        B(2, timeline_scene(-10), timeline_overlay(show_branches="words", from_t=-10), name="three possible endings branch off"),
+        B(3, timeline_scene(-10), timeline_overlay(show_branches=True, highlight="likely", from_t=-10), name="the most likely one highlighted"),
     ],
     "title": [B(0, shot("lens", zoom=(1.6, 1.75), drift=(0.02, 0.0), mass=(1.15, 1.2), dim=0.35), None, name="title")],
     "c1a": [
         B(0, scope_scene(sweep=True, flares=lambda c, t: [0.05] * 4), search_over, name="telescope searching an empty sky"),
-        B(1, lambda c, t, u, f: ray_scene(c, t, u, f), ray_overlay("straight"), name="side view: star light travels straight to Earth; black hole invisible"),
-        B(2, lambda c, t, u, f: ray_scene(c, t, u, f), ray_overlay("bend"), cut=True, name="its gravity bends the rays like a lens made of nothing"),
-        B(3, lambda c, t, u, f: (c.state.__setitem__("slide", True), ray_scene(c, t, u, f))[1], over_all(ray_overlay("focus"), lc_inset),
-          cut=True, name="lined up: light focused toward Earth → the star flares"),
+        B(1, ray(), ray_overlay("straight"), name="side view: star light travels straight to Earth; black hole invisible"),
+        B(2, ray(), ray_overlay("bend"), name="its gravity bends the rays like a lens made of nothing"),
+        B(3, ray(slide=1.0), over_all(ray_overlay("focus"), lc_inset), name="lined up: light focused toward Earth → the star flares"),
     ],
     "c1b": [
         B(0, shot("galaxy", focus="none", zoom=(1.0, 1.05)), paper_over, name="real 2022 discovery (citation)"),
@@ -1193,7 +1230,7 @@ BEATS = {
     "c1c": [
         B(0, shot("system", view="far", t=(-30.6, -30.2), scale=(380, 340), label_bh=True), c1c_over_dist, name="ours: same speed, 300× Earth–Sun distance"),
         B(1, DS(gain=0.4), maths_over, name="the maths: 300 AU ÷ 45 km/s"),
-        B(2, DS(gain=0.4), countdown_over, cut=True, name="≈ 30 years countdown"),
+        B(2, DS(gain=0.4), countdown_over, name="≈ 30 years countdown"),
         B(3, DS(gain=0.35), news_over, name="path pinned down in weeks → news on a Tuesday"),
     ],
     "c1d": [
@@ -1247,11 +1284,11 @@ BEATS = {
         B(0, night(set="garden", figure="scope", push=0.04), tag("YOUR BACK GARDEN", at=0.4), name="your back garden"),
         B(1, night(set="garden", figure="scope", push=0.02, dim=0.15), jup_wander_over, name="Jupiter wandering off its normal path"),
         B(2, binoc_scene(), binoc_over_a, name="through binoculars"),
-        B(3, binoc_scene(zoom=3.8, crawl=(120, -40)), binoc_over_b, cut=True, name="a tiny ring of smeared stars; Moon for scale; crawling through constellations"),
+        B(3, binoc_scene(zoom=3.8, crawl=(120, -40)), binoc_over_b, name="a tiny ring of smeared stars; Moon for scale; crawling through constellations"),
     ],
     "c4a": [
         B(0, force_scene, force_overlay("distance"), name="distances: Sun 1 AU, black hole 2.3 AU"),
-        B(1, force_scene, force_overlay("force"), cut=True, name="10× mass ÷ 2.3² → pulls 1.9× harder than the Sun"),
+        B(1, force_scene, force_overlay("force"), name="10× mass ÷ 2.3² → pulls 1.9× harder than the Sun"),
         B(2, shot("earth", lens=(0.92, 0.5), lens_r=(0.03, 0.045), zoom=(1.0, 1.05), night=0.6), tug_over, name="tug of war, the Sun losing"),
     ],
     "c4b": [
@@ -1273,8 +1310,8 @@ BEATS = {
     ],
     "c4e": [
         B(0, shot("moon", drift=(0.0, 0.12)), tag("THE MOON", at=0.2), name="the Moon"),
-        B(1, shot("moon", drift=(0.12, 0.25)), grip_over, cut=True, name="Earth's gravitational grip shrinks inside the Moon's orbit"),
-        B(2, shot("moon", drift=(0.25, 1.0)), tag("GONE", "after 4.5 billion years", at="drifts"), cut=True, name="the Moon drifts away for good"),
+        B(1, shot("moon", drift=(0.12, 0.25)), grip_over, name="Earth's gravitational grip shrinks inside the Moon's orbit"),
+        B(2, shot("moon", drift=(0.25, 1.0)), tag("GONE", "after 4.5 billion years", at="drifts"), name="the Moon drifts away for good"),
     ],
     "c4f": [
         B(0, shot("system", view="inner", t=(0.0, 0.15), scale=(3.6, 4.2), follow="bh"), tag("THE BLACK HOLE", "leaves the Solar System", at=0.3), name="the black hole leaves"),
@@ -1319,7 +1356,7 @@ BEATS = {
     ],
     "f3c": [
         B(0, shot("ice", snow=(0.0, 0.3)), airsnow_over, name="the air itself freezes"),
-        B(1, shot("ice", snow=(0.4, 1.0)), airsnow_over, cut=True, name="and falls as snow"),
+        B(1, shot("ice", snow=(0.4, 1.0)), airsnow_over, name="and falls as snow"),
     ],
     "f3d": [
         B(0, descent_scene(0.0, 0.15), None, name="and yet — diving through the ice"),
@@ -1345,8 +1382,12 @@ BEATS = {
     ],
     "end3": [
         B(0, night_flare(0, start=1.4, length=3.0, set="ridge", figure="scope", push=0.06), None, name="tonight a star looks brighter"),
-        B(1, night(set="ridge", figure="scope", push=0.02, show_stars=[0]), None, cut=True, name="almost certainly nothing"),
+        B(1, night(set="ridge", figure="scope", push=0.02, show_stars=[0]), None, name="almost certainly nothing"),
         B(2, wink_scene, None, cut=True, name="almost… (a faint lens wink)"),
+    ],
+    "next": [
+        B(0, next_scene, None, name="next time: we stop watching from a distance"),
+        B(1, next_scene, next_drop_over, name="drop a ship into the biggest planet: no ground (teaser for episode 2)"),
     ],
     "outro": [B(0, night(set="ridge", figure="scope", push=0.02, dim=0.55), None, name="outro / end screen")],
 }

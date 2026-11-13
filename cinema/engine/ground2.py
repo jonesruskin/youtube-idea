@@ -212,9 +212,10 @@ class Night(Shot):
 
     # ---------- per frame ----------
     def _sky(self, u, t, fi):
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         p = self.p
         push = p.get("push", 0.05)
-        zs = SKY_Z * (1 + push * smoother(u))
+        zs = SKY_Z * (1 + push * smoother(ur))
         jx, jy = 2.5 * np.sin(t * 0.31), 1.8 * np.sin(t * 0.23 + 1)
         ang = SKY_A
         if p.get("trails"):
@@ -239,6 +240,8 @@ class Night(Shot):
         return sky_to_screen(px, py, zs, ang, cx, cy)
 
     def render(self, u, t, fi):
+
+        ur = self.p.get("_ur", u)   # progress through the whole continuous shot (camera drift)
         p = self.p
         sky = self._sky(u, t, fi)
         if p.get("trails"):
@@ -267,7 +270,7 @@ class Night(Shot):
             glow_dot(img, sx, sy, (0.95, 0.97, 1.0), 1.1, 1.0)
         # foreground plates with parallax push
         push = p.get("push", 0.05)
-        zf = 1 + push * 1.7 * smoother(u)
+        zf = 1 + push * 1.7 * smoother(ur)
         zs, ang, cx, cy, jx, jy = self.cam
         ox, oy = self.off
         M = np.float32([[zf, 0, -ox * zf + (1 - zf) * W / 2 + jx * 1.6], [0, zf, -oy * zf + (1 - zf) * H + jy * 1.6]])
@@ -276,7 +279,7 @@ class Night(Shot):
         hc = self.hor_col
         season = None
         if p.get("seasons"):
-            ph = (u * 2.0) % 1.0
+            ph = (ur * 2.0) % 1.0
             season = ph
         sky_blur = fast_blur(img, 26)
         # atmospheric perspective: far layers take the colour of the horizon sky

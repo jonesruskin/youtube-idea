@@ -2,36 +2,29 @@
 Descent beats read the fall simulation (vis.at), so the picture, the HUD and the narration always agree."""
 import numpy as np
 import cv2
-from engine.beats import Beat as B
+from engine.beats import Beat as B, scene_factory, dimmed
 from engine.core import (W, H, clamp, smooth, smoother, span, lerp, ease_in, ease_out, glow_dot, star_spikes, blur,
                          fast_blur, grid, splat_points, star_color)
 from engine.planet import render_planet
 from engine.scenes2 import Cam
 from engine import hud
 from engine.hud import Layer, text, fade, prog, typed, WHITE, ACC, BLUE, RED, GREEN, DIM
-from engine.jupiter import globe, belts, slice_disk, GRS_SPIN, GRS_TILT, RJ_KM, thermal
+from engine.jupiter import globe, belts, slice_disk, GRS_SPIN, GRS_TILT, RJ_KM, thermal, grs_outline
 from ep_jupiter.vis import *  # noqa
 from ep_jupiter import vis as V
 
-CLOSE, WIDE, LEFT, HIGH, LOW = (0.58, 0.64, 230), (0.66, 0.5, 55), (0.40, 0.56, 120), (0.62, 0.40, 85), (0.60, 0.70, 150)
+# ship framings: the camera falls with the ship, so they differ in size and side only, never in height (V.SHIP_Y)
+CLOSE, WIDE, LEFT, HIGH, LOW = (0.58, 0.60, 230), (0.66, 0.58, 55), (0.40, 0.58, 120), (0.62, 0.58, 85), (0.60, 0.58, 150)
 HUD = hud_descent()
 HUDF = hud_descent(reveal_float=True)
 ORANGE = (1.0, 0.55, 0.2)
+HOVER = (0.62, 0.50, 100)   # hovering above the clouds, before the fall
 
 
-def dimmed(scene, k=0.35, sigma=9):
-    """Scene pushed back (blurred + darkened) behind a diagram."""
-    def f(ctx, t, u, fi):
-        r = scene(ctx, t, u, fi)
-        img, pk = r if isinstance(r, tuple) else (r, {})
-        img = cv2.GaussianBlur(img, (0, 0), sigma) * k
-        return img, pk
-    return f
-
-
+@scene_factory(vectors=["pan"])
 def stars_bg(z=(1.0, 1.05), gain=0.8, pan=(0, 0)):
     def f(ctx, t, u, fi):
-        cam = Cam(u, z=z, pan=pan, canvas=(2600, 1200))
+        cam = Cam(u, z=z, pan=pan, canvas=(2600, 1200), pan_u=ctx.ru(t))
         ctx.state["cam"] = cam
         return cam.stars(gain=gain), dict(exposure=1.35, bloom=0.45)
     return f
@@ -91,6 +84,7 @@ def o1_crash_over(ctx, img, t, u):
     return L.composite(img, 0.5)
 
 
+@scene_factory(vectors=["wedge"])
 def cutaway_scene(R=(380, 400), wedge=(-90, 0), z=(1.0, 1.06), cx=W / 2, cy=H / 2 + 20, reveal=None, spin_rate=0.01):
     """Globe with a quarter-wedge cut away to show the interior slice."""
     def f(ctx, t, u, fi):
@@ -274,7 +268,7 @@ def atlantic_over(ctx, img, t, u):
 
 def limb_scene(ctx, t, u, fi):
     """Close to Jupiter: the limb fills the lower part of the frame."""
-    cam = Cam(u, z=(1.0, 1.05), canvas=(2000, 1300))
+    cam = Cam(ctx.ru(t), z=(1.0, 1.05), canvas=(2000, 1300))
     img = cam.stars(gain=0.8)
     X, Y = cam.p(W / 2 + 200, H + 1250)
     R = cam.r(1700)
@@ -348,8 +342,9 @@ def hud_in(word):
 
 
 def drop_ship(ctx, t, u):
+    """Engines off: the ship drops away below the hovering camera, then the camera falls with it."""
     k = smooth(clamp(u * 1.2))
-    return 0.62, 0.55 - 0.08 * k, 100
+    return 0.62, 0.50 + (V.SHIP_Y - 0.50) * k, 100
 
 
 # ═══════════════════════════ CH2 · the clouds ═══════════════════════════
@@ -390,13 +385,16 @@ def thermo_over(word, val_fn, label, color=BLUE, level=0.1, x=200, y=560):
 
 
 def grs_scene(ctx, t, u, fi):
-    cam = Cam(u, z=(1.0, 1.08), canvas=(2000, 1300))
+    """Close on the Great Red Spot. The planet turns slowly; overlays find the spot with grs_outline()."""
+    ru = ctx.ru(t)
+    cam = Cam(ru, z=(1.0, 1.08), canvas=(2000, 1300))
     img = cam.stars(gain=0.6)
     X, Y = cam.p(W / 2 - 100, H / 2 + 60)
     R = cam.r(1500)
-    gt = ctx.seg["start"] + ctx.beat.t0 + t
-    globe(img, X, Y, R, spin=GRS_SPIN + gt * 0.002, tilt=GRS_TILT, light=(-0.35, 0.25, 0.9))
+    spin = GRS_SPIN + 0.10 * (ru - 0.5) * min(1.0, ctx.run_dur / 20.0)
+    globe(img, X, Y, R, spin=spin, tilt=GRS_TILT, light=(-0.35, 0.25, 0.9))
     ctx.state["grs"] = (X, Y, R, cam)
+    ctx.state["grs_spot"] = grs_outline(X, Y, R, spin, GRS_TILT)
     return img, dict(exposure=1.25, bloom=0.4)
 
 
@@ -418,15 +416,19 @@ def grs_over(ctx, img, t, u):
     X, Y, R, cam = ctx.state["grs"]
     L = Layer()
     tg = ctx.w("Great")
-    # GRS sits at the disk centre with this spin/tilt; ~16,000 km wide
-    gx, gy = X, Y
-    w_ = R * 16350 / RJ_KM
-    L.ellipse((gx, gy), w_ / 2 + 12, w_ * 0.3 + 10, color=RED, alpha=fade(t, tg), th=2, progress=prog(t, tg), dash=10)
-    img = text(img, "GREAT RED SPOT", gx, gy - w_ * 0.3 - 46, 20, RED, fade(t, tg), "c", kind="mono6", tracking=0.15)
+    # the outline is projected from the spot's real position in the texture, so it sits on the spot as the planet turns
+    pts, (gx, gy), vis = ctx.state["grs_spot"]
+    L.polyline(pts, RED, fade(t, tg), 2, progress=prog(t, tg), dash=10)
+    top = float(pts[:, 1].min())
+    img = text(img, "GREAT RED SPOT", gx, top - 44, 20, RED, fade(t, tg), "c", kind="mono6", tracking=0.15)
     te = ctx.w("Earth")
     er = R * 6371 / RJ_KM
-    ex = gx + w_ / 2 + er + 120
-    earth_disc(img, ex, gy, er)
+    ex = float(pts[:, 0].max()) + er + 90
+    ae = fade(t, te - 0.3)
+    if ae > 0:
+        e_img = img.copy()
+        earth_disc(e_img, ex, gy, er)
+        img = img * (1 - ae) + e_img * ae
     img = text(img, "EARTH", ex, gy + er + 34, 18, BLUE, fade(t, te), "c", kind="mono6", tracking=0.15)
     return L.composite(img, 0.5)
 
@@ -693,7 +695,8 @@ def crush_flash(ctx, img, t, u):
     return img
 
 
-def zoom_slice_scene(km_per_px0, km_per_px1, focus_depth=0.0, cy_screen=None):
+@scene_factory(pairs=[("km_per_px0", "km_per_px1")])
+def zoom_slice_scene(km_per_px0, km_per_px1, focus_depth=0.0, cy_screen=H * 0.35):
     """Cross-section with a log zoom. Starts showing the top layer at high magnification, ends on the whole planet."""
     def f(ctx, t, u, fi):
         img = np.zeros((H, W, 3), np.float32)
@@ -703,12 +706,12 @@ def zoom_slice_scene(km_per_px0, km_per_px1, focus_depth=0.0, cy_screen=None):
         kpp = float(np.exp(lerp(np.log(km_per_px0), np.log(km_per_px1), k)))
         Rpx = RJ_KM / kpp
         # keep the focus depth at a fixed screen height early on, then centre the planet
-        sy = H * 0.35 if cy_screen is None else cy_screen
+        sy = cy_screen
         top = sy - (focus_depth / kpp)                 # screen y of the cloud tops
         cyc = top + Rpx
         c_final = H / 2
         cyy = lerp(cyc, c_final, smooth(clamp((Rpx * 2 - H) / (H * 0.5)) * 0 + clamp(1 - Rpx / (H * 3))))
-        img = slice_disk(img, W / 2, cyy, Rpx, ctx.seg["start"] + t)
+        img = slice_disk(img, W / 2, cyy, Rpx, ctx.seg["start"] + ctx.beat.t0 + t)
         ctx.state["slice"] = (W / 2, cyy, Rpx, kpp)
         return img, dict(exposure=1.25, bloom=0.4)
     return f
@@ -724,12 +727,22 @@ def depth_marker(depth_km, label, color=RED, sub=None, word=None):
         pts = np.stack([cx + r * np.cos(ang), cy + r * np.sin(ang)], -1)
         pts = pts[(pts[:, 1] > -50) & (pts[:, 1] < H + 50) & (pts[:, 0] > -50) & (pts[:, 0] < W + 50)]
         if len(pts) > 2:
-            L.polyline(pts, color, a, 2, dash=12)
-        ty = cy - r
+            L.polyline(pts, (0.02, 0.02, 0.03), a * 0.8, 6, dash=12)   # dark outline: readable on the bright slice
+            L.polyline(pts, color, a, 3, dash=12)
+        ty, lx = cy - r, W / 2 + 40
+        if not (90 < ty < H - 60) and len(pts) > 2:
+            # the top of the line is off-screen: label it where it crosses the upper-right part of the frame
+            ok = pts[(pts[:, 1] > 140) & (pts[:, 1] < H - 140) & (pts[:, 0] > W / 2)]
+            if len(ok):
+                q = ok[np.argmin(ok[:, 1])]
+                ty, lx = q[1], min(q[0] + 30, W - 420)
         if 30 < ty < H - 30:
-            img = text(img, label, W / 2 + 40, ty - 28, 20, color, a, "lc", kind="mono6", tracking=0.14)
+            # dark backing: the slice behind the label is bright orange/cream at these depths
+            wl = max(len(label) * 17, len(sub) * 12 if sub else 0) + 40
+            img = hud.panel(img, lx - 20, ty - 50, lx - 20 + wl, ty + (46 if sub else -6), a, 0.7)
+            img = text(img, label, lx, ty - 28, 20, color, a, "lc", kind="mono6", tracking=0.14)
             if sub:
-                img = text(img, sub, W / 2 + 40, ty + 26, 15, DIM, a, "lc", tracking=0.15)
+                img = text(img, sub, lx, ty + 26, 15, DIM, a, "lc", tracking=0.15)
         return L.composite(img, 0.5)
     return f
 
@@ -813,7 +826,9 @@ def density_chart(ctx, img, t, u):
 
 
 def float_hold(ctx, t, u):
-    return 0.62, 0.55 + 0.02 * np.sin(t * 0.8), 100
+    """Floating: a slow buoyant bob (the fall is over, so gentle up/down motion is now correct)."""
+    gt = ctx.seg["start"] + ctx.beat.t0 + t
+    return 0.62, V.SHIP_Y + 0.012 * np.sin(gt * 0.8), 100
 
 
 # ═══════════════════════════ CH8 · the heart ═══════════════════════════
@@ -1040,21 +1055,21 @@ BEATS = {
         B(2, dimmed(limb_scene, 0.5), heatshield_over, name="heat shield burned away"),
     ],
     "c1d": [
-        B(0, atmos(0, 0, z_override=ABOVE, v_override=STILL, thrust=1.0), cloud_label("STOPPED ABOVE THE CLOUDS", None, "stop", y=H - 120), name="engines stop you above the clouds"),
-        B(1, atmos(0, 0, z_override=ABOVE, v_override=STILL, thrust=0.6, ship=(0.62, 0.55, 150)), c1d_dims, name="12 t, 4 m, titanium"),
-        B(2, atmos(0, 0, z_override=ABOVE, v_override=STILL, thrust=thrust_off), hud_in("off"), name="engines off: HUD appears"),
-        B(3, atmos(0, 6, ship_move=drop_ship), HUD, name="you fall"),
+        B(0, atmos(0, 0, z_override=ABOVE, v_override=STILL, thrust=1.0, ship=HOVER), cloud_label("STOPPED ABOVE THE CLOUDS", None, "stop", y=H - 120), name="engines stop you above the clouds"),
+        B(1, atmos(0, 0, z_override=ABOVE, v_override=STILL, thrust=0.6, ship=(0.62, 0.50, 150)), c1d_dims, name="12 t, 4 m, titanium"),
+        B(2, atmos(0, 0, z_override=ABOVE, v_override=STILL, thrust=thrust_off, ship=HOVER), hud_in("off"), name="engines off: HUD appears"),
+        B(3, atmos(0, 6, ship=drop_ship), HUD, name="you fall"),
     ],
     "c2a": [
         B(0, atmos(6, 12), over_all(HUD, weight_over), name="weight x2.5"),
         B(1, atmos(12, 17), over_all(HUD, weight_over), name="every move harder"),
-        B(2, atmos(17, 22, ship=(0.66, 0.42, 70)), over_all(HUD, cloud_label("AMMONIA ICE CLOUDS", "0.6 – 0.9 BAR", "floor", y=H * 0.82)), name="white cloud floor"),
-        B(3, atmos(22, 27, ship=(0.66, 0.42, 70)), over_all(HUD, thermo_over("ammonia", lambda c, t, u: "−130 °C", "COLDER THAN −100 °C")), name="ammonia ice, -130 C"),
+        B(2, atmos(17, 22, ship=(0.66, 0.58, 70)), over_all(HUD, cloud_label("AMMONIA ICE CLOUDS", "0.6 – 0.9 BAR", "floor", y=H * 0.82)), name="white cloud floor"),
+        B(3, atmos(22, 27, ship=(0.66, 0.58, 70)), over_all(HUD, thermo_over("ammonia", lambda c, t, u: "−130 °C", "COLDER THAN −100 °C")), name="ammonia ice, -130 C"),
     ],
     "c2b": [
         B(0, grs_scene, None, name="it's all moving"),
         B(1, grs_scene, winds_over, name="540 km/h jet streams"),
-        B(2, grs_earth_scene, grs_over, name="Great Red Spot wider than Earth"),
+        B(2, grs_scene, grs_over, name="Great Red Spot wider than Earth"),
     ],
     "c2c": [
         B(0, atmos(27, 38), HUD, name="drop into the white clouds"),
@@ -1104,7 +1119,7 @@ BEATS = {
         B(3, atmos(1860, 2000, ship=WIDE), HUD, name="the darkness starts to glow"),
     ],
     "c5b": [
-        B(0, atmos(2000, 2080, ship=(0.70, 0.55, 110)), over_all(HUD, stove_over), name="glows like a stove ring"),
+        B(0, atmos(2000, 2080, ship=(0.70, 0.58, 110)), over_all(HUD, stove_over), name="glows like a stove ring"),
         B(1, atmos(2080, 2200, roll=2.5, ship=LOW), HUD, name="the air itself glows"),
         B(2, atmos(2200, 2350, ship=HIGH), over_all(HUD, colour_strip("Red", "orange")), name="red, then orange"),
     ],
@@ -1122,7 +1137,7 @@ BEATS = {
     "c6b": [
         B(0, dimmed(atmos(5820, 5840), 0.4), sub_limit_over, name="limit of the strongest subs"),
         B(1, dimmed(atmos(5840, 5860), 0.45), cm2_over("car", "car", "ABOUT 1,100 KG"), name="a small car on every cm2"),
-        B(2, atmos(5860, V.T_CRUSH + 8, crush=crush_fn, ship=(0.55, 0.55, 210)), over_all(HUD, crush_flash), name="98 minutes: the ship gives way"),
+        B(2, atmos(5860, V.T_CRUSH + 8, crush=crush_fn, ship=(0.55, 0.58, 210)), over_all(HUD, crush_flash), name="98 minutes: the ship gives way"),
     ],
     "c6c": [
         B(0, zoom_slice_scene(0.95, 0.8, focus_depth=0.0, cy_screen=H * 0.18), depth_marker(579, "YOU: 579 KM", RED), name="perspective: the crush depth"),
@@ -1145,14 +1160,14 @@ BEATS = {
         B(0, atmos(200000, 240000, ship=LOW), over_all(HUD, caption("NO SURFACE. NO SPLASH.", at="splash", y=H - 110)), name="no splash"),
         B(1, atmos(240000, 300000, ship=WIDE, roll=2.0), HUD, name="thicker until it flows like a liquid"),
         B(2, atmos(300000, 520000, ship=LEFT), HUD, name="5,000 km: the ship stops"),
-        B(3, atmos(520000, V.T_FLOAT, ship_move=float_hold, roll=1.5), HUD, name="not because it hit anything"),
+        B(3, atmos(520000, V.T_FLOAT, ship=float_hold, roll=1.5), HUD, name="not because it hit anything"),
         B(4, stars_bg(gain=0.4), density_chart, name="hydrogen as dense as the ship: buoyancy"),
     ],
     "c7d": [
-        B(0, atmos(V.T_FLOAT, V.T_FLOAT, ship_move=lambda c, t, u: (0.58, 0.62 + 0.015 * np.sin(t * 0.8), 230)), HUDF, name="you float"),
-        B(1, atmos(V.T_FLOAT, V.T_FLOAT, ship_move=float_hold), over_all(HUDF, stat("6.6 DAYS", "5,350 KM DOWN · NO SURFACE, NO FLOOR", y=H - 230)), name="6.5 days, 5,350 km"),
+        B(0, atmos(V.T_FLOAT, V.T_FLOAT, ship=float_hold), HUDF, name="you float"),
+        B(1, atmos(V.T_FLOAT, V.T_FLOAT, ship=float_hold), over_all(HUDF, stat("6.6 DAYS", "5,350 KM DOWN · NO SURFACE, NO FLOOR", y=H - 230)), name="6.5 days, 5,350 km"),
         B(2, zoom_slice_scene(30.0, 175.0, cy_screen=H * 0.18), over_all(depth_marker(5350, "YOU: FLOATING, 5,350 KM", GREEN), percent_over("7.7 %", "tenth")), name="less than a tenth of the way"),
-        B(3, atmos(V.T_FLOAT, V.T_FLOAT, ship_move=float_hold, ship=(0.62, 0.55, 80)), caption("JUPITER WON'T LET YOU SINK", at="sink", y=H - 110), name="Jupiter won't let you sink"),
+        B(3, atmos(V.T_FLOAT, V.T_FLOAT, ship=float_hold), caption("JUPITER WON'T LET YOU SINK", at="sink", y=H - 110), name="Jupiter won't let you sink"),
     ],
     "c8a": [
         B(0, zoom_slice_scene(40.0, 120.0, focus_depth=5350, cy_screen=H * 0.25), depth_marker(5350, "YOU STOPPED HERE", GREEN), name="keep going without you"),
