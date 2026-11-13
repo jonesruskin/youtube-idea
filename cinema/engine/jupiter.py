@@ -228,24 +228,27 @@ class Descent:
             sx, sy = W * sun[0], H * sun[1]
             glow_dot(img, sx, sy, (1.0, 0.95, 0.85), 10, 2.5 * S)
             glow_dot(img, sx, sy, (1.0, 0.9, 0.75), 160, 0.25 * S)
-        # nearest deck below (floor) and above (ceiling)
+        # nearest deck below (floor) and above (ceiling). Crossing a deck boundary swaps which deck is the floor or the
+        # ceiling; those swaps are blended over 2.5 km of depth so the picture never jumps (docs/QUALITY_GATE.md #8).
         below = [d for d in DECKS if d["top"] > z]
         above = [d for d in DECKS if d["bot"] < z]
         inside = [d for d in DECKS if d["top"] <= z <= d["bot"]]
-        if above:
-            dk = above[-1]
+        XZ = 2.5
+
+        def ceiling(im, dk):
+            if dk is None:
+                return im
             dz = max(0.2, z - dk["bot"])
             c, m, d, tn, hv = self._clouds(dk, dz, t, below=False, hmax=3.0)
             col = np.asarray(dk["col"], np.float32) * (0.05 + sunlight(dk["top"]) * 0.45) * (0.75 + 0.3 * hv[..., None])
             col = cv2.GaussianBlur(col, (0, 0), 6)
             f = np.exp(-d / (Lf * 0.5))[..., None]
             col = col * f + fogc * (1 - f)
-            img = img * (1 - m[..., None]) + col * m[..., None]
-        else:
-            # thin haze at the horizon even in clear air
-            pass
-        if below:
-            dk = below[0]
+            return im * (1 - m[..., None]) + col * m[..., None]
+
+        def floor(im, dk):
+            if dk is None:
+                return np.where((ys > yh)[..., None], fogc, im)     # no deck below: haze all the way down
             hmax = dk.get("hmax", 5.0)
             dz = max(0.15, dk["top"] - z + hmax * 0.85)
             c, m, d, tn, hv = self._clouds(dk, dz, t, below=True, hmax=hmax)
@@ -255,18 +258,28 @@ class Descent:
             col = base * c[..., None] * (0.05 + 1.05 * St)
             vf = ((1 - smooth(clamp(hv * 2.2))) * 0.75)[..., None]      # haze pooled in the valleys
             col = col * (1 - vf) + (base * (0.06 + 0.7 * St) * 0.75 + fogc * 0.3) * vf
-            # lightning lights the deck from inside
-            if fl > 0:
+            if fl > 0:      # lightning lights the deck from inside
                 lx, ly = W * fx, yh + (H - yh) * (0.25 + 0.7 * fy)
                 r2 = ((xs - lx) ** 2 + ((ys - ly) * 1.8) ** 2) / (260 * (1 + fy)) ** 2
                 col = col + (np.exp(-r2) * fl * (0.6 + 0.6 * c))[..., None] * np.array([0.8, 0.85, 1.0], np.float32) * 2.2
             f = np.exp(-d / Lf)[..., None]
             col = col * f + fogc * (1 - f)
-            img = img * (1 - m[..., None]) + col * m[..., None]
-        else:
-            # no deck below: haze all the way down
-            mm = (ys > yh)[..., None]
-            img = np.where(mm, fogc, img)
+            return im * (1 - m[..., None]) + col * m[..., None]
+
+        cur_c = above[-1] if above else None
+        out = ceiling(img, cur_c)
+        if cur_c is not None and z - cur_c["bot"] < XZ:          # just left a deck: it only now became the ceiling
+            old = above[-2] if len(above) > 1 else None
+            w = smooth(clamp((z - cur_c["bot"]) / XZ))
+            out = ceiling(img, old) * (1 - w) + out * w
+        img = out
+        cur_f = below[0] if below else None
+        out = floor(img, cur_f)
+        entered = [d for d in DECKS if 0 <= z - d["top"] < XZ]  # just entered a deck: it was the floor a moment ago
+        if entered:
+            w = smooth(clamp((z - entered[0]["top"]) / XZ))
+            out = floor(img, entered[0]) * (1 - w) + out * w
+        img = out
         # soften the horizon seam between ceiling and floor
         band = np.exp(-((ys - yh) / 26.0) ** 2)[..., None]
         img = img * (1 - band) + cv2.GaussianBlur(img, (0, 0), 14) * band
@@ -281,9 +294,12 @@ class Descent:
             tu = self._scroll(self.turb, off, 1.0)
             tc = self._scroll(self.cells, off * 0.5, 2.0)
             dens = clamp(0.35 + 0.55 * tu * tc + 0.2 * tu)
-            mb = int(min(60, motion * 0.6))
-            if mb >= 3:      # streaking fog: motion blur along the fall, so speed reads without strobing
-                dens = cv2.blur(dens, (1, mb))
+            mb = min(60.0, motion * 0.6)
+            if mb > 1.0:     # streaking fog: motion blur along the fall; fractional length so it never steps
+                k0 = int(mb)
+                d0 = cv2.blur(dens, (1, k0)) if k0 > 1 else dens
+                d1 = cv2.blur(dens, (1, k0 + 1))
+                dens = d0 + (d1 - d0) * (mb - k0)
             St = sunlight(z)
             fc = np.asarray(dk["col"], np.float32) * (0.10 + 0.95 * St) * (0.55 + 0.6 * dens[..., None])
             if fl > 0:

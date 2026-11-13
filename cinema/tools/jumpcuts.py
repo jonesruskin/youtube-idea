@@ -23,7 +23,8 @@ def hist(f):
     return cv2.normalize(h, h).flatten()
 
 
-def analyse(path, fps=30.0):
+def analyse(path, fps=30.0, skip=()):
+    """skip: [(t0, t1)] windows of planned transitions (dissolves, chapter fades) that are allowed to change fast."""
     fs, ds = [], []
     prev = None
     for f in frames(path):
@@ -42,6 +43,17 @@ def analyse(path, fps=30.0):
             corr = cv2.compareHist(hist(a), hist(b), cv2.HISTCMP_CORREL)
             bright = abs(float(a.mean()) - float(b.mean()))
             t = (i + 1) / fps
+            if any(t0 <= t <= t1 for t0, t1 in skip):
+                continue
+            # a flash (lightning, up to 0.7 s of flicker) is a brightness bump that comes back down
+            ref = max(float(fs[max(0, i - 12)].mean()), float(fs[min(len(fs) - 1, i + 26)].mean()))
+            if max(float(a.mean()), float(b.mean())) - ref > 0.8:
+                continue
+            # a change of light over the whole frame (flash decay), not a change of picture
+            dm = np.abs(a.astype(np.float32) - b.astype(np.float32)).mean(2)
+            bands = [dm[k:k + H_ // 6].mean() for k in range(0, H_, H_ // 6)]
+            if bright > 1.5 and max(bands) < 1.7 * min(bands):
+                continue
             # same palette and similar brightness, yet the picture jumped: same scene, discontinuous
             if corr > 0.90 and bright < 12:
                 jumps.append((round(t, 2), round(d[i], 1), round(corr, 3)))

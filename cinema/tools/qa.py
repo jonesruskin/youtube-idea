@@ -217,7 +217,22 @@ def post():
     from jumpcuts import analyse
     mod = _script()
     allow = getattr(mod, "META", {}).get("qa_allow_jumps", [])   # human-verified exceptions (e.g. lightning flashes)
-    jumps, cuts = analyse(vid)
+    # planned transitions: dissolves at real scene changes and chapter fades
+    from engine.render import episode_layout, load, boundary_fades
+    from engine.beats import XF
+    lay = episode_layout(ep)
+    _, segs = load(ep)
+    skip = [(0.0, 0.7)]
+    for s_ in boundary_fades(segs):
+        if s_.get("fade_in"):
+            skip.append((s_["start"] - 0.6, s_["start"] + 0.6))
+        if s_["id"] in lay:
+            sg, beats, ctxs = lay[s_["id"]]
+            for b_, c_ in zip(beats, ctxs):
+                if c_.prev is None:
+                    g = sg["start"] + b_.t0
+                    skip.append((g - 0.1, g + XF + 0.15))
+    jumps, cuts = analyse(vid, skip=skip)
     bad = [j for j in jumps if not any(abs(j[0] - a) < 0.5 for a in allow)]
     res("FAIL" if bad else "PASS", "jump-cuts",
         f"{len(cuts)} scene cuts; {len(bad)} same-scene jumps" + (": " + ", ".join(f"{a:.1f}s" for a, *_ in bad[:12]) if bad else ""))

@@ -191,7 +191,7 @@ def hud_descent(alpha=1.0, reveal_float=False, show_gauge=True):
 
 @scene_factory(vectors=["pan", "light", "canvas"], dyn=["belts_a"])
 def space_globe(R=(400, 430), cx=W / 2, cy=H / 2, spin0=GRS_SPIN - 0.25, spin_rate=0.012, tilt=0.12, z=(1.0, 1.05),
-                pan=(0, 0), belts_a=None, light=(-0.75, 0.2, 0.62), extra=None, stars_gain=1.0, canvas=(2300, 1300)):
+                pan=(0, 0), belts_a=0.0, light=(-0.75, 0.2, 0.62), extra=None, stars_gain=1.0, canvas=(2300, 1300)):
     def f(ctx, t, u, fi):
         cam = Cam(u, z=z, pan=pan, canvas=canvas, pan_u=ctx.ru(t))
         img = cam.stars(gain=stars_gain)
@@ -200,7 +200,7 @@ def space_globe(R=(400, 430), cx=W / 2, cy=H / 2, spin0=GRS_SPIN - 0.25, spin_ra
         X, Y = cam.p(cx, cy)
         gt = ctx.seg["start"] + ctx.beat.t0 + t
         globe(img, X, Y, cam.r(r), spin=spin0 + gt * spin_rate, tilt=tilt, light=light)
-        ba = belts_a(ctx, t, u) if belts_a else 0.0
+        ba = belts_a(ctx, t, u) if callable(belts_a) else float(belts_a)
         if ba > 0:
             img = belts(img, X, Y, cam.r(r), gt, ba)
         ctx.state["globe"] = (X, Y, cam.r(r), cam)
