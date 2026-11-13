@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Mux picture + mix at YouTube's -14 LUFS, then write the episode's deliverables.
 #   build/<ep>/final.mp4     master (not in the repo)
-#   build/<ep>/upload.mp4    the file to upload to YouTube: 1080p, CRF 20, AAC 320k (not in the repo)
-#   renders/<NN_name>/       preview.mp4 (two-pass, < 95 MB, Git LFS) + thumbnail.png + captions.srt + metadata.md
+#   renders/<NN_name>/       upload.mp4 (the YouTube master: 1080p, CRF 20, AAC 320k, stored with Git LFS)
+#                            + preview.mp4 (two-pass, < 95 MB, plain git) + thumbnail.png + captions.srt + metadata.md
 set -euo pipefail
 EP=${1:-ep_blackhole}
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -17,5 +17,5 @@ P="$D/pass"
 ffmpeg -v error -y -i "$D/final.mp4" -c:v libx264 -preset slow -b:v 1350k -maxrate 2600k -bufsize 5200k -pass 1 -passlogfile "$P" -an -f mp4 /dev/null
 ffmpeg -v error -y -i "$D/final.mp4" -c:v libx264 -preset slow -b:v 1350k -maxrate 2600k -bufsize 5200k -pass 2 -passlogfile "$P" -c:a aac -b:a 128k -movflags +faststart "$OUT/preview.mp4"
 rm -f "$P"*
-cp "$D/thumbnail.png" "$D/captions.srt" "$D/metadata.md" "$OUT/"
+cp "$D/upload.mp4" "$D/thumbnail.png" "$D/captions.srt" "$D/metadata.md" "$OUT/"
 ls -la "$OUT"
