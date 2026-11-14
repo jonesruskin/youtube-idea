@@ -11,7 +11,7 @@ Everything needed to upload this episode to YouTube. Each field below is also a 
 | Tags | `tags.txt` (280 / 500 chars) |
 | Subtitles | `captions.srt` (English, synced to the narration) |
 | Pinned comment | `pinned_comment.txt` |
-| Runtime | 8:29 |
+| Runtime | 8:33 |
 
 ## Title A/B test (Studio → Test & compare)
 Upload with the main title, then add these as variants:
@@ -29,7 +29,7 @@ Upload with the main title, then add these as variants:
 - **License:** Standard YouTube License · Allow embedding: on
 - **Comments:** On; hold potentially inappropriate comments for review
 - **Paid promotion:** No
-- **Monetisation / mid-roll ad breaks (chapter boundaries):** 4:12, 6:37
+- **Monetisation / mid-roll ad breaks (chapter boundaries):** 4:12, 6:41
 - **End screen (last 20 s):** the video already leaves two boxes and a subscribe area. Add: Subscribe element (centre), "Best for viewer" video (left), the other episode or playlist (right).
 - **Cards:** none needed for the first upload. Later, link the next episode at the end-of-video "Subscribe" line.
 
@@ -40,7 +40,7 @@ Upload with the main title, then add these as variants:
 - 2:36 T-30 Months: The Edge Starts to Move
 - 3:17 T-7 Months: The Giants Lose Their Grip
 - 4:12 T-30 Days: Earth Feels It
-- 5:33 Ending 1: The Fall
-- 6:07 Ending 2: The Long Year
-- 6:37 Ending 3: The Wanderer
-- 7:39 Should you worry?
+- 5:37 Ending 1: The Fall
+- 6:11 Ending 2: The Long Year
+- 6:41 Ending 3: The Wanderer
+- 7:44 Should you worry?

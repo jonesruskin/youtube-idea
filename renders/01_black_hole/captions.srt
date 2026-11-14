@@ -391,325 +391,331 @@ the tides are dozens of metres high, twice
 a day, on every coastline on Earth.
 
 85
-00:04:42,697 --> 00:04:46,281
-And from somewhere on Earth, the black
-hole slides in front of the Sun.
+00:04:42,697 --> 00:04:47,461
+Then it passes us. At its closest, it's
+less than half as far away as the Sun.
 
 86
-00:04:46,601 --> 00:04:51,205
-Through eclipse glasses, you'd see a tiny
-warped circle crawling across its face.
+00:04:47,781 --> 00:04:50,119
+And at that range, it takes something from
+us.
 
 87
-00:04:51,525 --> 00:04:53,890
-A lens, bending sunlight around nothing.
-
-88
-00:04:54,490 --> 00:04:56,131
-Then comes the closest pass.
-
-89
-00:04:56,451 --> 00:04:57,558
-It's over in days.
-
-90
-00:04:57,558 --> 00:05:01,861
-The black hole swings by at well over a
-hundred kilometres per second.
-
-91
-00:05:02,181 --> 00:05:03,902
-And it takes Earth's orbit with it.
-
-92
-00:05:04,502 --> 00:05:05,928
-It takes something else, too.
-
-93
-00:05:06,248 --> 00:05:10,156
+00:04:50,719 --> 00:04:54,642
 At that distance, Earth's gravity can no
 longer hold on to the Moon.
 
-94
-00:05:10,476 --> 00:05:14,409
+88
+00:04:54,962 --> 00:04:58,894
 After four and a half billion years, the
 Moon drifts away from us for good.
 
+89
+00:04:59,994 --> 00:05:03,141
+Then the black hole swings inward, between
+us and the Sun.
+
+90
+00:05:03,461 --> 00:05:06,757
+In our sky, it sits just a few degrees
+from the Sun.
+
+91
+00:05:06,757 --> 00:05:09,229
+Invisible. Only its pull gives it away.
+
+92
+00:05:09,829 --> 00:05:11,470
+Then comes the closest pass.
+
+93
+00:05:11,790 --> 00:05:12,897
+It's over in days.
+
+94
+00:05:12,897 --> 00:05:17,200
+The black hole swings by at well over a
+hundred kilometres per second.
+
 95
-00:05:15,509 --> 00:05:17,775
+00:05:17,520 --> 00:05:19,241
+And it takes Earth's orbit with it.
+
+96
+00:05:19,841 --> 00:05:22,107
 And the black hole doesn't leave
 empty-handed.
 
-96
-00:05:18,095 --> 00:05:21,418
+97
+00:05:22,427 --> 00:05:25,750
 In our simulation, it captures Venus. A
 whole planet,
 
-97
-00:05:21,418 --> 00:05:24,741
+98
+00:05:25,750 --> 00:05:29,073
 now circling a black hole, carried off
 into the dark.
 
-98
-00:05:25,061 --> 00:05:29,538
+99
+00:05:29,393 --> 00:05:33,871
 As for us, what happens next depends on a
 few hundred thousand kilometres,
 
-99
-00:05:29,538 --> 00:05:30,385
+100
+00:05:33,871 --> 00:05:34,718
 here or there.
 
-100
-00:05:30,705 --> 00:05:32,071
+101
+00:05:35,038 --> 00:05:36,403
 So there are three endings.
 
-101
-00:05:33,271 --> 00:05:35,530
+102
+00:05:37,603 --> 00:05:39,862
 The rarest ending. Earth falls in.
 
-102
-00:05:35,850 --> 00:05:38,944
+103
+00:05:40,182 --> 00:05:43,276
 Not straight in. Nothing falls straight
 into a black hole.
 
-103
-00:05:39,264 --> 00:05:43,122
+104
+00:05:43,596 --> 00:05:47,454
 About a million kilometres out, the pull
 on Earth's near side beats
 
-104
-00:05:43,122 --> 00:05:46,808
+105
+00:05:47,454 --> 00:05:51,140
 the pull on its far side by so much that
 the planet comes apart.
 
-105
-00:05:47,408 --> 00:05:50,101
+106
+00:05:51,740 --> 00:05:54,434
 Oceans. Crust. Mantle. The iron core.
 
-106
-00:05:50,421 --> 00:05:53,077
+107
+00:05:54,754 --> 00:05:57,409
 All of it unwound into a long glowing
 stream,
 
-107
-00:05:53,077 --> 00:05:56,501
+108
+00:05:57,409 --> 00:06:00,833
 wrapping around the black hole like thread
 around a spool.
 
-108
-00:05:56,821 --> 00:05:59,913
+109
+00:06:01,153 --> 00:06:04,245
 As it spirals in, it heats up to millions
 of degrees.
 
-109
-00:06:00,233 --> 00:06:02,124
+110
+00:06:04,565 --> 00:06:06,456
 The last thing Earth ever does is shine.
 
-110
-00:06:02,444 --> 00:06:06,881
+111
+00:06:06,776 --> 00:06:11,213
 But a black hole is a very small target.
 So this is the least likely ending.
 
-111
-00:06:07,481 --> 00:06:11,523
+112
+00:06:11,813 --> 00:06:15,855
 In the second ending, Earth stays with the
 Sun. But not on the path it had.
 
-112
-00:06:11,843 --> 00:06:14,541
+113
+00:06:16,175 --> 00:06:18,873
 Our orbit today is almost a perfect
 circle.
 
-113
-00:06:14,541 --> 00:06:18,368
+114
+00:06:18,873 --> 00:06:22,700
 Stretch it into a long oval, and the year
 changes completely.
 
-114
-00:06:18,968 --> 00:06:24,004
+115
+00:06:23,300 --> 00:06:28,336
 Summer comes when Earth swings in close.
 The seas steam into a thick, scalding sky.
 
-115
-00:06:24,324 --> 00:06:27,407
+116
+00:06:28,656 --> 00:06:31,739
 Then months later, out on the far end of
 the oval,
 
-116
-00:06:27,407 --> 00:06:30,613
+117
+00:06:31,739 --> 00:06:34,945
 a winter colder than Antarctica.
 Everywhere at once.
 
-117
-00:06:30,933 --> 00:06:33,535
+118
+00:06:35,265 --> 00:06:37,867
 Some people might survive this.
 Underground,
 
-118
-00:06:33,535 --> 00:06:35,487
+119
+00:06:37,867 --> 00:06:39,819
 in the right places, for a while.
 
-119
-00:06:35,807 --> 00:06:37,264
+120
+00:06:40,139 --> 00:06:41,596
 This is the lucky ending.
 
-120
-00:06:37,864 --> 00:06:40,336
+121
+00:06:42,196 --> 00:06:44,668
 But the most likely ending is the third
 one.
 
-121
-00:06:40,656 --> 00:06:44,071
+122
+00:06:44,988 --> 00:06:48,403
 The black hole throws Earth out of the
 Solar System entirely.
 
-122
-00:06:44,391 --> 00:06:47,799
+123
+00:06:48,723 --> 00:06:52,131
 We leave the Sun behind at tens of
 kilometres per second.
 
-123
-00:06:48,119 --> 00:06:52,288
+124
+00:06:52,451 --> 00:06:56,620
 Within a year, it gives us about a
 fiftieth of the light it does today.
 
-124
-00:06:52,288 --> 00:06:55,577
+125
+00:06:56,620 --> 00:06:59,909
 Within decades, it's just the brightest
 star in the sky.
 
-125
-00:06:56,177 --> 00:07:00,204
+126
+00:07:00,509 --> 00:07:04,536
 The oceans freeze over. The lights of the
 cities go out, one by one.
 
-126
-00:07:00,524 --> 00:07:02,149
+127
+00:07:04,856 --> 00:07:06,481
 Over the following centuries,
 
-127
-00:07:02,149 --> 00:07:05,063
+128
+00:07:06,481 --> 00:07:09,395
 it gets colder than anywhere on Earth has
 ever been.
 
-128
-00:07:05,663 --> 00:07:07,782
+129
+00:07:09,995 --> 00:07:12,114
 Cold enough that the air itself freezes,
 
-129
-00:07:08,102 --> 00:07:09,713
+130
+00:07:12,434 --> 00:07:14,045
 and falls to the ground as snow.
 
-130
-00:07:11,113 --> 00:07:11,827
+131
+00:07:15,445 --> 00:07:16,159
 And yet.
 
-131
-00:07:12,147 --> 00:07:15,500
+132
+00:07:16,479 --> 00:07:19,832
 Under kilometres of ice, the deep ocean
 doesn't freeze.
 
-132
-00:07:15,500 --> 00:07:18,121
+133
+00:07:19,832 --> 00:07:22,453
 Heat from Earth's own core keeps it
 liquid.
 
-133
-00:07:18,441 --> 00:07:21,022
+134
+00:07:22,773 --> 00:07:25,354
 Down there, at volcanic vents on the sea
 floor,
 
-134
-00:07:21,022 --> 00:07:24,866
+135
+00:07:25,354 --> 00:07:29,198
 there are creatures that have never seen
 sunlight. They don't need it.
 
-135
-00:07:25,186 --> 00:07:27,023
+136
+00:07:29,518 --> 00:07:31,355
 They would carry on in the dark,
 
-136
-00:07:27,023 --> 00:07:30,581
+137
+00:07:31,355 --> 00:07:34,913
 on a planet drifting between the stars,
 for billions of years.
 
-137
-00:07:31,181 --> 00:07:33,309
+138
+00:07:35,513 --> 00:07:37,641
 Planets like that might not even be rare.
 
-138
-00:07:33,629 --> 00:07:36,305
+139
+00:07:37,961 --> 00:07:40,637
 Astronomers now think there may be more
 planets
 
-139
-00:07:36,305 --> 00:07:39,437
+140
+00:07:40,637 --> 00:07:43,769
 drifting alone through our galaxy than
 there are stars.
 
-140
-00:07:40,037 --> 00:07:41,076
+141
+00:07:44,369 --> 00:07:45,408
 So, should you worry?
 
-141
-00:07:41,396 --> 00:07:45,200
+142
+00:07:45,728 --> 00:07:49,532
 Our galaxy probably holds around a hundred
 million black holes.
 
-142
-00:07:45,200 --> 00:07:46,649
+143
+00:07:49,532 --> 00:07:50,981
 We've found a few dozen.
 
-143
-00:07:46,969 --> 00:07:49,982
+144
+00:07:51,301 --> 00:07:54,314
 The closest one we know of is about one
 thousand five
 
-144
-00:07:49,982 --> 00:07:53,450
+145
+00:07:54,314 --> 00:07:57,782
 hundred and sixty light-years away. And it
 isn't coming here.
 
-145
-00:07:54,050 --> 00:07:56,629
+146
+00:07:58,382 --> 00:08:00,961
 For a black hole to pass this close to the
 Sun,
 
-146
-00:07:56,629 --> 00:08:00,140
+147
+00:08:00,961 --> 00:08:04,472
 you'd expect to wait something like a
 hundred quadrillion years.
 
-147
-00:08:00,460 --> 00:08:03,700
+148
+00:08:04,792 --> 00:08:08,032
 Millions of times longer than the universe
 has existed.
 
-148
-00:08:04,300 --> 00:08:07,355
+149
+00:08:08,632 --> 00:08:11,687
 So tonight, if a star looks a little
 brighter than it should...
 
-149
-00:08:08,055 --> 00:08:09,582
+150
+00:08:12,387 --> 00:08:13,914
 it's almost certainly nothing.
 
-150
-00:08:10,282 --> 00:08:11,005
+151
+00:08:14,614 --> 00:08:15,337
 Almost.
 
-151
-00:08:13,005 --> 00:08:15,560
+152
+00:08:17,337 --> 00:08:19,892
 Next time, we stop watching from a
 distance.
 
-152
-00:08:16,060 --> 00:08:20,472
+153
+00:08:20,392 --> 00:08:24,804
 We drop a ship into the biggest planet we
 have. A world with no ground at all.
 
-153
-00:08:22,072 --> 00:08:25,806
+154
+00:08:26,404 --> 00:08:30,138
 There's a lot more out there in the dark.
 Subscribe, and we'll keep looking.
 
