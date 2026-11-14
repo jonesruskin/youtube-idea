@@ -80,9 +80,10 @@ if __name__ == "__main__":
 def stalls(path, fps=30.0, skip=()):
     """Motion stalls: inside a moving shot, the picture's motion nearly stops for a moment and then resumes
     (a fall that pauses mid-air, a spiral that spins, stops and spins again). Returns [(t0, t1, depth)]."""
-    mags, prev = [], None
+    mags, prev, lum = [], None, []
     for f in frames(path):
         g = cv2.cvtColor(f, cv2.COLOR_RGB2GRAY)
+        lum.append(float(g.mean()))
         if prev is not None:
             fl = cv2.calcOpticalFlowFarneback(prev, g, None, 0.5, 2, 9, 2, 5, 1.1, 0)
             mags.append(float(np.median(np.hypot(fl[..., 0], fl[..., 1]))))
@@ -98,8 +99,10 @@ def stalls(path, fps=30.0, skip=()):
                 j += 1
             before, after = m[max(0, i - 12):i], m[j + 1:j + 13]
             t0, t1 = (i + 1) / fps, (j + 1) / fps
+            # a fade to black is not a stall: the picture goes dark, so its motion disappears with it
+            fading = np.mean(lum[i + 1:j + 2]) < 0.6 * np.mean(lum[max(0, i - 11):i + 1])
             if 3 <= j - i + 1 <= 24 and len(before) and len(after) and before.mean() > 0.6 * ref and after.mean() > 0.6 * ref \
-                    and not any(a <= t0 <= b for a, b in skip):
+                    and not fading and not any(a <= t0 <= b for a, b in skip):
                 out.append((round(t0, 2), round(t1, 2), round(float(m[i:j + 1].mean() / ref), 2)))
             i = j + 1
         else:
