@@ -87,3 +87,11 @@ def speed_over_100_kms():
 
 CHECKS = [t_minus_30_days, passes_earth_before_sun, less_than_half_sun_distance, moon_lost_at_the_pass,
           not_in_front_of_the_sun, tides_dozens_of_metres, speed_over_100_kms]
+
+
+# Label placement (checked on where the labels actually land in the preview stills, docs/QUALITY_GATE.md #15):
+# (segment, label A, label B, reference) means "A must sit nearer to the reference than B".
+LABEL_RULES = [
+    ("f2a", "SCORCHED", "FROZEN", "SUN"),                                      # perihelion is the hot end
+    ("f1a", "NEAR SIDE: PULLED HARDER", "FAR SIDE: PULLED LESS", "BLACK HOLE"),  # the near side faces the hole
+]

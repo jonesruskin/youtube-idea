@@ -205,8 +205,9 @@ class Orbit(Shot):
         a = 330.0
         cx, cy = W / 2 + 60, H / 2 + 20
         tilt = np.cos(np.radians(40))
-        # Sun at a focus
-        fx = cx - a * e
+        # Sun at a focus. With r = a(1-e²)/(1+e·cosθ) perihelion (closest, hottest) is at θ = 0, to the RIGHT of the
+        # Sun, and aphelion (farthest, coldest) at θ = π, to the left. The ellipse is centred on screen.
+        fx = cx + a * e
         th = np.linspace(0, 2 * np.pi, 720)
         r = a * (1 - e * e) / (1 + e * np.cos(th))
         X, Y = fx + r * np.cos(th), cy + r * np.sin(th) * tilt
@@ -246,10 +247,14 @@ class Orbit(Shot):
         glow_dot(img, ex, ey, (0.45, 0.75, 1.0), 3, 5)
         glow_dot(img, ex, ey, (0.45, 0.75, 1.0), 14, 0.2)
         cards.label(img, "EARTH", ex + 16, ey - 14, (0.6, 0.8, 1.0), 0.85, 17)
-        k = smooth(span(u, 0.55, 0.75))
+        cards.mark("SUN", fx, cy)
+        k = smooth(span(u, 0.55, 0.75)) * smooth(clamp(e / 0.3))   # a circle has no hot or cold end: no labels yet
         if k > 0:
-            cards.label(img, "SCORCHED", fx - a * (1 - e) - 30, cy, (1.0, 0.55, 0.3), k, 20, anchor="rc", tracking=0.3)
-            cards.label(img, "FROZEN", fx + a * (1 + e) + 30, cy, (0.6, 0.85, 1.0), k, 20, anchor="lc", tracking=0.3)
+            # labels from the same orbit equation that draws the orbit: SCORCHED beside perihelion, FROZEN beside aphelion
+            peri_x = fx + a * (1 - e)          # θ = 0
+            aph_x = fx - a * (1 + e)           # θ = π
+            cards.label(img, "SCORCHED", peri_x + 30, cy, (1.0, 0.55, 0.3), k, 20, anchor="lc", tracking=0.3)
+            cards.label(img, "FROZEN", aph_x - 30, cy, (0.6, 0.85, 1.0), k, 20, anchor="rc", tracking=0.3)
         return img
 
 

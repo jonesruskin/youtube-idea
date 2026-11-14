@@ -123,6 +123,8 @@ class Layer:
 def text(img, s, x, y, size=24, color=WHITE, alpha=1.0, anchor="lc", kind="mono", tracking=0.12, glow=0.0):
     if alpha <= 0.002 or not s:
         return img
+    if alpha > 0.3:
+        cards.mark(s, x, y)
     size = int(round(size * 1.2)) if size < 60 else size   # phone-legible minimum sizes
     spr = cards.sprite(s, kind, size, tracking)
     h, w = spr.shape

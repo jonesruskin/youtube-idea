@@ -214,4 +214,16 @@ def card(img, c, lt, seg_dur):
 
 
 def label(img, text, x, y, color=(0.85, 0.88, 0.95), alpha=1.0, size=22, anchor="lc", kind="mono", tracking=0.2):
+    if alpha > 0.3:
+        mark(text, x, y)
     return put(img, sprite(text, kind, size, tracking), x, y, color, alpha, anchor)
+
+
+def mark(name, x, y):
+    """Record where a named thing is on screen while rendering preview stills (QA_LABELS set), so the gate can check
+    that labels sit where they belong (e.g. 'SCORCHED' nearer the Sun than 'FROZEN'; docs/QUALITY_GATE.md #15)."""
+    p = os.environ.get("QA_LABELS")
+    if p:
+        import json
+        with open(p, "a") as f:
+            f.write(json.dumps(dict(ctx=os.environ.get("QA_CTX", "?"), name=str(name), x=float(x), y=float(y))) + "\n")

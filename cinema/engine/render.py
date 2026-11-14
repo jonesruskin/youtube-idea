@@ -184,6 +184,10 @@ def main():
     if a.stills:
         out = os.path.join(ROOT, "build", a.ep, "stills")
         os.makedirs(out, exist_ok=True)
+        lab = os.path.join(ROOT, "build", a.ep, "qa_labels.jsonl")      # where every label lands (label-placement gate)
+        os.environ["QA_LABELS"] = lab
+        if not only and os.path.exists(lab):
+            os.remove(lab)
         with Pool(a.jobs) as p:
             for sid in p.imap_unordered(_still_job, [(s, out, a.ep) for s in todo]):
                 print("still", sid, flush=True)

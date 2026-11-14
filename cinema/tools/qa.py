@@ -176,6 +176,24 @@ def claims():
         res("FAIL", "story-logic", f"{ep}/claims.py missing: every spatial/numerical claim needs a simulation check")
         return
     m = importlib.import_module(ep + ".claims")
+    # label placement: "A sits nearer to REF than B does", measured where the labels actually land in the stills
+    labp = os.path.join(B, "qa_labels.jsonl")
+    marks = [json.loads(l) for l in open(labp)] if os.path.exists(labp) else []
+    for seg_id, a_, b_, ref in getattr(m, "LABEL_RULES", []):
+        seen = 0
+        for ctxk in sorted({mk["ctx"] for mk in marks if mk["ctx"].split("#")[0] == seg_id}):
+            pos = {}
+            for mk in marks:
+                if mk["ctx"] == ctxk:
+                    pos[mk["name"]] = (mk["x"], mk["y"])
+            if a_ in pos and b_ in pos and ref in pos:
+                seen += 1
+                da = np.hypot(pos[a_][0] - pos[ref][0], pos[a_][1] - pos[ref][1])
+                db = np.hypot(pos[b_][0] - pos[ref][0], pos[b_][1] - pos[ref][1])
+                if not da < db:
+                    res("FAIL", "label-placement", f"{ctxk}: '{a_}' should sit nearer to {ref} than '{b_}' ({da:.0f} px vs {db:.0f} px)")
+        res("PASS" if seen else "FAIL", "label-placement",
+            f"{seg_id}: '{a_}' nearer to {ref} than '{b_}'" + (f" (checked in {seen} stills)" if seen else " — never seen together in the stills"))
     for fn in m.CHECKS:
         try:
             ok, detail = fn()

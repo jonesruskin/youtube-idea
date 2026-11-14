@@ -115,3 +115,11 @@ Each item becomes a ✅ or a note in the QA report.
     *Gate:* `qa.py pre` (motion-continuity) fails a continued range that is not a Track or a clock that runs
     backwards; `qa.py post` (motion-stalls) measures optical flow on the finished video and fails any moment
     where a moving shot nearly stops and then resumes.
+15. **A label must sit on the thing it names.** In the black hole's second ending the orbit is drawn with
+    perihelion (closest to the Sun, hottest) on the right, but "SCORCHED" was placed at the far end and "FROZEN"
+    near the Sun; both labels also showed on the still-circular orbit, where there is no hot or cold end yet.
+    Labels now come from the same orbit equation that draws the orbit, and appear only once the orbit is an oval.
+    *Gate:* while rendering preview stills, every label's screen position is recorded (`qa_labels.jsonl`, with
+    invisible reference marks such as the Sun via `cards.mark`). Each episode's `claims.py` lists
+    `LABEL_RULES` ("SCORCHED nearer the Sun than FROZEN", "NEAR SIDE nearer the black hole than FAR SIDE");
+    `qa.py pre` fails a rule that is broken, or one that is never seen in the stills.

@@ -927,6 +927,8 @@ def stretch_scene(ctx, t, u, fi):
     img = cam.stars(lenses=[(bx, by, cam.r(130))], gain=0.65)
     k = smooth(span(t, 0.6, ctx.dur))
     render_planet(img, *cam.p(1200, 540), cam.r(220), "earth", spin=2.0 + t * 0.1, tilt=0.4, light=(-0.9, 0.1, 0.4), stretch=1 + 0.75 * k)
+    from engine.cards import mark
+    mark("BLACK HOLE", bx, by)
     return img
 
 
