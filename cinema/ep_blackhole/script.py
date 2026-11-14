@@ -136,7 +136,8 @@ SEGMENTS = [
     # ─────────────────────── CHAPTER 4 · T–30 DAYS ───────────────────────
     dict(id="c4a", music="pulse",
          shot=dict(type="earth", lens=(0.87, 0.27), lens_r=(0.03, 0.055), zoom=(1.0, 1.1), night=0.6),
-         # Sim: BH ~2.3 AU from the Sun at T–30 d: 10/2.3² ≈ 1.9 > 1 — it already out-pulls the Sun.
+         # Sim (claims.py): 30 days before Earth's closest pass, BH–Earth 2.04 AU, Sun–Earth 0.93 AU, 133° apart:
+         # pull ratio 10 × (0.93 / 2.04)² ≈ 2.1, from roughly opposite sides.
          lines=["Thirty days out, the black hole is still more than twice as far from us as the Sun is.",
                 "But it's ten times heavier. So it's already pulling on Earth harder than the Sun does.",
                 "Earth is being tugged two ways. And the Sun is losing."],
@@ -148,23 +149,28 @@ SEGMENTS = [
                 "Tides normally come from the Moon. Now they come from something much heavier.",
                 "A metre higher. Then five.",
                 "In the last days before the closest pass, the tides are dozens of metres high, twice a day, on every coastline on Earth."]),
+    # The order is the simulation's: the hole passes Earth first (16 days before its closest pass by the Sun, 0.39 AU
+    # from us), the Moon is lost then, and only afterwards does it swing in between us and the Sun (claims.py).
     dict(id="c4c",
-         shot=dict(type="sun", transit=(0.1, 0.9)),
-         lines=["And from somewhere on Earth, the black hole slides in front of the Sun.",
-                "Through eclipse glasses, you'd see a tiny warped circle crawling across its face.",
-                "A lens, bending sunlight around nothing."]),
+         shot=dict(type="system", view="inner", t=(-0.06, -0.04)),
+         lines=["Then it passes us. At its closest, it's less than half as far away as the Sun.",
+                "And at that range, it takes something from us."]),
+    dict(id="c4e",
+         shot=dict(type="moon"),
+         # Earth passes ~0.39 AU from the BH: Earth's Hill radius ≈ 270,000 km < Moon's 384,000 km orbit.
+         lines=["At that distance, Earth's gravity can no longer hold on to the Moon.",
+                "After four and a half billion years, the Moon drifts away from us for good."],
+         hold=0.5),
+    dict(id="c4x",
+         shot=dict(type="system", view="inner", t=(-0.04, -0.018)),
+         # Seen from Earth the hole never crosses the Sun's disc: closest approach in the sky is ~7° (claims.py).
+         lines=["Then the black hole swings inward, between us and the Sun.",
+                "In our sky, it sits just a few degrees from the Sun. Invisible. Only its pull gives it away."]),
     dict(id="c4d", music="impact",
          shot=dict(type="system", view="inner", t=(-0.09, 0.0), scale=(3.4, 2.6), follow="sun"),
          lines=["Then comes the closest pass.",
                 "It's over in days. The black hole swings by at well over a hundred kilometres per second.",
                 "And it takes Earth's orbit with it."]),
-    dict(id="c4e",
-         shot=dict(type="moon"),
-         # Earth passes ~0.39 AU from the BH: Earth's Hill radius ≈ 270,000 km < Moon's 384,000 km orbit.
-         lines=["It takes something else, too.",
-                "At that distance, Earth's gravity can no longer hold on to the Moon.",
-                "After four and a half billion years, the Moon drifts away from us for good."],
-         hold=0.5),
     dict(id="c4f",
          shot=dict(type="system", view="inner", t=(0.0, 0.55), scale=(3.6, 5.0), follow="bh"),
          lines=["And the black hole doesn't leave empty-handed.",

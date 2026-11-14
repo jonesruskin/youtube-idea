@@ -75,3 +75,33 @@ if __name__ == "__main__":
     print(f"{len(c)} scene cuts, {len(j)} SAME-SCENE JUMPS")
     for a, b, dd, cc in j:
         print(f"  jump {a:7.2f}s → {b:7.2f}s  (change {dd:.1f}, palette match {cc:.3f})")
+
+
+def stalls(path, fps=30.0, skip=()):
+    """Motion stalls: inside a moving shot, the picture's motion nearly stops for a moment and then resumes
+    (a fall that pauses mid-air, a spiral that spins, stops and spins again). Returns [(t0, t1, depth)]."""
+    mags, prev = [], None
+    for f in frames(path):
+        g = cv2.cvtColor(f, cv2.COLOR_RGB2GRAY)
+        if prev is not None:
+            fl = cv2.calcOpticalFlowFarneback(prev, g, None, 0.5, 2, 9, 2, 5, 1.1, 0)
+            mags.append(float(np.median(np.hypot(fl[..., 0], fl[..., 1]))))
+        prev = g
+    m = np.array(mags)
+    out, i = [], 0
+    while i < len(m):
+        lo, hi = max(0, i - 45), min(len(m), i + 46)
+        ref = np.median(m[lo:hi])
+        if ref > 0.25 and m[i] < 0.3 * ref:
+            j = i
+            while j + 1 < len(m) and m[j + 1] < 0.3 * ref:
+                j += 1
+            before, after = m[max(0, i - 12):i], m[j + 1:j + 13]
+            t0, t1 = (i + 1) / fps, (j + 1) / fps
+            if 3 <= j - i + 1 <= 24 and len(before) and len(after) and before.mean() > 0.6 * ref and after.mean() > 0.6 * ref \
+                    and not any(a <= t0 <= b for a, b in skip):
+                out.append((round(t0, 2), round(t1, 2), round(float(m[i:j + 1].mean() / ref), 2)))
+            i = j + 1
+        else:
+            i += 1
+    return out

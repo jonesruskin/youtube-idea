@@ -99,3 +99,19 @@ Each item becomes a ✅ or a note in the QA report.
     but the next row.
 12. **Masters wait for approval.** Previews go to GitHub for review; the 1080p master is added to Git LFS only after
     the founder approves (`MASTER=1 tools/finalize.sh <ep>`).
+13. **The story's order and geometry must match the simulation.** The black hole episode showed the hole beyond
+    Earth (a tug of war) and then suddenly in front of the Sun, without ever passing Earth; the simulation says it
+    passes Earth first (0.39 AU, 16 days before the Sun pass), and it never crosses the Sun's disc as seen from
+    Earth (closest 7°). The Moon is lost at the Earth pass, so it must be shown there, not after the Sun pass.
+    Every spatial or numerical claim in narration, diagrams and HUD now has a check in `<ep>/claims.py`, run
+    against the simulation. *Gate:* `qa.py pre` fails any false claim, and a missing `claims.py`.
+    *Review rule:* when an object changes sides (beyond Earth → between Earth and Sun), the video must show the
+    move; a cut may skip time but never a key event.
+14. **Motion that continues across beats must not stop and start.** Gliding every parameter at every beat
+    boundary made the sim clock ease from rest each time: the Jupiter fall paused mid-air at 10 boundaries and the
+    spaghetti stream spun, stopped, and spun again. Parameters that continue across beats (sim clocks, phases,
+    slow camera moves) are now one smooth `Track` through all the beat boundaries; the falling world's flow is the
+    integral of the ship's real speed, so it never pauses while the ship falls.
+    *Gate:* `qa.py pre` (motion-continuity) fails a continued range that is not a Track or a clock that runs
+    backwards; `qa.py post` (motion-stalls) measures optical flow on the finished video and fails any moment
+    where a moving shot nearly stops and then resumes.

@@ -10,7 +10,7 @@ from engine import hud
 from engine.hud import Layer, text, fade, prog, typed, WHITE, ACC, BLUE, RED, GREEN, DIM
 from engine.jupiter import Descent, globe, belts, slice_disk, slice_color, GRS_SPIN, GRS_TILT, RJ_KM, thermal
 from ep_jupiter import model as M
-from engine.beats import scene_factory
+from engine.beats import scene_factory, kw_at
 from ep_blackhole.vis import night  # noqa  (night-sky sets from engine.ground2)
 
 # ═══════════════════════════ simulation lookup ═══════════════════════════
@@ -69,7 +69,7 @@ def D():
 SHIP_Y = 0.58
 
 
-@scene_factory(pairs=[("tau0", "tau1")], dyn=["ship", "thrust", "crush", "z_override", "v_override"])
+@scene_factory(pairs=[("tau0", "tau1", "log")], dyn=["ship", "thrust", "crush", "z_override", "v_override"])
 def atmos(tau0, tau1, ship=(0.62, SHIP_Y, 100), light=0.0, beams=None, crush=None, glow_boost=1.0, ease=None,
           z_override=None, v_override=None, thrust=0.0, roll=0.0, exposure=None, ship_move=None):
     """Descent scene for one beat. tau runs from tau0 to tau1 (sim seconds) across the beat."""
@@ -90,12 +90,10 @@ def atmos(tau0, tau1, ship=(0.62, SHIP_Y, 100), light=0.0, beams=None, crush=Non
         cr = 0.0 if crush is None else crush(ctx, t, u)
         sh = dict(x=W * sx + np.sin(gt * 0.4) * 12, y=H * sy + bob, r=sr, t=gt, beams=bm, crush=cr,
                   hull_glow=clamp((st["T"] - 950) / 700) * (1 - cr))
-        # how far the world has streamed past: a function of depth, so it is continuous across beats, stops when the
-        # ship stops, and never runs backwards (the old speed×time version strobed and could appear to rise)
-        k_prev = max(0.0, k - (1.0 / 30.0) / max(1e-3, ctx.dur)) if ease is None else ease(max(0.0, min(u, 1.0) - (1.0 / 30.0) / max(1e-3, ctx.dur)))
-        z_prev = at(lerp_tau(tau0, tau1, k_prev))["z"] if z_override is None else z
-        scroll = fall_scroll(z)
-        motion = max(0.0, scroll - fall_scroll(z_prev))
+        # how far the world has streamed past the falling camera: the integral of the ship's real speed over the whole
+        # continuous shot. It never pauses while the ship is falling, slows only as the ship slows, stops when it
+        # floats, and never runs backwards (docs/QUALITY_GATE.md #10, #14)
+        scroll, motion = run_scroll(ctx, gt)
         img = D().render(z, v, st["T"], gt, ship=sh if sr > 0 else None, light_rate=light, flash_seed=int(ctx.seg["start"] * 7) % 997,
                          glow_boost=glow_boost, cam_roll=roll * np.sin(gt * 0.9), scroll=scroll, motion=motion)
         if callable(thrust) or thrust > 0:
@@ -108,6 +106,48 @@ def atmos(tau0, tau1, ship=(0.62, SHIP_Y, 100), light=0.0, beams=None, crush=Non
         ex = exposure if exposure is not None else (1.45 - 0.75 * clamp(e / 0.6) + 0.25 * clamp((z - 75) / 30) * (1 - clamp(e / 0.3)))
         return img, dict(exposure=ex, bloom=0.5)
     return f
+
+
+def flow_speed(v_kmh):
+    """Screen speed (px/s) of the world streaming past for a fall speed in km/h: log-compressed so 2,000 km/h reads
+    fast (~440 px/s) and 20 km/h still visibly moves (~65 px/s); zero when the ship is at rest."""
+    return 220.0 * np.log10(1.0 + max(0.0, v_kmh) / 20.0)
+
+
+def _speed_at(c, g):
+    """Fall speed (km/h) of the descent beat c at global time g, following exactly what that beat renders."""
+    kw, u = kw_at(c, g)
+    if kw is None or "tau0" not in kw:
+        return 0.0
+    u = float(np.clip(u, 0.0, 1.0))
+    k = u if kw.get("ease") is None else kw["ease"](u)
+    vo = kw.get("v_override")
+    if vo is not None:
+        return float(vo(c, g - (c.seg["start"] + c.beat.t0), u))
+    return float(at(lerp_tau(kw["tau0"], kw["tau1"], k))["v"])
+
+
+def run_scroll(ctx, g):
+    """(scroll px, motion px/frame) at global time g, integrated over the continuous shot ctx belongs to."""
+    cache = getattr(ctx, "run_cache", None)
+    if cache is None:
+        cache = ctx.run_cache = {}
+        ctx.run = [ctx]
+    if "scroll" not in cache:
+        run = ctx.run
+        t0 = run[0].seg["start"] + run[0].beat.t0
+        t1 = run[-1].seg["start"] + run[-1].beat.t1
+        ts = np.arange(t0, t1 + 1 / 30, 1 / 30)
+        sp = np.zeros(len(ts))
+        j = 0
+        for i, gg in enumerate(ts):
+            while j + 1 < len(run) and gg >= run[j + 1].seg["start"] + run[j + 1].beat.t0:
+                j += 1
+            sp[i] = flow_speed(_speed_at(run[j], gg))
+        sp = np.convolve(sp, np.ones(9) / 9, mode="same")          # no instant speed changes at beat boundaries
+        cache["scroll"] = (ts, np.concatenate([[0.0], np.cumsum(sp[1:] * np.diff(ts))]), sp)
+    ts, cum, sp = cache["scroll"]
+    return float(np.interp(g, ts, cum)), float(np.interp(g, ts, sp)) / 30.0
 
 
 def fall_scroll(z):

@@ -229,10 +229,16 @@ def callout(L, img, target, label, sub=None, alpha=1.0, progress=1.0, dx=120, dy
     L.circle((tx, ty), 7, color, alpha * 0.9, th=2)
     L.polyline([(tx + np.sign(dx) * 6, ty + np.sign(dy) * 6), (ex, ey), (hx, ey)], color, alpha, 2, progress=progress)
     a2 = alpha * smooth(span(progress, 0.7, 1.0))
-    anc = "lb" if dx >= 0 else "rb"
-    img = text(img, label, hx + (8 if dx >= 0 else -8), ey - 4, size, color, a2, anc, kind="mono6")
+    wtxt = max(len(label) * size * 0.62, len(sub or "") * (size - 6) * 0.62)
+    right = dx >= 0
+    if not right and hx - 8 - wtxt < 70:      # would run off the left edge: put title + sub on the other side together
+        right = True
+    elif right and hx + 8 + wtxt > W - 70:
+        right = False
+    anc = "lb" if right else "rb"
+    img = text(img, label, hx + (8 if right else -8), ey - 4, size, color, a2, anc, kind="mono6")
     if sub:
-        img = text(img, sub, hx + (8 if dx >= 0 else -8), ey + 8, size - 6, DIM, a2, "lt" if dx >= 0 else "rt")
+        img = text(img, sub, hx + (8 if right else -8), ey + 8, size - 6, DIM, a2, "lt" if right else "rt")
     return img
 
 

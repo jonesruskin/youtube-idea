@@ -106,6 +106,9 @@ class System(Shot):
         sc = (W * 0.5) / half
         follow = p.get("follow", "sun")
         c = s.bh(ty) if follow == "bh" else s.sun(ty)
+        fe = _lp(p.get("focus_earth", (0.0, 0.0)), u)       # 0 = centred as `follow`, 1 = midway to Earth
+        if fe:
+            c = c + (s.planet(2, ty) - s.sun(ty)) * 0.5 * fe
         cr, sr = np.cos(self.ROT), np.sin(self.ROT)
 
         def scr(P):

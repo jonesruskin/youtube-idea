@@ -810,6 +810,52 @@ def orbit_taken_over(ctx, img, t, u):
     return img
 
 
+# ── c4c the pass: it reaches Earth first ──────────────────────────────────────────────
+def _sys_now(ctx, u):
+    s = ctx.state["shot"]
+    sim = __import__("engine.shots_diagram", fromlist=["S"]).S()
+    tA, tB = s.p["t"]
+    return s, sim, lerp(tA, tB, smoother(min(u, 1)))
+
+
+def pass_over(ctx, img, t, u):
+    """Earth–hole distance as the hole goes by (from the simulation), with the Sun's distance for comparison."""
+    s, sim, ty = _sys_now(ctx, u)
+    E, Bh, S = sim.planet(2, ty), sim.bh(ty), sim.sun(ty)
+    e, b, sn = s.last_scr(E), s.last_scr(Bh), s.last_scr(S)
+    dEB, dES = float(np.linalg.norm(Bh - E)), float(np.linalg.norm(S - E))
+    L = Layer()
+    a = fade(t, 0.3)
+    L.line(tuple(e), tuple(b), color=ACC, alpha=0.9 * a, th=2, dash=10)
+    L.line(tuple(e), tuple(sn), color=(1.0, 0.85, 0.5), alpha=0.6 * a, th=2, dash=10)
+    img = L.composite(img, 0.5)
+    m = (e + b) / 2
+    img = text(img, f"{dEB:.2f} AU", m[0] + 16, m[1] - 14, 24, ACC, a, "lc", kind="mono6")
+    img = text(img, f"SUN: {dES:.2f} AU", (e[0] + sn[0]) / 2, (e[1] + sn[1]) / 2 + 26, 18, (1.0, 0.85, 0.5), a * 0.9, "c", kind="mono6")
+    img = text(img, "IT PASSES US FIRST", 140, H - 150, 22, WHITE, fade(t, 0.5), "lc", kind="mono6", tracking=0.2)
+    return img
+
+
+# ── c4x it swings inward: a few degrees from the Sun in our sky ───────────────────────
+def sky_angle_over(ctx, img, t, u):
+    """Seen from Earth: the directions to the Sun and to the hole, and the angle between them (from the simulation)."""
+    s, sim, ty = _sys_now(ctx, u)
+    E, Bh, S = sim.planet(2, ty), sim.bh(ty), sim.sun(ty)
+    v1, v2 = S - E, Bh - E
+    ang = float(np.degrees(np.arccos(np.dot(v1, v2) / np.linalg.norm(v1) / np.linalg.norm(v2))))
+    e, b, sn = s.last_scr(E), s.last_scr(Bh), s.last_scr(S)
+    L = Layer()
+    ta = ctx.w("degrees") - 0.4
+    a = fade(t, ta)
+    for q, col in ((sn, (1.0, 0.85, 0.5)), (b, ACC)):
+        d = (q - e) / max(1e-6, np.linalg.norm(q - e))
+        L.line(tuple(e), tuple(e + d * 900), color=col, alpha=0.7 * a, th=2)
+    img = L.composite(img, 0.5)
+    img = text(img, f"~{ang:.0f}° APART IN OUR SKY", 140, H - 150, 24, WHITE, a, "lc", kind="mono6", tracking=0.2)
+    img = text(img, "NOT IN FRONT OF THE SUN", 140, H - 110, 16, DIM, fade(t, ta + 0.5), "lc", tracking=0.2)
+    return img
+
+
 # ── c4e Moon ──────────────────────────────────────────────────────────────────────────
 def grip_over(ctx, img, t, u):
     L = Layer()
@@ -1298,22 +1344,24 @@ BEATS = {
         B(3, coast_scene, coast_over, at="every", name="every coastline on Earth"),
     ],
     "c4c": [
-        B(0, sun_scene(transit=(0.0, 0.35)), align_over, name="black hole slides in front of the Sun (alignment diagram)"),
-        B(1, sun_scene(z=(1.0, 1.25), focus=(0, 0), transit=(0.3, 0.85), glasses=True), warped_over, name="through eclipse glasses: tiny warped circle"),
-        B(2, sun_scene(z=(2.4, 2.8), focus=(0, 0), transit=(0.6, 0.62)), bend_sun_over, name="sunlight bent around nothing"),
+        B(0, shot("system", view="inner", t=(-0.062, -0.0441), scale=(1.6, 1.3), focus_earth=(1.0, 1.0)), pass_over, name="it passes Earth first: 0.39 AU, less than half the Sun's distance"),
+        B(1, shot("system", view="inner", t=(-0.0441, -0.038), scale=(1.3, 1.3), focus_earth=(1.0, 1.0)), pass_over, name="at that range it takes something"),
+    ],
+    "c4x": [
+        B(0, shot("system", view="inner", t=(-0.038, -0.024), scale=(1.3, 2.0), focus_earth=(1.0, 0.4)), None, name="then it swings inward, between Earth and the Sun"),
+        B(1, shot("system", view="inner", t=(-0.024, -0.018), scale=(2.0, 2.7), focus_earth=(0.4, 0.0)), sky_angle_over, name="a few degrees from the Sun in our sky"),
     ],
     "c4d": [
-        B(0, shot("system", view="inner", t=(-0.05, -0.012), scale=(3.4, 2.7)), None, name="closest pass approaching"),
+        B(0, shot("system", view="inner", t=(-0.018, -0.012), scale=(2.7, 2.7)), None, name="closest pass approaching"),
         B(1, shot("system", view="inner", t=(-0.012, 0.012), scale=(2.7, 2.5)), speed_over, name="over in days, >100 km/s"),
         B(2, shot("system", view="inner", t=(0.012, 0.05), scale=(2.5, 3.2)), orbit_taken_over, name="takes Earth's orbit with it"),
     ],
     "c4e": [
-        B(0, shot("moon", drift=(0.0, 0.12)), tag("THE MOON", at=0.2), name="the Moon"),
-        B(1, shot("moon", drift=(0.12, 0.25)), grip_over, name="Earth's gravitational grip shrinks inside the Moon's orbit"),
-        B(2, shot("moon", drift=(0.25, 1.0)), tag("GONE", "after 4.5 billion years", at="drifts"), name="the Moon drifts away for good"),
+        B(0, shot("moon", drift=(0.0, 0.25)), over_all(tag("THE MOON", at=0.2), grip_over), name="Earth's gravitational grip shrinks inside the Moon's orbit"),
+        B(1, shot("moon", drift=(0.25, 1.0)), tag("GONE", "after 4.5 billion years", at="drifts"), name="the Moon drifts away for good"),
     ],
     "c4f": [
-        B(0, shot("system", view="inner", t=(0.0, 0.15), scale=(3.6, 4.2), follow="bh"), tag("THE BLACK HOLE", "leaves the Solar System", at=0.3), name="the black hole leaves"),
+        B(0, shot("system", view="inner", t=(0.05, 0.2), scale=(3.2, 4.2), follow="bh"), tag("THE BLACK HOLE", "leaves the Solar System", at=0.3), name="the black hole leaves"),
         B(1, venus_scene, venus_over, name="Venus captured, orbiting the black hole"),
         B(2, DS(lens_xy=(980, 420), lens_r=50, gain=0.45), fan_over, name="three possible paths for Earth"),
         B(3, timeline_scene(-10), timeline_overlay(show_branches=True, from_t=-10), name="three endings"),

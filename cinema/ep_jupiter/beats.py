@@ -695,7 +695,7 @@ def crush_flash(ctx, img, t, u):
     return img
 
 
-@scene_factory(pairs=[("km_per_px0", "km_per_px1")])
+@scene_factory(pairs=[("km_per_px0", "km_per_px1", "log")])
 def zoom_slice_scene(km_per_px0, km_per_px1, focus_depth=0.0, cy_screen=H * 0.35):
     """Cross-section with a log zoom. Starts showing the top layer at high magnification, ends on the whole planet."""
     def f(ctx, t, u, fi):

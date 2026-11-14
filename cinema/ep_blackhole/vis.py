@@ -257,7 +257,12 @@ def dark_space(lens_xy=None, lens_r=60, gain=0.5, z=(1.0, 1.06), pan=(60, 0), ca
 
 
 # ───────────── force line (Sun – Earth – black hole) ─────────────
-FL_SUN, FL_EARTH, FL_BH = (330, 560), (700, 560), (1560, 560)
+# Geometry from the simulation 30 days before Earth's closest pass: Sun 0.93 AU and the hole 2.04 AU from Earth,
+# 133° apart as seen from Earth (claims.py). Scale 300 px/AU; Sun to the left, the hole up and to the right.
+_FL_PX = 300.0
+FL_EARTH = (760, 690)
+FL_SUN = (FL_EARTH[0] - 0.93 * _FL_PX, FL_EARTH[1])
+FL_BH = (FL_EARTH[0] + 2.04 * _FL_PX * np.cos(np.radians(47)), FL_EARTH[1] - 2.04 * _FL_PX * np.sin(np.radians(47)))
 
 
 def force_scene(ctx, t, u, fi):
@@ -279,19 +284,20 @@ def force_overlay(stage):
         L = Layer()
         S, E, B = [np.array(cam.p(*q)) for q in (FL_SUN, FL_EARTH, FL_BH)]
         if stage == "distance":
-            img = hud.dimension(L, img, S, E, "1 AU", fade(t, 0.4), prog(t, 0.4), WHITE, offset=-80)
-            img = hud.dimension(L, img, E, B, "~2.3 AU", fade(t, ctx.w("twice")), prog(t, ctx.w("twice")), ACC, offset=-80)
+            img = hud.dimension(L, img, S, E, "~1 AU", fade(t, 0.4), prog(t, 0.4), WHITE, offset=-80)
+            img = hud.dimension(L, img, E, B, "~2 AU", fade(t, ctx.w("twice")), prog(t, ctx.w("twice")), ACC, offset=-80)
         else:
-            img = hud.dimension(L, img, S, E, "1 AU", 1.0, 1.0, WHITE, offset=-80)
-            img = hud.dimension(L, img, E, B, "~2.3 AU", 1.0, 1.0, ACC, offset=-80)
+            img = hud.dimension(L, img, S, E, "~1 AU", 1.0, 1.0, WHITE, offset=-80)
+            img = hud.dimension(L, img, E, B, "~2 AU", 1.0, 1.0, ACC, offset=-80)
             t0 = ctx.w("heavier")
-            img = text(img, "×10 MASS", B[0], B[1] + 120, 26, ACC, fade(t, t0), "c", kind="mono6")
+            img = text(img, "×10 MASS", B[0] + 110, B[1] + 20, 26, ACC, fade(t, t0), "lc", kind="mono6")
             t1 = ctx.w("pulling")
+            dB = (B - E) / np.linalg.norm(B - E)
             L.arrow(E - [44, 0], E - [44 + 150 * prog(t, t1), 0], color=(1.0, 0.85, 0.5), th=5)
-            L.arrow(E + [44, 0], E + [44 + 285 * prog(t, t1 + 0.4), 0], color=ACC, th=5)
-            img = text(img, "SUN'S PULL: 1", E[0] - 130, E[1] - 62, 20, (1.0, 0.85, 0.5), fade(t, t1 + 0.3), "c", kind="mono6")
-            img = text(img, "BLACK HOLE'S PULL: 1.9", E[0] + 200, E[1] + 66, 20, ACC, fade(t, t1 + 0.7), "c", kind="mono6")
-            img = text(img, "10 ÷ 2.3²  ≈  1.9", W / 2, H - 170, 34, WHITE, fade(t, t1 + 1.2), "c", kind="light", tracking=0.04)
+            L.arrow(E + dB * 44, E + dB * (44 + 315 * prog(t, t1 + 0.4)), color=ACC, th=5)
+            img = text(img, "SUN'S PULL: 1", E[0] - 140, E[1] + 50, 20, (1.0, 0.85, 0.5), fade(t, t1 + 0.3), "c", kind="mono6")
+            img = text(img, "BLACK HOLE'S PULL: 2.1", E[0] + 230, E[1] + 50, 20, ACC, fade(t, t1 + 0.7), "c", kind="mono6")
+            img = text(img, "10 × (0.93 ÷ 2.04)²  ≈  2.1", W / 2, H - 120, 34, WHITE, fade(t, t1 + 1.2), "c", kind="light", tracking=0.04)
         return L.composite(img, 0.5)
     return f
 

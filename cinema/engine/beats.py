@@ -163,6 +163,60 @@ def scene_factory(pairs=(), vectors=(), dyn=(), keys=None):
     return deco
 
 
+class Track:
+    """One smooth parameter track across several beats of a continuous shot. Knots are (global time, value) at the
+    beat boundaries, so every beat still hits the value it was designed for at its start and end, but the speed is
+    continuous through the boundaries (monotone cubic; eases in and out only at the ends of the whole track)."""
+
+    def __init__(self, times, values, kind="range", space="lin"):
+        self.t = np.asarray(times, np.float64)
+        self.kind, self.space = kind, space
+        v = np.asarray(values, np.float64)
+        self.v = np.log1p(np.maximum(v, 0.0)) if space == "log1p" else (np.log(v) if space == "log" else v)
+        h = np.diff(self.t)
+        dv = np.diff(self.v, axis=0) / h.reshape((-1,) + (1,) * (self.v.ndim - 1))
+        m = np.zeros_like(self.v)
+        for i in range(1, len(self.t) - 1):        # PCHIP interior slopes: monotone, no overshoot
+            a_, b_ = dv[i - 1], dv[i]
+            w1, w2 = 2 * h[i] + h[i - 1], h[i] + 2 * h[i - 1]
+            with np.errstate(divide="ignore", invalid="ignore"):
+                hm = (w1 + w2) / (w1 / a_ + w2 / b_)
+            m[i] = np.where(a_ * b_ > 0, hm, 0.0)
+        self.m = m                                  # end slopes 0: the whole move eases in and out once
+
+    def __call__(self, g):
+        g = float(np.clip(g, self.t[0], self.t[-1]))
+        i = int(np.clip(np.searchsorted(self.t, g) - 1, 0, len(self.t) - 2))
+        h = self.t[i + 1] - self.t[i]
+        s_ = (g - self.t[i]) / h
+        h00, h10, h01, h11 = 2 * s_ ** 3 - 3 * s_ ** 2 + 1, s_ ** 3 - 2 * s_ ** 2 + s_, -2 * s_ ** 3 + 3 * s_ ** 2, s_ ** 3 - s_ ** 2
+        v = h00 * self.v[i] + h10 * h * self.m[i] + h01 * self.v[i + 1] + h11 * h * self.m[i + 1]
+        if self.space == "log1p":
+            v = np.expm1(v)
+        elif self.space == "log":
+            v = np.exp(v)
+        return float(v) if np.ndim(v) == 0 else tuple(float(x) for x in v)
+
+
+def resolve_kw(kw, spec, g):
+    """Replace Track values by constants for global time g (a range (v, v), a pair a = b = v)."""
+    out = dict(kw)
+    for k, v in kw.items():
+        if isinstance(v, Track):
+            x = v(g)
+            out[k] = (x, x) if v.kind == "range" else x
+    return out
+
+
+def kw_at(ctx, g):
+    """The scene arguments of ctx's beat at global time g, Tracks resolved, plus the beat's u at g."""
+    sc, _ = _unwrap(ctx.beat.scene)
+    u = (g - (ctx.seg["start"] + ctx.beat.t0)) / max(1e-3, ctx.dur)
+    if not hasattr(sc, "_kw"):
+        return None, u
+    return resolve_kw(sc._kw, sc._spec, g), u
+
+
 def dimmed(scene, k=0.35, sigma=9):
     """Scene pushed back (blurred + darkened) behind a diagram. Same shot as the undimmed scene: dimming glides."""
     def f(ctx, t, u, fi):
@@ -199,7 +253,8 @@ def _ev(v, ctx, t, u):
 def _blend_kw(pk, ck, spec, e, pctx):
     pairs, vectors, dyn = spec
     out, done = dict(ck), set()
-    for a, b in pairs:
+    for pr in pairs:
+        a, b = pr[0], pr[1]
         if all(_isnum(x.get(n)) for x in (pk, ck) for n in (a, b)):
             pe = pk[b]
             out[a], out[b] = _lerp(pe, ck[a], e), _lerp(pe, ck[b], e)
@@ -257,31 +312,41 @@ def _scene_call(seg, b, ctx, lt, fi):
     t = lt - b.t0
     u = np.clip(t / max(1e-3, b.t1 - b.t0), 0, 1.2)
     cur, cdim = _unwrap(b.scene)
+    g = seg["start"] + lt
+    if hasattr(cur, "_kw") and any(isinstance(v, Track) for v in cur._kw.values()):
+        ckw = resolve_kw(cur._kw, cur._spec, g)
+        call = cur._make(**ckw)
+    else:
+        ckw, call = getattr(cur, "_kw", None), cur
     pr = ctx.prev
     xt = min(XT, 0.7 * max(ctx.dur, 1e-3))
     if pr is None or t >= xt:
-        return _apply_dim(cur(ctx, t, u, fi), *cdim) if cdim != (1.0, 0.0) else cur(ctx, t, u, fi), None
+        res = call(ctx, t, u, fi)
+        return (_apply_dim(res, *cdim) if cdim != (1.0, 0.0) else res), None
     pb, pctx = pr
     e = smoother(t / xt)
     prv, pdim = _unwrap(pb.scene)
     dim = _lerp(pdim, cdim, e)
     second = None
     if hasattr(cur, "_make") and hasattr(prv, "_make"):
-        kw = _blend_kw(prv._kw, cur._kw, cur._spec, e, pctx)
+        g_pe = pctx.seg["start"] + pb.t1
+        pkw0 = resolve_kw(prv._kw, prv._spec, g_pe)
+        shared = {k for k, v in cur._kw.items() if isinstance(v, Track) and prv._kw.get(k) is v}
+        kw = _blend_kw({k: v for k, v in pkw0.items() if k not in shared}, ckw, cur._spec, e, pctx)
         res = cur._make(**kw)(ctx, t, u, fi)
-        if t < XO and _features_differ(prv._kw, cur._kw, cur._spec):
+        if t < XO and _features_differ(pkw0, ckw, cur._spec):
             # something only one of the two beats draws: render both with the identical camera and crossfade
             pkw = dict(kw)
-            for k, v in prv._kw.items():
-                if k not in cur._kw or (k not in cur._spec[2] and (_feature(v) or _feature(cur._kw.get(k)))):
+            for k, v in pkw0.items():
+                if k not in ckw or (k not in cur._spec[2] and (_feature(v) or _feature(ckw.get(k)))):
                     pkw[k] = v
-            for k in cur._kw:
-                if k not in prv._kw:
+            for k in ckw:
+                if k not in pkw0:
                     pkw.pop(k, None)
             tp = seg["start"] + lt - (pctx.seg["start"] + pb.t0)
             second = _apply_dim(cur._make(**pkw)(pctx, tp, 1.0, fi), *dim)
     else:
-        res = cur(ctx, t, u, fi)
+        res = call(ctx, t, u, fi)
     return _apply_dim(res, *dim), second
 
 
@@ -325,6 +390,9 @@ def render_frame(seg, beats, ctxs, lt, fi):
         ge = smoother(min(1.0, t / xt))
         base = _graded(seg, b, res, fi, pb.post_kw, ge)
         pctx.state.update({k: v for k, v in ctx.state.items() if k != "shot"})
+        if "shot" in ctx.state and "shot" not in pctx.state:   # previous beat rendered in another segment
+            import copy
+            pctx.state["shot"] = copy.copy(ctx.state["shot"])
         lt_prev = seg["start"] + lt - pctx.seg["start"]
         out = _overlay(seg, b, ctx, base.copy(), lt)
         if t < XO:
@@ -373,38 +441,75 @@ def link_runs(items):
     for r in runs:
         t0 = r[0].seg["start"] + r[0].beat.t0
         t1 = r[-1].seg["start"] + r[-1].beat.t1
+        cache = {}
         for c in r:
             c.run_t0, c.run_dur = t0, max(1e-3, t1 - t0)
+            c.run, c.run_cache = r, cache
         _spread_ranges(r)
     return runs
 
 
 def _spread_ranges(run):
-    """A start→end range repeated unchanged on consecutive beats of one shot (e.g. the same slow push-in) runs ONCE
-    across those beats instead of restarting at every beat."""
+    """Turn start→end ranges that continue across consecutive beats of one shot into smooth Tracks:
+    - contiguous chains (this beat starts where the last one ended): knots at every boundary, continuous speed;
+    - the same range repeated (the same slow push-in): one move across those beats.
+    Without this, every beat eases in and out on its own and the motion stalls at each boundary (stop-start)."""
     scenes = [_unwrap(c.beat.scene) for c in run]
-    if not all(hasattr(s, "_make") for s, _ in scenes):
+    if len(run) < 2 or not all(hasattr(s_, "_make") for s_, _ in scenes):
         return
-    new_kw = [dict(s._kw) for s, _ in scenes]
+    pairs, vectors, _ = scenes[0][0]._spec
+    space_of = {}
+    keys = []
+    for p_ in pairs:
+        keys.append(("pair", p_[0], p_[1]))
+        space_of[p_[0]] = p_[2] if len(p_) > 2 else "lin"
     for k, v in scenes[0][0]._kw.items():
-        pairs, vectors, _ = scenes[0][0]._spec
-        if k in vectors or any(k in p for p in pairs) or not (_isnum(v) and isinstance(v, (tuple, list)) and len(v) == 2):
+        if k in vectors or any(k in p_[:2] for p_ in pairs):
             continue
+        keys.append(("range", k, None))
+    new_kw = [dict(s_._kw) for s_, _ in scenes]
+    G = [(c.seg["start"] + c.beat.t0, c.seg["start"] + c.beat.t1) for c in run]
+
+    def rng(i, kind, a, b_):
+        kw = scenes[i][0]._kw
+        if kind == "pair":
+            x, y = kw.get(a), kw.get(b_)
+            return (x, y) if _isnum(x) and _isnum(y) and np.ndim(x) == 0 else None
+        v = kw.get(a)
+        return v if (_isnum(v) and isinstance(v, (tuple, list)) and len(v) == 2 and np.ndim(v[0]) == 0) else None
+
+    for kind, a, b_ in keys:
         i = 0
         while i < len(run):
-            j = i
-            while j + 1 < len(run) and scenes[j + 1][0]._kw.get(k) == scenes[i][0]._kw.get(k):
-                j += 1
-            if j > i:
-                A, B = scenes[i][0]._kw[k]
-                g0 = run[i].seg["start"] + run[i].beat.t0
-                g1 = run[j].seg["start"] + run[j].beat.t1
+            r0 = rng(i, kind, a, b_)
+            if r0 is None:
+                i += 1
+                continue
+            j, same = i, True
+            times, vals = [G[i][0], G[i][1]], [r0[0], r0[1]]
+            while j + 1 < len(run):
+                rn = rng(j + 1, kind, a, b_)
+                if rn is None:
+                    break
+                rp = rng(j, kind, a, b_)
+                if abs(rn[0] - rp[1]) <= 1e-9 * max(1.0, abs(rp[1])) and not (rn == rp and rn[0] != rn[1]):
+                    same = same and rn == rp
+                    times.append(G[j + 1][1]); vals.append(rn[1]); j += 1
+                elif rn == rp == r0:
+                    times, vals = [G[i][0], G[j + 1][1]], [r0[0], r0[1]]; j += 1
+                else:
+                    break
+            if j > i and not (len(set(vals)) == 1):
+                sp = space_of.get(a, "lin") if kind == "pair" else "lin"
+                if sp == "log" and min(vals) <= 0:
+                    sp = "log1p"
+                tr = Track(times, vals, kind=kind, space=sp)
                 for m in range(i, j + 1):
-                    s0 = (run[m].seg["start"] + run[m].beat.t0 - g0) / (g1 - g0)
-                    s1 = (run[m].seg["start"] + run[m].beat.t1 - g0) / (g1 - g0)
-                    new_kw[m][k] = (_lerp(A, B, smoother(s0)), _lerp(A, B, smoother(s1)))
+                    new_kw[m][a] = tr
+                    if kind == "pair":
+                        new_kw[m][b_] = tr
             i = j + 1
-    for c, (s, dim), kw in zip(run, scenes, new_kw):
-        if kw != s._kw:
-            ns = s._make(**kw)
+    for c, (s_, dim), kw in zip(run, scenes, new_kw):
+        if any(kw[k] is not s_._kw.get(k) for k in kw):
+            ns = s_._make(**kw)
             c.beat.scene = dimmed(ns, *dim) if dim != (1.0, 0.0) else ns

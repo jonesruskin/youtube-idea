@@ -169,6 +169,52 @@ def continuity():
             f"teaser points to #{meta.get('next_slot')} ({order[meta.get('next_slot', 1) - 1] if meta.get('next_slot') else '?'}); next in order is #{slot + 1} ({order[slot]})")
 
 
+def claims():
+    """Story logic: every claim in <ep>/claims.py must hold in the simulation (docs/QUALITY_GATE.md #13)."""
+    path = os.path.join(ROOT, ep, "claims.py")
+    if not os.path.exists(path):
+        res("FAIL", "story-logic", f"{ep}/claims.py missing: every spatial/numerical claim needs a simulation check")
+        return
+    m = importlib.import_module(ep + ".claims")
+    for fn in m.CHECKS:
+        try:
+            ok, detail = fn()
+        except Exception as e:
+            ok, detail = False, f"check crashed: {e}"
+        res("PASS" if ok else "FAIL", "story-logic", f"{fn.__name__}: {detail}")
+
+
+def motion_continuity():
+    """No stop-start inside a continuous shot: every start→end parameter that continues across beats is one Track,
+    and no sim clock runs backwards between consecutive beats of one shot (docs/QUALITY_GATE.md #14)."""
+    from engine.render import episode_layout
+    from engine.beats import Track, _unwrap, _isnum
+    lay = episode_layout(ep)
+    bad, n = [], 0
+    for sid, (seg, beats, ctxs) in lay.items():
+        for b, c in zip(beats, ctxs):
+            if c.prev is None:
+                continue
+            p, _ = _unwrap(c.prev[0].scene)
+            q, _ = _unwrap(b.scene)
+            if not (hasattr(p, "_kw") and hasattr(q, "_kw")):
+                continue
+            for k, v in q._kw.items():
+                pv = p._kw.get(k)
+                if isinstance(v, Track) or isinstance(pv, Track):
+                    n += 1
+                    continue
+                if _isnum(v) and _isnum(pv) and isinstance(v, (tuple, list)) and len(v) == 2 and np.ndim(v[0]) == 0 \
+                        and abs(pv[1] - v[0]) < 1e-9 and pv != v:
+                    bad.append(f"{sid}#{beats.index(b)} {k}")
+            for pr in q._spec[0]:
+                a_, b_ = pr[0], pr[1]
+                if _isnum(q._kw.get(a_)) and _isnum(p._kw.get(b_)) and q._kw[a_] < p._kw[b_] - 1e-9 and q._kw[a_] != q._kw.get(b_):
+                    bad.append(f"{sid}#{beats.index(b)} {a_} runs backwards ({p._kw[b_]} → {q._kw[a_]})")
+    res("FAIL" if bad else "PASS", "motion-continuity",
+        f"{n} parameters carried smoothly across beats" + (f"; not smoothed: {bad[:8]}" if bad else ""))
+
+
 def ff(args):
     return subprocess.run(["ffmpeg", "-hide_banner", "-nostats"] + args, capture_output=True, text=True).stderr
 
@@ -236,6 +282,10 @@ def post():
     bad = [j for j in jumps if not any(abs(j[0] - a) < 0.5 for a in allow)]
     res("FAIL" if bad else "PASS", "jump-cuts",
         f"{len(cuts)} scene cuts; {len(bad)} same-scene jumps" + (": " + ", ".join(f"{a:.1f}s" for a, *_ in bad[:12]) if bad else ""))
+    # motion stalls: a moving shot that pauses and resumes (a fall that stops mid-air, a spiral that stops and starts)
+    from jumpcuts import stalls
+    st = [x for x in stalls(vid, skip=skip) if not any(abs(x[0] - a) < 0.5 for a in allow)]
+    res("FAIL" if st else "PASS", "motion-stalls", f"{len(st)} stop-start moments in moving shots" + (": " + ", ".join(f"{a:.1f}s" for a, *_ in st[:12]) if st else ""))
     th = cv2.imread(os.path.join(B, "thumbnail.png"))
     sz = os.path.getsize(os.path.join(B, "thumbnail.png"))
     res("PASS" if th is not None and th.shape[:2] == (720, 1280) and sz < 2_000_000 else "FAIL", "thumbnail", f"{th.shape[1]}x{th.shape[0]}, {sz / 1e6:.2f} MB (YouTube: 1280x720, < 2 MB)")
@@ -244,6 +294,8 @@ def post():
 if mode == "pre":
     pre()
     continuity()
+    claims()
+    motion_continuity()
 else:
     post()
 rep = os.path.join(B, f"qa_report_{mode}.md")
