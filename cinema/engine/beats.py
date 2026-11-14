@@ -366,15 +366,20 @@ def _graded(seg, b, res, fi, prev_post=None, e=1.0):
     return post(hdr, fi + int(seg["start"] * FPS), **kw).astype(np.float32) / 255.0
 
 
-def _overlay(seg, b, ctx, img, lt):
+def _overlay(seg, b, ctx, img, lt, log=True):
+    """log=False: an outgoing overlay that is mostly dissolved away is not checked for text collisions."""
     if b.over is None:
         return img
     t = lt - b.t0
     u = np.clip(t / max(1e-3, b.t1 - b.t0), 0, 1.2)
     if os.environ.get("QA_LOG"):
         from . import hud
-        hud.QA["key"] = (seg["id"], id(b), int(lt * FPS))
-    return b.over(ctx, img, t, u)
+        hud.QA["key"] = (seg["id"], id(b), int(lt * FPS)) if log else None
+    out = b.over(ctx, img, t, u)
+    if os.environ.get("QA_LOG") and not log:
+        from . import hud
+        hud.QA["key"] = None
+    return out
 
 
 def render_frame(seg, beats, ctxs, lt, fi):
@@ -397,23 +402,23 @@ def render_frame(seg, beats, ctxs, lt, fi):
         out = _overlay(seg, b, ctx, base.copy(), lt)
         if t < XO:
             pbase = _graded(seg, b, second, fi, pb.post_kw, ge) if second is not None else base
-            prev = _overlay(pctx.seg, pb, pctx, pbase.copy(), lt_prev)
             k = smooth(t / XO)
+            prev = _overlay(pctx.seg, pb, pctx, pbase.copy(), lt_prev, log=k < 0.5)
             out = prev * (1 - k) + out * k
         return np.clip(out, 0, 1)
     out = _one(seg, b, ctx, lt, fi)
     sp = ctx.story_prev
     if sp is not None and not b.cut and t < XF:
         pb, pctx = sp
-        prev = _one(pctx.seg, pb, pctx, seg["start"] + lt - pctx.seg["start"], fi)
         k = smooth(t / XF)
+        prev = _one(pctx.seg, pb, pctx, seg["start"] + lt - pctx.seg["start"], fi, log=k < 0.5)
         out = prev * (1 - k) + out * k
     return out
 
 
-def _one(seg, b, ctx, lt, fi):
+def _one(seg, b, ctx, lt, fi, log=True):
     res, _ = _scene_call(seg, b, ctx, lt, fi)
-    return np.clip(_overlay(seg, b, ctx, _graded(seg, b, res, fi), lt), 0, 1)
+    return np.clip(_overlay(seg, b, ctx, _graded(seg, b, res, fi), lt, log), 0, 1)
 
 
 def link_runs(items):
