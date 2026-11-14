@@ -717,7 +717,7 @@ def tide_dyn(levels):
         m = pts[0][1]
         for (ta, ma), (tb, mb) in zip(pts, pts[1:] + [(ctx.dur, pts[-1][1])]):
             if t >= ta:
-                m = lerp(ma, mb, smooth(span(t, ta, ta + 1.2))) if mb != ma else ma
+                m = lerp(ma, mb, smooth(span(t, ta, ta + 2.5))) if mb != ma else ma   # a readable surge, not a jump
         s.metres = m
     return dyn
 

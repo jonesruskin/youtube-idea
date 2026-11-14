@@ -64,7 +64,7 @@ class Planet(Shot):
         (ax, ay), (bx, by) = p["path"]
         lu = smoother(span(u, 0.0, 1.0))
         lx, ly = lerp(ax, bx, lu) * W, H / 2 + lerp(ay, by, lu) * H
-        pull = ease_in(span(u, 0.55, 1.0), 2.4) if body == "neptune" else ease_in(span(u, 0.7, 1.0), 2.0) * 0.35
+        pull = ease_in(span(ur, 0.55, 1.0), 2.4) if body == "neptune" else ease_in(span(ur, 0.7, 1.0), 2.0) * 0.35   # whole-shot progress
         if not p.get("pull", True):
             pull = 0.0
         dirx, diry = (bx - ax), (by - ay)

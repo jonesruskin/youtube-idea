@@ -280,11 +280,19 @@ def _scene_call(seg, b, ctx, lt, fi):
     return _apply_dim(res, *dim), second
 
 
-def _graded(seg, b, res, fi):
+def _graded(seg, b, res, fi, prev_post=None, e=1.0):
+    """Grade the HDR scene. prev_post/e: inside one continuous shot, the previous beat's grading glides into this one."""
     hdr, pk = res if isinstance(res, tuple) else (res, {})
     kw = dict(exposure=1.45, bloom=0.55, grade=((0.012, 0.014, 0.03), (1.0, 1.0, 1.0)))
     kw.update(b.post_kw)
     kw.update(pk)
+    if prev_post is not None and e < 1.0:
+        pkw = dict(exposure=1.45, bloom=0.55, grade=((0.012, 0.014, 0.03), (1.0, 1.0, 1.0)))
+        pkw.update(prev_post)
+        pkw.update(pk)
+        for k in kw:
+            if k in pkw and _isnum(kw[k]) and _isnum(pkw[k]) and _shape(kw[k]) == _shape(pkw[k]):
+                kw[k] = _lerp(pkw[k], kw[k], e)
     return post(hdr, fi + int(seg["start"] * FPS), **kw).astype(np.float32) / 255.0
 
 
@@ -307,13 +315,15 @@ def render_frame(seg, beats, ctxs, lt, fi):
     if ctx.prev is not None:
         # same continuous shot as the previous beat: no picture change, only the overlays crossfade
         res, second = _scene_call(seg, b, ctx, lt, fi)
-        base = _graded(seg, b, res, fi)
         pb, pctx = ctx.prev
+        xt = min(XT, 0.7 * max(ctx.dur, 1e-3))
+        ge = smoother(min(1.0, t / xt))
+        base = _graded(seg, b, res, fi, pb.post_kw, ge)
         pctx.state.update({k: v for k, v in ctx.state.items() if k != "shot"})
         lt_prev = seg["start"] + lt - pctx.seg["start"]
         out = _overlay(seg, b, ctx, base.copy(), lt)
         if t < XO:
-            pbase = _graded(seg, b, second, fi) if second is not None else base
+            pbase = _graded(seg, b, second, fi, pb.post_kw, ge) if second is not None else base
             prev = _overlay(pctx.seg, pb, pctx, pbase.copy(), lt_prev)
             k = smooth(t / XO)
             out = prev * (1 - k) + out * k
