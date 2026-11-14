@@ -286,9 +286,11 @@ class Descent:
         # blend toward the fog everywhere in deep/murky air (aerial perspective of the whole frame)
         murk = clamp(1 - Lf / 60.0)
         img = img * (1 - murk) + fogc * murk
-        # inside a deck: fog, rushing upward past the camera
-        for dk in inside:
-            k = min(1.0, (z - dk["top"]) / 1.5, (dk["bot"] - z) / 1.5)
+        # inside a deck: fog, rushing upward past the camera. The mist starts 1.5 km ABOVE the deck top, so plunging
+        # into a cloud layer at speed reads as a dive into mist, not as the screen suddenly filling.
+        near = inside + [d for d in DECKS if d["top"] - 1.5 < z < d["top"]]
+        for dk in near:
+            k = min(1.0, (z - (dk["top"] - 1.5)) / 3.0, (dk["bot"] - z) / 1.5)
             k = smooth(clamp(k))
             off = scroll % 1024
             tu = self._scroll(self.turb, off, 1.0)

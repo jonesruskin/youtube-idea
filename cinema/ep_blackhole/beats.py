@@ -715,9 +715,8 @@ def tide_dyn(levels):
     def dyn(ctx, s, t, u):
         pts = [(0.0, levels[0][1])] + [(ctx.w(wd) + 0.2, m) for wd, m in levels[1:]]
         m = pts[0][1]
-        for (ta, ma), (tb, mb) in zip(pts, pts[1:] + [(ctx.dur, pts[-1][1])]):
-            if t >= ta:
-                m = lerp(ma, mb, smooth(span(t, ta, ta + 2.5))) if mb != ma else ma   # a readable surge, not a jump
+        for tb, mb in pts[1:]:      # each surge starts from wherever the water is now (continuous), over 2.5 s
+            m = lerp(m, mb, smooth(span(t, tb, tb + 2.5)))
         s.metres = m
     return dyn
 

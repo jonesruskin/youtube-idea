@@ -38,7 +38,7 @@ def analyse(path, fps=30.0, skip=()):
     for i in range(1, len(d) - 1):
         lo, hi = max(0, i - 15), min(len(d), i + 16)
         local = np.median(np.r_[d[lo:i], d[i + 1:hi]]) if hi - lo > 2 else 0
-        if d[i] > max(4.0, 5 * local + 1.5):
+        if d[i] > max(4.0, 5 * local + 1.5) and d[i] > 1.8 * max(d[i - 1], d[i + 1]):   # a spike, not a smooth fade
             a, b = fs[i], fs[i + 1]                     # d[i] is the change from frame i to i+1
             corr = cv2.compareHist(hist(a), hist(b), cv2.HISTCMP_CORREL)
             bright = abs(float(a.mean()) - float(b.mean()))

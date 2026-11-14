@@ -234,6 +234,8 @@ def _features_differ(pk, ck, spec):
     for k in set(pk) | set(ck):
         if k in dyn:
             continue
+        if (k in pk) != (k in ck):
+            return True                      # a setting only one beat has (e.g. scorch on, then freeze on)
         a, b = pk.get(k), ck.get(k)
         if callable(a) or callable(b):
             if a is not b:
@@ -271,8 +273,11 @@ def _scene_call(seg, b, ctx, lt, fi):
             # something only one of the two beats draws: render both with the identical camera and crossfade
             pkw = dict(kw)
             for k, v in prv._kw.items():
-                if k not in cur._spec[2] and (_feature(v) or _feature(cur._kw.get(k))):
+                if k not in cur._kw or (k not in cur._spec[2] and (_feature(v) or _feature(cur._kw.get(k)))):
                     pkw[k] = v
+            for k in cur._kw:
+                if k not in prv._kw:
+                    pkw.pop(k, None)
             tp = seg["start"] + lt - (pctx.seg["start"] + pb.t0)
             second = _apply_dim(cur._make(**pkw)(pctx, tp, 1.0, fi), *dim)
     else:
