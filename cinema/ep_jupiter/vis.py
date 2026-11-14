@@ -144,7 +144,7 @@ def run_scroll(ctx, g):
             while j + 1 < len(run) and gg >= run[j + 1].seg["start"] + run[j + 1].beat.t0:
                 j += 1
             sp[i] = flow_speed(_speed_at(run[j], gg))
-        sp = np.convolve(sp, np.ones(9) / 9, mode="same")          # no instant speed changes at beat boundaries
+        sp = np.convolve(np.pad(sp, 4, mode="edge"), np.ones(9) / 9, mode="valid")   # smooth; edges hold real speed
         cache["scroll"] = (ts, np.concatenate([[0.0], np.cumsum(sp[1:] * np.diff(ts))]), sp)
     ts, cum, sp = cache["scroll"]
     return float(np.interp(g, ts, cum)), float(np.interp(g, ts, sp)) / 30.0

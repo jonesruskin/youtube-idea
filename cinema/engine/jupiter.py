@@ -292,9 +292,9 @@ class Descent:
         for dk in near:
             k = min(1.0, (z - (dk["top"] - 1.5)) / 3.0, (dk["bot"] - z) / 1.5)
             k = smooth(clamp(k))
-            off = scroll % 1024
-            tu = self._scroll(self.turb, off, 1.0)
-            tc = self._scroll(self.cells, off * 0.5, 2.0)
+            # offsets stay unwrapped: _scroll wraps each layer itself, so layers at different speeds never snap
+            tu = self._scroll(self.turb, scroll, 1.0)
+            tc = self._scroll(self.cells, scroll * 0.5, 2.0)
             dens = clamp(0.35 + 0.55 * tu * tc + 0.2 * tu)
             mb = min(60.0, motion * 0.6)
             if mb > 1.0:     # streaking fog: motion blur along the fall; fractional length so it never steps
@@ -309,7 +309,7 @@ class Descent:
             img = img * (1 - k * 0.92) + fc * k * 0.92
         # deep convective glow structure
         if e > 0.02:
-            off = (scroll * 0.5 + t * 4.0) % 2048
+            off = scroll * 0.5 + t * 4.0
             tu = self._scroll(self.cells, off, 1.6, sx=0.6)
             tb = self._scroll(self.turb, off * 1.7, 0.8)
             plume = self._scroll(self.turb, off * 2.2, 2.4, sx=0.18)       # tall rising columns
