@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Mux picture + mix at YouTube's -14 LUFS, then write the episode's deliverables.
 #   build/<ep>/final.mp4     master (not in the repo)
-#   renders/<NN_name>/       upload.mp4 (the YouTube master: 1080p, CRF 20, AAC 320k, stored with Git LFS)
+#   renders/<NN_name>/       "<YouTube title>.mp4" (the master to upload: 1080p, CRF 20, AAC 320k, Git LFS; named by tools/master_name.py)
 #                            + preview.mp4 (two-pass, < 95 MB, plain git) + thumbnail.png + captions.srt + metadata.md
 set -euo pipefail
 EP=${1:-ep_blackhole}
@@ -18,7 +18,10 @@ ffmpeg -v error -y -i "$D/final.mp4" -c:v libx264 -preset slow -b:v 1350k -maxra
 ffmpeg -v error -y -i "$D/final.mp4" -c:v libx264 -preset slow -b:v 1350k -maxrate 2600k -bufsize 5200k -pass 2 -passlogfile "$P" -c:a aac -b:a 128k -movflags +faststart "$OUT/preview.mp4"
 rm -f "$P"*
 cp "$D/thumbnail.png" "$D/captions.srt" "$D/UPLOAD.md" "$D/title.txt" "$D/description.txt" "$D/tags.txt" "$D/pinned_comment.txt" "$OUT/"
+[ -f "$D/thumbnail_B.png" ] && cp "$D/thumbnail_B.png" "$OUT/"
 # The master goes into renders/ (and Git LFS) only after the founder approves the preview: MASTER=1 tools/finalize.sh <ep>
-if [ "${MASTER:-0}" = "1" ]; then cp "$D/upload.mp4" "$OUT/"; else rm -f "$OUT/upload.mp4"; fi
+NAME=$(cd "$ROOT" && python3 tools/master_name.py "$EP")
+find "$OUT" -maxdepth 1 -name "*.mp4" ! -name "preview.mp4" -delete          # old masters (any earlier title)
+if [ "${MASTER:-0}" = "1" ]; then cp "$D/upload.mp4" "$OUT/$NAME"; fi
 rm -f "$OUT/metadata.md"
 ls -la "$OUT"

@@ -4,7 +4,7 @@ Everything needed to upload this episode to YouTube. Each field below is also a 
 
 | Field | Value / file |
 |---|---|
-| Video file | `upload.mp4` (1080p master, Git LFS) |
+| Video file | `We Dropped a Ship Into Jupiter. Here's How Far It Got.mp4` (1080p master, Git LFS; named after the title) |
 | Title | **We Dropped a Ship Into Jupiter. Here's How Far It Got.** (54 chars) · `title.txt` |
 | Thumbnail | `thumbnail.png` (1280×720) · hook text: **STILL NO GROUND** |
 | Description | `description.txt` (2451 / 5000 chars, includes chapters, sources, credits, hashtags) |

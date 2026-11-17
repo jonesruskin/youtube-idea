@@ -4,7 +4,7 @@ Everything needed to upload this episode to YouTube. Each field below is also a 
 
 | Field | Value / file |
 |---|---|
-| Video file | `upload.mp4` (1080p master, Git LFS) |
+| Video file | `We Let a Black Hole Loose in Our Solar System.mp4` (1080p master, Git LFS; named after the title) |
 | Title | **We Let a Black Hole Loose in Our Solar System** (45 chars) · `title.txt` |
 | Thumbnail | `thumbnail.png` (1280×720) · hook text: **30 YEARS LEFT** |
 | Description | `description.txt` (2181 / 5000 chars, includes chapters, sources, credits, hashtags) |

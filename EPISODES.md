@@ -5,7 +5,7 @@ Upload in this order. Each episode's end teases the **next row**, so the order i
 
 **Review rule (founder, Nov 2026):** after the render, the preview is shown in the chat first; the 1080p master goes to Git LFS only after approval (`MASTER=1 tools/finalize.sh <ep>`).
 
-**How to upload:** open the episode's folder in `renders/`. Everything you need is in it: `upload.mp4`, `title.txt`,
+**How to upload:** open the episode's folder in `renders/`. Everything you need is in it: the master video (named exactly like the YouTube title), `title.txt`,
 `description.txt`, `tags.txt`, `thumbnail.png`, `captions.srt`, `pinned_comment.txt`. The step-by-step checklist is
 `UPLOAD.md`. After uploading, add the video to the playlist **Gravity Dial: The Universe, Simulated**, then set its end
 screen to point at the previous episode.

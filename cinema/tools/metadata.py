@@ -104,13 +104,16 @@ put("tags.txt", META["tags"])
 put("pinned_comment.txt", META.get("pinned", ""))
 assert len(title) <= 100 and len(desc) <= 5000 and len(META["tags"]) <= 500, "YouTube field limits exceeded"
 chap_txt = "\n".join(f"- {ts(t, False)} {name}" for t, name in chap)
+sys.path.insert(0, os.path.join(ROOT, "tools"))
+from master_name import name_for
+MASTER = name_for(mod.TITLE)
 md = f"""# {title}
 
 Everything needed to upload this episode to YouTube. Each field below is also a plain `.txt` file in this folder, ready to paste.
 
 | Field | Value / file |
 |---|---|
-| Video file | `upload.mp4` (1080p master, Git LFS) |
+| Video file | `{MASTER}` (1080p master, Git LFS; named after the title) |
 | Title | **{title}** ({len(title)} chars) · `title.txt` |
 | Thumbnail | `thumbnail.png` (1280×720) · hook text: **{META['thumb_text']}** |
 | Description | `description.txt` ({len(desc)} / 5000 chars, includes chapters, sources, credits, hashtags) |
@@ -141,5 +144,7 @@ Upload with the main title, then add these as variants:
 ## Chapters (already in the description)
 {chap_txt}
 """
+if os.path.exists(os.path.join(out, "thumbnail_B.png")):
+    md = md.replace("## Studio settings", "## Thumbnail A/B test (Studio → Test & compare)\n1. `thumbnail.png` (main)\n2. `thumbnail_B.png`\n\n## Studio settings", 1)
 put("UPLOAD.md", md)
 print(md[:1200])

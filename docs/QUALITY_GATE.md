@@ -108,7 +108,7 @@ hole is named at 0:27, then a title card at 0:45; the Jupiter fall starts at 1:4
     `slot`, `next_slot` and keywords the teaser must say. *Gate:* `qa.py pre` fails a teaser that points anywhere
     but the next row.
 12. **Masters wait for approval.** Previews go to GitHub for review; the 1080p master is added to Git LFS only after
-    the founder approves (`MASTER=1 tools/finalize.sh <ep>`).
+    the founder approves (`MASTER=1 tools/finalize.sh <ep>`), saved as `<YouTube title>.mp4` so the uploaded file carries the video's name.
 13. **The story's order and geometry must match the simulation.** The black hole episode showed the hole beyond
     Earth (a tug of war) and then suddenly in front of the Sun, without ever passing Earth; the simulation says it
     passes Earth first (0.39 AU, 16 days before the Sun pass), and it never crosses the Sun's disc as seen from
