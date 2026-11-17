@@ -2,7 +2,6 @@
 // Usage: npm run metadata ep01 → episodes/<ep01 folder>/release/metadata.md
 import {existsSync, mkdirSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {CHANNELS} from '../src/channels';
 import {buildTimeline, formatTimestamp} from '../src/engine/timeline';
 import {loadEpisode, ROOT} from './load-episode';
 
@@ -12,7 +11,6 @@ const rel = join(dir, 'release');
 const tl = buildTimeline(episode, voice);
 const chapters = tl.shots.filter((s) => s.chapter).map((s) => `${formatTimestamp(s.start)} ${s.chapter}`);
 const notes = tl.shots.filter((s) => s.science).map((s, i) => `(${i + 1}) ${s.science!.text} — Source: ${s.science!.source}`);
-const ch = CHANNELS[episode.channel ?? 'blink'];
 const mids = tl.shots.filter((s) => s.midroll).map((s) => formatTimestamp(s.end));
 
 const fileDescription = `${episode.logline}
@@ -35,14 +33,17 @@ ${notes.join('\n')}`;
 
 const description = episode.style === 'cinema' ? fileDescription : `${episode.logline}
 
-${episode.commentPrompt} ${ch.commentTail}
+${episode.commentPrompt} Tell us below — the Executor is still reading.
 
 ${chapters.join('\n')}
 
-${ch.factsHeader}
+THE REAL SCIENCE IN THIS EPISODE
 ${notes.join('\n')}
 
-${ch.footer}`;
+THE BLINK FILES — twelve gifts from a dead star, twelve ordinary people. New heir every week.
+
+This is a work of fiction. Betelgeuse is real — and has not gone dark (yet).
+#whatif #space #superpower #animation #theblinkfiles`;
 
 const thumbs = ['a', 'b', 'c'].map((k) => `thumbnail-${k}.png`).filter((f) => existsSync(join(rel, f)));
 const last = tl.shots[tl.shots.length - 1];
