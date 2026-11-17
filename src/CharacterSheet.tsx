@@ -7,7 +7,7 @@ import {C, fonts} from './theme';
 /** Model sheet: every character, plus Jonah's expression and pose range. Used to keep designs consistent. */
 export const CharacterSheet: React.FC = () => {
   const ids = Object.keys(characters) as CharacterId[];
-  const exprs: Expression[] = ['neutral', 'happy', 'ecstatic', 'nervous', 'curious', 'confused', 'alarmed', 'determined', 'smug', 'sleep'];
+  const exprs: Expression[] = ['neutral', 'happy', 'ecstatic', 'nervous', 'curious', 'confused', 'alarmed', 'determined', 'serious', 'sleep'];
   const poses: PoseName[] = ['stand', 'armsUp', 'wave', 'point', 'handsOnHead', 'shrug', 'hold', 'crossArms', 'throw', 'reach'];
   return (
     <AbsoluteFill style={{background: `linear-gradient(${C.dusk}, ${C.ink})`}}>

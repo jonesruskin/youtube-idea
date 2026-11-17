@@ -19,6 +19,8 @@ You should be able to tell any two heirs apart in pure black silhouette.
 
 **Expressions available:** neutral, happy, warm, ecstatic, nervous, curious, confused, alarmed, determined, serious, smug, sleep, surprised, sad.
 
+**Heroes don't scowl.** Inward-furrowed brows read as anger, so only `smug` (the villain register) uses them. `determined` and `serious` use level brows; `confused` raises one brow. Use `smug` on a hero only on purpose.
+
 **Poses available:** stand, relaxed, armsUp, wave, point, pointUp, handsOnHead, shrug, hold, crossArms, throw, reach, talk, hipHand, pilot, pilotJoy, pilotPoint, sitHug, lie, plus a procedural walk cycle.
 
 ## The Twelve Heirs (File 01: THE GIFTS)

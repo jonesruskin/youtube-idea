@@ -119,7 +119,7 @@ export const FarCity: React.FC<{time: TimeOfDay; base: number; frame: number; se
 };
 
 const WALLS = ['#E8B04B', '#4FA3A5', '#E07A5F', '#A98BD1', '#7FBF8E', '#F2D16B', '#D6806E', '#6FA8DC'];
-const SIGNS = ['GOD’S TIME IS THE BEST CHEMIST', 'BLESSED HANDS TAILORING', 'NO WAHALA PHONES', 'MAMA T BUKA', 'GLORY BARBING SALON', 'FAST FAST PRINTING', 'SUPER MAMA PROVISIONS', 'JESUS IS LORD BOUTIQUE'];
+// Signboards are wordless; only the presence of a board is random.
 
 /** Colourful 2–3 storey Lagos facades: balconies, AC units, signboards, tanks, dishes, plants. */
 export const Facades: React.FC<{time: TimeOfDay; base: number; seed: number; x0?: number; x1?: number; frame: number; signs?: boolean}> = ({time, base, seed, x0 = -300, x1 = 2500, frame, signs = true}) => {
@@ -127,12 +127,12 @@ export const Facades: React.FC<{time: TimeOfDay; base: number; seed: number; x0?
   const night = time === 'night' || time === 'storm';
   const blds = useMemo(() => {
     const r = rand(seed);
-    const out: {x: number; w: number; floors: number; wall: string; sign?: string; tank: boolean; dish: boolean; balcony: boolean; ac: boolean; plant: boolean}[] = [];
+    const out: {x: number; w: number; floors: number; wall: string; sign?: boolean; tank: boolean; dish: boolean; balcony: boolean; ac: boolean; plant: boolean}[] = [];
     let x = x0;
     let k = 0;
     while (x < x1) {
       const w = 230 + r() * 160;
-      out.push({x, w, floors: 2 + Math.floor(r() * 2), wall: WALLS[Math.floor(r() * WALLS.length)], sign: r() > 0.4 ? SIGNS[(seed + k) % SIGNS.length] : undefined, tank: r() > 0.4, dish: r() > 0.55, balcony: r() > 0.4, ac: r() > 0.35, plant: r() > 0.5});
+      out.push({x, w, floors: 2 + Math.floor(r() * 2), wall: WALLS[Math.floor(r() * WALLS.length)], sign: r() > 0.4, tank: r() > 0.4, dish: r() > 0.55, balcony: r() > 0.4, ac: r() > 0.35, plant: r() > 0.5});
       x += w + 8;
       k++;
     }
@@ -187,9 +187,9 @@ export const Facades: React.FC<{time: TimeOfDay; base: number; seed: number; x0?
             {signs && b.sign && (
               <g>
                 <rect x={b.x + 14} y={base - fh + 8} width={b.w - 28} height={42} rx={4} fill={night ? '#1E2448' : '#F6F1E6'} stroke={C.ink} strokeWidth={4} />
-                <text x={b.x + b.w / 2} y={base - fh + 37} textAnchor="middle" fill={['#C2464F', '#2C4A7A', '#3C8D6E'][i % 3]} fontFamily={fonts.display} fontWeight={900} fontSize={Math.min(22, (b.w - 40) / (b.sign.length * 0.62))}>
-                  {b.sign}
-                </text>
+                {/* wordless signboard: a painted logo and a colour band read as "shop" without putting words in the frame */}
+                <circle cx={b.x + 40} cy={base - fh + 29} r={13} fill={['#C2464F', '#2C4A7A', '#3C8D6E'][i % 3]} stroke={C.ink} strokeWidth={3} />
+                <rect x={b.x + 64} y={base - fh + 22} width={b.w - 100} height={14} rx={7} fill={['#C2464F', '#2C4A7A', '#3C8D6E'][i % 3]} opacity={0.75} />
               </g>
             )}
             {/* ground-floor shop opening */}
@@ -297,9 +297,8 @@ export const Danfo: React.FC<{x: number; y: number; s?: number; tilt?: number; f
     <path d="M232,-270 L282,-226 L292,-150 L232,-150 Z" fill="#9FD3F2" stroke={C.ink} strokeWidth={4} />
     {/* door */}
     {doorOpen ? <rect x={238} y={-150} width={20} height={118} fill="#F7C82E" stroke={C.ink} strokeWidth={4} transform="rotate(-25,248,-150)" /> : <rect x={232} y={-150} width={70} height={118} fill="#F2BC1E" stroke={C.ink} strokeWidth={4} />}
-    <text x={-20} y={-120} textAnchor="middle" fill={C.ink} fontFamily={fonts.display} fontWeight={900} fontSize={24}>
-      NO CONDITION IS PERMANENT
-    </text>
+    {/* livery stripe (no slogans: the world isn't a caption) */}
+    <rect x={-290} y={-140} width={500} height={14} rx={4} fill="#2C8A57" stroke={C.ink} strokeWidth={3} />
     {/* wheels */}
     {[-200, 190].map((wx, i) => (
       <g key={i} transform={`translate(${wx},-20) rotate(${broken && i === 1 ? 0 : frame * 0})`}>

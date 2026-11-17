@@ -21,3 +21,11 @@ export const Camera: React.FC<{
   const sy = shake ? Math.cos(frame * 2.3) * shake * 5 : 0;
   return <g transform={`translate(${960 + sx},${540 + sy}) scale(${z}) translate(${-fx},${-fy})`}>{children}</g>;
 };
+
+/** Parallax: far layers move less than the camera. */
+export const Par: React.FC<{depth: number; fx: number; fy?: number; children: React.ReactNode}> = ({depth, fx, fy = 540, children}) => (
+  <g transform={`translate(${(fx - 960) * (1 - depth)},${(fy - 540) * (1 - depth) * 0.5})`}>{children}</g>
+);
+
+export type Cam = [number, number, number];
+export const lerpCam = (a: Cam, b: Cam, p: number): Cam => [a[0] + (b[0] - a[0]) * p, a[1] + (b[1] - a[1]) * p, a[2] + (b[2] - a[2]) * p];
