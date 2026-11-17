@@ -350,318 +350,323 @@ its closest,
 it swings in nearer to the Sun than Venus.
 
 74
-00:04:10,385 --> 00:04:12,471
-For four months, nothing seems wrong.
+00:04:10,385 --> 00:04:13,503
+For four months, the Moon swings far out
+and back again,
 
 75
-00:04:12,791 --> 00:04:15,872
+00:04:13,503 --> 00:04:15,340
+shrinking and growing in our sky.
+
+76
+00:04:15,660 --> 00:04:18,741
 Then, a hundred and twenty-three days
 after the pass,
 
-76
-00:04:15,872 --> 00:04:18,720
+77
+00:04:18,741 --> 00:04:21,589
 the Sun's gravity pulls the Moon away from
 Earth.
 
-77
-00:04:19,720 --> 00:04:21,210
+78
+00:04:22,589 --> 00:04:24,079
 The Moon becomes a planet.
 
-78
-00:04:21,530 --> 00:04:25,401
+79
+00:04:24,399 --> 00:04:28,271
 It goes around the Sun on its own now, on
 an orbit close to ours.
 
-79
-00:04:25,721 --> 00:04:30,359
+80
+00:04:28,591 --> 00:04:33,228
 No more months. No more eclipses of the
 Moon. Nights without a Moon, for good.
 
-80
-00:04:30,679 --> 00:04:33,845
+81
+00:04:33,548 --> 00:04:36,714
 The tides wouldn't stop. The Sun raises
 tides too,
 
-81
-00:04:33,845 --> 00:04:38,087
+82
+00:04:36,714 --> 00:04:40,957
 and on this tighter orbit, at times, even
 bigger ones than today's.
 
-82
-00:04:38,687 --> 00:04:40,447
+83
+00:04:41,557 --> 00:04:43,316
 The strangest part is who did it.
 
-83
-00:04:40,767 --> 00:04:43,800
+84
+00:04:43,636 --> 00:04:46,669
 It wasn't the rogue that stole the Moon.
 It was the Sun.
 
-84
-00:04:44,120 --> 00:04:47,607
+85
+00:04:46,989 --> 00:04:50,476
 The rogue only loosened it, from ten
 million kilometres away.
 
-85
-00:04:47,927 --> 00:04:51,632
+86
+00:04:50,796 --> 00:04:54,502
 And it's a coin toss. On these dates,
 whether we keep the Moon
 
-86
-00:04:51,632 --> 00:04:55,696
+87
+00:04:54,502 --> 00:04:58,565
 depends on where it happens to be in its
 orbit as the rogue goes by.
 
-87
-00:04:56,296 --> 00:04:59,289
+88
+00:04:59,165 --> 00:05:02,158
 Now let it arrive a week or two before
 Earth gets there,
 
-88
-00:04:59,289 --> 00:05:01,373
+89
+00:05:02,158 --> 00:05:04,243
 so it crosses our orbit in front of us.
 
-89
-00:05:01,693 --> 00:05:05,779
+90
+00:05:04,563 --> 00:05:08,648
 Its gravity pulls Earth forwards. Earth
 speeds up, and swings outward.
 
-90
-00:05:06,379 --> 00:05:10,935
+91
+00:05:09,248 --> 00:05:13,805
 The new orbit is long and stretched. One
 year now lasts two years and eight months.
 
-91
-00:05:11,255 --> 00:05:14,986
+92
+00:05:14,125 --> 00:05:17,855
 At its farthest, Earth is out past Mars,
 in the asteroid belt,
 
-92
-00:05:14,986 --> 00:05:18,055
+93
+00:05:17,855 --> 00:05:20,924
 almost three times farther from the Sun
 than today.
 
-93
-00:05:18,375 --> 00:05:21,568
+94
+00:05:21,244 --> 00:05:24,437
 Out there, the Sun looks a third as wide
 as it does today,
 
-94
-00:05:21,568 --> 00:05:23,605
+95
+00:05:24,437 --> 00:05:26,474
 and its light is an eighth as strong.
 
-95
-00:05:24,205 --> 00:05:28,443
+96
+00:05:27,074 --> 00:05:31,312
 Averaged over that long year, Earth gets
 less sunlight than Mars does today.
 
-96
-00:05:28,763 --> 00:05:33,182
+97
+00:05:31,632 --> 00:05:36,051
 For more than two years of every orbit, it
 gets less than half of today's sunlight.
 
-97
-00:05:33,502 --> 00:05:38,229
+98
+00:05:36,371 --> 00:05:41,098
 The oceans freeze over from the top down.
 And even at its closest to the Sun,
 
-98
-00:05:38,229 --> 00:05:40,930
+99
+00:05:41,098 --> 00:05:43,799
 Earth never warms up as much as it does
 now.
 
-99
-00:05:41,250 --> 00:05:44,942
+100
+00:05:44,119 --> 00:05:47,812
 Every two years and eight months, it
 swings back in for about six
 
-100
-00:05:44,942 --> 00:05:48,521
+101
+00:05:47,812 --> 00:05:51,390
 months of weak sunlight. Then it heads out
 into the cold again.
 
-101
-00:05:49,121 --> 00:05:51,126
+102
+00:05:51,990 --> 00:05:53,995
 And then there's the window in the middle.
 
-102
-00:05:51,446 --> 00:05:55,917
+103
+00:05:54,315 --> 00:05:58,787
 Eleven and a half days in the calendar. If
 the rogue arrives inside them,
 
-103
-00:05:55,917 --> 00:05:59,225
+104
+00:05:58,787 --> 00:06:02,094
 it passes so close to Earth that there's
 no saving us.
 
-104
-00:05:59,825 --> 00:06:04,386
+105
+00:06:02,694 --> 00:06:07,256
 On the worst day, it misses us by two
 hundred and eleven thousand kilometres.
 
-105
-00:06:04,386 --> 00:06:05,630
+106
+00:06:07,256 --> 00:06:08,500
 Closer than the Moon.
 
-106
-00:06:05,950 --> 00:06:09,210
+107
+00:06:08,820 --> 00:06:12,079
 In our sky, it would be almost forty
 degrees wide.
 
-107
-00:06:09,210 --> 00:06:11,687
+108
+00:06:12,079 --> 00:06:14,556
 Seventy-five full Moons, side by side.
 
-108
-00:06:12,007 --> 00:06:14,360
+109
+00:06:14,876 --> 00:06:17,229
 Its tidal pull would be nearly eight
 hundred
 
-109
-00:06:14,360 --> 00:06:16,499
+110
+00:06:17,229 --> 00:06:19,368
 thousand times stronger than the Moon's.
 
-110
-00:06:17,099 --> 00:06:20,045
+111
+00:06:19,968 --> 00:06:22,914
 That's just thirty thousand kilometres
 outside the
 
-111
-00:06:20,045 --> 00:06:23,462
+112
+00:06:22,914 --> 00:06:26,331
 distance where its tides would tear a
 liquid planet apart.
 
-112
-00:06:23,782 --> 00:06:28,007
+113
+00:06:26,651 --> 00:06:30,876
 For a few hours, the oceans, the rock and
 the air are all pulled towards it.
 
-113
-00:06:28,327 --> 00:06:30,877
+114
+00:06:31,196 --> 00:06:33,746
 Then it slingshots Earth out of the Solar
 System.
 
-114
-00:06:31,197 --> 00:06:35,998
+115
+00:06:34,066 --> 00:06:38,868
 The whole encounter, from first tug to
 final fling, is over in about two weeks.
 
-115
-00:06:36,598 --> 00:06:39,254
+116
+00:06:39,468 --> 00:06:42,123
 Earth leaves at forty kilometres per
 second,
 
-116
-00:06:39,254 --> 00:06:41,969
+117
+00:06:42,123 --> 00:06:44,839
 faster than it has ever moved around the
 Sun.
 
-117
-00:06:42,289 --> 00:06:44,588
+118
+00:06:45,159 --> 00:06:47,457
 The Moon is flung away on a path of its
 own.
 
-118
-00:06:44,908 --> 00:06:48,380
+119
+00:06:47,777 --> 00:06:51,249
 Two years later, Earth is almost as far
 out as Uranus,
 
-119
-00:06:48,380 --> 00:06:50,694
+120
+00:06:51,249 --> 00:06:53,563
 and the Sun is just a dazzling star.
 
-120
-00:06:51,294 --> 00:06:54,337
+121
+00:06:54,163 --> 00:06:57,206
 The oceans freeze over. Only deep below
 the ice,
 
-121
-00:06:54,337 --> 00:06:58,900
+122
+00:06:57,206 --> 00:07:01,769
 around volcanic vents on the sea floor,
 could life carry on in the dark.
 
-122
-00:06:59,220 --> 00:07:03,126
+123
+00:07:02,089 --> 00:07:05,995
 On a few dates at the very edge of the
 window, we'd at least keep the Moon.
 
-123
-00:07:03,446 --> 00:07:06,922
+124
+00:07:06,315 --> 00:07:09,791
 Earth and Moon would leave together. Two
 travellers, with no sun.
 
-124
-00:07:07,242 --> 00:07:09,574
+125
+00:07:10,111 --> 00:07:12,443
 Days and nights would still come and go,
 
-125
-00:07:09,574 --> 00:07:12,664
+126
+00:07:12,443 --> 00:07:15,533
 as the Earth turned. The sky would simply
 stay black.
 
-126
-00:07:13,864 --> 00:07:14,904
+127
+00:07:16,733 --> 00:07:17,773
 So, should you worry?
 
-127
-00:07:15,224 --> 00:07:19,076
+128
+00:07:18,093 --> 00:07:21,946
 For a planet like this to pass this close
 to the Sun, you'd expect to
 
-128
-00:07:19,076 --> 00:07:23,152
+129
+00:07:21,946 --> 00:07:26,021
 wait hundreds of thousands of times longer
 than the universe has existed.
 
-129
-00:07:23,472 --> 00:07:27,641
+130
+00:07:26,341 --> 00:07:30,510
 In four and a half billion years, it has
 almost certainly never happened to us.
 
-130
-00:07:28,241 --> 00:07:30,631
+131
+00:07:31,110 --> 00:07:33,501
 But it's a strange thing to learn about
 our planet.
 
-131
-00:07:30,951 --> 00:07:34,405
+132
+00:07:33,821 --> 00:07:37,274
 Everything we know depends on where Earth
 is, on a single day.
 
-132
-00:07:34,725 --> 00:07:38,331
+133
+00:07:37,594 --> 00:07:41,201
 Astronomers would know that date more than
 two hundred years ahead.
 
-133
-00:07:38,331 --> 00:07:40,377
+134
+00:07:41,201 --> 00:07:43,246
 And they'd know exactly what it meant.
 
-134
-00:07:40,697 --> 00:07:44,321
+135
+00:07:43,566 --> 00:07:47,190
 Eleven and a half days on the calendar are
 all that separate
 
-135
-00:07:44,321 --> 00:07:48,065
+136
+00:07:47,190 --> 00:07:50,934
 an ordinary year from a journey into the
 dark that never ends.
 
-136
-00:07:49,065 --> 00:07:51,024
+137
+00:07:51,934 --> 00:07:53,893
 Next time, something does hit us.
 
-137
-00:07:51,524 --> 00:07:56,006
+138
+00:07:54,393 --> 00:07:58,876
 Sixty-six million years ago, an asteroid
 wider than a city struck the Earth.
 
-138
-00:07:56,006 --> 00:07:59,191
+139
+00:07:58,876 --> 00:08:02,061
 We'll go through what happened next,
 minute by minute.
 
-139
-00:08:00,791 --> 00:08:03,261
+140
+00:08:03,661 --> 00:08:06,130
 Subscribe, and we'll turn the next dial
 together.
 

@@ -12,9 +12,9 @@ CHAPTERS
 2:43 730 Runs: The Calendar
 3:02 Fate 1: Closer
 3:48 Fate 2: The Moon
-4:56 Fate 3: Farther
-5:48 Fate 4: Thrown Out
-7:13 The Odds: Should You Worry?
+4:58 Fate 3: Farther
+5:51 Fate 4: Thrown Out
+7:16 The Odds: Should You Worry?
 
 THE SCIENCE (sources)
 • Rogue (free-floating) planets found by gravitational microlensing; possibly more numerous than stars: Sumi et al. 2023, AJ 166, 108; Mróz et al. 2017, Nature 548, 183 (≤ 0.25 Jupiter-mass rogues per star)
