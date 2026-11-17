@@ -200,8 +200,11 @@ class Camera:
         if -R - 600 < x < W + R + 600 and -R - 600 < y < H + R + 600:
             if R > 3 and x + R * 1.6 > 0 and x - R * 1.6 < W and y + R * 1.6 > 0 and y - R * 1.6 < H:
                 tmp = np.zeros_like(img)
-                render_sun_disk(tmp, x, y, R, t, filter_look=False)
-                img += tmp * 1.6
+                try:
+                    render_sun_disk(tmp, x, y, R, t, filter_look=False)
+                    img += tmp * 1.6
+                except cv2.error:
+                    pass          # disc entirely outside the frame's padded box
             glow_dot(img, x, y, (1.0, 0.92, 0.8), max(3.0, R * 0.6), 9.0 * glare)
             glow_dot(img, x, y, (1.0, 0.8, 0.55), max(40.0, R * 3), 0.55 * glare)
             glow_dot(img, x, y, (1.0, 0.7, 0.45), max(200.0, R * 8), 0.10 * glare)
