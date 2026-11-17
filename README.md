@@ -6,7 +6,7 @@ Everything lives on one branch, `main`. Each project has its own folder and its 
 |---|---|---|---|
 | **Gravity Dial** (live channel) | Photoreal space simulations: one dial turned on the universe, physics run to the end | Ep1 black hole **live**; Ep2 Jupiter ready | [`EPISODES.md`](EPISODES.md), [`cinema/`](cinema/README.md), [`renders/`](renders/README.md), [`channel/`](channel/README.md), [`growth/`](growth/) |
 | **The Blink Files** | Animated space-science survival stories (Remotion) | File 001 "The Sun Went Out" + pilots | the section below, [`docs/PIPELINE.md`](docs/PIPELINE.md) |
-| **Borrowed Day** | "What if you were ___ for one day?" (same Remotion engine) | Ep1 rendered | [`docs/08-borrowed-day.md`](docs/08-borrowed-day.md), `renders/bd01*` |
+| **Borrowed Day** | "What if you were ___ for one day?" (same Remotion engine) | Ep1 rendered; code parked | [`docs/08-borrowed-day.md`](docs/08-borrowed-day.md), `renders/bd01*`, [`archive/borrowed-day-engine/`](archive/borrowed-day-engine/README.md) |
 
 ---
 
