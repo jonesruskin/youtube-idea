@@ -1,0 +1,35 @@
+A planet five times heavier than Jupiter, with no star of its own, crosses Earth's orbit. What happens to us? It depends on one thing: where Earth is on the day it arrives.
+
+We simulated the pass 730 times — every arrival date of the year in half-day steps, with the Sun, all eight planets and the Moon. On 3 dates in 4, Earth's year shifts by a few days. On about 1 in 10, the world as we know it ends: Earth is pulled in toward the Sun, flung out past Mars, or thrown out of the Solar System entirely. And on a few dates, the Sun steals the Moon.
+
+Which fate do you think is worst? Tell us in the comments.
+
+CHAPTERS
+0:00 A planet with no star
+0:28 Chapter 1: No Star
+1:19 T-237 Years: The Warning
+1:42 T-7 Years: The Approach
+2:43 730 Runs: The Calendar
+3:02 Fate 1: Closer
+3:48 Fate 2: The Moon
+4:56 Fate 3: Farther
+5:48 Fate 4: Thrown Out
+7:13 The Odds: Should You Worry?
+
+THE SCIENCE (sources)
+• Rogue (free-floating) planets found by gravitational microlensing; possibly more numerous than stars: Sumi et al. 2023, AJ 166, 108; Mróz et al. 2017, Nature 548, 183 (≤ 0.25 Jupiter-mass rogues per star)
+• Planet–planet scattering ejects giant planets from young systems: e.g. Chatterjee et al. 2008, ApJ 686, 580
+• WISE 0855−0714 (7.4 light-years, 3–10 Jupiter masses, ~250 K): Luhman 2014, ApJL 786, L18; Luhman & Esplin 2016, AJ 152, 78
+• Runaway-greenhouse limit ~1.06–1.1 × today's sunlight: Kopparapu et al. 2013, ApJ 765, 131; Kopparapu et al. 2014, ApJL 787, L29
+• Vera C. Rubin Observatory LSST single-visit depth ~24.5 mag: Ivezić et al. 2019, ApJ 873, 111
+• Simulation: 5 Jupiter masses, 20 km/s far away, closest approach to the Sun 1.00 AU, 4° from the ecliptic; Sun and rogue fully interacting, planets and Moon as test particles (DOP853, rtol 1e-10/1e-11). 730 runs, one per half-day of arrival date. Where the Moon is in its orbit at the pass also matters on some dates.
+• Encounter rate: n·π·b²·(1 + v_esc²/v²)·v with n ≈ 0.025 pc⁻³ → ~1 pass within 1 AU per ~5×10^15 years. Order-of-magnitude estimate.
+
+CREDITS
+Planet textures: Solar System Scope (CC BY 4.0) — solarsystemscope.com
+Narration voice: Kokoro-82M (Apache 2.0). Music and sound design: original, synthesised for this video.
+Simulation, animation and rendering: made in-house.
+
+Gravity Dial turns one dial on the universe each episode and runs the physics. Subscribe so you don't miss the next one.
+
+#space #rogueplanet #simulation #astronomy #science

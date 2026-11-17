@@ -1,0 +1,667 @@
+1
+00:00:00,250 --> 00:00:02,033
+This is a planet with no star.
+
+2
+00:00:02,353 --> 00:00:06,022
+Five times heavier than Jupiter, drifting
+alone through the dark.
+
+3
+00:00:06,342 --> 00:00:10,451
+And it's heading into our Solar System, on
+a path that crosses Earth's orbit.
+
+4
+00:00:11,251 --> 00:00:14,489
+We simulated its pass seven hundred and
+thirty times,
+
+5
+00:00:14,489 --> 00:00:17,177
+changing just one thing: the day it
+arrives.
+
+6
+00:00:17,497 --> 00:00:19,854
+On most dates, Earth barely notices.
+
+7
+00:00:20,174 --> 00:00:23,559
+On others, Earth is thrown out of the
+Solar System, forever.
+
+8
+00:00:23,879 --> 00:00:27,468
+And on a handful of dates, something much
+stranger happens to the Moon.
+
+9
+00:00:28,468 --> 00:00:29,859
+Rogue planets are real.
+
+10
+00:00:30,179 --> 00:00:33,911
+Planets are born around stars. But in a
+young solar system,
+
+11
+00:00:33,911 --> 00:00:37,959
+giant planets can fling each other out,
+into interstellar space.
+
+12
+00:00:38,279 --> 00:00:41,656
+We find them when one drifts in front of a
+distant star.
+
+13
+00:00:41,656 --> 00:00:45,997
+Its gravity bends that star's light, and
+the star briefly gets brighter.
+
+14
+00:00:46,317 --> 00:00:49,438
+One study in twenty twenty-three suggested
+our galaxy
+
+15
+00:00:49,438 --> 00:00:52,853
+could hold more of these lonely planets
+than it has stars.
+
+16
+00:00:53,453 --> 00:00:58,365
+Ours, in this story, is five times the
+mass of Jupiter, and about the same size.
+
+17
+00:00:58,685 --> 00:01:01,613
+Without a sun, it's dark. It glows only
+faintly,
+
+18
+00:01:01,613 --> 00:01:04,297
+with the heat left over from when it
+formed.
+
+19
+00:01:04,617 --> 00:01:08,108
+There's a real object like this just seven
+light-years away.
+
+20
+00:01:08,108 --> 00:01:10,320
+It's called WISE zero eight five five.
+
+21
+00:01:10,640 --> 00:01:13,435
+Its clouds are about as cold as a kitchen
+freezer.
+
+22
+00:01:13,755 --> 00:01:16,499
+And NASA's Roman Space Telescope is
+designed
+
+23
+00:01:16,499 --> 00:01:19,243
+to find hundreds more rogue planets like
+it.
+
+24
+00:01:19,843 --> 00:01:22,521
+We'd see ours coming, long before it got
+here.
+
+25
+00:01:22,841 --> 00:01:26,252
+Once it's about a thousand times farther
+away than the Sun,
+
+26
+00:01:26,252 --> 00:01:30,011
+sunlight glinting off it is enough for
+today's survey telescopes.
+
+27
+00:01:30,331 --> 00:01:34,590
+At twenty kilometres per second, that's
+more than two hundred years of warning.
+
+28
+00:01:34,910 --> 00:01:37,805
+Within weeks, astronomers would know its
+path.
+
+29
+00:01:37,805 --> 00:01:42,148
+It passes the Sun at exactly Earth's
+distance, and crosses our orbit.
+
+30
+00:01:42,748 --> 00:01:43,856
+What would it look like?
+
+31
+00:01:44,176 --> 00:01:48,308
+About seven and a half years before it
+arrives, it becomes visible to
+
+32
+00:01:48,308 --> 00:01:52,441
+the naked eye. A faint new star, creeping
+through the constellations.
+
+33
+00:01:52,761 --> 00:01:54,957
+Eight months out, it's brighter than
+Jupiter.
+
+34
+00:01:55,277 --> 00:01:58,247
+Five months out, it outshines Venus. After
+the Moon,
+
+35
+00:01:58,247 --> 00:02:00,646
+it's the brightest thing in the night sky.
+
+36
+00:02:00,966 --> 00:02:05,198
+In binoculars, it isn't a point any more.
+It's a tiny, banded disc.
+
+37
+00:02:05,518 --> 00:02:10,091
+And on the worst dates, in the final two
+weeks, it grows wider than the full Moon.
+
+38
+00:02:10,691 --> 00:02:11,914
+And here's the problem.
+
+39
+00:02:12,234 --> 00:02:16,064
+We can't push it aside. It's sixteen
+hundred times heavier than Earth.
+
+40
+00:02:16,383 --> 00:02:18,257
+We can't move Earth out of the way,
+either.
+
+41
+00:02:18,577 --> 00:02:21,005
+So everything comes down to one question.
+
+42
+00:02:21,005 --> 00:02:23,550
+Where will Earth be, on the day it
+arrives?
+
+43
+00:02:24,150 --> 00:02:28,868
+Earth moves about two and a half million
+kilometres along its orbit every day.
+
+44
+00:02:29,188 --> 00:02:33,709
+So we ran the pass for every possible
+arrival date, in steps of half a day.
+
+45
+00:02:34,029 --> 00:02:36,975
+Seven hundred and thirty runs. The Sun,
+the rogue,
+
+46
+00:02:36,975 --> 00:02:40,570
+all eight planets, and the Moon, tracked
+all the way through.
+
+47
+00:02:40,890 --> 00:02:42,657
+Here's what the calendar looks like.
+
+48
+00:02:43,257 --> 00:02:47,039
+On about three dates out of four, Earth
+stays almost where it is.
+
+49
+00:02:47,039 --> 00:02:49,542
+The year gets a few days longer or
+shorter.
+
+50
+00:02:49,862 --> 00:02:53,234
+On about one in six, the year changes by
+weeks, or months.
+
+51
+00:02:53,554 --> 00:02:57,204
+But on roughly one date in ten, the world
+as we know it ends.
+
+52
+00:02:57,524 --> 00:03:02,252
+There are three ways it can go. And which
+one we get is decided by a matter of days.
+
+53
+00:03:02,852 --> 00:03:05,992
+If it arrives about two weeks after Earth
+has gone by,
+
+54
+00:03:05,992 --> 00:03:07,794
+it crosses our orbit behind us.
+
+55
+00:03:08,114 --> 00:03:11,418
+Its gravity tugs Earth backwards. Earth
+slows down.
+
+56
+00:03:11,738 --> 00:03:14,767
+And a planet that slows down falls closer
+to the Sun.
+
+57
+00:03:15,367 --> 00:03:17,761
+Earth settles onto a new, tighter orbit.
+
+58
+00:03:18,081 --> 00:03:20,724
+A year now lasts two hundred and
+eighty-two days.
+
+59
+00:03:21,044 --> 00:03:24,474
+At its closest, Earth swings in almost as
+far as Venus,
+
+60
+00:03:24,474 --> 00:03:27,094
+and gets twice the sunlight it gets today.
+
+61
+00:03:27,414 --> 00:03:31,060
+From the ground, the Sun looks forty
+percent wider than it does now.
+
+62
+00:03:31,660 --> 00:03:35,683
+Averaged over the year, that's more than
+forty percent extra sunlight.
+
+63
+00:03:36,003 --> 00:03:38,841
+Climate models suggest that around ten
+percent
+
+64
+00:03:38,841 --> 00:03:42,050
+extra would be enough to start a runaway
+greenhouse.
+
+65
+00:03:42,370 --> 00:03:44,936
+The oceans would slowly boil off into
+space,
+
+66
+00:03:44,936 --> 00:03:47,736
+the way scientists think they once did on
+Venus.
+
+67
+00:03:48,336 --> 00:03:52,532
+But move the arrival date by just four
+days, and something stranger happens.
+
+68
+00:03:52,852 --> 00:03:55,654
+The rogue passes ten million kilometres
+from us.
+
+69
+00:03:55,654 --> 00:03:58,340
+Twenty-seven times farther away than the
+Moon.
+
+70
+00:03:58,660 --> 00:04:01,089
+That's not close enough to rip the Moon
+away.
+
+71
+00:04:01,089 --> 00:04:03,086
+But it shakes the Moon's orbit loose.
+
+72
+00:04:03,686 --> 00:04:07,303
+Earth falls onto an even tighter orbit. At
+its closest,
+
+73
+00:04:07,303 --> 00:04:10,065
+it swings in nearer to the Sun than Venus.
+
+74
+00:04:10,385 --> 00:04:12,471
+For four months, nothing seems wrong.
+
+75
+00:04:12,791 --> 00:04:15,872
+Then, a hundred and twenty-three days
+after the pass,
+
+76
+00:04:15,872 --> 00:04:18,720
+the Sun's gravity pulls the Moon away from
+Earth.
+
+77
+00:04:19,720 --> 00:04:21,210
+The Moon becomes a planet.
+
+78
+00:04:21,530 --> 00:04:25,401
+It goes around the Sun on its own now, on
+an orbit close to ours.
+
+79
+00:04:25,721 --> 00:04:30,359
+No more months. No more eclipses of the
+Moon. Nights without a Moon, for good.
+
+80
+00:04:30,679 --> 00:04:33,845
+The tides wouldn't stop. The Sun raises
+tides too,
+
+81
+00:04:33,845 --> 00:04:38,087
+and on this tighter orbit, at times, even
+bigger ones than today's.
+
+82
+00:04:38,687 --> 00:04:40,447
+The strangest part is who did it.
+
+83
+00:04:40,767 --> 00:04:43,800
+It wasn't the rogue that stole the Moon.
+It was the Sun.
+
+84
+00:04:44,120 --> 00:04:47,607
+The rogue only loosened it, from ten
+million kilometres away.
+
+85
+00:04:47,927 --> 00:04:51,632
+And it's a coin toss. On these dates,
+whether we keep the Moon
+
+86
+00:04:51,632 --> 00:04:55,696
+depends on where it happens to be in its
+orbit as the rogue goes by.
+
+87
+00:04:56,296 --> 00:04:59,289
+Now let it arrive a week or two before
+Earth gets there,
+
+88
+00:04:59,289 --> 00:05:01,373
+so it crosses our orbit in front of us.
+
+89
+00:05:01,693 --> 00:05:05,779
+Its gravity pulls Earth forwards. Earth
+speeds up, and swings outward.
+
+90
+00:05:06,379 --> 00:05:10,935
+The new orbit is long and stretched. One
+year now lasts two years and eight months.
+
+91
+00:05:11,255 --> 00:05:14,986
+At its farthest, Earth is out past Mars,
+in the asteroid belt,
+
+92
+00:05:14,986 --> 00:05:18,055
+almost three times farther from the Sun
+than today.
+
+93
+00:05:18,375 --> 00:05:21,568
+Out there, the Sun looks a third as wide
+as it does today,
+
+94
+00:05:21,568 --> 00:05:23,605
+and its light is an eighth as strong.
+
+95
+00:05:24,205 --> 00:05:28,443
+Averaged over that long year, Earth gets
+less sunlight than Mars does today.
+
+96
+00:05:28,763 --> 00:05:33,182
+For more than two years of every orbit, it
+gets less than half of today's sunlight.
+
+97
+00:05:33,502 --> 00:05:38,229
+The oceans freeze over from the top down.
+And even at its closest to the Sun,
+
+98
+00:05:38,229 --> 00:05:40,930
+Earth never warms up as much as it does
+now.
+
+99
+00:05:41,250 --> 00:05:44,942
+Every two years and eight months, it
+swings back in for about six
+
+100
+00:05:44,942 --> 00:05:48,521
+months of weak sunlight. Then it heads out
+into the cold again.
+
+101
+00:05:49,121 --> 00:05:51,126
+And then there's the window in the middle.
+
+102
+00:05:51,446 --> 00:05:55,917
+Eleven and a half days in the calendar. If
+the rogue arrives inside them,
+
+103
+00:05:55,917 --> 00:05:59,225
+it passes so close to Earth that there's
+no saving us.
+
+104
+00:05:59,825 --> 00:06:04,386
+On the worst day, it misses us by two
+hundred and eleven thousand kilometres.
+
+105
+00:06:04,386 --> 00:06:05,630
+Closer than the Moon.
+
+106
+00:06:05,950 --> 00:06:09,210
+In our sky, it would be almost forty
+degrees wide.
+
+107
+00:06:09,210 --> 00:06:11,687
+Seventy-five full Moons, side by side.
+
+108
+00:06:12,007 --> 00:06:14,360
+Its tidal pull would be nearly eight
+hundred
+
+109
+00:06:14,360 --> 00:06:16,499
+thousand times stronger than the Moon's.
+
+110
+00:06:17,099 --> 00:06:20,045
+That's just thirty thousand kilometres
+outside the
+
+111
+00:06:20,045 --> 00:06:23,462
+distance where its tides would tear a
+liquid planet apart.
+
+112
+00:06:23,782 --> 00:06:28,007
+For a few hours, the oceans, the rock and
+the air are all pulled towards it.
+
+113
+00:06:28,327 --> 00:06:30,877
+Then it slingshots Earth out of the Solar
+System.
+
+114
+00:06:31,197 --> 00:06:35,998
+The whole encounter, from first tug to
+final fling, is over in about two weeks.
+
+115
+00:06:36,598 --> 00:06:39,254
+Earth leaves at forty kilometres per
+second,
+
+116
+00:06:39,254 --> 00:06:41,969
+faster than it has ever moved around the
+Sun.
+
+117
+00:06:42,289 --> 00:06:44,588
+The Moon is flung away on a path of its
+own.
+
+118
+00:06:44,908 --> 00:06:48,380
+Two years later, Earth is almost as far
+out as Uranus,
+
+119
+00:06:48,380 --> 00:06:50,694
+and the Sun is just a dazzling star.
+
+120
+00:06:51,294 --> 00:06:54,337
+The oceans freeze over. Only deep below
+the ice,
+
+121
+00:06:54,337 --> 00:06:58,900
+around volcanic vents on the sea floor,
+could life carry on in the dark.
+
+122
+00:06:59,220 --> 00:07:03,126
+On a few dates at the very edge of the
+window, we'd at least keep the Moon.
+
+123
+00:07:03,446 --> 00:07:06,922
+Earth and Moon would leave together. Two
+travellers, with no sun.
+
+124
+00:07:07,242 --> 00:07:09,574
+Days and nights would still come and go,
+
+125
+00:07:09,574 --> 00:07:12,664
+as the Earth turned. The sky would simply
+stay black.
+
+126
+00:07:13,864 --> 00:07:14,904
+So, should you worry?
+
+127
+00:07:15,224 --> 00:07:19,076
+For a planet like this to pass this close
+to the Sun, you'd expect to
+
+128
+00:07:19,076 --> 00:07:23,152
+wait hundreds of thousands of times longer
+than the universe has existed.
+
+129
+00:07:23,472 --> 00:07:27,641
+In four and a half billion years, it has
+almost certainly never happened to us.
+
+130
+00:07:28,241 --> 00:07:30,631
+But it's a strange thing to learn about
+our planet.
+
+131
+00:07:30,951 --> 00:07:34,405
+Everything we know depends on where Earth
+is, on a single day.
+
+132
+00:07:34,725 --> 00:07:38,331
+Astronomers would know that date more than
+two hundred years ahead.
+
+133
+00:07:38,331 --> 00:07:40,377
+And they'd know exactly what it meant.
+
+134
+00:07:40,697 --> 00:07:44,321
+Eleven and a half days on the calendar are
+all that separate
+
+135
+00:07:44,321 --> 00:07:48,065
+an ordinary year from a journey into the
+dark that never ends.
+
+136
+00:07:49,065 --> 00:07:51,024
+Next time, something does hit us.
+
+137
+00:07:51,524 --> 00:07:56,006
+Sixty-six million years ago, an asteroid
+wider than a city struck the Earth.
+
+138
+00:07:56,006 --> 00:07:59,191
+We'll go through what happened next,
+minute by minute.
+
+139
+00:08:00,791 --> 00:08:03,261
+Subscribe, and we'll turn the next dial
+together.
+
