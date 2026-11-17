@@ -199,9 +199,9 @@ c5a = [
 ]
 c5b = [
     B(0, system3d(run=R115, t=(45.0, 110.0), dist=(2.3, 2.0), az=(20.0, 45.0), el=(36.0, 40.0), trail=90.0), tag3("Earth", "INSIDE VENUS'S ORBIT", "nearer", dx=90, dy=-60, color=ACC), name="inside Venus's orbit"),
-    B(1, ground_scene(view="moonnights", fg="bay", moon_alt=(30.0, 30.0), moon_az=4.0, moon_size=(0.52, 0.21), view_az=(0.0, 2.0), pitch=(18.0, 20.0), fov=(32.0, 32.0)),
+    B(1, ground_scene(view="moonnights", fg="bay", moon_alt=(3.6, 3.6), moon_az=2.0, moon_size=(0.52, 0.21), view_az=(0.4, 1.0), pitch=(2.0, 2.0), fov=(10.0, 10.0)),
       small("THE MOON SWINGS OUT · AND BACK", "swings", color=MOON_C), name="the Moon shrinks and grows in the sky"),
-    B(2, ground_scene(view="moonnights", fg="bay", moon_alt=(30.0, 33.0), moon_az=4.0, moon_size=(0.21, 0.04), view_az=(2.0, 3.0), pitch=(20.0, 22.0), fov=(32.0, 30.0)),
+    B(2, ground_scene(view="moonnights", fg="bay", moon_alt=(3.6, 3.6), moon_az=2.0, moon_size=(0.21, 0.04), view_az=(1.0, 1.6), pitch=(2.0, 2.0), fov=(10.0, 10.0)),
       bold("DAY 123", "hundred", y=H * 0.84, size=100, color=WHITE, sub="THE MOON DOESN'T COME BACK", sub_col=MOON_C), name="day 123: it doesn't come back"),
 ]
 c5c = [

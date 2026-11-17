@@ -145,6 +145,7 @@ Upload with the main title, then add these as variants:
 {chap_txt}
 """
 if os.path.exists(os.path.join(out, "thumbnail_B.png")):
-    md = md.replace("## Studio settings", "## Thumbnail A/B test (Studio → Test & compare)\n1. `thumbnail.png` (main)\n2. `thumbnail_B.png`\n\n## Studio settings", 1)
+    alts = "".join(f"{i}. `{n}`\n" for i, n in enumerate(["thumbnail_B.png", "thumbnail_C.png"], 2) if os.path.exists(os.path.join(out, n)))
+    md = md.replace("## Studio settings", "## Thumbnail A/B test (Studio → Test & compare)\n1. `thumbnail.png` (main)\n" + alts + "\n## Studio settings", 1)
 put("UPLOAD.md", md)
 print(md[:1200])
