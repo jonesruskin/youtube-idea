@@ -169,6 +169,35 @@ def continuity():
             f"teaser points to #{meta.get('next_slot')} ({order[meta.get('next_slot', 1) - 1] if meta.get('next_slot') else '?'}); next in order is #{slot + 1} ({order[slot]})")
 
 
+def hook_rule():
+    """The 30-second rule (founder, Nov 2026; applies from Episode 3): the title's promise starts on screen within
+    30 s, and no title card interrupts the story after the hook. META['promise_at'] = (segment id, word) names the
+    moment the promise starts being delivered (the thing in the title, shown happening, not described)."""
+    mod = _script()
+    meta = getattr(mod, "META", {})
+    if meta.get("slot", 0) < 3:
+        return                                          # Episodes 1–2 shipped before the rule
+    from engine.render import load
+    _, segs = load(ep)
+    words = json.load(open(os.path.join(B, "voice", "words.json")))
+    from engine import beats as beatmod
+    pa = meta.get("promise_at")
+    if not pa:
+        res("FAIL", "30-second-rule", "META['promise_at'] missing: name the (segment, word) where the title's promise starts on screen")
+    else:
+        sid, word = pa
+        seg = next((s for s in segs if s["id"] == sid), None)
+        al, _ = beatmod.align_words(seg["vlines"], words.get(sid, [])) if seg else ([], 0)
+        hit = next((w for w in al if beatmod._norm(w["w"]).startswith(beatmod._norm(word))), None)
+        if hit is None:
+            res("FAIL", "30-second-rule", f"promise word '{word}' not found in {sid}")
+        else:
+            t = seg["start"] + hit["t0"]
+            res("PASS" if t <= 30 else "FAIL", "30-second-rule", f"title promise on screen at {t:.1f}s ('{word}' in {sid}; limit 30 s)")
+    late = [s["id"] for s in segs if (s.get("card") or {}).get("kind") == "title" and s["start"] > 0.5]
+    res("FAIL" if late else "PASS", "30-second-rule", "no title card after the hook" + (f" — found: {late}" if late else ""))
+
+
 def claims():
     """Story logic: every claim in <ep>/claims.py must hold in the simulation (docs/QUALITY_GATE.md #13)."""
     path = os.path.join(ROOT, ep, "claims.py")
@@ -312,6 +341,7 @@ def post():
 if mode == "pre":
     pre()
     continuity()
+    hook_rule()
     claims()
     motion_continuity()
 else:

@@ -3,6 +3,8 @@
 Upload in this order. Each episode's end teases the **next row**, so the order is locked once an episode is rendered
 (the quality gate checks the teaser against this table: `cinema/tools/qa.py <ep> pre`).
 
+**Review rule (founder, Nov 2026):** after the render, the preview is shown in the chat first; the 1080p master goes to Git LFS only after approval (`MASTER=1 tools/finalize.sh <ep>`).
+
 **How to upload:** open the episode's folder in `renders/`. Everything you need is in it: `upload.mp4`, `title.txt`,
 `description.txt`, `tags.txt`, `thumbnail.png`, `captions.srt`, `pinned_comment.txt`. The step-by-step checklist is
 `UPLOAD.md`. After uploading, add the video to the playlist **Gravity Dial: The Universe, Simulated**, then set its end
@@ -14,7 +16,7 @@ screen to point at the previous episode.
 |---|---|---|---|---|---|
 | 1 | We Let a Black Hole Loose in Our Solar System | 30 YEARS LEFT | A 10-Sun black hole drifts through the Solar System | ✅ | `renders/01_black_hole` |
 | 2 | We Dropped a Ship Into Jupiter. Here's How Far It Got. | STILL NO GROUND | A titanium ship falls into Jupiter until something stops it | ✅ | `renders/02_jupiter` |
-| 3 | A Rogue Planet Is Coming | NO STAR | A starless planet bigger than Jupiter heads for us; one outcome makes Earth its moon | 📝 | |
+| 3 | A Rogue Planet Is Coming. The Date It Arrives Decides Everything. | 11 DAYS | A 5-Jupiter rogue crosses Earth's orbit; 730 runs, one per arrival date: closer, farther, thrown out, or the Sun steals the Moon | 🎬 | `renders/03_rogue_planet` |
 | 4 | Every Minute After the Asteroid That Killed the Dinosaurs | T+20 MINUTES | Minute-by-minute clock from impact to one year after | 📝 | |
 | 5 | Apophis: The Asteroid That Will Pass Closer Than Our Satellites | APRIL 13, 2029 | The real 2029 flyby, simulated, and the impact we avoided | 📝 | |
 | 6 | The Night Betelgeuse Explodes | TONIGHT? | Night-by-night sky after the supernova; the neutrino warning comes first | 📝 | |

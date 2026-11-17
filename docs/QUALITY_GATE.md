@@ -59,6 +59,16 @@ Each item becomes a ✅ or a note in the QA report.
 - [ ] Booms and risers land on chapter and ending cards, not in the middle of a sentence.
 - [ ] The narration is intelligible over the music. A speech-recognition pass on the final mix should match the script.
 
+## The 30-second rule (founder, Nov 2026; every episode from #3)
+Episode 1's analytics: 5.5 % CTR and suggested-video traffic (packaging works), but only 28 % average view
+duration. Both shipped episodes spend their opening on set-up before the thing in the title happens (the black
+hole is named at 0:27, then a title card at 0:45; the Jupiter fall starts at 1:40).
+- **The title's promise starts on screen within 30 s.** Shown happening, not described. `META["promise_at"] =
+  (segment, word)` names that moment; *gate:* `qa.py pre` (30-second-rule) fails if it is later than 0:30.
+- **No title card after the hook.** The story never stops for branding once it has started. *Gate:* `qa.py pre`
+  fails any `card=dict(kind="title")` that is not at 0:00.
+- The cold open ends on an open question the rest of the video answers (the strangest outcome is teased, not shown).
+
 ## Lessons from Episode 1 (black hole)
 1. **One shot per segment is not enough.** Plan visuals per *line* (beat sheet) before writing any code.
 2. **Integrate, don't paste.** Use atmospheric perspective, light wrap and grain shared across every layer.
