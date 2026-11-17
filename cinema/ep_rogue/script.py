@@ -121,7 +121,7 @@ SEGMENTS = [
          card=dict(kind="fate", num="FATE 2", text="The Moon")),
     dict(id="c5b", shot=dict(type="diagram"),
          lines=["Earth falls onto an even tighter orbit. At its closest, it swings in nearer to the Sun than Venus.",
-                "For four months, nothing seems wrong.",
+                "For four months, the Moon swings far out and back again, shrinking and growing in our sky.",
                 "Then, a hundred and twenty-three days after the pass, the Sun's gravity pulls the Moon away from Earth."],
          hold=0.4, sfx=[dict(kind="bell", word="away", note="B4")]),
     dict(id="c5c", shot=dict(type="space"),

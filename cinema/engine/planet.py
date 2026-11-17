@@ -60,7 +60,7 @@ def render_planet(out, cx, cy, R, body="earth", spin=0.0, tilt=0.35, light=(-0.6
     L = np.asarray(light, np.float32)
     L = L / np.linalg.norm(L)
     ndl = dx * L[0] + dy * L[1] + nz * L[2]
-    tw = 4096 if R > 300 else 2048
+    tw = 8192 if (R > 2400 and body in ("jupiter", "earth")) else (4096 if R > 300 else 2048)
     names = dict(earth="8k_earth_daymap.jpg", neptune="2k_neptune.jpg", jupiter="8k_jupiter.jpg", moon="8k_moon.jpg",
                  mars="2k_mars.jpg", saturn="8k_saturn.jpg", uranus="2k_uranus.jpg", sun="2k_sun.jpg", venus="2k_venus_atmosphere.jpg", mercury="2k_mercury.jpg")
     day = tex(names[body], tw)
@@ -131,7 +131,7 @@ def render_planet(out, cx, cy, R, body="earth", spin=0.0, tilt=0.35, light=(-0.6
         rim = ((1 - nz) ** 3.0) * inside * (0.25 + 1.2 * sun_side) * (1.0 if body in ('earth', 'neptune') else 0.35)
         region += rim[..., None] * ac * 0.9
         # outer halo
-        h = np.exp(-np.maximum(r - 1, 0) * R / (R * 0.035 + 2)) * (r >= 0.985)
+        h = np.exp(-np.maximum(r - 1, 0) * R / min(R * 0.035 + 2, 28.0)) * (r >= 0.985)
         # light direction for halo: project light onto screen plane
         ang_l = np.clip((dx * L[0] + dy * L[1]) / (r + 1e-6), -1, 1)
         halo_light = smooth(span(ang_l * min(1.0, np.hypot(L[0], L[1]) * 1.4) + L[2] * 0.6, -0.4, 0.9))

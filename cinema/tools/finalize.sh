@@ -19,6 +19,7 @@ ffmpeg -v error -y -i "$D/final.mp4" -c:v libx264 -preset slow -b:v 1350k -maxra
 rm -f "$P"*
 cp "$D/thumbnail.png" "$D/captions.srt" "$D/UPLOAD.md" "$D/title.txt" "$D/description.txt" "$D/tags.txt" "$D/pinned_comment.txt" "$OUT/"
 [ -f "$D/thumbnail_B.png" ] && cp "$D/thumbnail_B.png" "$OUT/"
+[ -f "$D/thumbnail_C.png" ] && cp "$D/thumbnail_C.png" "$OUT/"
 # The master goes into renders/ (and Git LFS) only after the founder approves the preview: MASTER=1 tools/finalize.sh <ep>
 NAME=$(cd "$ROOT" && python3 tools/master_name.py "$EP")
 find "$OUT" -maxdepth 1 -name "*.mp4" ! -name "preview.mp4" -delete          # old masters (any earlier title)

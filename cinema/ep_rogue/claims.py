@@ -77,10 +77,16 @@ def moon_fate_numbers():
     return ok, f"closest {dk / 1e6:.2f} M km ({dk / M.D_MOON_KM:.0f}× the Moon), perihelion {a * (1 - e):.3f} AU, Moon lost after {t:.0f} d → orbits the {fate} (a={orb[0]:.2f} AU)"
 
 
-def moon_not_lost_at_the_pass():
-    """'not close enough to rip the Moon away … for four months nothing seems wrong': Moon still within 1.5 M km for 100 d."""
+def moon_swings_out_and_back():
+    """'For four months, the Moon swings far out and back again, shrinking and growing in our sky': it goes beyond
+    2× its distance, returns inside 1.3×, and only escapes (> 1.5 million km for good) after ~123 days."""
+    ts = np.arange(0, 123, 1.0)
+    d = np.array([np.linalg.norm(M.state(M.DAY_MOON, t)["moon"] - M.state(M.DAY_MOON, t)["earth"]) * AU for t in ts])
+    k_out = int(np.argmax(d[:55] > 2 * M.D_MOON_KM)) if (d[:55] > 2 * M.D_MOON_KM).any() else None
+    back = k_out is not None and (d[k_out:110] < 1.3 * M.D_MOON_KM).any()
     t = M.moon_lost_after(M.DAY_MOON)
-    return t > 100, f"the Moon stays with Earth for {t:.0f} days after the pass"
+    ok = k_out is not None and back and t > 100
+    return ok, f"out to {d[:55].max() / M.D_MOON_KM:.1f}× by day {int(ts[np.argmax(d[:55])])}, back to {d[k_out:110].min() / M.D_MOON_KM:.2f}×, gone after {t:.0f} d"
 
 
 def moon_coin_toss():
@@ -191,7 +197,7 @@ def tides_from_the_sun():
 
 CHECKS = [odds_three_in_four_one_in_six_one_in_ten, same_means_days_changed_means_weeks, ejection_window_eleven_and_a_half_days,
           fates_in_calendar_order, closer_rogue_passes_behind, farther_rogue_passes_in_front, closer_orbit_numbers,
-          moon_fate_numbers, moon_not_lost_at_the_pass, moon_coin_toss, farther_orbit_numbers, thrown_out_numbers,
+          moon_fate_numbers, moon_swings_out_and_back, moon_coin_toss, farther_orbit_numbers, thrown_out_numbers,
           thrown_out_after_two_years, moon_flung_separately_on_worst_day, edge_of_window_keeps_moon, encounter_about_two_weeks,
           warning_and_sky_timeline, masses_and_speeds, encounter_rate_order_of_magnitude, tides_from_the_sun]
 

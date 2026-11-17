@@ -42,9 +42,18 @@ def make(d):
     a = base.copy()
     _text(a, "11", 90, 70, 330, (1.0, 0.58, 0.18))
     _text(a, "DAYS", 110, 400, 150, (1.0, 0.97, 0.93))
-    p = _save(a, d, "thumbnail.png", "thumbnail_1080.png")
+    _save(a, d, "thumbnail_B.png")
+    # C: the worst day, from the ground: the rogue rising over a city across the bay
+    from ep_rogue.ground import ground_view
+    img, pos, f = ground_view(2.0, sun_alt=-3.0, sun_az=-60.0, view_az=4.0, pitch=26.0, fov=74.0, fg="bay",
+                              rogue=dict(alt=26.0, az=8.0, size_deg=38.0, light=(-0.85, 0.25, 0.35), lit=1.1, glow=0.7),
+                              moon=dict(alt=50.0, az=-30.0, size_deg=0.52))
+    c = post(img, 0, exposure=1.6, bloom=0.65, grain=0.008).astype(np.float32) / 255
+    _text(c, "11", 70, 60, 300, (1.0, 0.58, 0.18))
+    _text(c, "DAYS", 90, 360, 140, (1.0, 0.97, 0.93))
+    p = _save(c, d, "thumbnail.png", "thumbnail_1080.png")
     b = base.copy()
     _text(b, "THROWN", 80, 80, 170, (1.0, 0.97, 0.93))
     _text(b, "OUT", 80, 270, 230, (1.0, 0.32, 0.28))
-    _save(b, d, "thumbnail_B.png")
+    _save(b, d, "thumbnail_C.png")
     return p

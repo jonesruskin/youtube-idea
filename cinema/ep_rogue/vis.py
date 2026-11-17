@@ -46,8 +46,8 @@ def draw_rogue(img, cx, cy, R, light=(0.7, 0.2, 0.5), lit=0.0, glow=1.0, spin=0.
     # starlight rim + faint violet halo so the silhouette reads against space
     xs, ys = grid()
     r = np.sqrt((xs - cx) ** 2 + (ys - cy) ** 2) / max(R, 1)
-    rim = np.exp(-np.abs(r - 1.0) * R / (2.5 + R * 0.012)) * (r > 0.97)
-    out += rim[..., None] * np.array(ROGUE_COL, np.float32) * 0.22 * (0.4 + glow)
+    rim = np.exp(-np.abs(r - 1.0) * R / min(2.5 + R * 0.012, 18.0)) * (r > 0.97)
+    out += rim[..., None] * np.array(ROGUE_COL, np.float32) * (0.22 if R < 900 else 0.12) * (0.4 + glow)
     return out
 
 
