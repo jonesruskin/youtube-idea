@@ -209,7 +209,8 @@ META = dict(
     promise_at=("open1", "planet"),        # the rogue planet is on screen, approaching, from the first line
     first_chapter="A planet with no star",
     extra_chapters={},
-    thumb_text="11 DAYS",
+    thumb_text="",
+    thumb_concept="a wall calendar with one date circled; the rogue planet rising outside the window",
     alts=["A Rogue Planet Crosses Earth's Orbit. We Ran It 730 Times.",
           "This Rogue Planet Steals the Moon. On Some Dates, It Takes Earth."],
     tags="rogue planet, rogue planet earth, rogue planet solar system, free floating planet, planet without a star, earth ejected, moon stolen, n-body simulation, space simulation, wise 0855, microlensing, space documentary, astronomy, astrophysics, space, science explained, gravity dial",

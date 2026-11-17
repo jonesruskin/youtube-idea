@@ -198,6 +198,44 @@ def hook_rule():
     res("FAIL" if late else "PASS", "30-second-rule", "no title card after the hook" + (f" — found: {late}" if late else ""))
 
 
+def originality():
+    """No recycled shots (founder, Nov 2026; every episode from #3): a beat may not use a scene built for another
+    episode (anything from another ep_* package, e.g. ep_blackhole's galaxy or vent shots). Shared engine tools (the
+    camera, planet renderer, star sphere) are fine; shots are not. The thumbnail concept must also be new."""
+    mod = _script()
+    meta = getattr(mod, "META", {})
+    if meta.get("slot", 0) < 3:
+        return
+    from engine.render import episode_layout
+    from engine.beats import _unwrap
+    lay = episode_layout(ep)
+    bad = set()
+    for sid, (seg, beats, ctxs) in lay.items():
+        for b in beats:
+            sc, _ = _unwrap(b.scene)
+            m = getattr(sc, "__module__", "") or ""
+            key = getattr(sc, "_key", None)
+            if key:
+                m = key[0]
+            top = m.split(".")[0]
+            if top.startswith("ep_") and top != ep:
+                bad.add(f"{sid}: {m}{'.' + str(key[2:]) if key and len(key) > 2 else ''}")
+    res("FAIL" if bad else "PASS", "originality", "no shots recycled from earlier episodes" + (f" — recycled: {sorted(bad)[:8]}" if bad else ""))
+    concept = meta.get("thumb_concept")
+    others = []
+    for d in sorted(os.listdir(ROOT)):
+        if d.startswith("ep_") and d != ep and os.path.exists(os.path.join(ROOT, d, "script.py")):
+            spec = importlib.util.spec_from_file_location("s_" + d, os.path.join(ROOT, d, "script.py"))
+            m2 = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(m2)
+            others.append(getattr(m2, "META", {}).get("thumb_concept", getattr(m2, "META", {}).get("thumb_text", "")))
+    if not concept:
+        res("FAIL", "originality", "META['thumb_concept'] missing: describe the thumbnail's idea (it must differ from every earlier episode's)")
+    else:
+        dup = [o for o in others if o and o.lower() == concept.lower()]
+        res("FAIL" if dup else "PASS", "originality", f"thumbnail concept: {concept}")
+
+
 def claims():
     """Story logic: every claim in <ep>/claims.py must hold in the simulation (docs/QUALITY_GATE.md #13)."""
     path = os.path.join(ROOT, ep, "claims.py")
@@ -342,6 +380,7 @@ if mode == "pre":
     pre()
     continuity()
     hook_rule()
+    originality()
     claims()
     motion_continuity()
 else:

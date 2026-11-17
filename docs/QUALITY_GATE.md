@@ -69,6 +69,19 @@ hole is named at 0:27, then a title card at 0:45; the Jupiter fall starts at 1:4
   fails any `card=dict(kind="title")` that is not at 0:00.
 - The cold open ends on an open question the rest of the video answers (the strangest outcome is teased, not shown).
 
+## Originality (founder, Nov 2026; every episode from #3)
+The founder's review: thumbnails had become one template (two lines of heavy white text with one orange word over a
+planet: "30 YEARS LEFT", "STILL NO GROUND", "11 DAYS"), and episodes recycled shots (Episode 1's galaxy, telescope
+and vent shots appeared again in Episode 3).
+- **No recycled shots.** Every shot is built for its episode. Engine tools (camera, planet renderer, star sphere)
+  are shared; shots are not. *Gate:* `qa.py pre` (originality) fails any beat that uses a scene from another
+  episode's package.
+- **A new thumbnail idea every time.** Start from what only this video has, not from a text template. Big numbers
+  and the white-plus-orange headline are retired. *Gate:* `META["thumb_concept"]` must be present and differ from
+  every earlier episode's.
+- **At least three signature set pieces per episode** that the channel has never shown before (written in the
+  script's docstring).
+
 ## Lessons from Episode 1 (black hole)
 1. **One shot per segment is not enough.** Plan visuals per *line* (beat sheet) before writing any code.
 2. **Integrate, don't paste.** Use atmospheric perspective, light wrap and grain shared across every layer.

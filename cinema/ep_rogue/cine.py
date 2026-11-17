@@ -3,7 +3,7 @@ and lighting come from the N-body runs (ep_rogue/model.py) unless a label says '
 import functools
 import numpy as np
 import cv2
-from engine.core import W, H, clamp, smooth, smoother, span, lerp, glow_dot, star_spikes, fast_blur, grid, fbm
+from engine.core import W, H, clamp, smooth, smoother, span, lerp, glow_dot, star_spikes, fast_blur, grid, fbm, splat_points
 from engine.planet import render_planet, render_sun_disk
 from engine.beats import scene_factory
 from engine import cam3d, cards, hud
@@ -531,4 +531,135 @@ def tag3(name, label, at=0.3, dx=60, dy=-40, color=WHITE, size=22):
         L.line((ox, oy), (ox + dx, oy + dy), color=color, alpha=a * 0.8, th=1, progress=prog(t, tt, 0.5))
         img = L.composite(img, 0.3)
         return text(img, label, ox + dx + (8 if dx > 0 else -8), oy + dy, size, color, a, "lc" if dx > 0 else "rc", kind="mono6", tracking=0.12)
+    return f
+
+
+# ═══════════════════════════ 11. a field of dark rogue planets (parallax flythrough) ═══════════════════════════
+@functools.lru_cache(4)
+def _rogue_sprite(R=110, glow=0.9):
+    s = int(R * 2.4)
+    full = draw_rogue(np.zeros((H, W, 3), np.float32), W / 2, H / 2, R, light=(-0.85, -0.3, -0.3), lit=0.0, glow=glow, spin=0.4)
+    img = full[int(H / 2 - s / 2):int(H / 2 - s / 2) + s, int(W / 2 - s / 2):int(W / 2 - s / 2) + s].copy()
+    yy, xx = np.mgrid[0:s, 0:s].astype(np.float32)
+    disc = clamp((R - np.sqrt((xx - s / 2) ** 2 + (yy - s / 2) ** 2)) + 0.5)
+    return img, disc
+
+
+@functools.lru_cache(1)
+def _field():
+    rng = np.random.default_rng(29)
+    n = 34
+    return np.stack([rng.uniform(-16, 16, n), rng.uniform(-8, 8, n), rng.uniform(-90, -2, n)], -1), rng.uniform(0.5, 1.1, n)
+
+
+@scene_factory(keys=[])
+def rogue_field(z=(0.0, 6.0), x=(0.0, 0.4), y=(0.0, 0.1), yaw=(0.0, 4.0), fov=55.0, detect=(0.0, 0.0), dim=1.0):
+    """Flying through a region where dark, starless planets drift. Each is visible only by its faint heat and by the
+    stars it blots out. detect: fraction of them ringed as 'found' (Roman telescope / census beats). Illustrative."""
+    def f(ctx, t, u, fi):
+        e = ease(u)
+        cz = lerp(z[0], z[1], e)
+        pos = np.array([lerp(x[0], x[1], e), lerp(y[0], y[1], e), 6.0 - cz])
+        a = np.radians(lerp(yaw[0], yaw[1], e))
+        cam = Camera(pos, pos + np.array([np.sin(a), 0, -np.cos(a)]), fov=fov)
+        img = cam.sky(gain=0.85)
+        P, rad = _field()
+        xs_, ys_, zs_ = cam.project(P)
+        spr, disc = _rogue_sprite()
+        found = []
+        for i in np.argsort(-zs_):
+            if zs_[i] <= 0.3:
+                continue
+            R = cam.f * rad[i] / zs_[i]
+            if R < 0.8 or not (-R < xs_[i] < W + R and -R < ys_[i] < H + R):
+                continue
+            sz = int(max(3, R * 2.4))
+            sp = cv2.resize(spr, (sz, sz), interpolation=cv2.INTER_AREA)
+            dc = cv2.resize(disc, (sz, sz), interpolation=cv2.INTER_AREA)[..., None]
+            x0, y0 = int(xs_[i] - sz / 2), int(ys_[i] - sz / 2)
+            xa, ya, xb, yb = max(0, x0), max(0, y0), min(W, x0 + sz), min(H, y0 + sz)
+            if xb <= xa or yb <= ya:
+                continue
+            fog = clamp(1.0 - zs_[i] / 95.0) ** 1.5 * dim * 0.75
+            img[ya:yb, xa:xb] = img[ya:yb, xa:xb] * (1 - dc[ya - y0:yb - y0, xa - x0:xb - x0]) + sp[ya - y0:yb - y0, xa - x0:xb - x0] * fog
+            found.append((xs_[i], ys_[i], R, i))
+        k = lerp(detect[0], detect[1], u)
+        rings = Layer()
+        for j, (xx, yy, R, i) in enumerate(sorted(found, key=lambda q: q[3])):
+            if (i * 0.6180339) % 1.0 < k * 0.5:
+                rings.circle((xx, yy), max(10.0, R * 1.25), VIOLET, 0.7, th=1)
+        ctx.state["found_n"] = int(sum(1 for (_, _, _, i) in found if (i * 0.6180339) % 1.0 < k))
+        return rings.composite(img, 0.8), dict(exposure=1.5, bloom=0.6)
+    return f
+
+
+# ═══════════════════════════ 12. microlensing: a dark planet slides in front of a star ═══════════════════════════
+@scene_factory(keys=[])
+def lens_scene(k=(0.0, 1.0), R=210.0):
+    """A background star; a dark planet drifts across the line of sight; the star brightens and its image stretches
+    into arcs around the planet's edge. The lensing strength is exaggerated for visibility (labelled)."""
+    def f(ctx, t, u, fi):
+        from engine.space import lens_image
+        cam = Camera((0, 0, 0), (0.15, 0.02, -1.0), fov=40)
+        img = cam.sky(gain=0.75)
+        sx, sy = W * 0.56, H * 0.48
+        kk = lerp(k[0], k[1], u)
+        px = lerp(W * 0.12, W * 0.98, kk)
+        py = sy + 40
+        d = np.hypot(px - sx, py - sy)
+        amp = 1.0 + 6.0 * np.exp(-(d / 180.0) ** 2)
+        glow_dot(img, sx, sy, (0.85, 0.9, 1.0), 2.2 + 3 * (amp - 1) / 6, 2.5 * amp)
+        glow_dot(img, sx, sy, (0.7, 0.8, 1.0), 30, 0.12 * amp)
+        if amp > 1.5:
+            star_spikes(img, sx, sy, (0.9, 0.94, 1.0), 60 * amp, 0.12 * amp, angle=10)
+        img = lens_image(img, px, py, R * 0.9, shadow=0.0)
+        img = draw_rogue(img, px, py, R, light=(-0.85, -0.3, -0.3), lit=0.0, glow=0.6, spin=0.3)
+        ctx.state["amp"] = amp
+        return img, dict(exposure=1.45, bloom=0.7)
+    return f
+
+
+# ═══════════════════════════ 13. under the ice: a frozen ocean seen from below ═══════════════════════════
+@functools.lru_cache(1)
+def _ice_tex():
+    n = fbm(2400, 1400, scale=180, octaves=6, seed=61)
+    cr = 1 - np.abs(2 * fbm(2400, 1400, scale=70, octaves=5, seed=62) - 1)
+    return (0.55 * n + 0.45 * smooth(span(cr, 0.86, 0.99))).astype(np.float32)
+
+
+@scene_factory(keys=[])
+def under_ice(look=(32.0, 26.0), drift=(0.0, 120.0)):
+    """Camera on the sea floor looking up at the underside of an ice sheet kilometres thick; the only light is the
+    orange glow of a hydrothermal vent below frame, fading upward; marine snow drifts. Illustrative."""
+    def f(ctx, t, u, fi):
+        e = ease(u)
+        xs, ys = grid()
+        tex = _ice_tex()
+        off = lerp(drift[0], drift[1], e)
+        hor = H * (0.62 - 0.004 * lerp(look[0], look[1], e))
+        above = ys < hor
+        depth = np.clip((hor - ys) / hor, 1e-3, 1)
+        uu = ((xs - W / 2) / depth * 0.35 + 1200 + off) % 2400
+        vv = (np.clip(1.0 / depth, 1, 8) * 120 + off * 0.3) % 1400
+        ice = cv2.remap(tex, uu.astype(np.float32), vv.astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
+        glow = np.exp(-((xs - W * 0.5) ** 2) / (2 * 520 ** 2)) * (0.25 + 0.75 * np.exp(-(1 - depth) * 2.5))
+        ceil = (ice[..., None] * np.array([0.10, 0.07, 0.06], np.float32) * depth[..., None] ** 0.7 + np.array([0.004, 0.012, 0.025], np.float32)) * glow[..., None] * 1.6
+        img = np.where(above[..., None], ceil, 0)
+        water = np.array([0.003, 0.010, 0.020], np.float32) + np.array([0.20, 0.08, 0.02], np.float32) * np.exp(-((xs - W * 0.5) ** 2 + (ys - H * 1.05) ** 2) / (2 * 420 ** 2))[..., None]
+        soft = clamp((hor - ys) / 60.0)[..., None]
+        img = (img + water * 0.4) * soft + water * (1 - soft)
+        rng = np.random.default_rng(3)
+        n = 700
+        px = (rng.uniform(0, W, n) + t * rng.uniform(-6, 6, n)) % W
+        py = (rng.uniform(0, H, n) + t * rng.uniform(4, 16, n)) % H
+        b = rng.uniform(0.02, 0.18, n) * (0.3 + np.exp(-((px - W / 2) ** 2) / (2 * 600 ** 2)))
+        img = splat_points(img, px, py, (np.array([0.9, 0.7, 0.5], np.float32)[None, :] * b[:, None]).astype(np.float32), sigma=1.0)
+        # vent chimney silhouette with a shimmering plume
+        edge = fbm(1, H, scale=30, octaves=4, seed=71)[:, 0][:, None] * 26
+        hw = np.clip((ys - H * 0.66) * 0.30, 0, None) + 18 + edge
+        chim = (np.abs(xs - W * 0.5 - 6 * np.sin(ys * 0.05)) < hw) & (ys > H * 0.66)
+        img = np.where(chim[..., None], img * 0.08 + np.array([0.012, 0.006, 0.003], np.float32), img)
+        plume = np.exp(-((xs - W * 0.5 - 18 * np.sin(ys * 0.02 + t)) ** 2) / (2 * (30 + (H * 0.66 - ys).clip(0) * 0.25) ** 2)) * (ys < H * 0.66) * np.exp(-(H * 0.66 - ys).clip(0) / 260)
+        img += plume[..., None] * np.array([0.35, 0.16, 0.05], np.float32) * 0.6
+        return img, dict(exposure=1.6, bloom=0.7)
     return f

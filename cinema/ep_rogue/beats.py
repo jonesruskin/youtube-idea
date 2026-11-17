@@ -6,9 +6,8 @@ from engine.beats import Beat as B, dimmed
 from engine.core import W, H, clamp, smooth, span, lerp, glow_dot
 from engine import hud
 from engine.hud import Layer, text, fade, prog, WHITE, ACC, BLUE, RED, GREEN, DIM
-from ep_blackhole.vis import shot, scope_scene, lightcurve
 from ep_rogue.cine import (fly_scene, rogue_orbit, system3d, pass_scene, chase_scene, orbit_calendar, cal_xy, wall_scene,
-                           infrared_scene, earth3d, ground_scene, bold, small, over_all, tag3)
+                           infrared_scene, earth3d, ground_scene, bold, small, over_all, tag3, rogue_field, lens_scene, under_ice)
 from ep_rogue.vis import ICE, VIOLET, bars
 from ep_rogue import model as M
 
@@ -95,12 +94,10 @@ open2 = [
 
 # ── c1a · rogue planets are real ───────────────────────────────────────────
 c1a = [
-    B(0, shot("galaxy", focus="rogues", zoom=(1.0, 1.35)), small("ROGUE PLANETS ARE REAL", "real", color=VIOLET), name="rogues across the galaxy"),
+    B(0, rogue_field(z=(0.0, 9.0), x=(-0.5, 0.6), yaw=(-3.0, 3.0)), small("ROGUE PLANETS ARE REAL", "real", color=VIOLET), name="flying through dark, starless planets"),
     B(1, rogue_orbit(dist=(6.0, 2.2), az=(80.0, 30.0), el=(20.0, 8.0), lit=0.6, glow=0.6, sun_az=150.0), small("FLUNG OUT OF THEIR SYSTEMS WHEN YOUNG", "fling", color=VIOLET), name="a giant flung into interstellar space"),
-    B(2, scope_scene(zoom=2.4, flares=lambda ctx, t: [0.08, smooth(span(t, ctx.w("brighter") - 0.8, ctx.w("brighter") + 0.4)) * 0.95, 0.08, 0.08]),
-      lambda ctx, img, t, u: lightcurve(Layer(), img, 1420, 760, 380, 90, [(0.6, 0.75 * prog(t, ctx.w("brighter") - 0.5, 1.0), 0.05)], 1.0, VIOLET, fade(t, ctx.w("bends")), "WEEKS", "BRIGHTNESS"),
-      name="microlensing: the background star flares"),
-    B(3, shot("galaxy", focus="rogues", zoom=(1.35, 1.6)), bold("MORE PLANETS THAN STARS?", "more", y=H - 190, size=72, sub="SUMI ET AL. 2023 · ESTIMATE"), name="maybe more rogues than stars"),
+    B(2, lens_scene(k=(0.05, 0.85)), small("MICROLENSING · BENDING EXAGGERATED SO YOU CAN SEE IT", "bends", color=WHITE), name="a dark planet bends a star's light into a ring"),
+    B(3, rogue_field(z=(9.0, 16.0), x=(0.6, 2.0), yaw=(3.0, 9.0), detect=(0.0, 1.0)), bold("MORE PLANETS THAN STARS?", "more", y=H - 190, size=72, sub="SUMI ET AL. 2023 · ESTIMATE"), name="maybe more rogues than stars"),
 ]
 
 # ── c1b · ours, and a real one ───────────────────────────────────────────
@@ -109,7 +106,7 @@ c1b = [
     B(1, infrared_scene(wipe=(-0.05, 0.62)), over_all(small("WHAT YOUR EYES WOULD SEE", 0.3, color=WHITE), small("INFRARED · ITS OWN HEAT", "glows", x=W - 520, color=ACC)), name="infrared reveals the glow"),
     B(2, infrared_scene(wipe=(0.62, -0.05), R=(400.0, 300.0)), bold("WISE 0855", "WISE", y=H - 170, size=90, sub="7.4 LIGHT-YEARS · 3–10 JUPITER MASSES"), name="WISE 0855, a real one"),
     B(3, rogue_orbit(dist=(1.8, 1.5), az=(-10.0, 5.0), el=(4.0, 6.0), glow=0.9), bold("~250 K", "cold", x=140, y=H * 0.30, size=110, anchor="lc", sub="AS COLD AS A FREEZER", sub_col=ICE), name="as cold as a freezer"),
-    B(4, shot("galaxy", focus="rogues", zoom=(1.0, 1.25)), small("NASA'S ROMAN SPACE TELESCOPE · DESIGNED TO FIND HUNDREDS MORE", "Roman", color=WHITE), name="Roman will find hundreds"),
+    B(4, rogue_field(z=(30.0, 36.0), x=(-2.0, -1.0), yaw=(-10.0, -4.0), fov=62.0, detect=(0.0, 1.0)), small("NASA'S ROMAN SPACE TELESCOPE · DESIGNED TO FIND HUNDREDS MORE", "Roman", color=WHITE), name="Roman will find hundreds"),
 ]
 
 # ── c2a · the warning: a powers-of-ten pull-back ───────────────────────────────────────────
@@ -299,7 +296,7 @@ c7d = [
       over_all(counter_tag(lambda v: f"{v:,.1f} AU FROM THE SUN", "sun_au", 0.3), bold("ALMOST TO URANUS", "Uranus", y=H * 0.84, size=84, sub="THE SUN · JUST A DAZZLING STAR")), name="two years later: the Sun a star"),
 ]
 c7e = [
-    B(0, shot("vent"), small("LIFE BELOW THE ICE · AROUND VOLCANIC VENTS", "vents", color=WHITE), name="life at the vents"),
+    B(0, under_ice(), small("BELOW THE ICE · A VOLCANIC VENT · ILLUSTRATIVE", "vents", color=WHITE), name="looking up from the sea floor at the frozen ocean"),
     B(1, orbit_calendar(dist=(0.8, 0.75), az=(-10.0, 10.0), el=(13.0, 12.0), aim=(1.0, 1.0), show=ALL, moon_marks=True, hl=(-5.0, 6.5), hl_on=True),
       cal_label(-4.25, "EDGE OF THE WINDOW · MOON KEPT", "edge", color=WHITE, lift=0.42), name="the edge of the window"),
     B(2, earth3d(view="wander", dist=(5.0, 4.2), az=(40.0, 70.0), el=(8.0, 12.0), sun_dir=(0.2, 0.1, -1.0), exposure=(0.35, 0.3), moon=((1.0, 0.3, -0.5), 9.0, 0.27), aim=(1.5, 0.5)),
@@ -310,8 +307,8 @@ c7e = [
 
 # ── c8 · should you worry? ───────────────────────────────────────────
 c8a = [
-    B(0, shot("galaxy", focus="none", zoom=(1.0, 1.1)), small("SHOULD YOU WORRY?", 0.3, color=WHITE), name="should you worry?"),
-    B(1, shot("galaxy", focus="rogues", zoom=(1.1, 1.3)), bold("350,000 ×", "hundreds", y=H * 0.80, size=110, sub="THE AGE OF THE UNIVERSE · ROUGH ESTIMATE"), name="350,000× the age of the universe"),
+    B(0, rogue_field(z=(50.0, 56.0), x=(1.0, 0.0), yaw=(8.0, 2.0), dim=0.8), small("SHOULD YOU WORRY?", 0.3, color=WHITE), name="should you worry?"),
+    B(1, rogue_field(z=(56.0, 75.0), x=(0.0, -0.5), yaw=(2.0, -2.0), fov=(70.0), dim=0.8), bold("350,000 ×", "hundreds", y=H * 0.80, size=110, sub="THE AGE OF THE UNIVERSE · ROUGH ESTIMATE"), name="350,000× the age of the universe"),
     B(2, earth3d(view="today", dist=(3.6, 3.2), az=(-20.0, 0.0), el=(8.0, 10.0), sun_dir=(-1.0, 0.25, 0.4), moon=((1.0, 0.2, -0.3), 10.0, 0.27), aim=(1.2, 0.3)),
       small("4.5 BILLION YEARS · ALMOST CERTAINLY NEVER", "four", color=GREEN), name="never happened to us"),
 ]
