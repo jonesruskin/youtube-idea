@@ -18,9 +18,10 @@ export type HairStyle =
   | 'braids'
   | 'bun'
   | 'cap'
-  | 'puffs';
+  | 'puffs'
+  | 'beanie';
 
-export type TopStyle = 'jacket' | 'tee' | 'suit' | 'wrapper' | 'cardigan' | 'vest' | 'blouse';
+export type TopStyle = 'jacket' | 'tee' | 'suit' | 'wrapper' | 'cardigan' | 'vest' | 'blouse' | 'parka';
 
 export type CharacterDesign = {
   id: string;
@@ -53,6 +54,10 @@ export type CharacterDesign = {
   patches?: boolean;
   tie?: string;
   earrings?: boolean;
+  /** Knit hat colour (hair: 'beanie'). */
+  hat?: string;
+  /** The silver watch on the left wrist (File series hero). */
+  watch?: boolean;
 };
 
 export const characters = {
@@ -288,6 +293,48 @@ export const characters = {
     signature: '#C77DFF',
     glasses: 'round',
     wrinkles: true,
+  },
+  // ── THE FILES (File 001 onward): the same three in every episode ──────────────
+  you: {
+    id: 'you',
+    name: 'You',
+    heir: 0,
+    height: 0.98,
+    build: 0.92,
+    head: 1.06,
+    skin: '#9A6440',
+    skinShade: '#7A4A2E',
+    hair: 'shortCrop',
+    hairColor: '#1B1411',
+    top: 'parka',
+    topColor: '#E39A2D',
+    topAccent: '#B8741C',
+    innerColor: '#2E3A5C',
+    pants: '#26304F',
+    shoes: '#3A2A22',
+    signature: '#FFB547',
+    watch: true,
+  },
+  mira: {
+    id: 'mira',
+    speaker: 'MIRA',
+    name: 'Mira',
+    heir: 0,
+    height: 0.66,
+    build: 0.78,
+    head: 1.2,
+    skin: '#A26B45',
+    skinShade: '#82502F',
+    hair: 'beanie',
+    hairColor: '#21160F',
+    hat: '#D9443A',
+    top: 'parka',
+    topColor: '#5E8FC9',
+    topAccent: '#3F6EA6',
+    innerColor: '#F4EFE6',
+    pants: '#3A3F5C',
+    shoes: '#D9443A',
+    signature: '#FF8A7A',
   },
 } satisfies Record<string, CharacterDesign>;
 

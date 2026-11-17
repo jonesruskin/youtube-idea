@@ -9,3 +9,7 @@ cinema/build/
 cinema/assets/cache/
 cinema/assets/tex/
 __pycache__/
+research/niche-scan/data/*.json
+renders/*-raw.mov
+# in-progress web-copy encodes (renamed into place when complete)
+*.web.mp4

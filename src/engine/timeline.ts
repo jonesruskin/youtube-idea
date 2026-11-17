@@ -1,10 +1,10 @@
 import type {Episode, Line, Shot} from './schema';
 
 /**
- * Voice timings written by scripts/tts.ts once ElevenLabs is connected.
+ * Voice timings written by scripts/tts.ts (ElevenLabs) or scripts/tts_kokoro.py (Kokoro, local).
  * Key: `${shotId}:${lineIndex}` → measured duration + audio file in /public.
  */
-export type VoiceMap = Record<string, {seconds: number; file: string; chars?: number[]}>;
+export type VoiceMap = Record<string, {seconds: number; file: string; chars?: number[]; words?: {w: string; s: number; e: number}[]}>;
 
 /** Narration pace used until real voiceover exists (~155 words per minute). */
 const WORDS_PER_SECOND = 2.6;
@@ -28,6 +28,8 @@ export type TimedLine = Line & {
   audio?: string;
   /** Per-character start times (s, from line start) when voiced — drives lip-sync. */
   chars?: number[];
+  /** Per-word timings (s, from line start) when voiced — drives gesture beats on the stressed word. */
+  words?: {w: string; s: number; e: number}[];
 };
 
 export type TimedShot = Shot & {
@@ -48,9 +50,13 @@ export const buildTimeline = (episode: Episode, voice: VoiceMap = {}): Timeline 
   let t = 0;
   const shots: TimedShot[] = [];
   const all: TimedLine[] = [];
+  // The narrated File format cuts tighter: shorter breaths before and after each shot's lines.
+  const cinema = episode.style === 'cinema';
+  const lead = cinema ? 0.15 : 0.3;
+  const pad = cinema ? 0.22 : SHOT_PAD;
   episode.shots.forEach((shot, index) => {
     const start = t;
-    let cursor = shot.lead ?? 0.3;
+    let cursor = shot.lead ?? lead;
     const timedLines: TimedLine[] = (shot.lines ?? []).map((line, i) => {
       const key = `${shot.id}:${i}`;
       const measured = voice[key];
@@ -63,13 +69,25 @@ export const buildTimeline = (episode: Episode, voice: VoiceMap = {}): Timeline 
         end: start + cursor + seconds,
         audio: measured?.file,
         chars: measured?.chars,
+        words: measured?.words,
       };
       cursor += seconds + (line.pause ?? 0) + LINE_GAP;
       return tl;
     });
-    const spoken = cursor + (shot.tail ?? 0) + (timedLines.length ? SHOT_PAD - LINE_GAP : 0);
+    const spoken = cursor + (shot.tail ?? 0) + (timedLines.length ? pad - LINE_GAP : 0);
     const duration = Math.max(shot.min ?? 2, spoken);
-    shots.push({...shot, index, start, end: start + duration, duration, timedLines});
+    // camera keys timed to lines ('l1-0.4', from src/engine/flow.ts) become fractions of this shot now its length is known
+    const camRaw = (shot.props as {cam?: unknown[][]} | undefined)?.cam;
+    const props = camRaw && camRaw.some((k) => typeof k[0] === 'string')
+      ? {...shot.props, cam: camRaw.map((k) => {
+          if (typeof k[0] !== 'string') return k;
+          const m = /^l(\d+)([+-][\d.]+)?$/.exec(k[0] as string);
+          const l = m ? timedLines[Number(m[1])] : undefined;
+          const sec = (l ? l.startInShot : 0) + (m && m[2] ? Number(m[2]) : 0);
+          return [Math.max(0, Math.min(1, sec / duration)), ...k.slice(1)];
+        }).sort((a, b) => (a[0] as number) - (b[0] as number))}
+      : shot.props;
+    shots.push({...shot, props, index, start, end: start + duration, duration, timedLines} as TimedShot);
     all.push(...timedLines);
     t += duration;
   });

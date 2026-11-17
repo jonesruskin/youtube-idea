@@ -1,0 +1,77 @@
+{
+ "style": "toon",
+ "files": {
+  "toon/earth-day.png": {
+   "sha256": "5f3b67fbd0b79f3420a4dbfceb3cfafa4b5a185ec727bec4193853203b33278d",
+   "colours": 7
+  },
+  "toon/earth-night.png": {
+   "sha256": "e6ee9b34619b4c9f22a2987f383fa9fc826c5d3a2b99a3f959c9ecb36b894b44",
+   "colours": 2
+  },
+  "toon/earth-clouds.png": {
+   "sha256": "a281b663e2f1544e22642a47aaa4b15a7a35bf1f7ac6172d8133ebbda7d8c969",
+   "colours": 2
+  },
+  "toon/moon.png": {
+   "sha256": "b0abfa23403c9d7cbed041ac6445021e3d948f6afd901bb7260063e81d82e362",
+   "colours": 7
+  },
+  "toon/jupiter.png": {
+   "sha256": "859261ca1c4ff8d8ed91cd0cb4b56b6daaac45d297a68b330a653c44b283aa8e",
+   "colours": 6
+  },
+  "toon/saturn.png": {
+   "sha256": "25bdd6b89742e55fa58aab351e0d6f57019b2e247318d990167f02a74cb339ae",
+   "colours": 4
+  },
+  "toon/mars.png": {
+   "sha256": "6d6080a6a87da1cee0f770696359fb2fdcc9263a2584281439fb3db04f650863",
+   "colours": 4
+  },
+  "toon/venus.png": {
+   "sha256": "a2b4a2e8907b43e48af41bbd246fd91fdc0cba514ef16f1e03d90925e985a4ac",
+   "colours": 3
+  },
+  "toon/mercury.png": {
+   "sha256": "5db87030dcc6e66f88b81db48dfab0e50ff1db31e72f137339451a7b59ce8961",
+   "colours": 3
+  },
+  "bodies/moon.png": {
+   "sha256": "c3845a082eff7f03ec79b1a4b8dfc88e2f03688fea83bed438b7f72a5c48f2da",
+   "from": "toon/moon.png"
+  },
+  "bodies/earth-atlantic.png": {
+   "sha256": "1421dddd4e66a73c048c24b0ba9447843c767c955c95e9791a09d23dd4a0a090",
+   "from": "toon/earth-day.png"
+  },
+  "bodies/earth-pacific.png": {
+   "sha256": "730ecc53b9ef2cea14a61833c4e9fdad33c84ba6f3ec831ec9da66b2229a4987",
+   "from": "toon/earth-day.png"
+  },
+  "bodies/earth-asia.png": {
+   "sha256": "cd1f5ec1b03579dd844dad6b933b0bd6b0cc81059b69206b9c5fb99ecf64059b",
+   "from": "toon/earth-day.png"
+  },
+  "bodies/venus.png": {
+   "sha256": "104428a134c2b03581ffcc6a157cf7ad655c56f8e9256813cfecc9e0a0512a19",
+   "from": "toon/venus.png"
+  },
+  "bodies/mars.png": {
+   "sha256": "54c90ef662fa49137dd691a3651acaccc37eec536db552606dde65c8fbe9282c",
+   "from": "toon/mars.png"
+  },
+  "bodies/mercury.png": {
+   "sha256": "2576dabd1b0765a3d1b76031b79163af72ea8b346e81d4b3363e2bd6c6549b78",
+   "from": "toon/mercury.png"
+  },
+  "bodies/jupiter.png": {
+   "sha256": "b2b351c054034c66168e608556fb5b058e0e79c1ce59416e07e12407e41675f2",
+   "from": "toon/jupiter.png"
+  },
+  "bodies/saturn.png": {
+   "sha256": "182f404e9cb92f5fa06ea8655e02046ee5f137a6997d877e0d855b225135ab5b",
+   "from": "toon/saturn.png"
+  }
+ }
+}

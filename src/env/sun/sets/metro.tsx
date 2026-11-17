@@ -1,0 +1,454 @@
+import React from 'react';
+import {Flame, StringLights, Tent} from '../../sun01/parts';
+import {Frost} from '../../../fx/cinema/atmos';
+import {Glow, Grade, INK, M, registerSet, Vignette, type SetCtx} from '../stage';
+
+/**
+ * The metro station that becomes a town (Day 8 → 365). A vaulted tiled hall, platform at floor y = 900,
+ * tracks below the platform edge in front.
+ *  v: stairs · city · farm · sunrise · school · tent · workshop · dark · radios
+ * Lamp state: `sunrise` (time the big lamps warm up), `flicker` (time the power dies), `dark`.
+ * Real sizes (1 m = M(1) on the cast's plane): carriages stand 3 m above the platform on the far track, tents
+ * 1.3 m, crates 0.6 m, the stove 0.6 m with a 3 m flue, workbench 0.9 m, carriage windows 0.9–2.0 m.
+ */
+
+/** A metro carriage turned into a home, to real size (metres × sc): 3 m tall above the platform, 1 × 0.85 m
+ * windows with curtains, double doors, a chimney pipe through the roof. Runs `len` metres from x. */
+export const TrainCar: React.FC<{x: number; base: number; sc: number; len: number; lit: number; color: string; pipe?: number}> = ({x, base, sc, len, lit, color, pipe}) => {
+  const lw = Math.max(1.5, sc * 0.022) / sc;
+  const bays = Math.floor(len / 2.2);
+  return (
+    <g transform={`translate(${x},${base}) scale(${sc})`}>
+      <rect x={0} y={-0.12} width={len} height={0.12} fill="#14121A" />
+      <rect x={0} y={-3.0} width={len} height={2.88} rx={0.25} fill={color} stroke={INK} strokeWidth={lw} />
+      <rect x={0} y={-3.0} width={len} height={0.28} rx={0.14} fill="#00000022" />
+      <rect x={0} y={-0.7} width={len} height={0.1} fill="#C8742E" opacity={0.85} />
+      {Array.from({length: bays}, (_, i) => {
+        const bx = 0.4 + i * 2.2;
+        const door = i % 3 === 1;
+        return door ? (
+          <g key={i}>
+            <rect x={bx} y={-2.05} width={1.3} height={1.93} fill="#6E7A8E" stroke={INK} strokeWidth={lw * 0.8} />
+            <path d={`M${bx + 0.65},-2.05 L${bx + 0.65},-0.12`} stroke={INK} strokeWidth={lw * 0.8} />
+            <rect x={bx + 0.12} y={-1.85} width={0.4} height={0.75} rx={0.05} fill={lit > 0 ? '#FFD08A' : '#2A2433'} opacity={lit > 0 ? 0.5 + lit * 0.4 : 1} />
+            <rect x={bx + 0.78} y={-1.85} width={0.4} height={0.75} rx={0.05} fill={lit > 0 ? '#FFD08A' : '#2A2433'} opacity={lit > 0 ? 0.5 + lit * 0.4 : 1} />
+          </g>
+        ) : (
+          <g key={i}>
+            <rect x={bx} y={-2.0} width={1.6} height={0.85} rx={0.12} fill={lit > 0 ? '#FFD08A' : '#2A2433'} opacity={lit > 0 ? 0.5 + lit * 0.5 : 1} stroke={INK} strokeWidth={lw * 0.8} />
+            <path d={`M${bx + 0.06},-1.96 q0.3,0.38 0,0.78`} stroke={['#C2464F', '#3C8D6E', '#D9A441', '#5E8FC9'][i % 4]} strokeWidth={0.14} fill="none" opacity={0.85} />
+            <path d={`M${bx + 1.54},-1.96 q-0.3,0.38 0,0.78`} stroke={['#C2464F', '#3C8D6E', '#D9A441', '#5E8FC9'][(i + 1) % 4]} strokeWidth={0.14} fill="none" opacity={0.85} />
+          </g>
+        );
+      })}
+      {pipe !== undefined && <path d={`M${pipe},-3.0 L${pipe},-3.7 L${pipe + 0.3},-3.7`} stroke="#5A5E6A" strokeWidth={0.14} fill="none" />}
+    </g>
+  );
+};
+const TILE = '#D8CFC0';
+const TILE_SH = '#BDB3A2';
+
+const Vault: React.FC<{c: SetCtx; lamps: number; warm: number}> = ({c, lamps, warm}) => (
+  <g>
+    <rect x={-900} y={-400} width={3800} height={1400} fill="#2A2630" />
+    {/* the vault */}
+    <path d="M-900,700 L-900,200 Q960,-520 2820,200 L2820,700 Z" fill={TILE} stroke={INK} strokeWidth={6} />
+    {Array.from({length: 18}, (_, i) => (
+      <path key={i} d={`M${-900 + i * 220},700 Q${-900 + i * 220 + 40},${-120 + Math.abs(i - 8.5) * 40} ${-900 + i * 220 + 60},${-200 + Math.abs(i - 8.5) * 45}`} stroke={TILE_SH} strokeWidth={4} fill="none" />
+    ))}
+    {Array.from({length: 12}, (_, i) => (
+      <path key={i} d={`M-900,${640 - i * 50} Q960,${-60 - i * 40} 2820,${640 - i * 50}`} stroke={TILE_SH} strokeWidth={3} fill="none" opacity={0.7} />
+    ))}
+    {/* the station name band */}
+    <rect x={-200} y={420} width={2320} height={70} fill="#C2464F" stroke={INK} strokeWidth={5} />
+    {[150, 1100].map((x) => (
+      <g key={x}>
+        <rect x={x} y={400} width={520} height={110} rx={55} fill="#F4EFE6" stroke={INK} strokeWidth={5} />
+        <text x={x + 260} y={474} textAnchor="middle" fontFamily="'Unbounded', sans-serif" fontWeight={800} fontSize={46} fill="#2E3A5C" letterSpacing={4}>
+          HARBOUR ST
+        </text>
+      </g>
+    ))}
+    {/* the big lamps: floodlight banks hung low under the vault, warming red → orange → gold, with beams */}
+    {[300, 960, 1620].map((x) => {
+      const col = lamps <= 0.06 ? '#3E3946' : warm > 0.6 ? '#FFF0B8' : warm > 0.2 ? '#FFC060' : lamps > 0.4 ? '#FF7A3A' : '#B8402E';
+      return (
+        <g key={x}>
+          <path d={`M${x - 90},-300 L${x - 90},170 M${x + 90},-300 L${x + 90},170`} stroke={INK} strokeWidth={5} />
+          {lamps > 0.06 && (
+            <path d={`M${x - 120},236 L${x + 120},236 L${x + 330},700 L${x - 330},700 Z`} fill={col} opacity={0.1 + 0.18 * lamps} style={{mixBlendMode: 'screen'}} />
+          )}
+          <rect x={x - 130} y={170} width={260} height={70} rx={10} fill="#2E2A36" stroke={INK} strokeWidth={5} />
+          {[0, 1, 2, 3].map((k) => (
+            <g key={k}>
+              <circle cx={x - 96 + k * 64} cy={212} r={22} fill={col} stroke={INK} strokeWidth={3} />
+              {lamps > 0.06 && <circle cx={x - 96 + k * 64} cy={212} r={44} fill={col} opacity={0.25 * lamps} style={{mixBlendMode: 'screen'}} />}
+            </g>
+          ))}
+        </g>
+      );
+    })}
+    {/* platform back wall: posters, a clock stuck at 6:52 */}
+    {[60, 1580].map((x, i) => (
+      <g key={x}>
+        <rect x={x} y={560} width={220} height={150} fill={i ? '#3E7CB1' : '#E9C46A'} stroke={INK} strokeWidth={4} />
+        <circle cx={x + 110} cy={630} r={40} fill={i ? '#F4EFE6' : '#F2994A'} opacity={0.8} />
+      </g>
+    ))}
+    <g transform="translate(960,600)">
+      <circle r={50} fill="#F4EFE6" stroke={INK} strokeWidth={5} />
+      <path d="M0,0 L0,-36" stroke={INK} strokeWidth={4} transform="rotate(312)" />
+      <path d="M0,0 L0,-24" stroke={INK} strokeWidth={6} transform="rotate(206)" />
+    </g>
+  </g>
+);
+
+const Platform: React.FC = () => (
+  <g>
+    <rect x={-900} y={700} width={3800} height={200} fill="#4A4552" />
+    <rect x={-900} y={900} width={3800} height={600} fill="#8A8278" />
+    {Array.from({length: 40}, (_, i) => (
+      <path key={i} d={`M${-900 + i * 100},900 L${-1100 + i * 130},1500`} stroke="#77706A" strokeWidth={3} />
+    ))}
+    {/* yellow safety line at the platform edge */}
+    <rect x={-900} y={1040} width={3800} height={14} fill="#F2C94C" />
+  </g>
+);
+
+/** How warm the station's air heaters run (Day 100: they freeze at p.cold, and are back on at p.heatersBack). */
+export const heatOf = (c: SetCtx) => {
+  if (c.p.heatersBack !== undefined) return Math.min(1, Math.max(0, (c.t - c.at(c.p.heatersBack, 0)) / 1.2));
+  if (c.p.cold !== undefined) return 1 - Math.min(1, Math.max(0, (c.t - c.at(c.p.cold, 0)) / 1.6));
+  if (c.p.frozen) return 0;
+  return 1;
+};
+
+const Town: React.FC<{c: SetCtx; lit: number}> = ({c, lit}) => (
+  <g>
+    {/* carriages parked on the far track, a few metres behind the cast (k = 0.8) */}
+    <TrainCar x={-2600} base={860} sc={M(0.8)} len={18} lit={lit} color="#8C9AAE" pipe={16.4} />
+    <TrainCar x={1560} base={860} sc={M(0.8)} len={18} lit={lit} color="#9A8A7A" pipe={1.2} />
+    {/* tents: 1.3 m tall, 2.1 m wide */}
+    <Tent x={520} y={898} s={2.0} color="#C2464F" lit={lit} />
+    <Tent x={1280} y={898} s={1.9} color="#3C8D6E" lit={lit} />
+    <Tent x={1880} y={898} s={1.8} color="#E9C46A" lit={lit} />
+    {/* laundry line */}
+    <path d="M400,560 Q760,640 1100,560" stroke="#2A2230" strokeWidth={3} fill="none" />
+    {['#F4EFE6', '#3E7CB1', '#E07A5F', '#F2C94C'].map((col, k) => (
+      <rect key={k} x={470 + k * 150} y={580 + Math.sin(k) * 10} width={80} height={100 + (k % 2) * 40} fill={col} stroke={INK} strokeWidth={3} transform={`rotate(${Math.sin(c.frame * 0.03 + k) * 3},${510 + k * 150},590)`} />
+    ))}
+    <StringLights x1={-200} y1={300} x2={900} y2={330} sag={50} on={lit} frame={c.frame} n={16} />
+    <StringLights x1={1000} y1={330} x2={2100} y2={300} sag={50} on={lit} frame={c.frame} n={16} />
+    {/* a stove with a chimney pipe, a bucket, crates */}
+    <g transform="translate(1100,900)">
+      <rect x={-M(0.3)} y={-M(0.6)} width={M(0.6)} height={M(0.6)} rx={8} fill="#3A3442" stroke={INK} strokeWidth={4} />
+      <path d={`M${M(0.1)},${-M(0.6)} L${M(0.1)},${-M(3.0)}`} stroke="#5A5E6A" strokeWidth={22} />
+      <rect x={-M(0.2)} y={-M(0.42)} width={M(0.4)} height={M(0.2)} rx={4} fill="#FF8A3A" opacity={(0.5 + 0.3 * lit) * (0.15 + 0.85 * heatOf(c))} />
+    </g>
+    {[180, 1690].map((x) => (
+      <g key={x}>
+        <rect x={x} y={900 - M(0.42)} width={M(0.6)} height={M(0.42)} fill="#A86E42" stroke={INK} strokeWidth={4} />
+        <path d={`M${x},${900 - M(0.21)} L${x + M(0.6)},${900 - M(0.21)}`} stroke="#7A4E30" strokeWidth={4} />
+      </g>
+    ))}
+  </g>
+);
+
+const Farm: React.FC<{c: SetCtx}> = ({c}) => (
+  <g>
+    {/* a disused tunnel mouth full of racks under pink grow lights */}
+    <path d="M-200,900 L-200,350 Q960,-80 2120,350 L2120,900 Z" fill="#1E1A28" stroke={INK} strokeWidth={6} />
+    {/* three racks: lettuce (ready in a month), potatoes, and mushrooms (no light needed, so their shelf has no lamp) */}
+    {Array.from({length: 3}, (_, row) => (
+      <g key={row}>
+        <rect x={-100} y={520 + row * 130} width={2120} height={14} fill="#5A5E6A" stroke={INK} strokeWidth={3} />
+        {row < 2 && <rect x={-100} y={410 + row * 130} width={2120} height={10} fill="#FF5FD2" opacity={0.9} />}
+        {Array.from({length: 26}, (_, k) => (
+          <g key={k} transform={`translate(${-60 + k * 80},${520 + row * 130})`}>
+            {row === 0 && <path d="M0,0 Q-22,-26 -6,-46 Q0,-20 0,0 Q4,-30 18,-44 Q22,-16 0,0" fill={['#5BBF6A', '#7FD27A', '#4EA85C'][k % 3]} stroke={INK} strokeWidth={2} />}
+            {row === 1 && (
+              <g>
+                <path d="M0,0 L0,-34 M0,-20 L-16,-36 M0,-24 L15,-40" stroke="#3E7A44" strokeWidth={4} />
+                <circle cx={-16} cy={-38} r={9} fill="#4EA85C" stroke={INK} strokeWidth={2} />
+                <circle cx={15} cy={-42} r={9} fill="#5BBF6A" stroke={INK} strokeWidth={2} />
+                <circle cx={0} cy={-38} r={8} fill="#7FD27A" stroke={INK} strokeWidth={2} />
+                {k % 4 === 0 && <ellipse cx={14} cy={-4} rx={11} ry={8} fill="#C8A26A" stroke={INK} strokeWidth={2} />}
+              </g>
+            )}
+            {row === 2 && k % 2 === 0 && (
+              <g>
+                <rect x={-30} y={-26} width={60} height={26} fill="#7A5A3A" stroke={INK} strokeWidth={2} />
+                {[-16, 0, 16].map((dx) => (
+                  <g key={dx}>
+                    <rect x={dx - 3} y={-40} width={6} height={14} fill="#EDE3D2" />
+                    <ellipse cx={dx} cy={-42} rx={11} ry={7} fill="#D9C7A6" stroke={INK} strokeWidth={2} />
+                  </g>
+                ))}
+              </g>
+            )}
+          </g>
+        ))}
+        <g data-text="info" transform={`translate(210,${520 + row * 130 + 64})`}>
+          <rect x={-10} y={-24} width={row === 2 ? 330 : 250} height={34} rx={6} fill="#F4EFE6" stroke={INK} strokeWidth={3} />
+          <text x={4} y={2} fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={24} fill="#1A1E2A">
+            {['LETTUCE · 30 DAYS', 'POTATOES', 'MUSHROOMS · NO LIGHT'][row]}
+          </text>
+        </g>
+      </g>
+    ))}
+    {/* the canteen menu, chalked by someone who has given up */}
+    <g data-text="info" transform="translate(1600,560) rotate(2)">
+      <rect x={-150} y={-190} width={300} height={330} rx={8} fill="#2F4A3A" stroke="#7A4E30" strokeWidth={12} />
+      <text x={0} y={-140} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={34} fill="#FFE7A6">MENU</text>
+      {['MON  lettuce', 'TUE  potatoes', 'WED  lettuce', 'THU  mushrooms', 'FRI  ...lettuce'].map((t, k) => (
+        <text key={k} x={-120} y={-90 + k * 46} fontFamily="'Space Grotesk', sans-serif" fontWeight={600} fontSize={28} fill="#F4EFE6" opacity={0.9}>{t}</text>
+      ))}
+    </g>
+    {/* harvest crates on the platform */}
+    {[600, 760].map((x, i) => (
+      <g key={x} transform={`translate(${x},900)`}>
+        <rect x={-70} y={-70} width={140} height={70} fill="#A86E42" stroke={INK} strokeWidth={4} />
+        {[0, 1, 2].map((k) => (
+          <circle key={k} cx={-40 + k * 40} cy={-74} r={24} fill={['#5BBF6A', '#7FD27A', '#4EA85C'][(k + i) % 3]} stroke={INK} strokeWidth={3} />
+        ))}
+      </g>
+    ))}
+  </g>
+);
+
+const School: React.FC<{c: SetCtx}> = ({c}) => (
+  <g>
+    {/* inside a parked carriage: windows, grab poles, a chalkboard full of suns */}
+    <rect x={-900} y={-300} width={3800} height={1300} fill="#C8CEC4" />
+    {/* the carriage ceiling (2.2 m) with its strip light */}
+    <path d={`M-900,-300 L2900,-300 L2900,${900 - M(2.2)} Q960,${900 - M(2.45)} -900,${900 - M(2.2)} Z`} fill="#AEB6AA" />
+    <rect x={-900} y={900 - M(2.2) - 14} width={3800} height={12} fill="#FFF6DA" opacity={0.9} />
+    {[-560, -40, 900, 1420, 1940].map((x) => (
+      <g key={x}>
+        <rect x={x} y={900 - M(1.95)} width={360} height={M(1.05)} rx={26} fill="#141A30" stroke={INK} strokeWidth={5} />
+        <path d={`M${x + 20},${900 - M(1.85)} L${x + 340},${900 - M(1.0)}`} stroke="#2A3352" strokeWidth={30} opacity={0.6} />
+      </g>
+    ))}
+    <g transform="translate(580,725) scale(0.66) translate(-580,-640)">
+    <rect x={200} y={180} width={760} height={460} rx={10} fill="#2F4A3A" stroke="#7A4E30" strokeWidth={18} />
+    {[
+      [330, 300, 50],
+      [520, 260, 34],
+      [700, 330, 44],
+      [460, 460, 40],
+      [820, 500, 30],
+    ].map(([x, y, r], i) => (
+      <g key={i} stroke="#FFE7A6" strokeWidth={5} fill="none" strokeLinecap="round">
+        <circle cx={x} cy={y} r={r} />
+        {Array.from({length: 8}, (_, k) => (
+          <path key={k} d={`M${x + Math.cos((k / 8) * 6.28) * r * 1.3},${y + Math.sin((k / 8) * 6.28) * r * 1.3} L${x + Math.cos((k / 8) * 6.28) * r * 1.7},${y + Math.sin((k / 8) * 6.28) * r * 1.7}`} />
+        ))}
+      </g>
+    ))}
+    </g>
+    {[1100, 1500].map((x) => (
+      <path key={x} d={`M${x},-300 L${x},900`} stroke="#B8BEC6" strokeWidth={14} />
+    ))}
+    <rect x={-900} y={900} width={3800} height={600} fill="#6E6A66" />
+
+  </g>
+);
+
+/** Day 300: the big screen the engineers hung over the platform, showing the news: the beam, and the star it points at. */
+const StationScreen: React.FC<{c: SetCtx}> = ({c}) => {
+  const draw = Math.min(1, Math.max(0, (c.t - 0.3) / 1.6));
+  return (
+    <g transform="translate(960,330)">
+      <path d="M-200,-200 L-200,-150 M200,-200 L200,-150" stroke={INK} strokeWidth={6} />
+      <rect x={-330} y={-150} width={660} height={370} rx={10} fill="#1A1C24" stroke={INK} strokeWidth={6} />
+      <rect x={-312} y={-132} width={624} height={334} fill="#05060D" />
+      {Array.from({length: 40}, (_, i) => (
+        <circle key={i} cx={-300 + ((i * 137) % 600)} cy={-120 + ((i * 71) % 300)} r={i % 7 === 0 ? 2.4 : 1.3} fill="#EAF0FF" opacity={0.7} />
+      ))}
+      <path d={`M-200,180 L${-200 + 360 * draw},${180 - 250 * draw}`} stroke="#FFB13B" strokeWidth={6} />
+      <circle cx={160} cy={-70} r={7} fill="#FFFFFF" />
+      <circle cx={160} cy={-70} r={26} fill="none" stroke="#FF5A3A" strokeWidth={4} opacity={draw} />
+      <text x={160} y={-112} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={26} fill="#FFD08A" opacity={draw}>HD 219134</text>
+      {c.p.ship && draw >= 1 && (
+        // something inside the beam, slowing (Day 300)
+        <g>
+          <circle cx={16} cy={-20} r={20 + 4 * Math.sin(c.frame * 0.3)} fill="#FFF3C0" opacity={0.3} />
+          <circle cx={16} cy={-20} r={6} fill="#FFFFFF" />
+          <circle cx={16} cy={-20} r={32} fill="none" stroke="#7FD8FF" strokeWidth={3} strokeDasharray="8 6" />
+          <text x={-24} y={-14} textAnchor="end" fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={22} fill="#7FD8FF">SOMETHING INSIDE</text>
+        </g>
+      )}
+      <rect x={-312} y={160} width={624} height={42} fill="#C2464F" />
+      <text x={-296} y={190} fontFamily="'Space Grotesk', sans-serif" fontWeight={800} fontSize={26} fill="#FFFFFF">{c.p.ship ? 'SOMETHING IN THE BEAM · SLOWING' : 'BEAM DETECTED LEAVING THE SHELL'}</text>
+    </g>
+  );
+};
+
+const Workshop: React.FC<{c: SetCtx}> = ({c}) => (
+  <g>
+    <rect x={-900} y={-300} width={3800} height={1300} fill="#3A3442" />
+    {/* pegboard with tools, a bench, magnifier lamp, parts */}
+    <rect x={500} y={240} width={940} height={420} fill="#A8865E" stroke={INK} strokeWidth={5} />
+    {Array.from({length: 60}, (_, i) => (
+      <circle key={i} cx={530 + (i % 15) * 60} cy={270 + Math.floor(i / 15) * 100} r={5} fill="#7A5E3E" />
+    ))}
+    {[580, 700, 840, 1000, 1180, 1320].map((x, i) => (
+      <g key={x}>
+        {i % 3 === 0 && <path d={`M${x},300 L${x},420 M${x - 20},300 L${x + 20},300`} stroke="#C9CED6" strokeWidth={10} />}
+        {i % 3 === 1 && <circle cx={x} cy={360} r={40} fill="none" stroke="#C2464F" strokeWidth={10} />}
+        {i % 3 === 2 && <path d={`M${x},300 L${x},460`} stroke="#E9C46A" strokeWidth={14} />}
+      </g>
+    ))}
+    <rect x={420} y={715} width={1100} height={36} fill="#7A4E30" stroke={INK} strokeWidth={5} />
+    <path d="M460,751 L460,900 M1480,751 L1480,900" stroke={INK} strokeWidth={14} />
+    {/* Mr. Ito's ham radio, moved down from the flat: how Mum calls every night at seven */}
+    {c.p.ham && (
+      <g transform="translate(820,715)">
+        <rect x={-90} y={-70} width={180} height={70} rx={8} fill="#3A3F48" stroke={INK} strokeWidth={4} />
+        <circle cx={-50} cy={-35} r={20} fill="#1A1C24" stroke="#8A8F9C" strokeWidth={3} />
+        <rect x={-14} y={-52} width={84} height={20} fill={c.p.hamOn ? '#FFB25A' : '#4A4552'} />
+        <path d="M70,-70 L110,-200" stroke="#8A8F9C" strokeWidth={5} />
+      </g>
+    )}
+    {/* parts on the bench */}
+    <rect x={560} y={689} width={90} height={26} rx={4} fill="#3E7CB1" stroke={INK} strokeWidth={3} />
+    <circle cx={1300} cy={699} r={16} fill="#C9CED6" stroke={INK} strokeWidth={3} />
+    <path d="M1360,715 l40,-20 l30,10" stroke="#C2464F" strokeWidth={4} fill="none" />
+    <path d="M1460,715 L1400,500 L1260,520" stroke="#5A5E6A" strokeWidth={10} fill="none" />
+    <ellipse cx={1240} cy={540} rx={60} ry={20} fill="#5A5E6A" stroke={INK} strokeWidth={4} />
+    {c.p.parts && (() => {
+      const burn = Math.min(1, c.t / Math.max(1, c.dur));
+      return (
+        <g>
+          {/* the firefighter's camera, opened up: body, lens, a green circuit board, wires */}
+          <rect x={760} y={662} width={130} height={54} rx={10} fill="#E9C46A" stroke={INK} strokeWidth={4} />
+          <circle cx={900} cy={688} r={20} fill="#2A2E3A" stroke={INK} strokeWidth={4} />
+          <rect x={940} y={690} width={110} height={24} fill="#2E7A4A" stroke={INK} strokeWidth={3} />
+          {[0, 1, 2, 3, 4].map((k) => <rect key={k} x={950 + k * 20} y={694} width={10} height={8} fill="#C9CED6" />)}
+          <path d="M890,700 q40,-30 80,-4 M1050,700 q30,-24 60,4" stroke="#C2464F" strokeWidth={4} fill="none" />
+          <circle cx={1150} cy={704} r={12} fill="#5A5E6A" stroke={INK} strokeWidth={3} />
+          {/* soldering iron on its stand, tip glowing, a thread of smoke */}
+          <path d="M1170,712 L1250,640" stroke="#2A2E3A" strokeWidth={10} strokeLinecap="round" />
+          <circle cx={1166} cy={716} r={6} fill="#FF7A2E" opacity={0.7 + 0.3 * Math.sin(c.frame * 0.9)} />
+          <path d={`M1164,708 q${-10 + Math.sin(c.frame * 0.1) * 8},-40 ${4},-80 q${10},-30 ${-6},-60`} stroke="#C9CED6" strokeWidth={3} fill="none" opacity={0.45} />
+          {/* an electric desk lamp (the power works all year) */}
+          <rect x={620} y={706} width={60} height={10} rx={3} fill="#3A3F48" stroke={INK} strokeWidth={3} data-weeks={burn} />
+          <path d="M650,706 L640,650 L690,626" stroke="#3A3F48" strokeWidth={7} fill="none" strokeLinecap="round" />
+          <path d="M680,612 L716,632 L700,652 Z" fill="#E9C46A" stroke={INK} strokeWidth={3} />
+        </g>
+      );
+    })()}
+    <rect x={-900} y={900} width={3800} height={600} fill="#4A4552" />
+  </g>
+);
+
+registerSet('metro', {
+  layers: (c) => {
+    const v = c.v;
+    const sunriseAt = c.p.sunrise !== undefined ? c.at(c.p.sunrise, 0) : -1;
+    const flickerAt = c.p.flicker !== undefined ? c.at(c.p.flicker, 0) : -1;
+    let lamps = v === 'dark' ? 0 : 0.7;
+    let warm = 0;
+    if (sunriseAt >= 0) {
+      lamps = Math.min(1, Math.max(0.05, (c.t - sunriseAt) / 1.2));
+      warm = Math.min(1, Math.max(0, (c.t - sunriseAt - 0.6) / 1.4));
+    }
+    if (flickerAt >= 0 && c.t > flickerAt) lamps = c.t - flickerAt < 0.9 ? (Math.sin(c.frame * 2.1) > 0 ? 0.7 : 0.1) : 0;
+    const lit = v === 'dark' || (flickerAt >= 0 && c.t > flickerAt + 0.9) ? 0 : 1;
+    const inside = v === 'school' || v === 'workshop';
+    return [
+      ...(inside
+        ? [{depth: 1, node: v === 'school' ? <School c={c} /> : <Workshop c={c} />}]
+        : [
+            {depth: 0.55, node: <Vault c={c} lamps={lamps} warm={warm} />},
+            {
+              depth: 1,
+              node: (
+                <g>
+                  <Platform />
+                  {v === 'farm' ? <Farm c={c} /> : v === 'stairs' ? <Stairs /> : <Town c={c} lit={lit} />}
+                  {c.p.clinic && (
+                    // the hospital's clinic in the station (Day 30 on): a sign on the far wall
+                    <g transform="translate(1500,470)">
+                      <rect x={-150} y={-60} width={300} height={110} rx={10} fill="#F4F7F8" stroke={INK} strokeWidth={5} />
+                      <rect x={-128} y={-36} width={60} height={60} fill="#D9443A" />
+                      <rect x={-110} y={-48} width={24} height={84} fill="#D9443A" />
+                      <rect x={-140} y={-18} width={84} height={24} fill="#D9443A" />
+                      <text x={46} y={14} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontWeight={900} fontSize={40} fill="#1A1E2A">CLINIC</text>
+                    </g>
+                  )}
+                  {c.p.screen && <StationScreen c={c} />}
+                  {heatOf(c) < 1 && (
+                    // frost creeping over the tiles and floor as the warmed air stops coming
+                    <g opacity={(1 - heatOf(c)) * 0.75}>
+                      <Frost amount={0.55} w={1920} h={1080} seed={33} />
+                    </g>
+                  )}
+                </g>
+              ),
+            },
+          ]),
+    ];
+  },
+  light: (c) => {
+    const v = c.v;
+    const sunriseAt = c.p.sunrise !== undefined ? c.at(c.p.sunrise, 0) : -1;
+    const flickerAt = c.p.flicker !== undefined ? c.at(c.p.flicker, 0) : -1;
+    if (v === 'farm') return <Glow x={960} y={500} r={1000} color="#FF5FD2" opacity={0.3} />;
+    if (v === 'workshop' && c.p.dark)
+      return (
+        <g>
+          <Flame x={1180} y={700} s={0.8} frame={c.frame} glow={1.3} />
+          {c.p.hamOn && <Glow x={840} y={660} r={90} color="#FFB25A" opacity={0.35} />}
+        </g>
+      );
+    if (v === 'workshop')
+      return (
+        <g>
+          <Glow x={1240} y={620} r={420} color="#FFF1C8" opacity={0.45} />
+          {c.p.parts && <Glow x={1166} y={716} r={60} color="#FF8A3A" opacity={0.35 + 0.15 * Math.sin(c.frame * 0.9)} />}
+          {c.p.parts && <Glow x={651} y={660} r={120} color="#FFD08A" opacity={0.3} />}
+        </g>
+      );
+    if (v === 'school') return <Glow x={600} y={300} r={800} color="#FFE9C0" opacity={0.3} />;
+    if (v === 'dark' || (flickerAt >= 0 && c.t > flickerAt + 0.9))
+      return (
+        <g>
+          <Flame x={1100} y={890} s={0.8} frame={c.frame} glow={1.2} />
+        </g>
+      );
+    const k = sunriseAt >= 0 ? Math.min(1, Math.max(0, (c.t - sunriseAt) / 1.6)) : 0.6;
+    return (
+      <g>
+        <Glow x={960} y={100} r={1100} color={k > 0.8 ? '#FFE9A8' : '#FFB25A'} opacity={0.15 + 0.35 * k} />
+        <Glow x={520} y={860} r={200} color="#FFD08A" opacity={0.25} />
+        <Glow x={1280} y={860} r={200} color="#FFD08A" opacity={0.25} />
+        <Glow x={1100} y={800} r={360} color="#FF8A3A" opacity={0.22 * heatOf(c)} />
+        {heatOf(c) < 1 && <Glow x={960} y={500} r={1200} color="#9FC8FF" opacity={0.16 * (1 - heatOf(c))} />}
+      </g>
+    );
+  },
+  grade: (c) => {
+    const v = c.v;
+    const flickerAt = c.p.flicker !== undefined ? c.at(c.p.flicker, 0) : -1;
+    const sunriseAt = c.p.sunrise !== undefined ? c.at(c.p.sunrise, 0) : -1;
+    const dead = v === 'dark' || (v === 'workshop' && !!c.p.dark) || (flickerAt >= 0 && c.t > flickerAt + 0.9);
+    const pre = sunriseAt >= 0 ? 0.55 * (1 - Math.min(1, Math.max(0, (c.t - sunriseAt) / 1.4))) : 0;
+    return (
+      <g>
+        <Grade color={dead ? '#121A50' : '#4A3A6E'} amount={dead ? 0.78 : 0.2 + pre} />
+        <Vignette amount={dead ? 0.8 : 0.5} />
+      </g>
+    );
+  },
+});
+
+const Stairs: React.FC = () => (
+  <g>
+    {/* the stairs down from the street, a line of torches behind */}
+    <path d="M-900,900 L-900,300 L2900,900 Z" fill="#3A3442" opacity={0.6} />
+    {Array.from({length: 16}, (_, k) => (
+      <rect key={k} x={-900 + k * 160} y={300 + k * 38} width={170} height={20} fill="#5E5A6E" stroke={INK} strokeWidth={3} />
+    ))}
+  </g>
+);

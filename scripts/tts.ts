@@ -9,6 +9,7 @@ import {join} from 'node:path';
 import type {Speaker} from '../src/engine/schema';
 import type {VoiceMap} from '../src/engine/timeline';
 import {loadEpisode, ROOT} from './load-episode';
+import {elevenText} from '../src/engine/delivery';
 
 const id = process.argv[2] ?? 'ep01';
 const key = process.env.ELEVENLABS_API_KEY;
@@ -35,6 +36,39 @@ const SETTINGS: Record<Speaker, {stability: number; similarity_boost: number; st
   CAPTAIN: {stability: 0.3, similarity_boost: 0.75, style: 0.6},
   FISHERMAN: {stability: 0.45, similarity_boost: 0.75, style: 0.4},
   ASSISTANT: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  NARRATOR: {stability: 0.6, similarity_boost: 0.8, style: 0.3},
+  MIRA: {stability: 0.4, similarity_boost: 0.8, style: 0.5},
+  ITO: {stability: 0.5, similarity_boost: 0.8, style: 0.4},
+  RADIO: {stability: 0.7, similarity_boost: 0.8, style: 0.1},
+  KAI: {stability: 0.42, similarity_boost: 0.8, style: 0.45},
+  MUM: {stability: 0.5, similarity_boost: 0.8, style: 0.35},
+  MUM_RADIO: {stability: 0.5, similarity_boost: 0.8, style: 0.35},
+  MAN: {stability: 0.3, similarity_boost: 0.75, style: 0.6},
+  SCIENTIST: {stability: 0.6, similarity_boost: 0.8, style: 0.2},
+  TOMAS: {stability: 0.45, similarity_boost: 0.8, style: 0.45},
+  LOLA: {stability: 0.42, similarity_boost: 0.8, style: 0.5},
+  ROSA: {stability: 0.48, similarity_boost: 0.8, style: 0.4},
+  ROSA_RADIO: {stability: 0.6, similarity_boost: 0.8, style: 0.25},
+  OFFICER: {stability: 0.6, similarity_boost: 0.8, style: 0.2},
+  CLERK: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  ANA: {stability: 0.4, similarity_boost: 0.8, style: 0.5},
+  LUI: {stability: 0.42, similarity_boost: 0.8, style: 0.45},
+  SIONE: {stability: 0.48, similarity_boost: 0.8, style: 0.4},
+  MELE: {stability: 0.48, similarity_boost: 0.8, style: 0.4},
+  MELE_PHONE: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  TEACHER: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  COLLEAGUE: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  JAZ: {stability: 0.42, similarity_boost: 0.8, style: 0.45},
+  // File 002 (moon02)
+  WREN: {stability: 0.38, similarity_boost: 0.8, style: 0.55},
+  NANA: {stability: 0.5, similarity_boost: 0.82, style: 0.45},
+  TESS: {stability: 0.45, similarity_boost: 0.8, style: 0.45},
+  PELL: {stability: 0.55, similarity_boost: 0.8, style: 0.3},
+  ROSE: {stability: 0.45, similarity_boost: 0.82, style: 0.45},
+  WRENOLD: {stability: 0.55, similarity_boost: 0.82, style: 0.35},
+  PUPIL: {stability: 0.4, similarity_boost: 0.8, style: 0.5},
+  PUPIL2: {stability: 0.4, similarity_boost: 0.8, style: 0.55},
+  OFFICIAL: {stability: 0.6, similarity_boost: 0.8, style: 0.25},
 };
 
 const voiceFor = (s: Speaker) => {
@@ -57,7 +91,10 @@ for (let i = 0; i < flat.length; i++) {
   const line = flat[i];
   const voiceId = voiceFor(line.speaker);
   const settings = SETTINGS[line.speaker];
-  const hash = createHash('sha1').update(JSON.stringify([line.text, voiceId, model, settings])).digest('hex').slice(0, 12);
+  // the delivery marks (feel, *stress*, / beats): v3 takes audio tags and CAPS; v2 gets SSML breaks only
+  const v3 = model.includes('v3');
+  const said = v3 ? elevenText(line) : (line.say ?? line.text).replace(/\*([^*]+)\*/g, '$1').replace(/\s+\/\/\s+/g, ' <break time="0.8s" /> ').replace(/\s+\/\s+/g, ' <break time="0.35s" /> ');
+  const hash = createHash('sha1').update(JSON.stringify([said, voiceId, model, settings])).digest('hex').slice(0, 12);
   const file = `audio/${id}/${hash}.mp3`;
   const abs = join(ROOT, 'public', file);
   if (existsSync(abs) && map[line.key]?.file === file) continue;
@@ -67,7 +104,7 @@ for (let i = 0; i < flat.length; i++) {
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps?output_format=mp3_44100_128`, {
     method: 'POST',
     headers: {'xi-api-key': key, 'Content-Type': 'application/json'},
-    body: JSON.stringify({text: line.text, model_id: model, voice_settings: settings, previous_text: prev, next_text: next}),
+    body: JSON.stringify({text: said, model_id: model, voice_settings: settings, previous_text: prev, next_text: next}),
   });
   if (!res.ok) {
     console.error(`✖ ${line.key} (${line.speaker}): ${res.status} ${await res.text()}`);

@@ -1,0 +1,8 @@
+# Python steps for the narrated File episodes (Python 3.12). Install torch from the CPU index first:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+# System: espeak-ng (Kokoro's phonemizer fallback), ffmpeg.
+kokoro>=0.9.4
+soundfile
+scipy
+numpy
+faster-whisper

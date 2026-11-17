@@ -128,6 +128,14 @@ export type FigureProps = {
   glowHand?: 'r' | 'l' | 'both';
   /** Fist-clench (0 open … 1 closed): the off-switch for Zero-G Touch. */
   fist?: number;
+  /** Seen from behind (over-the-shoulder, looking at the sky): no face, hair/hood covers the head. */
+  back?: boolean;
+  /** Parka hood up, fur trim framing the face. */
+  hoodUp?: boolean;
+  /** The watch face lighting up (0..1). */
+  watchGlow?: number;
+  /** Breath condensing in the cold. */
+  breath?: boolean;
 };
 
 export const Figure: React.FC<FigureProps> = ({
@@ -151,6 +159,10 @@ export const Figure: React.FC<FigureProps> = ({
   palmGlow = 0,
   glowHand = 'r',
   fist = 0,
+  back = false,
+  hoodUp = false,
+  watchGlow = 0,
+  breath = false,
 }) => {
   const frame = useCurrentFrame() + seed * 17;
   const id = useId().replace(/:/g, '');
@@ -392,12 +404,33 @@ export const Figure: React.FC<FigureProps> = ({
             ))}
           </g>
         );
+      case 'beanie':
+        return (
+          <g>
+            <path d={`M${-headR * 1.04},${headY - headR * 0.18} Q${-headR * 1.08},${headY - headR * 1.35} 0,${headY - headR * 1.3} Q${headR * 1.08},${headY - headR * 1.35} ${headR * 1.04},${headY - headR * 0.18} Z`} fill={d.hat ?? hc} stroke={stroke} strokeWidth={4} />
+            <path d={`M${-headR * 1.1},${headY - headR * 0.42} Q0,${headY - headR * 0.58} ${headR * 1.1},${headY - headR * 0.42} L${headR * 1.08},${headY - headR * 0.12} Q0,${headY - headR * 0.28} ${-headR * 1.08},${headY - headR * 0.12} Z`} fill={d.hat ?? hc} stroke={stroke} strokeWidth={4} />
+            {[-0.6, -0.2, 0.2, 0.6].map((t, i) => (
+              <path key={i} d={`M${t * headR},${headY - headR * 0.5} L${t * headR * 0.9},${headY - headR * 1.1}`} stroke="#00000022" strokeWidth={3} />
+            ))}
+            <circle cx={0} cy={headY - headR * 1.38} r={headR * 0.24} fill="#F4EFE6" stroke={stroke} strokeWidth={3.5} />
+          </g>
+        );
       case 'afro':
         return null;
       default:
         return null;
     }
   })();
+  const hairSides =
+    d.hair === 'beanie' ? (
+      <g>
+        {[-1, 1].map((sd) => (
+          <path key={sd} d={`M${sd * headR * 0.98},${headY - headR * 0.2} q${sd * 10},${headR * 0.5} ${sd * 2},${headR * 0.85}`} stroke={d.hairColor} strokeWidth={12} fill="none" strokeLinecap="round" />
+        ))}
+      </g>
+    ) : null;
+  const isParka = d.top === 'parka';
+  const fur = '#F1E6D2';
 
   const tilt = p.headTilt ?? 0;
 
@@ -437,6 +470,19 @@ export const Figure: React.FC<FigureProps> = ({
         {/* back arm */}
         <Limbs path={LA.d} color={d.topColor} w={limb} />
         <circle cx={LA.hx} cy={LA.hy} r={limb * 0.62} fill={d.skin} stroke={stroke} strokeWidth={4} />
+        {d.watch && (() => {
+          const [ex, ey] = seg(-shW * 0.46, shY + 12, armU, p.lArm[0]);
+          const wx = ex + (LA.hx - ex) * 0.78;
+          const wy = ey + (LA.hy - ey) * 0.78;
+          const ang = -(p.lArm[0] + p.lArm[1]);
+          return (
+            <g transform={`translate(${wx},${wy}) rotate(${ang})`}>
+              {watchGlow > 0 && <circle r={limb * 2.2} fill="#9FE8FF" opacity={0.25 * watchGlow} />}
+              <rect x={-limb * 0.62} y={-limb * 0.34} width={limb * 1.24} height={limb * 0.68} rx={3} fill="#C9CED6" stroke={stroke} strokeWidth={3} />
+              <rect x={-limb * 0.36} y={-limb * 0.2} width={limb * 0.72} height={limb * 0.4} rx={2} fill={watchGlow > 0 ? '#BFF3FF' : '#2E3B4A'} />
+            </g>
+          );
+        })()}
         {/* torso */}
         <path d={torsoPath} fill={d.topColor} stroke={stroke} strokeWidth={sw} strokeLinejoin="round" />
         {(d.top === 'jacket' || d.top === 'suit' || d.top === 'cardigan') && (
@@ -449,6 +495,15 @@ export const Figure: React.FC<FigureProps> = ({
         {d.top === 'wrapper' && (
           <path d={`M${-shW / 2 + 6},${shY + torso * 0.45} L${shW / 2 - 6},${shY + torso * 0.45}`} stroke={d.topAccent} strokeWidth={7} />
         )}
+        {isParka && (
+          <g>
+            {[0.3, 0.55, 0.8].map((t, i) => (
+              <path key={i} d={`M${-shW / 2 + 4 + i * 2},${shY + torso * t} Q0,${shY + torso * t + 7} ${shW / 2 - 4 - i * 2},${shY + torso * t}`} stroke={d.topAccent} strokeWidth={3.5} fill="none" />
+            ))}
+            {!back && <path d={`M0,${shY + 4} L0,${hipY + 12}`} stroke={d.topAccent} strokeWidth={4} />}
+            {!back && <rect x={-4} y={shY + torso * 0.18} width={8} height={12} rx={2} fill="#D9D9D9" stroke={stroke} strokeWidth={2} />}
+          </g>
+        )}
         {d.patches && (
           <>
             <rect x={-shW * 0.38} y={shY + torso * 0.55} width={16} height={13} rx={2} fill="#2B3A67" stroke={stroke} strokeWidth={2.5} transform={`rotate(-8,${-shW * 0.3},${shY + torso * 0.6})`} />
@@ -459,16 +514,29 @@ export const Figure: React.FC<FigureProps> = ({
         <rect x={-headR * 0.22} y={headY + headR * 0.6} width={headR * 0.44} height={shY - (headY + headR * 0.6) + 6} fill={d.skinShade} stroke={stroke} strokeWidth={3} />
         {/* head */}
         <g transform={`rotate(${tilt},0,${headY + headR})`}>
-          {hairBack}
+          {isParka && hoodUp && <ellipse cx={0} cy={headY - headR * 0.1} rx={headR * 1.36} ry={headR * 1.38} fill={d.topColor} stroke={stroke} strokeWidth={sw} />}
+          {isParka && !hoodUp && <path d={`M${-headR * 1.05},${headY + headR * 0.95} Q0,${headY + headR * 0.55} ${headR * 1.05},${headY + headR * 0.95} Q${headR * 1.2},${headY + headR * 1.35} 0,${headY + headR * 1.45} Q${-headR * 1.2},${headY + headR * 1.35} ${-headR * 1.05},${headY + headR * 0.95} Z`} fill={d.topAccent} stroke={stroke} strokeWidth={4} />}
+          {!(isParka && hoodUp) && hairBack}
+          {!(isParka && hoodUp) && hairSides}
           {d.earrings && [-1, 1].map((s) => <circle key={s} cx={s * headR * 0.98} cy={headY + headR * 0.28} r={5} fill={C.gold} stroke={stroke} strokeWidth={2} />)}
           <circle cx={0} cy={headY} r={headR} fill={d.skin} stroke={stroke} strokeWidth={sw} />
-          {d.beard && <path d={`M${-headR * 0.85},${headY + headR * 0.1} Q0,${headY + headR * 1.35} ${headR * 0.85},${headY + headR * 0.1} Q0,${headY + headR * 0.75} ${-headR * 0.85},${headY + headR * 0.1} Z`} fill={d.hairColor} opacity={0.85} />}
-          {hairFront}
-          {eye(-1)}
-          {eye(1)}
-          {brow(-1)}
-          {brow(1)}
-          {d.glasses &&
+          {back && !(isParka && hoodUp) && (
+            <path d={`M${-headR * 0.98},${headY + headR * 0.25} Q${-headR * 1.05},${headY - headR * 1.12} 0,${headY - headR * 1.1} Q${headR * 1.05},${headY - headR * 1.12} ${headR * 0.98},${headY + headR * 0.25} Q0,${headY + headR * 0.62} ${-headR * 0.98},${headY + headR * 0.25} Z`} fill={d.hair === 'beanie' ? d.hairColor : d.hairColor} stroke={stroke} strokeWidth={4} />
+          )}
+          {back && isParka && hoodUp && (
+            <g>
+              <path d={`M${-headR * 1.18},${headY + headR * 0.75} Q${-headR * 1.32},${headY - headR * 1.4} 0,${headY - headR * 1.38} Q${headR * 1.32},${headY - headR * 1.4} ${headR * 1.18},${headY + headR * 0.75} Q0,${headY + headR * 1.05} ${-headR * 1.18},${headY + headR * 0.75} Z`} fill={d.topColor} stroke={stroke} strokeWidth={sw} />
+              <path d={`M0,${headY - headR * 1.36} Q${headR * 0.12},${headY - headR * 0.3} 0,${headY + headR * 0.95}`} stroke={d.topAccent} strokeWidth={4} fill="none" />
+              <path d={`M${-headR * 0.9},${headY - headR * 0.6} Q${-headR * 0.3},${headY - headR * 0.2} ${-headR * 0.85},${headY + headR * 0.5}`} stroke={d.topAccent} strokeWidth={3} fill="none" opacity={0.6} />
+            </g>
+          )}
+          {!back && d.beard && <path d={`M${-headR * 0.85},${headY + headR * 0.1} Q0,${headY + headR * 1.35} ${headR * 0.85},${headY + headR * 0.1} Q0,${headY + headR * 0.75} ${-headR * 0.85},${headY + headR * 0.1} Z`} fill={d.hairColor} opacity={0.85} />}
+          {!(isParka && hoodUp) && (!back || d.hair === 'beanie') && hairFront}
+          {!back && eye(-1)}
+          {!back && eye(1)}
+          {!back && brow(-1)}
+          {!back && brow(1)}
+          {!back && d.glasses &&
             [-1, 1].map((s) => (
               <g key={`g${s}`}>
                 {d.glasses === 'round' ? (
@@ -478,15 +546,27 @@ export const Figure: React.FC<FigureProps> = ({
                 )}
               </g>
             ))}
-          {d.glasses && <path d={`M${-headR * 0.1},${headY - headR * 0.08} L${headR * 0.1},${headY - headR * 0.08}`} stroke={C.ink} strokeWidth={3} />}
-          {d.wrinkles && (
+          {!back && d.glasses && <path d={`M${-headR * 0.1},${headY - headR * 0.08} L${headR * 0.1},${headY - headR * 0.08}`} stroke={C.ink} strokeWidth={3} />}
+          {!back && d.wrinkles && (
             <>
               <path d={`M${-headR * 0.62},${headY + headR * 0.24} q6,6 12,0`} stroke={d.skinShade} strokeWidth={3} fill="none" />
               <path d={`M${headR * 0.5},${headY + headR * 0.24} q6,6 12,0`} stroke={d.skinShade} strokeWidth={3} fill="none" />
             </>
           )}
-          <path d={`M-4,${headY + headR * 0.18} q4,5 8,0`} stroke={d.skinShade} strokeWidth={3.5} fill="none" strokeLinecap="round" />
-          {mouth}
+          {!back && <path d={`M-4,${headY + headR * 0.18} q4,5 8,0`} stroke={d.skinShade} strokeWidth={3.5} fill="none" strokeLinecap="round" />}
+          {!back && mouth}
+          {isParka && hoodUp && !back && (
+            <ellipse cx={0} cy={headY - headR * 0.05} rx={headR * 1.12} ry={headR * 1.16} fill="none" stroke={fur} strokeWidth={headR * 0.32} strokeDasharray={`${headR * 0.16} ${headR * 0.05}`} />
+          )}
+          {isParka && hoodUp && back && <path d={`M${-headR * 1.18},${headY + headR * 0.75} Q0,${headY + headR * 1.05} ${headR * 1.18},${headY + headR * 0.75}`} stroke={fur} strokeWidth={headR * 0.22} fill="none" strokeLinecap="round" />}
+          {breath && !back && (
+            <g opacity={0.55}>
+              {[0, 1, 2].map((k) => {
+                const ph = ((frame + k * 22) % 66) / 66;
+                return <circle key={k} cx={headR * 0.2 + ph * headR * 1.1} cy={mouthY + 6 - ph * headR * 0.5} r={headR * (0.12 + ph * 0.35)} fill="#EAF4FF" opacity={(1 - ph) * 0.8} />;
+              })}
+            </g>
+          )}
         </g>
         {/* front arm */}
         <Limbs path={RA.d} color={d.topColor} w={limb} />

@@ -10,7 +10,7 @@ export const Finish: React.FC = () => {
         <defs>
           <radialGradient id="vig" cx="0.5" cy="0.5" r="0.75">
             <stop offset="0.6" stopColor="#000" stopOpacity={0} />
-            <stop offset="1" stopColor="#000" stopOpacity={0.42} />
+            <stop offset="1" stopColor="#000" stopOpacity={0.3} />
           </radialGradient>
           <filter id="grain" x="0" y="0" width="100%" height="100%">
             <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={2} seed={f % 17} result="n" />

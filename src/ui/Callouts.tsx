@@ -1,0 +1,163 @@
+import React from 'react';
+import {AbsoluteFill, Easing, interpolate} from 'remotion';
+import {resolveAt} from '../characters/toon/acting';
+import {useShot} from '../engine/shot-context';
+import {fonts} from '../theme';
+
+/**
+ * The two kinds of on-screen text File 001 allows:
+ *  - a CALLOUT: one bold word or number that punches the line being spoken (pops with overshoot, holds, fades);
+ *  - the DAY TAG: when the story jumps in time — "DAY 7" and the outside temperature, ticking into place, over a
+ *    thin year bar that fills from the last day shown to this one (the viewer always knows how far through we are).
+ */
+const POS = {center: 540, top: 230, low: 880, left: 540, right: 540} as const;
+
+export const Callout: React.FC = () => {
+  const {shot, t} = useShot();
+  const c = shot.callout;
+  if (!c) return null;
+  const t0 = resolveAt(c.at ?? 0.2, shot.timedLines as any);
+  const k = t - t0;
+  if (k < 0) return null;
+  const hold = Math.min(2.2, Math.max(1.2, shot.duration - t0 - 0.3));
+  const pop = interpolate(k, [0, 0.12, 0.24], [0.4, 1.12, 1], {extrapolateRight: 'clamp', easing: Easing.out(Easing.quad)});
+  const out = interpolate(k, [hold, hold + 0.25], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  if (out <= 0) return null;
+  // letterboxed shots: keep the callout clear of the bars (the bottom bar starts at y 942)
+  const y = c.pos === 'low' || !c.pos ? (shot.letterbox ? 790 : POS.low) : POS[c.pos];
+  const x = c.pos === 'left' ? 520 : c.pos === 'right' ? 1400 : 960;
+  const size = c.text.length > 12 ? 92 : c.text.length > 7 ? 120 : 150;
+  const tilt = (c.text.length % 2 ? -1 : 1) * 2;
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%">
+        <g transform={`translate(${x},${y}) rotate(${tilt}) scale(${pop})`} opacity={Math.min(1, k * 8) * out}>
+          <text textAnchor="middle" dominantBaseline="central" fontFamily={fonts.display} fontWeight={900} fontSize={size} letterSpacing={4} fill="#000" opacity={0.45} transform="translate(6,10)">
+            {c.text}
+          </text>
+          <text textAnchor="middle" dominantBaseline="central" fontFamily={fonts.display} fontWeight={900} fontSize={size} letterSpacing={4} fill={c.color ?? '#FFF6E0'} stroke="#0B1026" strokeWidth={size * 0.11} paintOrder="stroke" strokeLinejoin="round">
+            {c.text}
+          </text>
+        </g>
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+/** The countdown: big mm:ss running down across the shot (the 16:40 wait for the light). */
+export const Countdown: React.FC = () => {
+  const {shot, t} = useShot();
+  const tm = shot.timer;
+  if (!tm) return null;
+  const k = Math.max(0, Math.min(1, t / Math.max(0.1, shot.duration)));
+  const v = Math.max(0, Math.round(tm.from + (tm.to - tm.from) * k));
+  const txt = `${Math.floor(v / 60)}:${String(v % 60).padStart(2, '0')}`;
+  const appear = Math.min(1, t * 4);
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%">
+        <g transform={tm.pos === 'band' ? 'translate(960,76) scale(0.7)' : 'translate(960,190)'} opacity={appear}>
+          {tm.label && (
+            <text x={tm.pos === 'band' ? -250 : 0} y={tm.pos === 'band' ? 0 : -92} textAnchor={tm.pos === 'band' ? 'end' : 'middle'} dominantBaseline={tm.pos === 'band' ? 'central' : 'auto'} fontFamily={fonts.display} fontWeight={800} fontSize={tm.pos === 'band' ? 46 : 34} letterSpacing={6} fill="#FFF6E0" stroke="#0B1026" strokeWidth={6} paintOrder="stroke">
+              {tm.label}
+            </text>
+          )}
+          <rect x={-230} y={-92} width={460} height={184} rx={36} fill="#05060D" opacity={0.72} />
+          <text textAnchor="middle" dominantBaseline="central" fontFamily={fonts.display} fontWeight={900} fontSize={150} letterSpacing={6} fill="#FFF6E0" stroke="#0B1026" strokeWidth={16} paintOrder="stroke">
+            {txt}
+          </text>
+        </g>
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+export const DayTag: React.FC<{prevDay?: number}> = ({prevDay = 0}) => {
+  const {shot, t} = useShot();
+  const hh = shot.hud;
+  if (!hh) return null;
+  if ('place' in hh) return <PlaceTag place={hh.place} time={hh.time} t={t} dur={shot.duration} top={shot.letterbox ? 220 : shot.scene === 'news' ? 250 : 150} />;
+  if ('km' in hh) return <KmTag day={hh.day} km={hh.km} of={hh.of} prevDay={prevDay} t={t} dur={shot.duration} top={shot.letterbox ? 240 : shot.scene === 'news' ? 250 : 150} />;
+  const h = hh;
+  const inK = interpolate(t, [0.05, 0.45], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic)});
+  const outK = interpolate(t, [Math.min(3.6, shot.duration - 0.3), Math.min(3.9, shot.duration)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  // the temperature ticks down to its value
+  const temp = Math.round(interpolate(t, [0.3, 1.1], [h.temp + Math.min(12, Math.abs(h.temp) * 0.3 + 3), h.temp], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}));
+  const cold = h.temp <= 0;
+  const year = interpolate(t, [0.35, 1.3], [prevDay / 365, h.day / 365], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic)});
+  const BAR = 330;
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%">
+        <g transform={`translate(${-60 + 150 * inK},${shot.letterbox ? 220 : shot.scene === 'news' ? 250 : 150})`} opacity={inK * outK}>
+          <rect x={-20} y={-74} width={10} height={186} fill={cold ? '#9FD8FF' : '#FFB25A'} />
+          <text x={10} y={-10} fontFamily={fonts.display} fontWeight={900} fontSize={84} fill="#FFF6E0" stroke="#0B1026" strokeWidth={10} paintOrder="stroke" letterSpacing={3}>
+            DAY {h.day}
+          </text>
+          <text x={14} y={62} fontFamily={fonts.mono} fontWeight={600} fontSize={52} fill={cold ? '#9FD8FF' : '#FFD08A'} stroke="#0B1026" strokeWidth={8} paintOrder="stroke">
+            {temp > 0 ? `+${temp}` : temp === 0 ? '0' : `−${Math.abs(temp)}`}°C
+          </text>
+          <rect x={12} y={96} width={BAR} height={10} rx={5} fill="#0B1026" opacity={0.55} />
+          <rect x={12} y={96} width={Math.max(10, BAR * year)} height={10} rx={5} fill={cold ? '#9FD8FF' : '#FFB25A'} />
+          <rect x={12 + BAR - 2} y={90} width={3} height={22} fill="#FFF6E0" opacity={0.7} />
+          <text x={12 + BAR + 12} y={110} fontFamily={fonts.mono} fontWeight={600} fontSize={26} fill="#FFF6E0" stroke="#0B1026" strokeWidth={5} paintOrder="stroke" opacity={0.85}>
+            365
+          </text>
+        </g>
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+/** "SYDNEY · 3:51 PM": where and when, for the world's last ordinary minute. */
+const PlaceTag: React.FC<{place: string; time: string; t: number; dur: number; top: number}> = ({place, time, t, dur, top}) => {
+  const inK = interpolate(t, [0.05, 0.4], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic)});
+  const outK = interpolate(t, [dur - 0.25, dur], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%">
+        <g transform={`translate(${-60 + 150 * inK},${top})`} opacity={inK * outK}>
+          {/* soft backing card: keeps the tag clean over busy sets (a curtain rod read as a strikethrough) */}
+          <rect x={-10} y={-78} width={Math.max(place.length * 64, time.length * 30) + 84} height={152} rx={10} fill="#0B1026" opacity={0.9} />
+          <rect x={-20} y={-66} width={10} height={130} fill="#FFB25A" />
+          <text x={10} y={-6} fontFamily={fonts.display} fontWeight={900} fontSize={72} fill="#FFF6E0" stroke="#0B1026" strokeWidth={10} paintOrder="stroke" letterSpacing={3}>
+            {place}
+          </text>
+          <text x={14} y={56} fontFamily={fonts.mono} fontWeight={600} fontSize={48} fill="#FFD08A" stroke="#0B1026" strokeWidth={8} paintOrder="stroke">
+            {time}
+          </text>
+        </g>
+      </svg>
+    </AbsoluteFill>
+  );
+};
+
+/** "DAY 60 · 290,000 km": the Moon File's clock. The distance counts down to its value; the bar is the days so far. */
+const KmTag: React.FC<{day: number; km: number; of: number; prevDay: number; t: number; dur: number; top: number}> = ({day, km, of, prevDay, t, dur, top}) => {
+  const inK = interpolate(t, [0.05, 0.45], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.out(Easing.cubic)});
+  const outK = interpolate(t, [Math.min(3.8, dur - 0.3), Math.min(4.1, dur)], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const shown = Math.round(interpolate(t, [0.3, 1.2], [km + Math.min(30000, km * 0.08), km], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) / 1000) * 1000;
+  const bar = interpolate(t, [0.35, 1.3], [prevDay / of, day / of], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: Easing.inOut(Easing.cubic)});
+  const BAR = 330;
+  return (
+    <AbsoluteFill style={{pointerEvents: 'none'}}>
+      <svg viewBox="0 0 1920 1080" width="100%" height="100%">
+        <g transform={`translate(${-60 + 150 * inK},${top})`} opacity={inK * outK}>
+          <rect x={-10} y={-84} width={470} height={206} rx={10} fill="#0B1026" opacity={0.82} />
+          <rect x={-20} y={-74} width={10} height={186} fill="#FFE08A" />
+          <text x={10} y={-10} fontFamily={fonts.display} fontWeight={900} fontSize={84} fill="#FFF6E0" stroke="#0B1026" strokeWidth={10} paintOrder="stroke" letterSpacing={3}>
+            DAY {day}
+          </text>
+          <text x={14} y={62} fontFamily={fonts.mono} fontWeight={600} fontSize={46} fill="#FFE08A" stroke="#0B1026" strokeWidth={8} paintOrder="stroke">
+            {shown.toLocaleString('en-US')} km
+          </text>
+          <rect x={12} y={90} width={BAR} height={10} rx={5} fill="#FFF6E0" opacity={0.25} />
+          <rect x={12} y={90} width={Math.max(10, BAR * bar)} height={10} rx={5} fill="#FFE08A" />
+          <text x={12 + BAR + 12} y={104} fontFamily={fonts.mono} fontWeight={600} fontSize={26} fill="#FFF6E0" stroke="#0B1026" strokeWidth={5} paintOrder="stroke" opacity={0.85}>
+            {of}
+          </text>
+        </g>
+      </svg>
+    </AbsoluteFill>
+  );
+};

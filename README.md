@@ -1,12 +1,32 @@
+# youtube-idea: the studio
+
+Everything lives on one branch, `main`. Each project has its own folder and its own pipeline.
+
+| Project | What it is | Status | Start here |
+|---|---|---|---|
+| **Gravity Dial** (live channel) | Photoreal space simulations: one dial turned on the universe, physics run to the end | Ep1 black hole **live**; Ep2 Jupiter ready | [`EPISODES.md`](EPISODES.md), [`cinema/`](cinema/README.md), [`renders/`](renders/README.md), [`channel/`](channel/README.md), [`growth/`](growth/) |
+| **The Blink Files** | Animated space-science survival stories (Remotion) | File 001 "The Sun Went Out" + pilots | the section below, [`docs/PIPELINE.md`](docs/PIPELINE.md) |
+| **Borrowed Day** | "What if you were ___ for one day?" (same Remotion engine) | Ep1 rendered | [`docs/08-borrowed-day.md`](docs/08-borrowed-day.md), `renders/bd01*` |
+
+---
+
 # THE BLINK FILES
 
-> **New: cinematic pipeline.** [`cinema/`](cinema/README.md) holds the photoreal space-documentary pipeline: neural narration, real gravitational lensing, ray-cast planets, N-body simulations and an original score. The flagship episode **"What If a Black Hole Passed Through Our Solar System?"** (8:20) is in [`renders/ep_blackhole/`](renders/ep_blackhole/README.md) with its thumbnail, captions and full upload metadata. The flat-character Remotion pipeline below is kept for reference.
+> *One family. One impossible year. Every clue is real physics; the ending opens the next File.*
 
-> *Betelgeuse died. With its last light, the people who lived there sent their powers to Earth — twelve gifts, for twelve ordinary people.*
+A YouTube channel of animated space-science survival stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev): the narration is voiced locally with Kokoro-82M (Apache-2.0), and the score is synthesised from scratch.
 
-A YouTube channel of animated space-science stories built for **8–12 minute episodes** (mid-roll eligible). Every video is made from code with [Remotion](https://remotion.dev) and voiced with ElevenLabs.
+**Launch episode: File 001, "The Sun Went Out at Breakfast. Day 1 to Day 365 in the Dark" (v5)** is in `episodes/sun01-the-sun-went-out/release/` (videos on Git LFS: `git lfs pull`):
+- `sun01-master.mp4` (upload master) and `sun01.mp4` (web copy), about 15 minutes, 1080p, soft English subtitles; SRTs, `metadata.md`, three spoiler-free thumbnails and a README.
+- **The story:** grown-up Mira tells the year she was eight and the Sun went out. With her brother Kai, their dog Biscuit and Mr. Ito, the retired astronomer upstairs, she works it out clue by clue (light delay, tides, infrared telescopes, a beam to a real star) while Mum, a nurse, works at the hospital and video-calls every night, until she joins them at the station clinic on Day 30. Intercut, unnarrated, a young astronomer works through one night in 1983. The turn: he is Mr. Ito; he answered a signpost in eclipse photos and knocked; the builders set off, and the shell around the Sun was their brake. When their ship stopped, the Sun came back.
+- **How every episode is made:** [`docs/PIPELINE.md`](docs/PIPELINE.md) (stages and exit criteria) and [`docs/00-production-standards.md`](docs/00-production-standards.md) (every rule, each enforced by a gate or checklist). One command checks an episode before voicing: `npx tsx scripts/check-episode.ts <id>`; one checks the rendered release: `npx tsx scripts/qa-release.ts <id>`. New episodes start from `npx tsx scripts/new-episode.ts <id> <slug> "FILE 00X" "Title"`.
+- **Every viewer question answered on screen:** [`docs/16-sun01-world-model.md`](docs/16-sun01-world-model.md) (world model and 103-question bank); full screenplay in [`docs/15-sun01-v5-screenplay.md`](docs/15-sun01-v5-screenplay.md); review log in [`docs/14-sun01-v4.1-review-log.md`](docs/14-sun01-v4.1-review-log.md).
+- **Docs:**
+  - screenplay, clue map and cause→effect links: [`docs/11-sun01-v3-screenplay.md`](docs/11-sun01-v3-screenplay.md)
+  - series bible (12 standalone Files, narrators, casts, ElevenLabs voice and music casting): [`docs/09-series-bible.md`](docs/09-series-bible.md)
+  - physics: [`docs/10-sun01-logic-audit.md`](docs/10-sun01-logic-audit.md)
 
-**Episode 1 — "What If Everything You Touched Lost Its Gravity?"** is in `renders/`:
+**Earlier pilot, "What If Everything You Touched Lost Its Gravity?"** (the Zero-G episode, held for a later slot):
 - `ep01.mp4`: ~9:10, 1080p (web-size copy). No voiceover yet; it has an original score and SFX.
 - `ep01.srt`: dialogue captions for YouTube
 - `ep01-described.srt`: dialogue plus stage directions, for reviewing before the voice exists
@@ -23,6 +43,9 @@ A YouTube channel of animated space-science stories built for **8–12 minute ep
 | [05 · Season One](docs/05-season-one.md) | 12 episodes, the twist ladder, seeds → payoffs |
 | [06 · Episode formula](docs/06-episode-formula.md) | The ten-section structure, retention rules, show-don't-tell, packaging |
 | [07 · Series framework](docs/07-series-framework.md) | How the channel keeps going: Files, Loose Files, Shorts |
+| [08 · Niche scan, Oct 2026](docs/08-niche-scan-2026-10.md) | Where the unsaturated, high-viral formats are, and the two bets to test after Ep1 (tool: `research/niche-scan/`) |
+| [09 · Series bible](docs/09-series-bible.md) | **The launch format (v2.1)**: the cast and height chart, the serial story, the episode formula, film language, sound, the review gates, and how to produce a File |
+| [10 · File 001 logic audit](docs/10-sun01-logic-audit.md) | Every physics claim with its numbers, how the shell can exist and close in a second, the Episode 2 answer, the clue chain, temperatures, continuity, and every fix |
 | [ElevenLabs setup](docs/ELEVENLABS_SETUP.md) | Step-by-step key and voice setup |
 
 ## Studio quickstart
