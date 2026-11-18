@@ -531,7 +531,8 @@ def river_under(look=(46.0, 52.0), yaw=(180.0, 188.0), beads=(0.0, 0.0), streak=
         flick = 0.6 + 0.4 * np.sin(t * 0.7 + rays * 20)
         shaft = rays[idx] ** 6 * (1 - inside) * np.exp(-np.hypot(xs - wx, ys - wy) / 700) * (1 - mur) * flick[idx]
         img = img + shaft[..., None] * (air.mean((0, 1)) * 0.22 + 0.005)
-        # fish crossing the light
+        # fish crossing the light (shot-continuous time, so nothing resets at a beat boundary)
+        t = t + (ctx.seg["start"] + ctx.beat.t0 - ctx.run_t0)
         if L(fish) > 0:
             crew = [(-600, 330, 900, 120, "paddle"), (2500, 170, 520, -80, "paddle"), (-1400, 560, 1100, 85, "sturgeon")]
             if school:
