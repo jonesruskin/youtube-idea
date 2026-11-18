@@ -661,7 +661,7 @@ def _dial(img, m, cx, cy, R, a, hand_s=True):
     frac = min(1.0, m / 151.7)
     if frac > 0:
         cv2.ellipse(lay, (int(cx), int(cy)), (int(R * 1.18), int(R * 1.18)), -90, 0, 360 * frac, 1.0, max(2, int(R * 0.09)), cv2.LINE_AA)
-    ang = ((m * 60.0 % 60.0) / 60.0 if hand_s else (m % 60.0) / 60.0) * 2 * np.pi
+    ang = ((m * 60.0 % 60.0) / 60.0 if hand_s else frac) * 2 * np.pi
     cv2.line(lay, (int(cx), int(cy)), (int(cx + R * 0.85 * np.sin(ang)), int(cy - R * 0.85 * np.cos(ang))), 1.0, max(2, int(R * 0.07)), cv2.LINE_AA)
     cv2.circle(lay, (int(cx), int(cy)), max(2, int(R * 0.08)), 1.0, -1, cv2.LINE_AA)
     cv2.rectangle(lay, (int(cx - R * 0.12), int(cy - R * 1.42)), (int(cx + R * 0.12), int(cy - R * 1.25)), 1.0, -1, cv2.LINE_AA)
