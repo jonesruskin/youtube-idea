@@ -4,7 +4,7 @@ travelling toward it, and the evidence 66 million years later. The clock in the 
 from engine.beats import Beat as B
 from engine.core import W, H
 from ep_tanis.cine import (riverbank, river_under, sky_up, slice_scene, slice_label, surge_scene, xray_scene, amber_scene,
-                           dig_scene, next_scene, serif, tag, clock, over_all, PEACH, INK, GLASS)
+                           dig_scene, next_scene, burial_scene, serif, tag, clock, over_all, PEACH, INK, GLASS)
 from ep_tanis import model as M
 
 P_MIN, S_MIN, R_MIN, SND = M.seismic_minutes("P"), M.seismic_minutes("S"), M.rayleigh_minutes(), M.sound_hours() * 60
@@ -52,7 +52,7 @@ c2a = [
 ]
 c2b = [
     B(0, riverbank(phase="south", view_az=(0.0, 0.0), glow=(0.0, 0.75), mist=(0.5, 0.45)), clock((1.5, 3.0), ledger=True), cut=True, name="a second dawn in the wrong place"),
-    B(1, river_under(beads=(0.0, 0.0), glow=(0.5, 0.6), look=(46.0, 50.0)), name="the fish notice nothing"),
+    B(1, river_under(beads=(0.0, 0.0), glow=(0.5, 0.6), look=(84.0, 87.0), school=3, gape=0.8), name="the fish notice nothing"),
 ]
 c2c = [
     B(0, slice_scene(view=CRATER, tmin=(3.0, 4.0), show=("crater", "plume"), plume=(1400.0, 1700.0)), slice_label("crater", "Chicxulub", 0.3, dy=46, color=PEACH), name="at the crater"),
@@ -65,7 +65,7 @@ c3a = [
       over_all(names(at=0.0), slice_label("P", "deep, fastest", 1.5, dy=46, color=(0.55, 0.8, 1.0), size=30))),
 ]
 c3b = [
-    B(0, riverbank(phase="quake", view_az=(0.0, 1.0), glow=(0.7, 0.6), shake=(0.0, 3.0), slosh=(0.0, 0.2)), clock((P_MIN - 0.02, P_MIN + 0.3), ledger=True), at="jolt", cut=True, name="the first jolt"),
+    B(0, riverbank(phase="quake", view_az=(0.0, 1.0), pitch=(-9.0, -5.0), glow=(0.7, 0.6), shake=(0.0, 3.0), slosh=(0.0, 0.2)), clock((P_MIN - 0.02, P_MIN + 0.3), ledger=True), at="jolt", cut=True, name="the first jolt"),
     B(1, riverbank(phase="quake", view_az=(-22.0, -30.0), pitch=(3.0, 2.0), fov=(46.0, 44.0), glow=(0.6, 0.5), shake=(3.0, 7.0), slosh=(0.2, 0.5)), clock((S_MIN - 0.02, S_MIN + 0.3), ledger=True), at="sideways"),
     B(2, riverbank(phase="quake", view_az=(18.0, 26.0), pitch=(6.0, 7.0), fov=(76.0, 78.0), glow=(0.5, 0.45), shake=(7.0, 5.0), slosh=(0.5, 0.9)), clock((R_MIN - 0.02, R_MIN + 0.3), ledger=True), at="rolling"),
 ]
@@ -102,14 +102,14 @@ c5a = [
       serif("a grain of sand takes most of an hour", 0.5, y=H * 0.86)),
 ]
 c5b = [
-    B(0, river_under(beads=(0.3, 0.8), heat=(0.25, 0.25), dust=(0.2, 0.2), look=(48.0, 52.0)), clock((54.0, 62.0), ledger=True), cut=True, name="glass reaches the river"),
-    B(1, river_under(beads=(0.8, 1.0), heat=(0.25, 0.25), dust=(0.2, 0.25), look=(52.0, 50.0)), tag("15 cm every second", 0.4, sub="sinking through the river")),
-    B(2, river_under(beads=(1.0, 1.0), heat=(0.25, 0.25), dust=(0.25, 0.3), look=(50.0, 46.0), school=2, gape=1.0), name="the fish sieve them out"),
+    B(0, river_under(beads=(0.3, 0.8), heat=(0.25, 0.25), dust=(0.2, 0.2), look=(48.0, 52.0), school=2), clock((54.0, 62.0), ledger=True), cut=True, name="glass reaches the river"),
+    B(1, river_under(beads=(0.8, 1.0), heat=(0.25, 0.25), dust=(0.2, 0.25), look=(52.0, 50.0), school=2), tag("15 cm every second", 0.4, sub="sinking through the river")),
+    B(2, river_under(beads=(1.0, 1.0), heat=(0.25, 0.25), dust=(0.25, 0.3), look=(50.0, 18.0), school=2, gape=1.0), name="the fish sieve them out"),
 ]
 c5c = [
-    B(0, river_under(beads=(0.25, 0.3), heat=(0.2, 0.2), dust=(0.3, 0.3), look=(36.0, 40.0), school=4, gape=0.8),
+    B(0, river_under(beads=(0.25, 0.3), heat=(0.2, 0.2), dust=(0.3, 0.3), look=(18.0, 24.0), school=4, gape=0.8),
       over_all(clock((62.0, 68.0)), tag("Spring here", 0.4, sub="breeding season")), name="the season matters"),
-    B(1, river_under(beads=(0.3, 0.3), heat=(0.2, 0.2), dust=(0.3, 0.32), look=(40.0, 44.0), school=4, gape=0.6), tag("Autumn in the south", 0.3, sub="life slowing for winter")),
+    B(1, river_under(beads=(0.3, 0.3), heat=(0.2, 0.2), dust=(0.3, 0.32), look=(24.0, 30.0), school=4, gape=0.6), tag("Autumn in the south", 0.3, sub="life slowing for winter")),
 ]
 c6a = [
     B(0, riverbank(phase="rise", view_az=(-10.0, -12.0), pitch=(4.0, 3.5), heat=(0.2, 0.15), dust=(0.32, 0.35), slosh=(0.8, 1.2), level=(0.0, 0.6), beads=(0.2, 0.2), mist=(0.0, 0.0)),
@@ -120,11 +120,11 @@ c6a = [
 c6b = [
     B(0, surge_scene(rise=(0.2, 1.0)), name="the surge", cut=True),
     B(1, surge_scene(rise=(1.0, 1.0), under=(0.0, 0.9), speed=1.2), name="again"),
-    B(2, river_under(beads=(0.6, 0.8), murk=(0.8, 0.9), dust=(0.4, 0.4), heat=(0.15, 0.15), fish=(0.4, 0.2), look=(40.0, 38.0)), name="glass into the mud"),
+    B(2, burial_scene(fill=(0.25, 0.55), zoom=(1.0, 1.08)), cut=True, name="glass into the mud"),
 ]
 c6c = [
-    B(0, river_under(beads=(0.5, 0.4), murk=(0.85, 0.7), dust=(0.42, 0.42), heat=(0.1, 0.1), fish=(0.0, 0.0), look=(38.0, 44.0)), clock((90.0, 100.0)), name="what drove it"),
-    B(1, slice_scene(view=WIDE, tmin=(0.0, 0.0), show=("crater", "tanis", "P", "S", "rayleigh")),
+    B(0, slice_scene(view=WIDE, tmin=(4.0, 13.5), show=("crater", "tanis", "P", "S", "rayleigh")), over_all(names(at=0.0), clock((90.0, 100.0))), cut=True, name="what drove it"),
+    B(1, slice_scene(view=WIDE, tmin=(13.5, 13.5), show=("crater", "tanis", "P", "S", "rayleigh")),
       over_all(names(at=0.0), serif("a tsunami: at least 18 hours away", 1.6, y=H * 0.86, size=60))),
 ]
 c7a = [
@@ -140,8 +140,8 @@ c7b = [
 ]
 c7c = [
     B(0, slice_scene(view=WIDE, tmin=(0.0, SND), show=("crater", "tanis", "sound")), over_all(names(at=0.0), slice_label("sound", "335 m/s", 0.8, dy=-44, size=32)), cut=True, name="the slowest messenger"),
-    B(1, river_under(beads=(0.2, 0.1), murk=(0.9, 1.0), dust=(0.6, 0.65), fish=(0.0, 0.0), look=(30.0, 26.0)),
-      serif("under more than a metre of mud and glass", 0.6, y=H * 0.86, size=58)),
+    B(1, burial_scene(fill=(0.8, 1.0), zoom=(1.7, 1.85), center=(0.22, 0.42), rain=0.4),
+      serif("under more than a metre of mud and glass", 0.6, y=H * 0.86, size=58), cut=True),
 ]
 c7d = [
     B(0, sky_up(dust=(0.5, 0.75), dark=(0.0, 0.3), spin=(0.0, 5.0), canopy=1.0), clock((180.0, 360.0)), cut=True, name="dust settles"),
@@ -166,8 +166,8 @@ c8c = [
     B(2, amber_scene(light=(0.3, 0.6), zoom=(1.16, 1.22), focus=(0.7, 1.0)), tag("Same chemistry as the crater's black glass", 0.4)),
 ]
 c8d = [
-    B(0, dig_scene(push=(1.0, 0.6), mark=(1.0, 0.6)), cut=True, name="more proof"),
-    B(1, dig_scene(push=(0.6, 0.3), mark=(0.6, 1.0)), serif("a clock written in mud", "clock", y=H * 0.86)),
+    B(0, burial_scene(fill=(1.0, 1.0), zoom=(2.3, 2.6), center=(0.52, 0.64), rain=0.0, glint=0.5), cut=True, name="more proof"),
+    B(1, burial_scene(fill=(1.0, 1.0), zoom=(2.6, 2.8), center=(0.52, 0.64), rain=0.0, glint=1.0), serif("a clock written in mud", "clock", y=H * 0.86)),
 ]
 end1 = [B(0, amber_scene(light=(0.6, 0.0), zoom=(1.22, 1.3), focus=(1.0, 0.5)), serif("The sound came last.", "sound", y=H * 0.86), cut=True, name="the sound came last")]
 next_ = [

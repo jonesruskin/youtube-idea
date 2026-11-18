@@ -218,7 +218,7 @@ META = dict(
         signature_shot="from under the river, the sky shrinks to a circle of light full of shooting stars while glass beads sink past a paddlefish",
     ),
     shots={"river_under": "pov", "riverbank": "pov", "sky_up": "pov", "surge_scene": "pov", "slice_scene": "diagram",
-           "xray_scene": "micro", "amber_scene": "micro", "dig_scene": "interior", "next_scene": "orbital", "endcard": "title",
+           "xray_scene": "micro", "amber_scene": "micro", "dig_scene": "interior", "burial_scene": "diagram", "next_scene": "orbital", "endcard": "title",
            "clock_map": "map"},
     alts=["The Dinosaur Asteroid Hit Mexico. Its Sound Reached Dakota Last.",
           "3,000 km From the Dinosaur Asteroid, Everything Arrived in the Wrong Order"],

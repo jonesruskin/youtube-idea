@@ -1069,3 +1069,124 @@ def next_scene(t_fly=(0.0, 1.0)):
         img = img + lay + fast_blur(lay, 4) * 0.7
         return img, dict(exposure=1.2, bloom=0.5, grain=0.01)
     return f
+
+
+# ---------------------------------------------------------------- the river, cut open
+SW, SH = 2880, 1620                                   # world texture size (1.5x screen) so close-ups stay sharp
+
+
+@functools.lru_cache(1)
+def _section_tex():
+    """Static textures for the cutaway: rock grain, lamina wobble, clast noise, bead positions."""
+    grain = cv2.resize(fbm(960, 540, scale=10, octaves=5, seed=201), (SW, SH))
+    wob = cv2.resize(fbm(720, 405, scale=6, octaves=3, seed=202), (SW, SH))
+    clast = cv2.resize(fbm(720, 405, scale=4, octaves=4, seed=203), (SW, SH))
+    r = rng_at(204)
+    n = 9000
+    bx, by = r.uniform(0, SW, n), r.uniform(0, SH, n)
+    bs, bc = r.uniform(0.6, 1.6, n), r.uniform(0, 1, n)
+    return grain, wob, clast, (bx, by, bs, bc)
+
+
+def _channel(X):
+    """Channel floor depth (world px) across the section: a broad, slightly asymmetric U."""
+    x0, x1 = SW * 0.10, SW * 0.90
+    s = np.clip((X - x0) / (x1 - x0), 0, 1)
+    return np.where((X > x0) & (X < x1), (np.sin(np.pi * s) ** 0.7) * (1 + 0.12 * (s - 0.5)), 0.0)
+
+
+@scene_factory(keys=[])
+def burial_scene(fill=(0.3, 0.6), zoom=(1.0, 1.06), center=(0.5, 0.55), rain=1.0, glint=0.0):
+    """The river channel cut open like a road cut, seen side-on: older floodplain mud on either side, dark water in
+    the channel, and the new deposit building up from the bed: two chaotic surge beds full of logs and fish, then
+    fine laminae peppered with glass beads; beads still sink through the water above. fill 0..1 (1 = buried)."""
+    grain, wob, clast, (bx, by, bs, bc) = _section_tex()
+    g0 = SH * 0.30                                    # ground surface
+    dep = SH * 0.50                                   # channel depth at the deepest point
+
+    def f(ctx, t, u, fi):
+        e = ease(u)
+        z = lerp(zoom[0], zoom[1], e)
+        fl = lerp(fill[0], fill[1], e)
+        cx, cy = center[0] * SW, center[1] * SH
+        sc = (SW / W) / z
+        xs, ys = grid()
+        X = (xs - W / 2) * sc + cx
+        Y = (ys - H / 2) * sc + cy
+        mx, my = X.astype(np.float32), Y.astype(np.float32)
+        S = lambda tex: cv2.remap(tex, mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+        gr, wb, cl = S(grain), S(wob), S(clast)
+        floor = g0 + dep * _channel(X)                # channel bottom y
+        inch = (Y > g0) & (Y < floor)
+        # old floodplain: grey-green mudstone in thick bands
+        band = np.sin((Y + 40 * wb) / 23.0) * 0.5 + 0.5
+        fl_lam = np.sin((Y + 25 * wb) / 5.5) * 0.5 + 0.5
+        old = np.array([0.22, 0.21, 0.18], np.float32) * (0.78 + 0.18 * band[..., None] + 0.08 * fl_lam[..., None]) * (0.88 + 0.2 * gr[..., None])
+        # sky and far bank above the ground line
+        sky_c = np.array([0.30, 0.22, 0.14], np.float32) * (0.6 + 0.4 * clamp((g0 - Y) / 600)[..., None])
+        ridge = 34 + 46 * (0.5 + 0.5 * np.sin(X / 210.0) * np.cos(X / 77.0)) + 18 * (wb - 0.5)
+        trees = (Y > g0 - ridge) & (Y <= g0)
+        img = np.where((Y <= g0)[..., None], np.where(trees[..., None], np.float32(0.03), sky_c), old)
+        # the new deposit, measured as height above the channel floor (laminae drape the U)
+        top = floor - (floor - g0) * fl               # current fill surface
+        hfrac = np.where(inch, (floor - Y) / np.maximum(floor - g0, 1), -1.0)
+        lam = hfrac + 0.012 * (wb - 0.5)
+        sed = inch & (Y >= top)
+        surge = (lam < 0.22) | ((lam > 0.36) & (lam < 0.52))           # two chaotic surge beds
+        lamin = np.sin(lam * 260.0) * 0.5 + 0.5
+        fine = np.array([0.46, 0.38, 0.28], np.float32) * (0.75 + 0.2 * lamin[..., None]) * (0.85 + 0.25 * gr[..., None])
+        chaos = np.array([0.33, 0.27, 0.20], np.float32) * (0.72 + 0.3 * cl[..., None] + 0.25 * (gr[..., None] - 0.5)) * (0.9 + 0.1 * np.sin(lam * 90.0)[..., None])
+        sedc = np.where(surge[..., None], chaos, fine)
+        img = np.where(sed[..., None], sedc, img)
+        # water above the deposit: dark, silty, lit a little from the surface
+        wat = inch & (Y < top)
+        wl = np.array([0.05, 0.075, 0.06], np.float32) * (0.5 + 0.8 * clamp(1 - (Y - g0) / dep)[..., None]) * (0.85 + 0.3 * wb[..., None])
+        img = np.where(wat[..., None], wl, img)
+        # fish and logs caught in the surge beds (world-placed, only where already deposited)
+        m_f = np.zeros((H, W), np.float32)
+        m_l = np.zeros((H, W), np.float32)
+        r = rng_at(205)
+        for k in range(14):
+            wx = r.uniform(SW * 0.2, SW * 0.8)
+            lf = r.choice([r.uniform(0.04, 0.18), r.uniform(0.39, 0.5)])
+            wy = g0 + dep * _channel(np.array([wx]))[0] * (1 - lf)
+            fy = g0 + dep * _channel(np.array([wx]))[0]
+            if fy - (fy - g0) * lf < fy - (fy - g0) * fl:                # not yet buried
+                continue
+            px, py = (wx - cx) / sc + W / 2, (wy - cy) / sc + H / 2
+            if k % 3 == 0:
+                _log(m_l, px, py, r.uniform(160, 420) / sc, r.uniform(-0.3, 0.3), r.uniform(18, 34) / sc)
+            else:
+                m_f = np.maximum(m_f, _fish_mask(px, py, r.uniform(120, 260) / sc, r.uniform(-0.5, 0.5) + np.pi * (k % 2),
+                                                 kind="sturgeon" if k % 4 == 1 else "paddle", bend=r.uniform(-0.6, 0.6)))
+        img = img * (1 - 0.85 * m_l[..., None]) + m_l[..., None] * np.array([0.06, 0.04, 0.025], np.float32)
+        img = img * (1 - 0.85 * m_f[..., None]) + m_f[..., None] * np.array([0.05, 0.045, 0.04], np.float32)
+        # glass beads: in the deposit (densest in the fine layers) and sinking through the water
+        sx_, sy_ = (bx - cx) / sc + W / 2, (by - cy) / sc + H / 2
+        onscr = (sx_ > -4) & (sx_ < W + 4) & (sy_ > -4) & (sy_ < H + 4)
+        flo = g0 + dep * _channel(bx)
+        inb = (by > g0) & (by < flo)
+        hf = np.where(inb, (flo - by) / np.maximum(flo - g0, 1), -1)
+        dens = np.where((hf > 0.22) & (hf < 0.36) | (hf > 0.52), 1.0, 0.25)
+        buried = inb & (by >= flo - (flo - g0) * fl) & (bc < dens)
+        tw = 1.0 + glint * 1.6 * np.clip(np.sin(t * 2.5 + bc * 40.0), 0, 1) ** 8
+        col = np.array([[0.95, 0.80, 0.55]], np.float32) * (0.35 + 0.5 * bc[:, None]) * tw[:, None]
+        sel = buried & onscr
+        img = splat_points(img, sx_[sel], sy_[sel], col[sel] * 1.8, sigma=max(0.8, 1.5 / sc))
+        if rain > 0:                                   # sinking beads in the water column (15 cm/s; slow on screen)
+            r2 = rng_at(206)
+            k_ = 700
+            rx = r2.uniform(SW * 0.12, SW * 0.88, k_)
+            ry = (r2.uniform(0, 1, k_) + t * 0.035) % 1.0
+            fl2 = g0 + dep * _channel(rx)
+            topw = fl2 - (fl2 - g0) * fl
+            wy = g0 + ry * np.maximum(topw - g0, 0)
+            ok = topw > g0 + 4
+            px, py = (rx - cx) / sc + W / 2, (wy - cy) / sc + H / 2
+            img = splat_points(img, px[ok], py[ok], np.tile(np.array([[0.7, 0.6, 0.45]], np.float32), (int(ok.sum()), 1)) * 0.35 * rain,
+                               sigma=max(0.6, 1.0 / sc))
+        # soft front light falling off with depth, and a faint vignette
+        lit = 0.85 + 0.25 * clamp(1 - (Y - g0) / (dep * 1.3))
+        img = img * lit[..., None]
+        return img * (0.75 - 0.2 * clamp((z - 1.4) / 1.0)), dict(exposure=1.1, bloom=0.25, grain=0.02)
+    return f
