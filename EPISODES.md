@@ -5,6 +5,8 @@ Upload in this order. Each episode's end teases the **next row**, so the order i
 
 **Review rule (founder, Nov 2026):** after the render, the preview is shown in the chat first; the 1080p master goes to Git LFS only after approval (`MASTER=1 tools/finalize.sh <ep>`).
 
+**Creative rule (founder, Nov 2026):** no two episodes may share a story shape, hook, ending, thumbnail idea or signature shot, and consecutive episodes must change narrator, point of view, time scale and palette. Enforced by `cinema/tools/creative_gate.py` (see `docs/QUALITY_GATE.md`). The hook notes in the table below are old placeholders, not thumbnail text.
+
 **How to upload:** open the episode's folder in `renders/`. Everything you need is in it: the master video (named exactly like the YouTube title), `title.txt`,
 `description.txt`, `tags.txt`, `thumbnail.png`, `captions.srt`, `pinned_comment.txt`. The step-by-step checklist is
 `UPLOAD.md`. After uploading, add the video to the playlist **Gravity Dial: The Universe, Simulated**, then set its end
@@ -12,11 +14,11 @@ screen to point at the previous episode.
 
 **Status:** ✅ ready to upload · 🎬 in production · 📝 planned
 
-| # | Title (working, final title is chosen at render time) | Thumbnail hook | The dial we turn | Status | Folder |
+| # | Title (working, final title is chosen at render time) | Old hook note (NOT a thumbnail: every thumbnail is a new idea, see the creative gate) | The dial we turn | Status | Folder |
 |---|---|---|---|---|---|
 | 1 | We Let a Black Hole Loose in Our Solar System | 30 YEARS LEFT | A 10-Sun black hole drifts through the Solar System | ✅ | `renders/01_black_hole` |
 | 2 | We Dropped a Ship Into Jupiter. Here's How Far It Got. | STILL NO GROUND | A titanium ship falls into Jupiter until something stops it | ✅ | `renders/02_jupiter` |
-| 3 | A Rogue Planet Is Coming. The Date It Arrives Decides Everything. | 11 DAYS | A 5-Jupiter rogue crosses Earth's orbit; 730 runs, one per arrival date: closer, farther, thrown out, or the Sun steals the Moon | 🎬 | `renders/03_rogue_planet` |
+| 3 | A Rogue Planet Is Coming. The Date It Arrives Decides Everything. | *(calendar date circled; rogue outside the window)* | A 5-Jupiter rogue crosses Earth's orbit; 730 runs, one per arrival date: closer, farther, thrown out, or the Sun steals the Moon | ✅ | `renders/03_rogue_planet` |
 | 4 | Every Minute After the Asteroid That Killed the Dinosaurs | T+20 MINUTES | Minute-by-minute clock from impact to one year after | 📝 | |
 | 5 | Apophis: The Asteroid That Will Pass Closer Than Our Satellites | APRIL 13, 2029 | The real 2029 flyby, simulated, and the impact we avoided | 📝 | |
 | 6 | The Night Betelgeuse Explodes | TONIGHT? | Night-by-night sky after the supernova; the neutrino warning comes first | 📝 | |

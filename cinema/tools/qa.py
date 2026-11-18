@@ -383,8 +383,14 @@ if mode == "pre":
     originality()
     claims()
     motion_continuity()
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    from creative_gate import creative_pre
+    from engine.render import episode_layout
+    creative_pre(ep, res, _script(), episode_layout(ep), B)
 else:
     post()
+    from creative_gate import creative_post
+    creative_post(ep, res, _script(), B)
 rep = os.path.join(B, f"qa_report_{mode}.md")
 order = {"FAIL": 0, "WARN": 1, "PASS": 2, "INFO": 3}
 results.sort(key=lambda x: order[x[0]])

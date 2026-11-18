@@ -82,6 +82,28 @@ and vent shots appeared again in Episode 3).
 - **At least three signature set pieces per episode** that the channel has never shown before (written in the
   script's docstring).
 
+## Creative distinctness (founder, Nov 2026; every episode from #4) — `tools/creative_gate.py`
+The founder's review of Episode 3: "make each video distinct and not a copy of one another… bring creative
+variations to the underlying story… don't stick to your defaults." Looking back honestly, Episodes 1 and 3 were the
+same story (an intruder arrives, then hot / cold / thrown-out endings, then "So, should you worry?"), all three used
+the same second-person narrator, and Ep3 reused 16 narration phrases from Ep1. Every one of these is now a check:
+- **creative-brief:** `<ep>/BRIEF.md` is written *before* the script, with `## Story shapes considered` (≥ 3),
+  `## Chosen` (and why) and `## Unlike earlier episodes` (≥ 3 concrete differences).
+- **creative-ledger:** `META["creative"]` names the story shape, hook, ending, thumbnail device and signature shot
+  (none may resemble any shipped episode), plus point of view, narrator, time scale and palette (none may resemble
+  the last two). Shipped episodes live in `cinema/creative_ledger.json`; add each one when its master is approved.
+- **title-form:** no title opens with the same two words as an earlier one or shares a 3-word phrase with it.
+- **script-reuse:** no 5-word narration phrase lifted from an earlier episode (more than 2 fails).
+- **shot-grammar:** `META["shots"]` classifies every scene (pov, ride, orbital, macro, micro, map, data, diagram,
+  title, interior, archive). Needs ≥ 4 kinds, ≥ 25 % of the runtime seen from inside the world (pov/ride),
+  ≤ 30 % diagrams and data, and no single scene over 30 % of the episode.
+- **thumbnail-text:** no numbers, ≤ 3 words. The number-and-time headline is retired for good.
+- **thumbnail-look:** the thumbnail must not resemble any earlier one (colour histogram + structure), and the two
+  alternates (B, C) must be genuinely different ideas, not a crop or a variant of A.
+  The bar is Ep3's thumbnail A: an everyday object that makes the cosmic event personal (the circled calendar date).
+- **frame-reuse (post):** ≤ 2 % of the final video's frames may match any earlier episode's frames.
+- **self-repeat (post):** ≤ 6 % of frames may repeat a picture from more than 45 s earlier in the same episode.
+
 ## Lessons from Episode 1 (black hole)
 1. **One shot per segment is not enough.** Plan visuals per *line* (beat sheet) before writing any code.
 2. **Integrate, don't paste.** Use atmospheric perspective, light wrap and grain shared across every layer.
