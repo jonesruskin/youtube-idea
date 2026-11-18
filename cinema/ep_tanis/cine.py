@@ -653,7 +653,7 @@ def _fmt(m):
     return f"T + {hh}:{mm:02d}:{ss:02d}"
 
 
-def _dial(img, m, cx, cy, R, a):
+def _dial(img, m, cx, cy, R, a, hand_s=True):
     """The count as a picture: a stopwatch whose hand sweeps once a minute and whose outer arc fills toward the
     sound's arrival at 2 h 32 min (readable with the sound off and the captions covered)."""
     lay = np.zeros(img.shape[:2], np.float32)
@@ -661,7 +661,7 @@ def _dial(img, m, cx, cy, R, a):
     frac = min(1.0, m / 151.7)
     if frac > 0:
         cv2.ellipse(lay, (int(cx), int(cy)), (int(R * 1.18), int(R * 1.18)), -90, 0, 360 * frac, 1.0, max(2, int(R * 0.09)), cv2.LINE_AA)
-    ang = (m * 60.0 % 60.0) / 60.0 * 2 * np.pi
+    ang = ((m * 60.0 % 60.0) / 60.0 if hand_s else (m % 60.0) / 60.0) * 2 * np.pi
     cv2.line(lay, (int(cx), int(cy)), (int(cx + R * 0.85 * np.sin(ang)), int(cy - R * 0.85 * np.cos(ang))), 1.0, max(2, int(R * 0.07)), cv2.LINE_AA)
     cv2.circle(lay, (int(cx), int(cy)), max(2, int(R * 0.08)), 1.0, -1, cv2.LINE_AA)
     cv2.rectangle(lay, (int(cx - R * 0.12), int(cy - R * 1.42)), (int(cx + R * 0.12), int(cy - R * 1.25)), 1.0, -1, cv2.LINE_AA)
@@ -676,7 +676,8 @@ def clock(span_min, ledger=False, x=W - 120, y=H - 92, show_from=0.0, big=False)
         if a <= 0:
             return img
         m = lerp(span_min[0], span_min[1], clamp(t / max(ctx.dur, 1e-3)))
-        img = _dial(img, m, W / 2, H * 0.5, 150, a) if big else _dial(img, m, x - 250, y + 6, 26, 0.9 * a)
+        hs = abs(span_min[1] - span_min[0]) < 1.0
+        img = _dial(img, m, W / 2, H * 0.5, 150, a, hs) if big else _dial(img, m, x - 250, y + 6, 26, 0.9 * a, hs)
         img = put_text(img, _fmt(m), x, y, 34, INK, 0.92 * a, "rc", kind="jbm", tracking=0.06, shadow=0.7)
         img = put_text(img, "AFTER IMPACT", x, y + 34, 15, (0.75, 0.74, 0.70), 0.8 * a, "rc", kind="jbm5", tracking=0.3, shadow=0.6)
         if ledger:

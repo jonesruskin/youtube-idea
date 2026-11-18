@@ -377,7 +377,7 @@ def _sph_poly(img, view, lat, lon, color, width=2.0, alpha=1.0, glow=5.0, alt=0.
 def globe(lat=(30.0, 30.0), lon=(-95.0, -95.0), R=(520.0, 520.0), cy=H / 2, clouds=0.3, borders=(0.0, 0.0),
           tanis=(0.0, 0.0), chx=(0.0, 0.0), link=(0.0, 0.0), rock=(0.0, 0.0), impact=(0.0, 0.0), flash=(0.0, 0.0),
           arcs=(0.0, 0.0), sound=(0.0, 0.0), states=(), seis=(0.0, 0.0), haze=(0.0, 0.0), sun=(0.35, -0.8, 0.5),
-          apophis=(0.0, 0.0), geo_ring=0.0, style="day", compare=(0.0, 0.0), iss=0.0, crater=(0.0, 0.0)):
+          apophis=(0.0, 0.0), geo_ring=0.0, style="day", compare=(0.0, 0.0), iss=0.0, crater=(0.0, 0.0), soot=(0.0, 0.0)):
     """The real planet. tanis/chx: markers fade in; link: the 3,050 km line draws; rock: the asteroid falling in
     (0..1 = far .. contact); impact: crater glow; flash: whole-screen flash; arcs: glass fly out on Kepler arcs and
     come down (0..1 of the flight); sound: minutes after impact, the sound ring spreading; seis: minutes, surface
@@ -390,6 +390,14 @@ def globe(lat=(30.0, 30.0), lon=(-95.0, -95.0), R=(520.0, 520.0), cy=H / 2, clou
         LN = Lines()
         for name, a in states:
             img = fill_state(img, v, name, (0.9, 0.75, 0.45), a)
+        so = L(soot)
+        if so > 0:                                      # a dark soot veil spreading out from the crater over the globe
+            xs, ys = grid()
+            la_, lo_, ins_, _, pv = v.inverse(xs, ys)
+            dang = np.degrees(np.arccos(np.clip(pv @ _xyz(*CHX), -1, 1)))
+            nzs = cv2.resize(fbm(240, 135, scale=5, octaves=4, seed=341), (W, H))
+            cover = clamp((so * 180 - dang) / 25.0 + (nzs - 0.5) * 0.8) * ins_
+            img = img * (1 - 0.8 * cover[..., None]) + cover[..., None] * np.array([0.05, 0.04, 0.035], np.float32)
         # the seismic surface wave (a ring on the ground moving at 3.9 km/s)
         sm = L(seis)
         if sm > 0:
@@ -608,7 +616,8 @@ def _layer_colour(r, th, t, conv, core, grain):
 
 @scene_factory(keys=[])
 def earth_cut(cx=(0.0, 0.0), cy=(0.0, 0.0), scale=(0.075, 0.075), tsec=(0.0, 0.0), show=("P",), plume=(0.0, 0.0),
-              sight=0.0, path=0.0, rayleigh=(0.0, 0.0), markers=1.0, quake_glow=0.0, chord=0.0, pdot=(-1.0, -1.0), shell=1.0):
+              sight=0.0, path=0.0, rayleigh=(0.0, 0.0), markers=1.0, quake_glow=0.0, chord=0.0, pdot=(-1.0, -1.0), shell=1.0,
+              rays=0.0, eye=0.0):
     """The planet cut open along Chicxulub - Tanis. center (km, in the section's frame: (0, 6371) is the surface
     midpoint), scale px per km, tsec: seconds after impact for the wavefronts in `show` ("P", "S"); plume: height of
     the fireball (km); sight: Tanis's line of sight along the horizon; path: the P ray drawn 0..1; rayleigh: seconds
@@ -701,8 +710,24 @@ def earth_cut(cx=(0.0, 0.0), cy=(0.0, 0.0), scale=(0.075, 0.075), tsec=(0.0, 0.0
             px_, py_ = Xk - tx, Yk - ty
             below_h = (px_ * ux + py_ * uy) < 0.0                 # under the horizon line through the river
             hidden = (r > M.R_E) & below_h & (r < M.R_E + 1400) & ((px_ * dx + py_ * dy) > 200)
-            img = np.where(hidden[..., None], img * 0.6 + np.array([0.25, 0.04, 0.03], np.float32) * sight, img)
+            img = np.where(hidden[..., None], img * 0.85, img)
             LN.add([P2(tx + dx * s_, ty + dy * s_) for s_ in np.linspace(0, 4500 * sight, 40)], (0.9, 0.95, 1.0), 2, 0.7)
+        if rays > 0:                                 # straight light rays from the flash: those aimed at the river hit the planet
+            a = np.radians(TH_C)
+            cxp, cyp = M.R_E * np.cos(a), M.R_E * np.sin(a)
+            for k_, ang in enumerate(np.linspace(-0.24, 0.10, 8)):
+                d_ = np.array([-np.sin(a) * -1, np.cos(a) * -1])        # local horizontal toward Tanis (clockwise)
+                up = np.array([np.cos(a), np.sin(a)])
+                dirv = d_ * np.cos(ang) + up * np.sin(ang)
+                ts_ = np.linspace(0, 4200, 300)
+                pts = np.stack([cxp + dirv[0] * ts_, cyp + dirv[1] * ts_], 1)
+                rr2 = np.hypot(pts[:, 0], pts[:, 1])
+                hit = np.where(rr2[5:] < M.R_E)[0]
+                end = (hit[0] + 5) if len(hit) else len(ts_)
+                LN.add([P2(x_, y_) for x_, y_ in pts[:max(2, int(end * min(1.0, rays)))]], (1.0, 0.85, 0.5), 2, 0.8)
+                if len(hit) and rays >= 1.0:
+                    x_, y_ = P2(*pts[end - 1])
+                    img = glow_dot(img, x_, y_, 4, (1.0, 0.4, 0.2), 0.8)
         if chord > 0:                                # the straight line from the river to the crater runs through rock
             a1, a2 = np.radians(TH_T), np.radians(TH_C)
             p1, p2 = np.array([np.cos(a1), np.sin(a1)]) * M.R_E, np.array([np.cos(a2), np.sin(a2)]) * M.R_E
@@ -715,6 +740,13 @@ def earth_cut(cx=(0.0, 0.0), cy=(0.0, 0.0), scale=(0.075, 0.075), tsec=(0.0, 0.0
             ang = np.radians(TH_C) - pr[0][k]
             x, y = P2(pr[1][k] * np.cos(ang), pr[1][k] * np.sin(ang))
             img = glow_dot(img, x, y, 7, (0.7, 0.95, 1.0), 1.5)
+        if eye > 0:                                  # an eye at the river, looking toward the crater
+            a = np.radians(TH_T)
+            x, y = P2(M.R_E * np.cos(a) * 1.0006, M.R_E * np.sin(a) * 1.0006)
+            ex_ = np.zeros((H, W), np.float32)
+            cv2.ellipse(ex_, (int(x), int(y - 26)), (26, 13), 8, 0, 360, 1.0, 3, cv2.LINE_AA)
+            cv2.circle(ex_, (int(x - 6), int(y - 25)), 6, 1.0, -1, cv2.LINE_AA)
+            img = img + (ex_ * eye)[..., None] * np.array([0.8, 1.0, 0.95], np.float32)
         if markers > 0:
             for th_, c in ((TH_C, EMB), (TH_T, TEAL)):
                 a = np.radians(th_)
@@ -999,7 +1031,7 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
             xk = (r.uniform(-0.2, 1.1) * W + facing * tc * r.uniform(30, 55) + 0 * L(pan)) % (W * 1.4) - W * 0.2
             hy0 = L(hero_y)
             band = (0.16, 0.30) if hy0 > 0.45 else (0.62, 0.74)
-            yk = H * (band[0] + (band[1] - band[0]) * ((k * 0.37) % 1)) + 12 * np.sin(tc * 0.6 + k)
+            yk = H * (band[0] + (band[1] - band[0]) * ((k * 0.61 + 0.13) % 1)) + 12 * np.sin(tc * 0.6 + k) + 70 * (k % 2)
             img = put_fish(img, "paddle", xk, yk, size[0] * r.uniform(0.35, 0.55), facing, gape=0.7, tail=(tc * 1.2 + k * 0.37) % 2 - 1,
                            fog=0.55, fogc=(0.03, 0.07, 0.06), tone=_tone(yk, L(murk)), tint=_tint(L(red)))
         for k in range(int(round(sturgeon))):
@@ -1033,7 +1065,7 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
                     ph = ((tc * 0.8 + k * 0.13 + j / 3) % 1)
                     img = ring_px(img, px, py, 6 + 50 * ph, (0.5, 0.95, 1.0), 1.0, se * 0.5 * (1 - ph), 2)
         if bd > 0:
-            img = _beads_fall(img, tc, int(260 * bd), sy_, by_, seed=9, size=3.4, speed=(30, 60), glow=3.2)       # near
+            img = _beads_fall(img, tc, int(320 * bd), sy_, by_, seed=9, size=4.6, speed=(30, 60), glow=3.6)       # near
         gs = L(glow_surface)
         if gs > 0:
             xs, ys = grid()
@@ -1194,7 +1226,7 @@ def _chan(x):
 @scene_factory(keys=[], vectors=("focus",))
 def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0), fish_on_bank=(0.0, 0.0),
             fish_in=1.0, red=(0.0, 0.0), dust=(0.0, 0.0), zoom=(1.0, 1.0), focus=(0.5, 0.5), shake=(0.0, 0.0), debris=(0.0, 0.0),
-            muddy=(0.0, 0.0), ash=(0.0, 0.0), boom=(0.0, 0.0)):
+            muddy=(0.0, 0.0), ash=(0.0, 0.0), boom=(0.0, 0.0), jolt=(0.0, 0.0), sway=(0.0, 0.0), roll=(0.0, 0.0)):
     """The river cut open like an aquarium, seen side-on: banks with trees, the channel full of water, fish inside.
     level: water height above normal (1.0 = up over the banks by ~10 m); slosh: the surface rocking side to side;
     mud: the channel filling with mud from the bottom (1 = full); rain: glass falling from the sky; fish_on_bank:
@@ -1318,6 +1350,19 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
                 cov = float(clamp((top_mud[int(fx)] - fy) / -20.0 + 1)) if fy > top_mud[int(fx)] else 0.0
                 img = put_fish(img, "sturgeon" if k % 2 else "paddle", fx, fy, 210, 1, gape=0.0, tail=0.3,
                                tone=0.35, tint=(0.75, 0.66, 0.52), tilt=10 * (k % 3 - 1), fog=0.35 + 0.45 * cov, fogc=(0.20, 0.15, 0.10))
+        jl, sw_, rl_ = L(jolt), L(sway), L(roll)
+        if jl > 0 or sw_ > 0 or rl_ > 0:                       # the ground moves: up-down jolt, side to side, rolling waves
+            gm = clamp((ys - (g - 260)) / 60.0)                 # trees and ground move, the sky does not
+            dxm = sw_ * 26 * np.sin(tc * 9.0) * gm
+            dym = (jl * 30 * np.sin(tc * 23.0) * np.exp(-((tc * 3) % 1) * 3) + rl_ * 34 * np.sin(xs * 0.008 - tc * 3.2)) * gm
+            img = cv2.remap(img.astype(np.float32), (xs - dxm).astype(np.float32), (ys - dym).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+            if jl > 0.3 or sw_ > 0.3:
+                k_ = int(1 + 10 * max(jl, sw_))
+                img = cv2.blur(img, (k_ if sw_ > jl else 1, k_ if jl >= sw_ else 1))
+            r = rng_at(813 + int(tc * 4))
+            n = int(120 * max(jl, sw_, rl_))                    # dust shaken off the banks
+            px, py = r.uniform(0, W, n), g + r.uniform(-30, 10, n)
+            img = splat_points(img, px, py, np.tile(np.array([[0.45, 0.38, 0.28]], np.float32), (n, 1)) * 0.5, sigma=3.0)
         ah = L(ash)
         if ah > 0:                                             # ash and soot drifting down
             r = rng_at(812)
@@ -1328,8 +1373,9 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
         bm = L(boom)
         if bm > 0:                                             # the sound: a pressure front sweeping in from the left
             fx0 = -W * 0.2 + bm * W * 1.5
-            band = (np.exp(-((xs - fx0) / 30.0) ** 2) + 0.5 * np.exp(-((xs - fx0 + 90) / 25.0) ** 2)) * (ys < g)
-            img = img * (1 + 1.6 * band[..., None]) + band[..., None] * np.array([0.25, 0.22, 0.18], np.float32)
+            rr_ = np.hypot(xs - (fx0 - W * 0.8), (ys - g) * 1.0)
+            band = np.exp(-((rr_ - W * 0.8) / 70.0) ** 2) * (ys < g + 4)
+            img = img * (1 + 1.1 * band[..., None]) + band[..., None] * np.array([0.18, 0.16, 0.13], np.float32)
             puff = np.exp(-np.clip(fx0 - xs, 0, None) / 300.0) * (xs < fx0) * np.exp(-np.clip(g - ys, 0, None) / 120.0) * (ys < g + 6)
             img = img * (1 - 0.3 * puff[..., None]) + (puff * 0.45)[..., None] * np.array([0.55, 0.48, 0.40], np.float32)
         z = lerp(zoom[0], zoom[1], e)
@@ -1423,7 +1469,7 @@ def storm(view="window", strike=(1.0, 1.0), ring=(0.0, 0.0), thunder=(-1.0, -1.0
         rl = np.zeros((H, W), np.float32)
         for x, y in zip(rx, ry):
             cv2.line(rl, (int(x), int(y)), (int(x - 6), int(y + 26)), 1.0, 1, cv2.LINE_AA)
-        img = img + rl[..., None] * (0.04 + 0.25 * fl)
+        img = img + rl[..., None] * (0.12 + 0.2 * min(fl, 1.0))
         th = thunder[0]
         shake = np.exp(-(t - th) * 2.5) if (th >= 0 and t >= th) else 0.0
         if view == "window":
@@ -1432,7 +1478,6 @@ def storm(view="window", strike=(1.0, 1.0), ring=(0.0, 0.0), thunder=(-1.0, -1.0
             frame[int(H * 0.92):] = 1
             frame[:, :int(W * 0.04)] = 1
             frame[:, int(W * 0.96):] = 1
-            frame[:, int(W * 0.495):int(W * 0.505)] = 1
             frame[int(H * 0.465):int(H * 0.475), int(W * 0.04):int(W * 0.96)] = 1
             mug = np.zeros((H, W), np.float32)
             cv2.rectangle(mug, (int(W * 0.70), int(H * 0.83)), (int(W * 0.745), int(H * 0.92)), 1.0, -1, cv2.LINE_AA)
@@ -1557,7 +1602,8 @@ def droplet(temp=(1.0, 0.0), reentry=(0.0, 0.0), spin=0.0, stream=1.0):
         wk = np.zeros((H, W), np.float32)
         cv2.line(wk, (int(cx - 520), int(cy + 70)), (int(cx), int(cy)), 1.0, int(R * 1.2), cv2.LINE_AA)
         wk = fast_blur(wk, 22)
-        img = img + wk[..., None] * np.array([1.0, 0.5, 0.2], np.float32) * (0.9 * T) * (1 - clamp(lerp(*reentry, e) * 4))
+        wc_ = np.array([1.0, 0.5, 0.2], np.float32) * T + np.array([0.25, 0.45, 0.35], np.float32) * (1 - T)
+        img = img + wk[..., None] * wc_ * (0.25 + 0.65 * T) * (1 - clamp(lerp(*reentry, e) * 4))
         x0, x1, y0, y1 = _win(cx, cy, R * 6)
         yy, xx = np.mgrid[y0:y1, x0:x1].astype(np.float32)
         d = np.hypot(xx - cx, yy - cy) / R
@@ -1590,6 +1636,8 @@ def _fossil_slab(beads_on=True):
     stone = cv2.resize(fbm(480, 270, scale=7, octaves=6, seed=951), (W, H))
     fine = cv2.resize(fbm(960, 540, scale=30, octaves=3, seed=953), (W, H))
     img = np.array([0.33, 0.30, 0.25], np.float32) * (0.78 + 0.35 * stone[..., None] + 0.1 * fine[..., None])
+    crack = clamp((cv2.resize(fbm(320, 180, scale=3, octaves=4, seed=954), (W, H)) - 0.72) * 9)
+    img = img * (1 - 0.35 * cv2.GaussianBlur(crack, (0, 0), 0.8)[..., None])
     relief = np.zeros((H, W), np.float32)
     lines = np.zeros((H, W), np.float32)
     eyes = []
@@ -1657,7 +1705,11 @@ def fossil(zoom=(1.0, 1.15), focus=(0.5, 0.5), beads=1.0, life=(0.0, 0.0), sweep
             img = img * (1 + 0.45 * np.exp(-((xs - sw * W * 1.4 + W * 0.2) / 260) ** 2))[..., None]
         z = lerp(*zoom, e)
         if z != 1.0:
-            Mz = cv2.getRotationMatrix2D((focus[0] * W, focus[1] * H), 0, z)
+            fx_, fy_ = focus[0] * W, focus[1] * H
+            Mz = cv2.getRotationMatrix2D((fx_, fy_), 0, z)
+            k_ = clamp((z - 1.0) / 0.6)
+            Mz[0, 2] += (W / 2 - fx_) * k_
+            Mz[1, 2] += (H / 2 - fy_) * k_
             img = cv2.warpAffine(img, Mz, (W, H), borderMode=cv2.BORDER_REFLECT)
         return np.clip(img, 0, None), dict(exposure=1.2, bloom=0.25, grain=0.012)
     return f
@@ -1665,7 +1717,7 @@ def fossil(zoom=(1.0, 1.15), focus=(0.5, 0.5), beads=1.0, life=(0.0, 0.0), sweep
 
 # ========================================================================================================= badlands
 @scene_factory(keys=[])
-def badlands(push=(0.0, 0.2), diggers=1.0, pan=(0.0, 40.0), trench=1.0):
+def badlands(push=(0.0, 0.2), diggers=1.0, pan=(0.0, 40.0), trench=1.0, night=0.0):
     """North Dakota today: dry, striped badland hills under a big sky; a dig in the foreground cuts into the layer,
     with two people at work (kneeling, brushing) and survey flags."""
     def f(ctx, t, u, fi):
@@ -1679,6 +1731,10 @@ def badlands(push=(0.0, 0.2), diggers=1.0, pan=(0.0, 40.0), trench=1.0):
         cl = cv2.GaussianBlur(cv2.resize(fbm(160, 45, scale=2.5, octaves=5, seed=961), (W, H)), (0, 0), 8)
         ck = clamp((cl - 0.58) * 1.6) * clamp(1 - Y / (H * 0.55)) * 0.45
         sky = sky * (1 - 0.6 * ck[..., None]) + ck[..., None] * 0.9
+        if night > 0:
+            sky = sky * (1 - 0.9 * night) + np.array([0.02, 0.03, 0.07], np.float32) * night
+            sx, sy, sb = _stars()
+            sky = splat_points(sky.astype(np.float32), sx, sy * 0.5, np.repeat(sb[:, None], 3, 1).astype(np.float32) * night, sigma=0.7)
         img = sky
         # far buttes with horizontal stripes
         xr = np.arange(W)
@@ -1709,18 +1765,31 @@ def badlands(push=(0.0, 0.2), diggers=1.0, pan=(0.0, 40.0), trench=1.0):
                 y = (H * 0.70 - H * 0.62) * z + H * 0.62
                 cv2.line(img, (int(x), int(y)), (int(x), int(y - 60 * z)), (0.2, 0.2, 0.2), max(1, int(2 * z)), cv2.LINE_AA)
                 cv2.fillPoly(img, [np.array([(x, y - 60 * z), (x + 26 * z, y - 52 * z), (x, y - 44 * z)], np.int32)], (0.9, 0.35, 0.15), cv2.LINE_AA)
-        if diggers > 0:                                         # two people at work: kneeling, brushing
-            for k, fx_ in enumerate((0.42, 0.58)):
+        if diggers > 0:                                         # two people at work: one kneeling with a brush, one standing with a shovel
+            def person(cx_, base, h, kneel, shirt, k):
+                head = (int(cx_), int(base - h * (0.62 if kneel else 0.93)))
+                hip = (int(cx_ + (0.12 * h if kneel else 0)), int(base - h * (0.25 if kneel else 0.5)))
+                sh = (int(cx_), int(base - h * (0.52 if kneel else 0.8)))
+                cv2.line(img, sh, hip, shirt, max(3, int(h * 0.16)), cv2.LINE_AA)                       # torso
+                cv2.circle(img, head, max(3, int(h * 0.08)), (0.55, 0.40, 0.30), -1, cv2.LINE_AA)       # head
+                cv2.ellipse(img, (head[0], head[1] - int(h * 0.05)), (int(h * 0.13), int(h * 0.035)), 0, 0, 360, (0.80, 0.70, 0.45), -1, cv2.LINE_AA)  # hat
+                if kneel:
+                    cv2.line(img, hip, (int(cx_ - h * 0.15), int(base - h * 0.02)), (0.25, 0.25, 0.32), max(3, int(h * 0.12)), cv2.LINE_AA)
+                    cv2.line(img, (int(cx_ - h * 0.15), int(base - h * 0.02)), (int(cx_ + h * 0.2), int(base)), (0.25, 0.25, 0.32), max(3, int(h * 0.1)), cv2.LINE_AA)
+                    hand = (int(cx_ - h * 0.3 + 8 * np.sin(t * 6 + k)), int(base - h * 0.06))
+                    cv2.line(img, sh, hand, shirt, max(2, int(h * 0.08)), cv2.LINE_AA)
+                    cv2.line(img, hand, (hand[0] - int(h * 0.08), hand[1] + int(h * 0.04)), (0.85, 0.75, 0.5), max(2, int(h * 0.05)), cv2.LINE_AA)
+                else:
+                    for lx in (-0.06, 0.06):
+                        cv2.line(img, hip, (int(cx_ + lx * h * 2), int(base)), (0.25, 0.25, 0.32), max(3, int(h * 0.1)), cv2.LINE_AA)
+                    tip = (int(cx_ + h * 0.35), int(base - h * 0.02 - 6 * abs(np.sin(t * 3))))
+                    cv2.line(img, sh, (int(cx_ + h * 0.2), int(base - h * 0.45)), shirt, max(2, int(h * 0.08)), cv2.LINE_AA)
+                    cv2.line(img, (int(cx_ + h * 0.05), int(base - h * 0.75)), tip, (0.35, 0.25, 0.15), max(2, int(h * 0.04)), cv2.LINE_AA)
+                    cv2.ellipse(img, tip, (int(h * 0.07), int(h * 0.04)), 20, 0, 360, (0.5, 0.5, 0.52), -1, cv2.LINE_AA)
+            for k, (fx_, kneel, shirt) in enumerate(((0.44, True, (0.85, 0.45, 0.15)), (0.60, False, (0.20, 0.45, 0.70)))):
                 x = (W * fx_ - px - W / 2) * z + W / 2
-                y = (H * 0.86 - H * 0.62) * z + H * 0.62
-                s_ = 120 * z
-                b = (0.10, 0.09, 0.08)
-                cv2.ellipse(img, (int(x), int(y - s_ * 0.55)), (int(s_ * 0.22), int(s_ * 0.38)), 15 if k else -15, 0, 360, b, -1, cv2.LINE_AA)
-                cv2.circle(img, (int(x + (8 if k else -8) * z), int(y - s_ * 1.05)), int(s_ * 0.15), b, -1, cv2.LINE_AA)
-                cv2.ellipse(img, (int(x + (10 if k else -10) * z), int(y - s_ * 1.12)), (int(s_ * 0.24), int(s_ * 0.07)), 0, 0, 360, (0.45, 0.38, 0.25), -1, cv2.LINE_AA)
-                arm = np.sin(t * 5 + k) * 10 * z
-                cv2.line(img, (int(x), int(y - s_ * 0.6)), (int(x + (1 if k == 0 else -1) * s_ * 0.6 + arm), int(y - s_ * 0.05)), b, max(2, int(6 * z)), cv2.LINE_AA)
-                cv2.ellipse(img, (int(x), int(y - s_ * 0.05)), (int(s_ * 0.35), int(s_ * 0.12)), 0, 0, 360, b, -1, cv2.LINE_AA)
+                base = (H * (0.90 if kneel else 0.88) - H * 0.62) * z + H * 0.62
+                person(x, base, 230 * z, kneel, shirt, k)
         return img, dict(exposure=1.1, bloom=0.25, grain=0.012)
     return f
 
@@ -1777,7 +1846,7 @@ def spring_wave(kind="P", phase=(0.0, 1.0)):
         off = (15 * np.exp(-((pos + 0.1) / 0.05) ** 2)) if kind == "P" else 0
         dy = (-120 * np.exp(-((pos + 0.05) / 0.05) ** 2)) if kind == "S" else 0
         cv2.rectangle(blk, (int(x0 - 70 + off), int(yc - 90 + dy)), (int(x0 - 10 + off), int(yc + 90 + dy)), 1.0, -1, cv2.LINE_AA)
-        img = img + (lay + fast_blur(lay, 8) * 1.2)[..., None] * col + blk[..., None] * 0.25
+        img = img + (lay + fast_blur(lay, 8) * 1.2)[..., None] * col
         return img, dict(exposure=1.1, bloom=0.4, grain=0.015)
     return f
 
@@ -1817,4 +1886,126 @@ def flow_arrows(at=0.0, y0=0.18, n=3, color=(0.95, 0.95, 0.9)):
             x = W * 0.08 + ((t * 120) % 200)
             cv2.arrowedLine(lay, (int(x), int(y)), (int(x + 260), int(y)), 1.0, 4, cv2.LINE_AA, tipLength=0.25)
         return img + (lay * a * 0.6)[..., None] * np.array(color, np.float32)
+    return f
+
+
+
+def distance_ticks(n=1, horizon=0.56, at=0.2):
+    """Overlay: a dotted line along the water from us to the strike, with one tick per kilometre (n ticks)."""
+    def f(ctx, img, t, u):
+        a = clamp((t - at) / 0.5)
+        if a <= 0:
+            return img
+        from ep_tanis.cine import alt_to_y
+        pitch = 2.0 - (0.56 - horizon) * 40.0
+        hz = alt_to_y(0.0, pitch, (W / 2) / np.tan(np.radians(31.0)))
+        x0, y0, x1, y1 = W * 0.5, H * 0.98, W * 0.62 + 40, hz + 4
+        lay = np.zeros((H, W), np.float32)
+        for k in range(40):
+            q0, q1 = k / 40, (k + 0.5) / 40
+            cv2.line(lay, (int(lerp(x0, x1, q0)), int(lerp(y0, y1, q0 ** 0.5))), (int(lerp(x0, x1, q1)), int(lerp(y0, y1, q1 ** 0.5))), 1.0, 2, cv2.LINE_AA)
+        for k in range(1, n + 1):
+            q = k / (n + 0.6)
+            x, y = lerp(x0, x1, q), lerp(y0, y1, q ** 0.5)
+            cv2.line(lay, (int(x - 18 * (1 - q) - 6), int(y)), (int(x + 18 * (1 - q) + 6), int(y)), 1.0, 3, cv2.LINE_AA)
+        return img + (lay * a)[..., None] * np.array([1.0, 0.9, 0.6], np.float32) * 0.8
+    return f
+
+
+# ====================================================================================== beads among sand (scale)
+@functools.lru_cache(1)
+def _sand_bed():
+    r = rng_at(1101)
+    img = np.zeros((H, W, 3), np.float32) + np.array([0.30, 0.24, 0.16], np.float32)
+    n = 2600
+    xs_, ys_ = r.uniform(0, W, n), r.uniform(0, H, n)
+    for x, y in zip(xs_, ys_):
+        rr = r.uniform(8, 22)
+        c = np.array([0.55, 0.45, 0.30], np.float32) * r.uniform(0.6, 1.2) + r.normal(0, 0.03, 3).astype(np.float32)
+        pts = np.array([(x + rr * np.cos(a) * r.uniform(0.75, 1.1), y + rr * 0.8 * np.sin(a) * r.uniform(0.75, 1.1)) for a in np.linspace(0, 2 * np.pi, 9)], np.int32)
+        cv2.fillPoly(img, [pts], tuple(float(v) for v in c), cv2.LINE_AA)
+    img = cv2.GaussianBlur(img, (0, 0), 1.0)
+    return img
+
+
+@scene_factory(keys=[])
+def beads_macro(zoom=(1.0, 1.12), n=7):
+    """Extreme close-up: sand grains, and among them a few beads of green impact glass the same size: tiny, round,
+    glassy, catching the light."""
+    def f(ctx, t, u, fi):
+        e = ease(u)
+        img = _sand_bed().copy()
+        r = rng_at(1102)
+        for k in range(n):
+            x, y, rr = r.uniform(W * 0.15, W * 0.85), r.uniform(H * 0.2, H * 0.8), r.uniform(15, 22)
+            x0, x1, y0, y1 = _win(x, y, rr * 3)
+            yy, xx = np.mgrid[y0:y1, x0:x1].astype(np.float32)
+            d = np.hypot(xx - x, yy - y) / rr
+            body = clamp((1 - d) * rr / 1.5)
+            shade = 0.5 + 0.5 * clamp(1 - d)
+            hl = np.exp(-(np.hypot(xx - (x - rr * 0.35), yy - (y - rr * 0.38)) / (rr * 0.2)) ** 2)
+            sh_ = np.exp(-(np.hypot(xx - (x + rr * 0.4), yy - (y + rr * 0.5)) / (rr * 0.9)) ** 2) * (d > 0.9)
+            img[y0:y1, x0:x1] = img[y0:y1, x0:x1] * (1 - 0.5 * sh_[..., None])
+            img[y0:y1, x0:x1] = img[y0:y1, x0:x1] * (1 - body[..., None]) + body[..., None] * np.array([0.10, 0.32, 0.20], np.float32) * shade[..., None] \
+                + (hl * 1.2)[..., None]
+        z = lerp(*zoom, e)
+        Mz = cv2.getRotationMatrix2D((W / 2, H / 2), 0, z)
+        img = cv2.warpAffine(img, Mz, (W, H), borderMode=cv2.BORDER_REFLECT)
+        return img, dict(exposure=1.25, bloom=0.3, grain=0.012)
+    return f
+
+
+# ============================================================================================ species that vanish
+def _sil_dino(m, cx, cy, s):
+    body = np.array([(-1.0, 0.0), (-0.4, -0.35), (0.3, -0.38), (0.75, -0.2), (1.2, -0.75), (1.45, -0.8), (1.45, -0.68), (1.0, -0.15),
+                     (0.85, 0.15), (0.5, 0.25), (-0.2, 0.2), (-1.7, 0.1)])
+    cv2.fillPoly(m, [(np.array([(cx + x * s, cy + y * s) for x, y in body])).astype(np.int32)], 1.0, cv2.LINE_AA)
+    for lx in (-0.25, 0.35):
+        cv2.line(m, (int(cx + lx * s), int(cy + 0.15 * s)), (int(cx + (lx + 0.05) * s), int(cy + 0.9 * s)), 1.0, int(s * 0.16), cv2.LINE_AA)
+
+
+def _sil_ptero(m, cx, cy, s):
+    w_ = np.array([(-1.6, -0.2), (-0.2, 0.05), (0.0, -0.1), (0.25, 0.05), (1.6, -0.25), (0.3, 0.25), (0.0, 0.2), (-0.3, 0.25)])
+    cv2.fillPoly(m, [(np.array([(cx + x * s, cy + y * s) for x, y in w_])).astype(np.int32)], 1.0, cv2.LINE_AA)
+    cv2.fillPoly(m, [(np.array([(cx + x * s, cy + y * s) for x, y in [(0.0, -0.1), (0.6, -0.35), (0.1, 0.0)]])).astype(np.int32)], 1.0, cv2.LINE_AA)
+
+
+def _sil_ammonite(m, cx, cy, s):
+    th = np.linspace(0, 5 * np.pi, 200)
+    rr = s * 0.08 * np.exp(0.16 * th)
+    pts = np.stack([cx + rr * np.cos(th), cy + rr * np.sin(th)], 1).astype(np.int32)
+    cv2.circle(m, (int(cx), int(cy)), int(rr[-1]), 1.0, -1, cv2.LINE_AA)
+    cv2.polylines(m, [pts], False, 0.0, max(2, int(s * 0.05)), cv2.LINE_AA)
+
+
+def _sil_mammal(m, cx, cy, s):
+    cv2.ellipse(m, (int(cx), int(cy)), (int(s * 0.55), int(s * 0.3)), 0, 0, 360, 1.0, -1, cv2.LINE_AA)
+    cv2.circle(m, (int(cx + s * 0.55), int(cy - s * 0.12)), int(s * 0.22), 1.0, -1, cv2.LINE_AA)
+    cv2.line(m, (int(cx - s * 0.5), int(cy)), (int(cx - s * 1.2), int(cy - s * 0.3)), 1.0, max(2, int(s * 0.07)), cv2.LINE_AA)
+    for lx in (-0.3, 0.3):
+        cv2.line(m, (int(cx + lx * s), int(cy + s * 0.2)), (int(cx + lx * s), int(cy + s * 0.5)), 1.0, max(2, int(s * 0.09)), cv2.LINE_AA)
+
+
+@scene_factory(keys=[])
+def species(fade=(0.0, 1.0)):
+    """Four kinds of life from that morning, lit as silhouettes: a dinosaur, a pterosaur, an ammonite, a small
+    mammal. Three in four go dark (fade 0..1); only the little mammal stays lit."""
+    def f(ctx, t, u, fi):
+        e = ease(u)
+        fd = lerp(*fade, e)
+        xs, ys = grid()
+        img = np.array([0.10, 0.08, 0.07], np.float32) * (0.6 + 0.6 * clamp(1 - np.hypot(xs - W / 2, ys - H / 2) / W)[..., None])
+        img = np.broadcast_to(img, (H, W, 3)).copy()
+        draws = [(_sil_dino, W * 0.20, H * 0.52, 120), (_sil_ptero, W * 0.42, H * 0.45, 110), (_sil_ammonite, W * 0.62, H * 0.52, 120),
+                 (_sil_mammal, W * 0.82, H * 0.55, 90)]
+        for k, (fn, cx, cy, sc_) in enumerate(draws):
+            m = np.zeros((H, W), np.float32)
+            fn(m, cx, cy, sc_)
+            m = blur(m, 1.0)
+            dead = fd if k < 3 else 0.0
+            col = np.array([0.95, 0.78, 0.55], np.float32) * (1 - dead) + np.array([0.16, 0.14, 0.13], np.float32) * dead
+            img = img * (1 - m[..., None]) + m[..., None] * col
+            glow = fast_blur(m, 18) * (1 - dead) * 0.35
+            img = img + glow[..., None] * np.array([1.0, 0.7, 0.4], np.float32)
+        return img, dict(exposure=1.1, bloom=0.4, grain=0.015)
     return f
