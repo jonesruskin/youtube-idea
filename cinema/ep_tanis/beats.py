@@ -6,7 +6,7 @@ from engine.core import W, H
 from ep_tanis import model as M
 from ep_tanis.cine import riverbank, sky_up, surge_scene, xray_scene, amber_scene, dig_scene, serif, tag, clock, over_all, slice_label, PEACH, INK
 from ep_tanis.world import (globe, earth_cut, fish_scene, gills, cutaway, storm, water, droplet, fossil, spring_wave, birds, flow_arrows,
-                            badlands, moving_star, distance_ticks, beads_macro, species, resin, fireball_horizon, flares, count_ticks, leaves, TEAL)
+                            badlands, moving_star, distance_ticks, beads_macro, species, resin, fireball_horizon, flares, count_ticks, leaves, dial_top, TEAL)
 
 P_MIN, S_MIN, R_MIN, SND = M.seismic_minutes("P"), M.seismic_minutes("S"), M.rayleigh_minutes(), M.sound_hours() * 60
 P_S, S_S, R_S = P_MIN * 60, S_MIN * 60, R_MIN * 60
@@ -251,8 +251,8 @@ next_ = [
 ]
 end1 = [
     B(0, fish_scene(hero=(-0.1, 0.35), hero_y=(0.62, 0.62), size=(600.0, 700.0), school=0, pan=(0.0, 120.0)), cut=True, name="one young paddlefish"),
-    B(0, fish_scene(hero=(0.35, 0.55), hero_y=(0.62, 0.64), size=(700.0, 900.0), school=0, pan=(120.0, 200.0), red=(0.0, 0.3), beads=(0.0, 0.6), murk=(0.0, 0.2)),
-      cl(140.0, 151.7, True), at="count", name="the count ends"),
+    B(0, fish_scene(hero=(0.35, 0.55), hero_y=(0.62, 0.64), size=(700.0, 900.0), school=0, pan=(120.0, 200.0), red=(0.0, 0.3), beads=(0.0, 0.6), murk=(0.0, 0.55)),
+      dial_top((120.0, 151.7)), at="count", name="the count ends: the stopwatch closes, the water darkens"),
     B(1, fossil(zoom=(1.0, 1.06), sweep=(0.0, 0.6)), cut=True, name="turned to stone"),
     B(1, fossil(zoom=(1.06, 1.3), focus=(0.27, 0.22), sweep=(0.6, 1.0)), at="telling", name="still telling us"),
     B(2, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.15, 0.15), mud=(1.0, 1.0), muddy=(1.0, 1.0)), clock((0.0, 151.7), big=True), cut=True, name="a clock written in mud"),

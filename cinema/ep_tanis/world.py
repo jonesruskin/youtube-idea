@@ -2165,3 +2165,12 @@ def leaves(at=0.0, n=160, seed=1401):
             cv2.ellipse(lay, (int(x), int(y)), (int(r.uniform(4, 9)), int(r.uniform(2, 4))), np.degrees(a), 0, 360, 1.0, -1, cv2.LINE_AA)
         return img * (1 - 0.85 * lay[..., None]) + lay[..., None] * np.array([0.10, 0.12, 0.05], np.float32)
     return f
+
+
+
+def dial_top(span_min=(140.0, 151.7), y=0.18, R=80):
+    """Overlay: the count as a stopwatch at the top of the frame, its ring closing at 2 h 32 min."""
+    from ep_tanis.cine import _dial
+    def f(ctx, img, t, u):
+        return _dial(img, lerp(span_min[0], span_min[1], u), W * 0.5, H * y, R, 1.0, False)
+    return f
