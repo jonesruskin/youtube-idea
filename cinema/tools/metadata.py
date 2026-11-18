@@ -115,7 +115,7 @@ Everything needed to upload this episode to YouTube. Each field below is also a 
 |---|---|
 | Video file | `{MASTER}` (1080p master, Git LFS; named after the title) |
 | Title | **{title}** ({len(title)} chars) · `title.txt` |
-| Thumbnail | `thumbnail.png` (1280×720) · hook text: **{META['thumb_text']}** |
+| Thumbnail | `thumbnail.png` (1280×720) · {('hook text: **' + META['thumb_text'] + '**') if META.get('thumb_text') else 'no text: ' + META.get('thumb_concept', 'image only')} |
 | Description | `description.txt` ({len(desc)} / 5000 chars, includes chapters, sources, credits, hashtags) |
 | Tags | `tags.txt` ({len(META['tags'])} / 500 chars) |
 | Subtitles | `captions.srt` (English, synced to the narration) |
