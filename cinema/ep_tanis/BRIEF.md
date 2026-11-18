@@ -54,3 +54,30 @@ if", but "how do we know?", with the simulation used to check the fossil's timel
   spring timing is supported independently (During et al. 2022, Nature). We only say "probably in spring".
 - Sky heating: Goldin & Melosh (2009) give a peak near 6 kW/m², above sunlight for ~25 min; Melosh et al. (1990)
   gave far more; a 2026 dust-blanket study argues higher again. Present it as a range, not a single scary number.
+
+---
+
+# v2 (after the founder's rejection of v1)
+
+v1 failed as film-making: five scenes for eight minutes, pictures that sat while the narration talked, diagrams on
+a black planet nobody could read, fish with two tails. v2 keeps the story and rebuilds how it is told.
+
+## Open moment
+Counting the seconds between a lightning flash and its thunder. Everyone has done it, and it *is* the episode:
+light arrives first, sound last, and the longer the count, the farther away it was. The river at Tanis got the
+longest count in history: 9,120 seconds. The storm rule returns at the payoff (9,120 ÷ 3 ≈ 3,000 km).
+
+## Simplicity
+- **Hero:** one young paddlefish (side-on, drawn from its anatomy, always swimming head first).
+- **Villain:** the asteroid's arrivals, in order: quake, glass, flood, sound.
+- **Room:** the river. Everything else (map, planet interior, space) is a short cut-away that explains the room.
+- **Always moving:** the count, a clock from the flash to the thunder.
+
+## Every line shows what it says
+Map for "where" and "why here"; the planet cut open with computed wavefronts for "through the rock"; a spring and a
+rope for push-pull vs side-to-side; the river cut open like an aquarium for slosh, surge, stranding and burial;
+the gill comb catching glass; the fossil slab for the evidence. A new picture every 3-5 s.
+
+## Everything inside the story
+No end card. The Apophis teaser comes before the story's last beat (the living paddlefish turning to stone), so the
+end-screen window sits on story.
