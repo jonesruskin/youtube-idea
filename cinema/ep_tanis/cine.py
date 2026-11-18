@@ -351,6 +351,9 @@ def riverbank(phase="dawn", view_az=(0.0, 3.0), pitch=(5.0, 5.0), fov=(62.0, 60.
             mud_y = H - bu * H * 1.15 + 18 * np.sin(xs * 0.01 + t * 2)
             m = clamp((ys - mud_y) / 40)
             img = img * (1 - m[..., None]) + (np.array([0.09, 0.07, 0.045], np.float32) * (0.6 + 0.4 * cv2.resize(fbm(480, 270, 30, 4, 3), (W, H))[..., None])) * m[..., None]
+        if sh > 1.0:                                      # shaking shows as motion blur
+            k_ = int(1 + sh * 3)
+            img = cv2.blur(img, (k_, max(1, k_ // 2)))
         exp = 1.15 * (1 - 0.65 * s["dark"])
         return img, dict(exposure=exp, bloom=0.45 + 0.35 * s["heat"] + 0.3 * s["glow"], grain=0.006)
     return f
