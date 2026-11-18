@@ -251,6 +251,8 @@ def creative_pre(ep, res, mod, lay, B):
     script_reuse(ep, res, slot)
     shot_grammar(ep, res, meta, lay)
     thumbnails(ep, res, meta, B)
+    from story_gate import story_pre                 # founder's five storytelling rules (after Ep4 v1)
+    story_pre(ep, res, mod, lay, B)
 
 
 # --------------------------------------------------------------------------------------------------------- post
@@ -288,6 +290,8 @@ def creative_post(ep, res, mod, B):
     meta = getattr(mod, "META", {})
     if meta.get("slot", 0) < 4:
         return
+    from story_gate import cadence_video             # rule 2 on the finished picture
+    cadence_video(ep, res, B)
     vid = os.path.join(B, "final.mp4")
     H, T = _hashes(vid)
     if len(H) == 0:

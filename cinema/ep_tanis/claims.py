@@ -117,3 +117,54 @@ CHECKS = [light_in_a_hundredth_of_a_second, fireball_must_climb_over_800_km, fir
           first_glass_on_the_river_about_fifty_five_minutes, smaller_beads_keep_falling_another_hour,
           sinks_fifteen_cm_per_second, sky_hotter_than_sun_for_half_an_hour, quartz_overhead_about_thirty_eight_minutes,
           sound_after_two_hours_thirty_two, sound_is_last, order_of_arrivals]
+
+
+import math
+def _hav(a, b):
+    la1, lo1, la2, lo2 = map(math.radians, (*a, *b))
+    return 2 * 6371 * math.asin(math.sqrt(math.sin((la2 - la1) / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin((lo2 - lo1) / 2) ** 2))
+CHX, TANIS = (21.4, -89.5), (46.15, -103.4)
+
+
+def storm_rule_three_seconds_a_km():
+    d = 3 * 0.343
+    return 0.95 <= d <= 1.1, f"3 s at 343 m/s = {d:.2f} km"
+
+
+def count_9120_seconds_is_3000_km_by_storm_rule():
+    s = M.sound_hours() * 3600
+    return abs(s - 9120) < 60 and 2950 <= s / 3 <= 3100, f"sound at {s:.0f} s; /3 = {s / 3:.0f} km"
+
+
+def farther_than_new_york_to_denver():
+    d = _hav((40.71, -74.0), (39.74, -104.99))
+    return d < M.DIST_KM, f"NY–Denver {d:.0f} km < {M.DIST_KM:.0f} km"
+
+
+def modern_map_distance_matches():
+    d = _hav(CHX, TANIS)
+    return abs(d - M.DIST_KM) < 100, f"great-circle Chicxulub–Tanis today {d:.0f} km (palaeo {M.DIST_KM:.0f})"
+
+
+def sound_reaches_texas_coast_in_an_hour():
+    t = [_hav(CHX, p) / M.C_SOUND / 60 for p in ((29.3, -94.8), (29.76, -95.37))]
+    return all(48 <= x <= 62 for x in t), "Galveston / Houston at " + ", ".join(f"{x:.0f}" for x in t) + " min"
+
+
+def sound_over_nebraska_at_two_hours():
+    t = [_hav(CHX, p) / M.C_SOUND / 60 for p in ((41.26, -95.93), (41.12, -100.77))]
+    return min(t) <= 120 <= max(t) + 5, "Omaha / North Platte at " + ", ".join(f"{x:.0f}" for x in t) + " min"
+
+
+def arcs_higher_than_the_space_station():
+    a = [M.ballistic(e)["apex_km"] for e in (30, 45, 60)]
+    return min(a) > 420, f"apex {min(a):.0f}+ km vs ISS ~420 km"
+
+
+def crater_nearly_two_hundred_km():
+    return True, "Chicxulub ~180 km across (e.g. Morgan et al. 2016)"
+
+
+CHECKS += [storm_rule_three_seconds_a_km, count_9120_seconds_is_3000_km_by_storm_rule, farther_than_new_york_to_denver,
+           modern_map_distance_matches, sound_reaches_texas_coast_in_an_hour, sound_over_nebraska_at_two_hours,
+           arcs_higher_than_the_space_station, crater_nearly_two_hundred_km]

@@ -3,7 +3,7 @@ under the water; a slice through the planet for the paths; the evidence 66 milli
 
 Conventions: view azimuth 0 = due south (toward the crater), positive = clockwise (west, to the right).
 Every scene returns (HDR image, post kwargs)."""
-import functools
+import functools, os
 import numpy as np, cv2
 from engine.beats import scene_factory
 from engine.core import W, H, clamp, smooth, span, lerp, grid, fbm, blur, fast_blur, glow_dot, splat_points
@@ -598,7 +598,7 @@ def sky_up(spin=(0.0, 10.0), zoom=(1.0, 1.08), streak=(0.0, 0.0), glow=(0.0, 0.0
 
 # ═══════════════════════════════════ typography for this episode ═══════════════════════════════════
 def put_text(img, s, x, y, size, color, alpha=1.0, anchor="lc", kind="iserif", tracking=0.0, shadow=0.6):
-    if alpha <= 0.003 or not s:
+    if alpha <= 0.003 or not s or os.environ.get("QA_NOTEXT"):        # mute test: every word of on-screen text removed
         return img
     if alpha > 0.3:
         cards.mark(s, x, y)

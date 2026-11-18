@@ -23,10 +23,13 @@ for seg in mod.SEGMENTS:
         print(f'{seg["id"]:8s} {o["dur"]:6.2f}s  @ {t:7.2f}  (unchanged, reused)', flush=True)
         t += o["dur"]
         continue
-    gap = seg.get("gap", 0.32)
+    gap = seg.get("gap", float(os.environ.get("GAP", "0.32")))
     parts, lines, cur = [np.zeros(int(LEAD * SR), np.float32)], [], LEAD
     for i, text in enumerate(seg["lines"]):
-        a = np.concatenate([np.asarray(x, np.float32) for _, _, x in p(text, voice=VOICE, speed=SPEED)])
+        say = text
+        for w_, ph in getattr(mod, "PRON", {}).items():      # spoken-only pronunciations (captions keep the spelling)
+            say = say.replace(w_, f"[{w_}](/{ph}/)")
+        a = np.concatenate([np.asarray(x, np.float32) for _, _, x in p(say, voice=VOICE, speed=SPEED)])
         # trim leading/trailing near-silence
         idx = np.where(np.abs(a) > 0.01)[0]
         if idx.size: a = a[max(0, idx[0] - 600): idx[-1] + 2400]

@@ -1,5 +1,6 @@
 """Explainer graphics: self-drawing lines, arrows, dimension lines, counters, charts, icons.
 Everything is drawn anti-aliased on a float layer, then composited with a soft glow so it sits in the shot."""
+import os
 import numpy as np
 import cv2
 from .core import W, H, clamp, smooth, smoother, span, ease_out, lerp, blur, fast_blur
@@ -121,7 +122,7 @@ class Layer:
 
 # ───────────── text helpers ─────────────
 def text(img, s, x, y, size=24, color=WHITE, alpha=1.0, anchor="lc", kind="mono", tracking=0.12, glow=0.0):
-    if alpha <= 0.002 or not s:
+    if alpha <= 0.002 or not s or os.environ.get("QA_NOTEXT"):
         return img
     if alpha > 0.3:
         cards.mark(s, x, y)

@@ -168,3 +168,20 @@ the same second-person narrator, and Ep3 reused 16 narration phrases from Ep1. E
     invisible reference marks such as the Sun via `cards.mark`). Each episode's `claims.py` lists
     `LABEL_RULES` ("SCORCHED nearer the Sun than FROZEN", "NEAR SIDE nearer the black hole than FAR SIDE");
     `qa.py pre` fails a rule that is broken, or one that is never seen in the stills.
+
+## Storytelling rules (founder, Nov 2026, after Episode 4 v1; every episode from #4)
+
+Episode 4 v1 was rejected: five scenes repeated for eight minutes, pictures that sat still while the narration
+talked, visuals that did not show what was being said, fish with two tails, things popping in and out, diagrams
+nobody could read. The founder passed on five rules from a faceless creator whose films go viral. Each is now a
+check (`tools/story_gate.py`, run by `tools/qa.py` for slot >= 4):
+
+| # | Rule | Check | Fails when |
+|---|---|---|---|
+| 1 | Open on a moment everyone has had | `open-moment` | no `META['open_moment']` / no "Open moment" section in BRIEF.md / first shot is a map, diagram or title / first sentence has numbers or > 10 words / the blind viewer did not recognise it |
+| 2 | Something new on screen every 3–5 s | `cadence-plan` (pre), `cadence-video` (post) | any beat longer than 5 s; any stretch of the finished picture longer than ~5.6 s in which the frame never moves far (≥ 100/512 dhash bits) from where it was 2 s earlier |
+| 3 | Keep it simple: one hero, one villain, one room, one thing always moving | `simplicity` | `META['cast']` incomplete; hero named in < 25 % of segments; the room's scenes < 40 % of the runtime |
+| 4 | Mute it and cover the captions | `mute-test` | `tools/mute_test.py` renders every beat with all text removed; a fresh AI (no script) says what it sees, a second fresh AI compares with the narration over that beat. Any beat not understood, any anatomy/continuity error, or a test made for an older cut (fingerprint) fails |
+| 5 | Put everything inside the story | `story-end` | an end card / title card; the story does not run to the last frame (`META['story_end']`); the next-episode teaser ends < 20 s before the end |
+
+Order of work: script → voice → beats → stills → **mute test** → qa pre → render → qa post.
