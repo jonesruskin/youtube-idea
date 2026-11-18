@@ -658,6 +658,9 @@ def _dial(img, m, cx, cy, R, a, hand_s=True):
     sound's arrival at 2 h 32 min (readable with the sound off and the captions covered)."""
     lay = np.zeros(img.shape[:2], np.float32)
     cv2.circle(lay, (int(cx), int(cy)), int(R), 0.35, max(1, int(R * 0.06)), cv2.LINE_AA)
+    for k in range(12):                                   # hour ticks: it reads as a stopwatch face
+        a_ = k / 12 * 2 * np.pi
+        cv2.line(lay, (int(cx + R * 0.78 * np.sin(a_)), int(cy - R * 0.78 * np.cos(a_))), (int(cx + R * 0.95 * np.sin(a_)), int(cy - R * 0.95 * np.cos(a_))), 0.8, max(1, int(R * 0.05)), cv2.LINE_AA)
     frac = min(1.0, m / 151.7)
     if frac > 0:
         cv2.ellipse(lay, (int(cx), int(cy)), (int(R * 1.18), int(R * 1.18)), -90, 0, 360 * frac, 1.0, max(2, int(R * 0.09)), cv2.LINE_AA)
@@ -677,7 +680,7 @@ def clock(span_min, ledger=False, x=W - 120, y=H - 92, show_from=0.0, big=False)
             return img
         m = lerp(span_min[0], span_min[1], clamp(t / max(ctx.dur, 1e-3)))
         hs = abs(span_min[1] - span_min[0]) < 1.0
-        img = _dial(img, m, W / 2, H * 0.5, 150, a, hs) if big else _dial(img, m, x - 250, y + 6, 26, 0.9 * a, hs)
+        img = _dial(img, m, W / 2, H * 0.5, 150, a, hs) if big else _dial(img, m, x - 260, y + 2, 36, 0.9 * a, hs)
         img = put_text(img, _fmt(m), x, y, 34, INK, 0.92 * a, "rc", kind="jbm", tracking=0.06, shadow=0.7)
         img = put_text(img, "AFTER IMPACT", x, y + 34, 15, (0.75, 0.74, 0.70), 0.8 * a, "rc", kind="jbm5", tracking=0.3, shadow=0.6)
         if ledger:
