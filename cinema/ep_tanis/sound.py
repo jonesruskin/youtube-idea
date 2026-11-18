@@ -60,6 +60,11 @@ def cue(name, dur, L):
     n = int(dur * L["SR"])
     if name == "riverdawn":
         return (_water(L, dur, 0.022) + _birds(L, dur) + L["pad"]([["D3", "A3", "E4"], ["C3", "G3", "D4"], ["Bb2", "F3", "D4"], ["C3", "G3", "E4"]] * max(1, int(dur // 24) + 1), dur, 900, gain=0.04, table=L["SOFT"]))
+    if name == "storm":                                   # steady rain on a window, distant rumbles
+        rain = L["lowpass"](L["highpass"](L["rng"].normal(0, 1, n), 900), 7000) * 0.035
+        t = np.arange(n) / L["SR"]
+        rum = _rumble(L, dur, 0.06, 70) * (0.5 + 0.5 * np.sin(2 * np.pi * 0.07 * t))
+        return rain + rum + L["drone"](L["note"]("A1"), dur, 0.03)
     if name == "hush":
         return _water(L, dur, 0.012, 600, 0.4) + L["drone"](L["note"]("D2"), dur, 0.05, 0.05) + L["shimmer"](["A4", "E5"], dur, 0.006)
     if name == "tremor":
@@ -110,6 +115,16 @@ def sfx(kind, L):
         n = int(9.0 * SR)
         x = L["lowpass"](L["rng"].normal(0, 1, n), 2500) * L["env_adsr"](n, 1.2, 4.0)
         return x * 0.22 + _rumble(L, 9.0, 0.3, 80)
+    if kind == "thunder":                                 # crack, then the long roll
+        n = int(6.0 * SR); t = np.arange(n) / SR
+        crack = L["highpass"](L["rng"].normal(0, 1, n), 1500) * np.exp(-t * 18) * 0.5
+        roll = L["lowpass"](L["rng"].normal(0, 1, n), 180, 4) * (np.exp(-t * 0.8) * (1 + 0.6 * np.sin(2 * np.pi * 1.3 * t))) * 3
+        x = crack + roll
+        return x / (np.abs(x).max() + 1e-9) * 0.8
+    if kind == "flash":                                   # a bright swelling hit for the impact
+        n = int(4.0 * SR); t = np.arange(n) / SR
+        x = L["lowpass"](L["rng"].normal(0, 1, n), 3000) * np.exp(-t * 2.5) * 0.4 + np.sin(2 * np.pi * 55 * t) * np.exp(-t * 1.5) * 0.4
+        return x
     if kind == "farboom":
         n = int(9.0 * SR); t = np.arange(n) / SR
         b = np.sin(2 * np.pi * (28 + 30 * np.exp(-t * 2)) * t) * np.exp(-t * 0.7)

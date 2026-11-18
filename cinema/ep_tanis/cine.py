@@ -101,7 +101,7 @@ def _pano_xy(az, alt):
     return (az - AZ0) * PPD, (ALT1 - alt) * PPD
 
 
-def _leafy(mask, seed, scale=3.0, k=0.45):
+def _leafy(mask, seed, scale=3.0, k=0.16):
     n = fbm(mask.shape[1], mask.shape[0], scale=scale * 4, octaves=3, seed=seed)
     m = cv2.GaussianBlur(mask, (0, 0), scale)
     return clamp((m - 0.5 + k * (n - 0.5)) * 6 + 0.5)
@@ -157,7 +157,7 @@ def _forest():
         far_a[int((ALT1 + 0.75) * PPD):] = 1.0                                   # solid bank below the trees
         shrub_a, shrub_l = _tree_layer(61, 1500, -0.95, 0.4, 1.3, 0.0, 0.5)      # bushes at the water's edge
         return np.stack([hills_a, mid_a, mid_l, far_a, far_l, shrub_a, shrub_l]).astype(np.float16)
-    return cached("tanis_forest_v4", build).astype(np.float32)
+    return cached("tanis_forest_v5", build).astype(np.float32)
 
 
 def _sample(layer, az, alt):
@@ -323,7 +323,7 @@ def riverbank(phase="dawn", view_az=(0.0, 3.0), pitch=(5.0, 5.0), fov=(62.0, 60.
             near = np.exp(-(((az - sz + 180) % 360 - 180) / 4.0) ** 2) * (1 - s["dust"]) * sun_vis
             if near.max() > 0.01:
                 r = rng_at(int(t * 30))
-                sp = (r.random((H, W)) > 0.9965) * near * 6.0
+                sp = (r.random((H, W)) > 0.9992) * near * 3.0
                 water = water + sp[..., None] * np.array([1.0, 0.85, 0.6], np.float32)
             img = np.where(below[..., None], water, img)
             bd = L(beads)
@@ -352,7 +352,7 @@ def riverbank(phase="dawn", view_az=(0.0, 3.0), pitch=(5.0, 5.0), fov=(62.0, 60.
             m = clamp((ys - mud_y) / 40)
             img = img * (1 - m[..., None]) + (np.array([0.09, 0.07, 0.045], np.float32) * (0.6 + 0.4 * cv2.resize(fbm(480, 270, 30, 4, 3), (W, H))[..., None])) * m[..., None]
         exp = 1.15 * (1 - 0.65 * s["dark"])
-        return img, dict(exposure=exp, bloom=0.45 + 0.35 * s["heat"] + 0.3 * s["glow"], grain=0.014)
+        return img, dict(exposure=exp, bloom=0.45 + 0.35 * s["heat"] + 0.3 * s["glow"], grain=0.006)
     return f
 
 
@@ -625,7 +625,7 @@ def tag(s, at, x=140, y=130, color=INK, size=22, sub=None):
     def f(ctx, img, t, u):
         tt = at if isinstance(at, (int, float)) else ctx.w(at)
         a = fade(t, tt, ctx.dur, 0.3)
-        if a <= 0:
+        if a <= 0 or os.environ.get("QA_NOTEXT"):
             return img
         img = put_text(img, s.upper(), x, y, size, color, a, "lc", kind="jbm5", tracking=0.18, shadow=0.5)
         wdt = cards.sprite(s.upper(), "jbm5", size, 0.18).shape[1]
@@ -650,7 +650,22 @@ def _fmt(m):
     return f"T + {hh}:{mm:02d}:{ss:02d}"
 
 
-def clock(span_min, ledger=False, x=W - 120, y=H - 92, show_from=0.0):
+def _dial(img, m, cx, cy, R, a):
+    """The count as a picture: a stopwatch whose hand sweeps once a minute and whose outer arc fills toward the
+    sound's arrival at 2 h 32 min (readable with the sound off and the captions covered)."""
+    lay = np.zeros(img.shape[:2], np.float32)
+    cv2.circle(lay, (int(cx), int(cy)), int(R), 0.35, max(1, int(R * 0.06)), cv2.LINE_AA)
+    frac = min(1.0, m / 151.7)
+    if frac > 0:
+        cv2.ellipse(lay, (int(cx), int(cy)), (int(R * 1.18), int(R * 1.18)), -90, 0, 360 * frac, 1.0, max(2, int(R * 0.09)), cv2.LINE_AA)
+    ang = (m * 60.0 % 60.0) / 60.0 * 2 * np.pi
+    cv2.line(lay, (int(cx), int(cy)), (int(cx + R * 0.85 * np.sin(ang)), int(cy - R * 0.85 * np.cos(ang))), 1.0, max(2, int(R * 0.07)), cv2.LINE_AA)
+    cv2.circle(lay, (int(cx), int(cy)), max(2, int(R * 0.08)), 1.0, -1, cv2.LINE_AA)
+    cv2.rectangle(lay, (int(cx - R * 0.12), int(cy - R * 1.42)), (int(cx + R * 0.12), int(cy - R * 1.25)), 1.0, -1, cv2.LINE_AA)
+    return img * (1 - 0.5 * lay[..., None] * a) + lay[..., None] * np.array([0.95, 0.93, 0.88], np.float32) * a
+
+
+def clock(span_min, ledger=False, x=W - 120, y=H - 92, show_from=0.0, big=False):
     """The vigil's clock: minutes after impact, interpolated across the beat. With ledger=True the arrivals so far
     are listed above it, newest at the bottom."""
     def f(ctx, img, t, u):
@@ -658,6 +673,7 @@ def clock(span_min, ledger=False, x=W - 120, y=H - 92, show_from=0.0):
         if a <= 0:
             return img
         m = lerp(span_min[0], span_min[1], clamp(t / max(ctx.dur, 1e-3)))
+        img = _dial(img, m, W / 2, H * 0.5, 150, a) if big else _dial(img, m, x - 250, y + 6, 26, 0.9 * a)
         img = put_text(img, _fmt(m), x, y, 34, INK, 0.92 * a, "rc", kind="jbm", tracking=0.06, shadow=0.7)
         img = put_text(img, "AFTER IMPACT", x, y + 34, 15, (0.75, 0.74, 0.70), 0.8 * a, "rc", kind="jbm5", tracking=0.3, shadow=0.6)
         if ledger:
