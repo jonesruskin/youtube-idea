@@ -242,23 +242,23 @@ c7b = [
     B(2, fossil(zoom=(1.6, 2.4), focus=(0.64, 0.30), glint=1.0), cut=True, name="still glass"),
     B(2, badlands(push=(0.0, 0.1), pan=(0.0, 30.0), diggers=0.0, trench=0.0), at="sixty", cut=True, name="66 million years later"),
     B(3, badlands(push=(0.35, 0.5), pan=(60.0, 80.0), diggers=1.0, trench=1.0), cut=True, name="scientists still argue"),
-    B(3, fossil(zoom=(2.0, 2.8), focus=(0.34, 0.50), glint=1.0), at="gills", cut=True, name="the glass in the gills"),
+    B(3, fossil(zoom=(1.8, 2.4), focus=(0.72, 0.54), glint=1.0), at="gills", cut=True, name="the glass in the gills"),
 ]
 next_ = [
     B(0, globe(lat=(15.0, 15.0), lon=(-30.0, -24.0), R=(300.0, 260.0), clouds=0.35, geo_ring=0.6, sun=(0.3, 0.2, 0.93), apophis=(0.15, 0.35)), cut=True, name="rocks from space still pass"),
     B(1, globe(lat=(15.0, 15.0), lon=(-24.0, -20.0), R=(260.0, 170.0), clouds=0.35, geo_ring=1.0, sun=(0.3, 0.2, 0.93), apophis=(0.25, 0.4)), tag("13 April 2029", 0.4), name="our satellites"),
     B(1, globe(lat=(15.0, 15.0), lon=(-20.0, -16.0), R=(170.0, 160.0), clouds=0.35, geo_ring=1.0, sun=(0.3, 0.2, 0.93), apophis=(0.4, 0.6)), tag("Apophis", 0.3), at="Apophis", name="Apophis"),
-    B(1, globe(lat=(15.0, 15.0), lon=(-16.0, -12.0), R=(160.0, 190.0), clouds=0.35, geo_ring=1.0, sun=(0.3, 0.2, 0.93), apophis=(0.6, 0.85)), at="satellites", name="inside the satellite ring"),
-    B(2, riverbank(phase="dawn", view_az=(10.0, 14.0), pitch=(18.0, 20.0), dark=(0.7, 0.7), sun_vis=0.0, sun_alt=(-10.0, -10.0), mist=(0.0, 0.0), cover=0.1), moving_star(), cut=True, name="a moving star, seen from the ground"),
+    B(1, globe(lat=(15.0, 15.0), lon=(-16.0, -12.0), R=(260.0, 300.0), clouds=0.35, geo_ring=1.0, sun=(0.3, 0.2, 0.93), apophis=(0.6, 0.85)), at="satellites", cut=True, name="inside the satellite ring"),
+    B(2, riverbank(phase="dawn", view_az=(12.0, 12.0), pitch=(12.0, 12.0), dark=(0.6, 0.6), sun_vis=0.0, sun_alt=(-10.0, -10.0), mist=(0.0, 0.0), cover=0.1), moving_star(), cut=True, name="a moving star, seen from the ground"),
 ]
 end1 = [
-    B(0, fish_scene(hero=(-0.1, 0.35), hero_y=(0.45, 0.45), size=(600.0, 700.0), school=0, pan=(0.0, 120.0)), cut=True, name="one young paddlefish"),
-    B(0, fish_scene(hero=(0.35, 0.55), hero_y=(0.45, 0.47), size=(700.0, 1000.0), school=0, pan=(120.0, 200.0), red=(0.0, 0.3), beads=(0.0, 0.6), murk=(0.0, 0.7)), clock((140.0, 151.7), big=True), at="count", name="the count ends"),
-    B(1, fossil(life=(0.8, 0.25), zoom=(1.0, 1.05)), name="into stone"),
-    B(1, fossil(life=(0.05, 0.0), zoom=(1.05, 1.15), focus=(0.36, 0.3)), at="telling", name="still telling us"),
-    B(2, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.2, 0.2), mud=(1.0, 1.0), rain=(0.0, 0.0), zoom=(1.6, 1.9), focus=(0.5, 0.62)),
-      serif("a clock written in mud", "clock", y=H * 0.88), cut=True, name="a clock written in mud"),
-    B(2, fossil(zoom=(2.2, 2.6), focus=(0.40, 0.26), glint=1.0), at="ticks", cut=True, name="glass for its ticks"),
+    B(0, fish_scene(hero=(-0.1, 0.35), hero_y=(0.62, 0.62), size=(600.0, 700.0), school=0, pan=(0.0, 120.0)), cut=True, name="one young paddlefish"),
+    B(0, fish_scene(hero=(0.35, 0.55), hero_y=(0.62, 0.64), size=(700.0, 900.0), school=0, pan=(120.0, 200.0), red=(0.0, 0.3), beads=(0.0, 0.6), murk=(0.0, 0.35)),
+      clock((140.0, 151.7), big=True, ), at="count", name="the count ends"),
+    B(1, fossil(zoom=(1.0, 1.06), sweep=(0.0, 0.6)), cut=True, name="turned to stone"),
+    B(1, fossil(zoom=(1.06, 1.3), focus=(0.27, 0.22), sweep=(0.6, 1.0)), at="telling", name="still telling us"),
+    B(2, fossil(zoom=(1.0, 1.05), glint=1.0), cut=True, name="a clock written in mud"),
+    B(2, fossil(zoom=(2.0, 2.5), focus=(0.27, 0.22), glint=1.0), at="ticks", cut=True, name="glass for its ticks"),
 ]
 
 BEATS = dict(open1=open1, open2=open2, c1a=c1a, c1b=c1b, c2a=c2a, c2b=c2b, c3a=c3a, c3b=c3b, c3c=c3c, c4a=c4a, c4b=c4b, c4c=c4c, c4d=c4d,

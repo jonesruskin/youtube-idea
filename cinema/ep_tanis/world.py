@@ -510,7 +510,7 @@ def _apophis(img, v, ap, ring, t):
     lay = np.zeros((H, W), np.float32)
     tilt = 0.22
     for k in range(90):
-        a = k / 90 * 2 * np.pi + t * 0.03
+        a = k / 90 * 2 * np.pi
         x = v.cx + geo * np.cos(a)
         y = v.cy + geo * tilt * np.sin(a)
         if np.sin(a) < 0 and abs(np.cos(a)) * geo < v.R:   # behind the planet
@@ -520,8 +520,9 @@ def _apophis(img, v, ap, ring, t):
     if ap > 0:                                            # passes inside the ring, in front of the planet's limb
         x0 = v.cx - geo * 1.1 + ap * geo * 2.2
         y0 = v.cy - v.R * 1.6 + (x0 - v.cx) * 0.12
-        tr = [(x0 - 380 * s_, y0 - 46 * s_) for s_ in np.linspace(0, 1, 24)]
-        img = glow_line(img, tr, (0.95, 0.8, 0.55), 2, 8, 0.6)
+        for k_ in range(14):
+            a0, a1 = k_ / 14, (k_ + 0.5) / 14
+            img = glow_line(img, [(x0 - 900 * a0, y0 - 108 * a0), (x0 - 900 * a1, y0 - 108 * a1)], (1.0, 0.75, 0.45), 2, 6, 0.7 * (1 - a0))
         img = glow_dot(img, x0, y0, 7, (1.0, 0.88, 0.7), 1.3)
     return img
 
