@@ -1,0 +1,35 @@
+Sixty-six million years ago, an asteroid hit Mexico. Three thousand kilometres away, in what is now North Dakota, paddlefish and sturgeon died with its glass in their gills.
+
+We followed the physics to that one riverbank (the Tanis fossil site), minute by minute: seismic waves traced through the planet's mantle, molten droplets flown on ballistic arcs and dropped through the air, and the sound crossing the continent. At that distance, everything arrives in the wrong order: the light, then the ground, then shooting stars, then glass, then a surge of water — and the sound of the impact last, two and a half hours later.
+
+Which arrival surprised you most? Tell us in the comments.
+
+CHAPTERS
+0:00 The fish with glass in its gills
+0:41 Minute 0: a spring morning
+1:30 Minute 2: a light in the south
+2:13 Minute 6: the ground arrives
+3:00 Minute 12: shooting stars
+4:10 Minute 55: the glass rain
+5:03 The river comes back
+5:47 2 h 32 min: the sound
+6:41 66 million years later
+7:53 Next time
+
+THE SCIENCE (sources)
+• Tanis, Hell Creek Formation, North Dakota: DePalma et al. 2019, PNAS 116, 8190 ("A seismically induced onshore surge deposit at the KPg boundary"): ~3,050 km from Chicxulub; P/S/Rayleigh arrivals 6/10/13 min; spherules overhead 13–25 min (launch 30–60°); most fell within 1–2 h; spherules 0.3–1.4 mm; ≥10 m runup; spherules in the gill rakers of >50 % of sturgeon and paddlefish; unaltered glass in amber matching Chicxulub black glass
+• Impact season (spring), from Tanis fish bones: During et al. 2022, Nature 603, 91; DePalma et al. 2021, Sci. Rep. 11, 23704 (DePalma was cleared of fabrication over the latter by the University of Manchester, 2023)
+• Re-entry heating: Goldin & Melosh 2009, Geology 37, 1135 (peak ~6 kW/m², above sunlight ~25 min with self-shielding); Melosh et al. 1990, Nature 343, 251 (higher); the debate continues
+• Impact angle (~60°, from the north-east): Collins et al. 2020, Nature Communications 11, 1480
+• Earthquake size Mw ~10–11.5 and the 2011 Tohoku seiches in Norway: as cited in DePalma et al. 2019 (Bondevik et al. 2013)
+• About three quarters of species lost at the K–Pg boundary: e.g. Jablonski & Chaloner 1994; Schulte et al. 2010, Science 327, 1214
+• Our physics (ep_tanis/model.py): P and S waves ray-traced through a layered spherical Earth (IASP91-like velocities): 5.8 and 10.5 min; Rayleigh waves at 3.9 km/s: 13.0 min; ejecta flown as two-body Kepler arcs (launch 30–60°: back at 100 km altitude after 12.3–24.7 min, apex 475–1,676 km); single glass beads dropped through an exponential atmosphere with drag (1.4 / 1.0 / 0.7 mm: on the water 54 / 71 / 103 min after impact; a dense rain of beads may fall faster as a group); fireball must rise above 807 km to clear Tanis's horizon; sound at 335 m/s: 2 h 32 min
+
+CREDITS
+Planet textures: Solar System Scope (CC BY 4.0) — solarsystemscope.com
+Narration voice: Kokoro-82M (Apache 2.0). Music and sound design: original, synthesised for this video.
+Simulation, animation and rendering: made in-house.
+
+Gravity Dial turns one dial on the universe each episode and runs the physics. Subscribe so you don't miss the next one.
+
+#dinosaurs #chicxulub #asteroid #science #paleontology
