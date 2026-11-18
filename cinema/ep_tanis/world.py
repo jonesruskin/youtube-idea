@@ -1837,9 +1837,9 @@ def spring_wave(kind="P", phase=(0.0, 1.0)):
             col = np.array([0.55, 0.9, 1.0], np.float32)
         else:
             s = np.linspace(0, 1, 600)
-            yy = yc - 120 * np.exp(-((s - pos) / 0.05) ** 2)
+            yy = yc - 200 * np.exp(-((s - pos) / 0.06) ** 2) * np.sin(np.clip((s - pos) / 0.06 * 2.5 + 1.57, -1.57, 4.7))
             pts = np.stack([x0 + (x1 - x0) * s, yy], 1)
-            cv2.polylines(lay, [(pts * 16).astype(np.int32)], False, 1.0, 7, cv2.LINE_AA, shift=4)
+            cv2.polylines(lay, [(pts * 16).astype(np.int32)], False, 1.0, 10, cv2.LINE_AA, shift=4)
             col = np.array([1.0, 0.78, 0.35], np.float32)
         # a hand-like block at the start that pushes (P) or flicks (S)
         blk = np.zeros((H, W), np.float32)
