@@ -19,7 +19,7 @@ screen to point at the previous episode.
 | 1 | We Let a Black Hole Loose in Our Solar System | 30 YEARS LEFT | A 10-Sun black hole drifts through the Solar System | ✅ | `renders/01_black_hole` |
 | 2 | We Dropped a Ship Into Jupiter. Here's How Far It Got. | STILL NO GROUND | A titanium ship falls into Jupiter until something stops it | ✅ | `renders/02_jupiter` |
 | 3 | A Rogue Planet Is Coming. The Date It Arrives Decides Everything. | *(calendar date circled; rogue outside the window)* | A 5-Jupiter rogue crosses Earth's orbit; 730 runs, one per arrival date: closer, farther, thrown out, or the Sun steals the Moon | ✅ | `renders/03_rogue_planet` |
-| 4 | Every Minute After the Asteroid That Killed the Dinosaurs | T+20 MINUTES | Minute-by-minute clock from impact to one year after | 📝 | |
+| 4 | These Fish Saw the First Hour After the Dinosaur Asteroid. Here's Every Minute. | *(from under the river: Snell's window full of shooting stars, a paddlefish crossing it)* | One riverbank 3,050 km from the crater (Tanis), minute by minute: light, quake, shooting stars, glass rain, surge, and the sound arriving last | 🎬 | `renders/04_tanis` |
 | 5 | Apophis: The Asteroid That Will Pass Closer Than Our Satellites | APRIL 13, 2029 | The real 2029 flyby, simulated, and the impact we avoided | 📝 | |
 | 6 | The Night Betelgeuse Explodes | TONIGHT? | Night-by-night sky after the supernova; the neutrino warning comes first | 📝 | |
 | 7 | How Long Could You Survive on Each Planet? | 1 SECOND? | A countdown timer on every world; the best spot is above Venus | 📝 | |

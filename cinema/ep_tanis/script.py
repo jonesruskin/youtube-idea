@@ -152,7 +152,7 @@ SEGMENTS = [
          hold=1.4),
     dict(id="c7b", music="silence", shot=dict(type="bank"),
          lines=["Two hours and thirty-two minutes after the impact, the river finally hears it."],
-         hold=2.6, sfx=[dict(kind="farboom", word="hears", offset=0.9)]),
+         hold=2.6, sfx=[dict(kind="farboom", word="hears", offset=0.9, gain=1.7)]),
     dict(id="c7c", music="ash", shot=dict(type="bank"),
          lines=["Sound is the slowest messenger. It crossed three thousand kilometres of air at about a third of a kilometre per second.",
                 "And it got here to find a river already filled in, under more than a metre of mud and glass."],
