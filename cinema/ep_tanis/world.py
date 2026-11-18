@@ -680,8 +680,8 @@ def earth_cut(cx=(0.0, 0.0), cy=(0.0, 0.0), scale=(0.075, 0.075), tsec=(0.0, 0.0
             ang = TH_C - np.degrees(rs * M.RAYLEIGH_U / M.R_E)
             for a_ in (ang, 2 * TH_C - ang):
                 d = np.abs(((th - a_ + 180) % 360) - 180) * np.radians(1) * M.R_E
-                bump = np.exp(-(d / 120.0) ** 2) * np.exp(-((r - M.R_E) * sc / 6.0) ** 2)
-                img = img + bump[..., None] * np.array([1.0, 0.8, 0.45], np.float32) * 1.5
+                bump = np.exp(-(d / 220.0) ** 2) * np.exp(-((r - M.R_E) * sc / 14.0) ** 2)
+                img = img + bump[..., None] * np.array([1.0, 0.8, 0.45], np.float32) * 2.5
         LN = Lines()
         P2 = lambda xk, yk: ((xk - cxk) * sc + W / 2, -(yk - cyk) * sc + H / 2)
         if path > 0:
@@ -733,6 +733,18 @@ def earth_cut(cx=(0.0, 0.0), cy=(0.0, 0.0), scale=(0.075, 0.075), tsec=(0.0, 0.0
                 if len(hit) and ry_ >= 1.0:
                     x_, y_ = P2(*pts[end - 1])
                     img = glow_dot(img, x_, y_, 4, (1.0, 0.4, 0.2), 0.8)
+            if ry_ >= 0.6 and eye > 0:                      # the straight line from the flash to the river runs into rock
+                a1 = np.radians(TH_T)
+                p1 = np.array([np.cos(a1), np.sin(a1)]) * M.R_E
+                p0 = np.array([cxp, cyp])
+                mid = p0 + (p1 - p0) * 0.5
+                mid = mid / np.linalg.norm(mid) * M.R_E                 # where it meets the bulge
+                LN.add([P2(*(p0 + (mid - p0) * q)) for q in np.linspace(0, 1, 20)], (1.0, 0.3, 0.25), 3, 0.9)
+                xm, ym = P2(*mid)
+                xl = np.zeros((H, W), np.float32)
+                cv2.line(xl, (int(xm - 22), int(ym - 22)), (int(xm + 22), int(ym + 22)), 1.0, 6, cv2.LINE_AA)
+                cv2.line(xl, (int(xm - 22), int(ym + 22)), (int(xm + 22), int(ym - 22)), 1.0, 6, cv2.LINE_AA)
+                img = img + (xl + fast_blur(xl, 6))[..., None] * np.array([1.0, 0.25, 0.2], np.float32)
         if chord > 0:                                # the straight line from the river to the crater runs through rock
             a1, a2 = np.radians(TH_T), np.radians(TH_C)
             p1, p2 = np.array([np.cos(a1), np.sin(a1)]) * M.R_E, np.array([np.cos(a2), np.sin(a2)]) * M.R_E
@@ -807,8 +819,8 @@ def fish_sprite(kind="paddle", L=600, gape=0.0, tail=0.0, tone=1.0):
                (0.66, -0.012 - 0.03 * g)]
         cv2.fillPoly(body, [_poly(_smooth_outline(top, bot), Ls, x0, y0)], 255, cv2.LINE_AA, shift=4)
         # the paddle (rostrum): thin seen from the side, slightly deeper toward the rounded tip
-        pt = [(0.63, 0.040), (0.75, 0.020), (0.90, 0.020), (0.975, 0.020), (0.995, 0.010), (1.0, 0.0)]
-        pb = [(0.63, 0.012), (0.75, 0.006), (0.90, 0.002), (0.975, 0.000), (0.995, 0.002), (1.0, 0.0)]
+        pt = [(0.63, 0.040), (0.72, 0.024), (0.82, 0.030), (0.92, 0.040), (0.975, 0.036), (0.995, 0.018), (1.0, 0.0)]
+        pb = [(0.63, 0.010), (0.72, 0.002), (0.82, -0.008), (0.92, -0.016), (0.975, -0.014), (0.995, -0.006), (1.0, 0.0)]
         cv2.fillPoly(body, [_poly(_smooth_outline(pt, pb, 60), Ls, x0, y0)], 255, cv2.LINE_AA, shift=4)
         # open mouth: a dark cavity under the paddle base, with the red gill arches showing through
         if g > 0.05:
@@ -1030,7 +1042,7 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
         sy_, by_ = H * 0.07, H * 0.86
         bd = L(beads)
         if bd > 0:
-            img = _beads_fall(img, tc, int(900 * bd), sy_, by_, seed=8, size=1.3, speed=(25, 45), glow=1.1)   # far
+            img = _beads_fall(img, tc, int(900 * bd * bead_size), sy_, by_, seed=8, size=1.3 * bead_size, speed=(25, 45), glow=1.1)   # far
         r = rng_at(601)
         for k in range(int(round(school))):                                        # the school: smaller, farther, fogged
             xk = (r.uniform(-0.2, 1.1) * W + facing * tc * r.uniform(30, 55) + 0 * L(pan)) % (W * 1.4) - W * 0.2
@@ -1283,7 +1295,7 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
         in_water = in_water & ((ys > g) | (lv > 0.5) | (ys > surf[None, :]))
         wd = clamp((ys - surf[None, :]) / dep)
         wc = np.array([0.10, 0.25, 0.22], np.float32) * (1 - 0.5 * rd) * (1 - wd[..., None] * 0.6)
-        brown = max(float(clamp(lv * 1.5)), float(L(muddy)))
+        brown = max(float(clamp(lv * 0.4)), float(L(muddy)))
         wc = wc * (1 - 0.8 * brown) + np.array([0.24, 0.18, 0.10], np.float32) * brown * (0.75 + 0.35 * soil[..., None])   # surge water is brown
         above = in_water & (ys <= g)
         img = np.where(in_water[..., None], np.where(above[..., None], img * 0.08 + wc * 1.05, img * 0.25 + wc), img)
@@ -1309,9 +1321,10 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
                 fy = lerp(g + dep * 0.35, g - 16, ease(q)) - 60 * np.sin(np.pi * q)
                 img = put_fish(img, "sturgeon" if k == 0 else "paddle", fx, fy, 170, 1, gape=0.3,
                                tail=0.4 * np.sin(tc * 6 + k) * (1 - md), tone=0.7, tilt=6 * (k - 0.5) - 25 * np.sin(np.pi * q))
-            if md > 0.5:                                        # mud drapes the bank
-                bank_mud = (ys > g - 30 * clamp((md - 0.5) * 2)) & (ys < g + 4) & (xs > W * 0.84)
-                img = np.where(bank_mud[..., None], mud_c, img)
+            if md > 0.5:                                        # mud drapes the bank: a soft mound slowly covering the fish
+                hm = 34 * clamp((md - 0.5) * 2) * np.exp(-((xs - W * 0.89) / (W * 0.06)) ** 2)
+                bank_mud = clamp((ys - (g - hm)) / 4.0) * (ys < g + 6) * (xs > W * 0.83)
+                img = img * (1 - 0.85 * bank_mud[..., None]) + mud_c * 0.85 * bank_mud[..., None]
         # logs tumbling in the surge
         db = L(debris)
         if db > 0:
@@ -1341,7 +1354,7 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
             gl = np.zeros((H, W), np.float32)
             solid = np.where((xs[0] > W * 0.16) & (xs[0] < W * 0.84), top_mud, g)
             for x_, y_ in zip(px, py):
-                if y_ < solid[int(np.clip(x_, 0, W - 1))]:
+                if y_ < solid[int(np.clip(x_, 0, W - 1))] and W * 0.18 < x_ < W * 0.82:
                     cv2.line(gl, (int(x_), int(y_ - 14)), (int(x_), int(y_)), 1.0, 2, cv2.LINE_AA)
             img = img + (gl + fast_blur(gl, 4) * 1.5)[..., None] * np.array([0.55, 1.0, 0.75], np.float32) * 0.9
             # beads already settled in the mud: specks in the fine layers
@@ -1384,7 +1397,7 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
             fx0 = -W * 0.2 + bm * W * 1.5
             rr_ = np.hypot(xs - (fx0 - W * 0.8), (ys - g) * 1.0)
             band = np.exp(-((rr_ - W * 0.8) / 70.0) ** 2) * (ys < g + 4)
-            img = img * (1 + 1.1 * band[..., None]) + band[..., None] * np.array([0.18, 0.16, 0.13], np.float32)
+            img = img * (1 + 0.25 * band[..., None])
             puff = np.exp(-np.clip(fx0 - xs, 0, None) / 300.0) * (xs < fx0) * np.exp(-np.clip(g - ys, 0, None) / 120.0) * (ys < g + 6)
             img = img * (1 - 0.3 * puff[..., None]) + (puff * 0.45)[..., None] * np.array([0.55, 0.48, 0.40], np.float32)
             r5 = rng_at(814 + int(tc * 3))
@@ -1638,8 +1651,8 @@ def droplet(temp=(1.0, 0.0), reentry=(0.0, 0.0), spin=0.0, stream=1.0):
 
 
 # =========================================================================================================== fossil
-FOSSILS = [("paddle", 0.27, 0.22, 600, 2), ("sturgeon", 0.72, 0.26, 600, -1), ("paddle", 0.25, 0.50, 620, -1),
-           ("sturgeon", 0.74, 0.54, 580, 1), ("paddle", 0.30, 0.79, 580, 1), ("sturgeon", 0.76, 0.81, 540, -1)]
+FOSSILS = [("paddle", 0.30, 0.26, 640, 3), ("sturgeon", 0.68, 0.34, 620, -2), ("paddle", 0.33, 0.47, 640, -2),
+           ("sturgeon", 0.66, 0.57, 600, 2), ("paddle", 0.30, 0.70, 600, 1), ("sturgeon", 0.70, 0.80, 560, -1)]
 
 
 @functools.lru_cache(2)
@@ -1654,7 +1667,7 @@ def _fossil_slab(beads_on=True):
     eyes = []
     for kind, fx, fy, Lf, tilt in FOSSILS:
         m = put_fish(np.zeros((H, W, 3), np.float32), kind, fx * W, fy * H, Lf, 1, gape=0.0, tail=0.3, tone=1.0, tilt=tilt)
-        a = clamp(m.mean(2) * 3)
+        a = clamp(m.mean(2) * 12)
         relief = np.maximum(relief, a)
         lines = np.maximum(lines, clamp((m.mean(2) < 0.35) * a))           # eye, gill cover, scutes stay dark
         eyes.append((fx * W + Lf * (0.065 if kind == "paddle" else 0.355), fy * H - Lf * 0.03))
@@ -2043,9 +2056,13 @@ def resin(flow=(0.0, 1.0), zoom=(1.0, 1.1)):
     def f(ctx, t, u, fi):
         e = ease(u)
         xs, ys = grid()
-        fib = cv2.resize(fbm(60, 400, scale=6, octaves=5, seed=1201), (W, H))
-        grooves = 0.5 + 0.5 * np.sin(xs / 23.0 + 6 * fib)
-        img = np.array([0.20, 0.13, 0.08], np.float32) * (0.45 + 0.6 * grooves[..., None]) * (0.8 + 0.4 * fib[..., None])
+        fib = cv2.resize(fbm(160, 30, scale=8, octaves=5, seed=1201), (W, H))           # vertical bark ridges
+        ridges = cv2.resize(fbm(240, 20, scale=12, octaves=3, seed=1203), (W, H))
+        trunk = clamp(1 - np.abs(xs - W / 2) / (W * 0.36))
+        cyl = np.sqrt(clamp(1 - ((xs - W / 2) / (W * 0.36)) ** 2))
+        bark = np.array([0.22, 0.15, 0.09], np.float32) * (0.35 + 0.8 * cyl[..., None]) * (0.6 + 0.6 * ridges[..., None]) * (0.85 + 0.3 * fib[..., None])
+        forest = np.array([0.10, 0.16, 0.10], np.float32) * (0.6 + 0.6 * cv2.GaussianBlur(fib, (0, 0), 12)[..., None])
+        img = np.where((trunk > 0)[..., None], bark, forest)
         fl = lerp(*flow, e)
         cx, top = W * 0.5, H * 0.12
         bot = top + H * (0.45 + 0.3 * fl)
@@ -2102,4 +2119,49 @@ def flares(at=0.2):
             cv2.circle(lay, (int(x1), int(y1)), int(6 + 16 * np.sin(np.pi * q)), 1.0, -1, cv2.LINE_AA)
         g = lay + fast_blur(lay, 10) * 2
         return img + g[..., None] * np.array([1.0, 0.85, 0.6], np.float32)
+    return f
+
+
+
+def count_ticks(seconds=(0.0, 9.0), horizon=0.5, big=True):
+    """Overlay: a stopwatch counting seconds and, for every 3 s counted, one more kilometre tick along the water
+    toward the strike: the count turns into distance."""
+    from ep_tanis.cine import _dial, alt_to_y
+    def f(ctx, img, t, u):
+        sec = lerp(seconds[0], seconds[1], u)
+        img = _dial(img, sec / 60.0, W * 0.5, H * 0.28, 110, 1.0, True)
+        pitch = 2.0 - (0.56 - horizon) * 40.0
+        hz = alt_to_y(0.0, pitch, (W / 2) / np.tan(np.radians(31.0)))
+        x0, y0, x1, y1 = W * 0.5, H * 0.98, W * 0.62 + 40, hz + 4
+        n = int(sec // 3)
+        lay = np.zeros((H, W), np.float32)
+        for k in range(1, n + 1):
+            q = min(0.95, k / 4.0)
+            x, y = lerp(x0, x1, q), lerp(y0, y1, q ** 0.5)
+            cv2.circle(lay, (int(x), int(y)), int(12 * (1 - q) + 6), 1.0, -1, cv2.LINE_AA)
+            if k > 1:
+                qp = min(0.95, (k - 1) / 4.0)
+                cv2.line(lay, (int(lerp(x0, x1, qp)), int(lerp(y0, y1, qp ** 0.5))), (int(x), int(y)), 0.7, 3, cv2.LINE_AA)
+        return img + (lay + fast_blur(lay, 6))[..., None] * np.array([1.0, 0.85, 0.4], np.float32) * 0.9
+    return f
+
+
+def leaves(at=0.0, n=160, seed=1401):
+    """Overlay: leaves and twigs shaken out of the trees, falling."""
+    def f(ctx, img, t, u):
+        if t < at:
+            return img
+        r = rng_at(seed)
+        lay = np.zeros((H, W), np.float32)
+        for k in range(n):
+            tt = t - at - r.uniform(0, 0.8)
+            if tt < 0:
+                continue
+            x = r.uniform(0, W) + 30 * np.sin(tt * 3 + k)
+            y = H * r.uniform(0.15, 0.4) + tt * r.uniform(90, 200)
+            if y > H:
+                continue
+            a = tt * 4 + k
+            cv2.ellipse(lay, (int(x), int(y)), (int(r.uniform(4, 9)), int(r.uniform(2, 4))), np.degrees(a), 0, 360, 1.0, -1, cv2.LINE_AA)
+        return img * (1 - 0.85 * lay[..., None]) + lay[..., None] * np.array([0.10, 0.12, 0.05], np.float32)
     return f

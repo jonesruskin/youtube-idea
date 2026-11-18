@@ -93,7 +93,7 @@ def sky(az, alt, s):
 
 
 # ─────────────────────────────── the forest panorama (built once, sampled by every riverbank shot) ───────────────
-AZ0, AZ1, ALT0, ALT1, PPD = -95.0, 95.0, -3.0, 36.0, 24.0       # panorama extent (deg) and pixels per degree
+AZ0, AZ1, ALT0, ALT1, PPD = -95.0, 95.0, -3.0, 36.0, 34.0       # panorama extent (deg) and pixels per degree
 PW, PH = int((AZ1 - AZ0) * PPD), int((ALT1 - ALT0) * PPD)
 
 
@@ -157,7 +157,7 @@ def _forest():
         far_a[int((ALT1 + 0.75) * PPD):] = 1.0                                   # solid bank below the trees
         shrub_a, shrub_l = _tree_layer(61, 1500, -0.95, 0.4, 1.3, 0.0, 0.5)      # bushes at the water's edge
         return np.stack([hills_a, mid_a, mid_l, far_a, far_l, shrub_a, shrub_l]).astype(np.float16)
-    return cached("tanis_forest_v5", build).astype(np.float32)
+    return cached("tanis_forest_v6", build).astype(np.float32)
 
 
 def _sample(layer, az, alt):
