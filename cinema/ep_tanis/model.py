@@ -233,3 +233,53 @@ if __name__ == "__main__":
         print("plunge", dmm, plunge(dmm), "total", glass_on_river(dmm))
     print("settle", settle_in_water_s(1.0), settle_in_water_s(0.3))
     print("sound h", sound_hours(), "light ms", light_ms())
+
+
+# ------------------------------------------------------------------------------------------------ paths for drawing
+@functools.lru_cache(maxsize=None)
+def ray_path(wave, delta=DELTA, n=200):
+    """(theta, r) points of the first-arrival ray from the crater (theta=0) to Tanis (theta=delta)."""
+    tab = _ray_tables(wave)
+    D, P_ = tab[:, 1], tab[:, 0]
+    i = int(np.argmin(np.abs(D - delta)))
+    p = P_[i]
+    r = np.linspace(R_E - 2880.0, R_E, 30000)
+    v = np.array([_v(R_E - x, wave) for x in r])
+    eta = r / v
+    idx = np.where(eta < p)[0]
+    i0 = idx.max() + 1 if len(idx) else 0
+    rr, ee = r[i0:], eta[i0:]
+    s = np.sqrt(np.maximum(ee ** 2 - p ** 2, 1e-12))
+    dth = p / (rr * s)
+    th = np.concatenate([[0], np.cumsum(0.5 * (dth[1:] + dth[:-1]) * np.diff(rr))])   # from the turning point up
+    half = th[-1]
+    th_down = half - th[::-1]                                        # crater side, descending
+    r_down = rr[::-1]
+    th_all = np.concatenate([th_down, half + th[1:]])
+    r_all = np.concatenate([r_down, rr[1:]])
+    th_all = th_all * delta / th_all[-1]
+    k = np.linspace(0, len(th_all) - 1, n).astype(int)
+    return th_all[k], r_all[k]
+
+
+@functools.lru_cache(maxsize=None)
+def arc_path(elev_deg, n=160):
+    """(theta, r) of the ballistic arc from the crater to where it re-enters over Tanis; with times (s)."""
+    v = launch_speed(elev_deg)
+    r0 = R_E
+    a_el = np.radians(elev_deg)
+    h = r0 * v * np.cos(a_el)
+    eps = v * v / 2 - MU / r0
+    a = -MU / (2 * eps)
+    e = np.sqrt(1 + 2 * eps * h * h / MU ** 2)
+    p = h * h / MU
+    f0 = np.arccos(np.clip((p / r0 - 1) / e, -1, 1))
+    f1 = np.arccos(np.clip((p / (R_E + ATM_TOP) - 1) / e, -1, 1))
+    f = np.linspace(f0, 2 * np.pi - f1, n)
+    r = p / (1 + e * np.cos(f))
+    Ean = lambda ff: 2 * np.arctan(np.sqrt((1 - e) / (1 + e)) * np.tan(ff / 2))
+    E = np.where(f <= np.pi, Ean(f), 2 * np.pi + Ean(f - 2 * np.pi))
+    Mn = E - e * np.sin(E)
+    nmo = np.sqrt(MU / a ** 3)
+    tt = (Mn - Mn[0]) / nmo
+    return f - f0, r, tt

@@ -210,6 +210,23 @@ def cue(name, dur):
     return np.zeros(int(dur * SR))
 
 
+# episode-specific sound (Episode 4 on): <ep>/sound.py may define cue(name, dur, L) and sfx(kind, L)
+_ep_sound = None
+_snd = os.path.join(ROOT, ep, "sound.py")
+if os.path.exists(_snd):
+    _sp = importlib.util.spec_from_file_location("ep_sound", _snd)
+    _ep_sound = importlib.util.module_from_spec(_sp); _sp.loader.exec_module(_ep_sound)
+_cue_lib = cue
+
+
+def cue(name, dur):
+    if _ep_sound is not None and hasattr(_ep_sound, "cue"):
+        x = _ep_sound.cue(name, dur, globals())
+        if x is not None:
+            return x[: int(dur * SR)] if len(x) >= int(dur * SR) else np.pad(x, (0, int(dur * SR) - len(x)))
+    return _cue_lib(name, dur)
+
+
 # ───────────── arrange ─────────────
 segs = {s["id"]: s for s in tl["segments"]}
 _wp = os.path.join(ROOT, "build", ep, "voice", "words.json")
@@ -276,8 +293,12 @@ for k, seg in enumerate(mod.SEGMENTS):
             place(sfx, riser(fx.get("dur", 3.0), 0.1), tt)
         elif fx["kind"] == "bell":
             place(sfx, bell(note(fx.get("note", "E5")), 3.0, 0.04), tt)
+        elif _ep_sound is not None and hasattr(_ep_sound, "sfx"):
+            x = _ep_sound.sfx(fx["kind"], globals())
+            if x is not None:
+                place(sfx, x * fx.get("gain", 1.0), tt)
     st = seg["shot"]["type"]
-    if k and st != prev_type and not c.get("kind") in ("chapter", "fate", "title"):
+    if k and st != prev_type and not c.get("kind") in ("chapter", "fate", "title") and not getattr(_ep_sound, "NO_WHOOSH", False):
         place(sfx, whoosh(0.9, 0.035), t["start"] - 0.6)
     prev_type = st
     for fl in seg["shot"].get("flare", []):

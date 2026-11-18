@@ -150,7 +150,7 @@ SEGMENTS = [
                 "Light came first. Then the ground. Then fire in the sky. Then glass, then water.",
                 "There's one thing left that hasn't arrived."],
          hold=1.4),
-    dict(id="c7b", music=None, shot=dict(type="bank"),
+    dict(id="c7b", music="silence", shot=dict(type="bank"),
          lines=["Two hours and thirty-two minutes after the impact, the river finally hears it."],
          hold=2.6, sfx=[dict(kind="farboom", word="hears", offset=0.9)]),
     dict(id="c7c", music="ash", shot=dict(type="bank"),
@@ -187,7 +187,7 @@ SEGMENTS = [
     dict(id="end1", music="evidence", shot=dict(type="amber"),
          lines=["One asteroid, one riverbank, one strange order of arrivals. The sound came last, and nothing was left to hear it."],
          hold=0.6),
-    dict(id="end2", music="nextup", shot=dict(type="next"),
+    dict(id="next", music="nextup", shot=dict(type="next"),
          lines=["Next time, an asteroid that's coming in our own lifetimes.",
                 "On April thirteenth, twenty twenty-nine, Apophis will pass closer to Earth than some of our satellites. We'll simulate the flyby, and the impact we avoided."],
          hold=0.4),
@@ -197,13 +197,13 @@ SEGMENTS = [
 ]
 
 META = dict(
-    slot=4, next_slot=5, next_teaser_keywords=["Apophis", "2029"],   # EPISODES.md: #5 is Apophis
+    slot=4, next_slot=5, next_teaser_keywords=["Apophis", "April"],   # EPISODES.md: #5 is Apophis
     promise_at=("open1", "glass"),        # impact glass raining into the river, on screen from the first line
     first_chapter="The fish with glass in its gills",
     extra_chapters={"c1a": "Minute 0: a spring morning", "c2a": "Minute 2: a light in the south",
                     "c3a": "Minute 6: the ground arrives", "c4a": "Minute 12: shooting stars",
                     "c5a": "Minute 55: the glass rain", "c6a": "The river comes back",
-                    "c7a": "2 h 32 min: the sound", "c8a": "66 million years later", "end2": "Next time"},
+                    "c7a": "2 h 32 min: the sound", "c8a": "66 million years later", "next": "Next time"},
     thumb_text="",
     thumb_concept="from under the river looking up through Snell's window: the circle of sky full of glowing streaks, a paddlefish silhouette crossing it, glass beads sinking past",
     creative=dict(
