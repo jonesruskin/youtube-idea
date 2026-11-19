@@ -6,7 +6,7 @@ from engine.core import W, H
 from ep_tanis import model as M
 from ep_tanis.cine import riverbank, sky_up, surge_scene, xray_scene, amber_scene, dig_scene, serif, tag, clock, over_all, slice_label, PEACH, INK
 from ep_tanis.world import (globe, earth_cut, fish_scene, gills, cutaway, storm, water, droplet, fossil, spring_wave, birds, flow_arrows,
-                            badlands, moving_star, distance_ticks, beads_macro, species, resin, fireball_horizon, flares, count_ticks, leaves, dial_top, TEAL)
+                            badlands, moving_star, distance_ticks, beads_macro, species, resin, fireball_horizon, flares, count_ticks, leaves, dial_top, thunder_diagram, TEAL)
 
 P_MIN, S_MIN, R_MIN, SND = M.seismic_minutes("P"), M.seismic_minutes("S"), M.rayleigh_minutes(), M.sound_hours() * 60
 P_S, S_S, R_S = P_MIN * 60, S_MIN * 60, R_MIN * 60
@@ -28,12 +28,12 @@ open1 = [
     B(1, storm(view="lake", strike=(0.25, 0.25), horizon=0.5, zoom=(1.0, 1.04)), clock((0.0, 0.01), big=True, show_from=1.4), at="Lightning", cut=True, name="lightning, and the stopwatch starts"),
     B(1, storm(view="lake", strike=(-1.0, -1.0), horizon=0.5, zoom=(1.04, 1.1)), over_all(clock((0.0, 0.05), big=True), big("1", "One", W * 0.2), big("2", "Two", W * 0.5), big("3", "Three", W * 0.8)),
       at="One", name="a stopwatch counts one, two, three"),
-    B(2, storm(view="window", strike=(-1.0, -1.0), thunder=(0.05, 0.05), zoom=(1.3, 1.3), pan=(-60.0, -60.0)), at="thunder", cut=True, name="thunder rattles the glass"),
-    B(3, storm(view="lake", strike=(0.15, 0.15), horizon=0.56, zoom=(1.6, 1.7), pan=(-300.0, -320.0)), serif("light first", "Light", y=H * 0.84), cut=True, name="the flash, close"),
-    B(3, storm(view="lake", strike=(-1.0, -1.0), horizon=0.5), over_all(count_ticks((0.0, 4.0), horizon=0.5), serif("sound later", "Sound", y=H * 0.9)), at="Sound", cut=True, name="the stopwatch runs while we wait"),
-    B(3, storm(view="lake", strike=(0.2, 0.2), horizon=0.5), count_ticks((0.0, 12.0), horizon=0.5), at="longer", name="a longer count: more kilometres"),
-    B(4, storm(view="lake", strike=(0.2, 0.2), horizon=0.5), over_all(count_ticks((0.0, 3.2), horizon=0.5), serif("3 seconds = about 1 km", "three", y=H * 0.9)), cut=True, name="three seconds, one kilometre"),
-    B(4, storm(view="lake", strike=(-1.0, -1.0), thunder=(0.2, 0.2), horizon=0.5), at="kilometre", name="the thunder arrives"),
+    B(2, thunder_diagram(sound=(0.85, 1.0), flash=(0.0, 0.0), km=1), at="thunder", cut=True, name="the sound reaches the house: thunder"),
+    B(3, thunder_diagram(sound=(0.0, 0.0), flash=(1.0, 0.6), km=3), serif("light first", "Light", y=H * 0.9), cut=True, name="the flash reaches the window at once"),
+    B(3, thunder_diagram(sound=(0.0, 0.5), flash=(0.0, 0.0), km=3), serif("sound later", "Sound", y=H * 0.9), at="Sound", name="the sound spreads slowly toward the house"),
+    B(3, thunder_diagram(sound=(0.5, 1.0), flash=(0.0, 0.0), km=3), at="longer", name="farther away, a longer count"),
+    B(4, thunder_diagram(sound=(0.0, 0.34), flash=(0.6, 0.0), km=3), serif("3 seconds = about 1 km", "three", y=H * 0.9), cut=True, name="three seconds per kilometre"),
+    B(4, thunder_diagram(sound=(0.34, 0.66), flash=(0.0, 0.0), km=3), at="kilometre", name="one more kilometre, three more seconds"),
 ]
 open2 = [
     B(0, riverbank(phase="dawn", view_az=(-40.0, -30.0), sun_alt=(3.0, 4.0)), tag("66 million years ago", 0.4, sub="a river in North Dakota"), cut=True, name="a river at dawn"),
@@ -80,7 +80,7 @@ c2a = [
     B(1, globe(lat=(21.5, 21.4), lon=(-89.4, -89.5), R=(3600.0, 7000.0), clouds=0.15, impact=(0.6, 0.3), crater=(0.2, 1.0)), lab("chx", "a crater 180 km wide", 0.5, dy=110, color=PEACH),
       at="crater", name="the crater opens"),
     B(1, riverbank(phase="dawn", view_az=(-6.0, 0.0), mist=(0.6, 0.55)), clock((0.0, 0.05), big=True), at="count", cut=True, name="the count begins"),
-    B(2, earth_cut(cx=(0.0, 0.0), cy=(5800.0, 5800.0), scale=(0.26, 0.26), rays=(0.1, 1.0), eye=1.0, shell=0.0), over_all(cl(0.05, 0.1), lab("tanis", "the river", 0.3, dy=-50), lab("chx", "the impact", 0.3, dy=-34)),
+    B(2, earth_cut(cx=(0.0, 0.0), cy=(5800.0, 5800.0), scale=(0.26, 0.26), rays=(0.1, 0.55), eye=1.0, shell=0.0), over_all(cl(0.05, 0.1), lab("tanis", "the river", 0.3, dy=-50), lab("chx", "the impact", 0.3, dy=-34)),
       cut=True, name="the light flies over the river"),
     B(2, fish_scene(hero=(0.3, 0.55), school=2, pan=(0.0, 100.0)), cl(0.1, 0.2), at="sees", cut=True, name="the fish see nothing"),
     B(3, earth_cut(cx=(0.0, 0.0), cy=(4000.0, 4800.0), scale=(0.11, 0.17), eye=1.0, shell=0.0), lab("tanis", "the river", 0.2, dy=-50), cut=True, name="the Earth is curved"),
@@ -110,16 +110,16 @@ c3a = [
 ]
 c3b = [
     B(0, earth_cut(cx=(1200.0, 1500.0), cy=(5700.0, 5900.0), scale=(0.3, 0.34), tsec=(310.0, P_S + 4), show=("P",), quake_glow=1.0), cl(5.2, P_MIN, True), cut=True, name="the first wave reaches the river"),
-    B(0, riverbank(phase="quake", view_az=(0.0, 1.0), glow=(0.6, 0.6), shake=(9.0, 4.0), slosh=(0.3, 0.3)), over_all(leaves(0.0, n=220), cl(P_MIN, P_MIN + 0.3, True)), at="arrives", cut=True, name="the ground jolts: leaves shaken down"),
+    B(0, fish_scene(hero=(0.4, 0.5), hero_y=(0.45, 0.45), school=0, shake=(1.4, 0.6), silt=(0.0, 0.9)), cl(P_MIN, P_MIN + 0.3, True), at="arrives", cut=True, name="the riverbed jolts: silt bursts up"),
     B(1, riverbank(phase="quake", view_az=(-30.0, -26.0), pitch=(10.0, 12.0), glow=(0.5, 0.5), shake=(3.0, 2.0), slosh=(0.25, 0.3)), birds(0.1), cut=True, name="birds burst out"),
     B(1, fish_scene(hero=(0.4, 0.65), hero_y=(0.4, 0.4), dive=(0.0, 1.0), school=3, shake=(0.8, 0.5), silt=(0.0, 0.8)), at="paddlefish", cut=True, name="the paddlefish dives"),
     B(2, earth_cut(cx=(0.0, 0.0), cy=(3000.0, 3000.0), scale=(0.13, 0.13), tsec=(560.0, S_S + 4), show=("S",), quake_glow=1.0), cl(9.3, S_MIN, True), cut=True, name="the slower second wave"),
-    B(2, riverbank(phase="quake", view_az=(20.0, 26.0), pitch=(6.0, 6.0), glow=(0.5, 0.45), shake=(8.0, 6.0), slosh=(0.3, 0.3)), over_all(leaves(0.0, n=260, seed=1402), birds(0.0, n=20, seed=1004), cl(S_MIN, S_MIN + 0.2, True)), at="shakes", cut=True, name="everything shakes side to side"),
-    B(3, earth_cut(cx=(1300.0, 1500.0), cy=(5900.0, 6000.0), scale=(0.45, 0.5), rayleigh=(700.0, R_S + 4), show=(), shell=0.0), cl(11.5, R_MIN, True), cut=True, name="a wave rolling along the surface"),
-    B(3, cutaway(roll=(1.0, 1.0), slosh=(0.5, 0.6)), cl(R_MIN, R_MIN + 0.3, True), at="roll", cut=True, name="the ground rolls like the sea"),
+    B(2, riverbank(phase="quake", view_az=(20.0, 26.0), pitch=(6.0, 6.0), glow=(0.5, 0.45), shake=(8.0, 6.0), slosh=(0.3, 0.3)), over_all(leaves(0.0, n=320, seed=1402), birds(0.0, n=24, seed=1004), cl(S_MIN, S_MIN + 0.2, True)), at="shakes", cut=True, name="everything shakes side to side"),
+    B(3, na(seis=(10.0, R_MIN), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), cl(10.0, R_MIN, True), cut=True, name="the slowest wave spreads across the land"),
+    B(3, riverbank(phase="quake", view_az=(30.0, 32.0), pitch=(5.0, 5.0), glow=(0.4, 0.35), shake=(2.0, 2.0), slosh=(0.5, 0.5), roll=(1.0, 1.0)), cl(R_MIN, R_MIN + 0.3, True), at="roll", cut=True, name="the ground rolls like the sea"),
 ]
 c3c = [
-    B(0, riverbank(phase="quake", view_az=(-10.0, -14.0), pitch=(4.0, 3.0), glow=(0.35, 0.3), shake=(9.0, 7.0), slosh=(0.4, 0.4)), over_all(birds(0.2, n=18, seed=1003), cl(13.3, 13.6)), cut=True, name="the biggest earthquake"),
+    B(0, riverbank(phase="quake", view_az=(-10.0, -14.0), pitch=(4.0, 3.0), glow=(0.35, 0.3), shake=(6.0, 5.0), slosh=(0.4, 0.4), roll=(1.0, 0.8)), over_all(leaves(0.0, n=300, seed=1405), birds(0.2, n=24, seed=1003), cl(13.3, 13.6)), cut=True, name="the biggest earthquake"),
     B(1, cutaway(slosh=(0.4, 0.75), roll=(0.3, 0.1)), cl(13.6, 13.9), cut=True, name="like a shaken bathtub"),
     B(1, cutaway(slosh=(0.55, 0.9), shake=(0.4, 0.3)), cl(13.9, 14.2), at="slosh", name="it starts to slosh"),
 ]
@@ -146,7 +146,7 @@ c4b = [
     B(1, riverbank(phase="storm", view_az=(30.0, 34.0), pitch=(10.0, 12.0), fov=(70.0, 70.0), streak=(0.9, 1.0), glow=(0.2, 0.2)), cl(15.0, 16.0), at="millions", cut=True, name="millions of them"),
     B(2, riverbank(phase="storm", view_az=(0.0, 2.0), pitch=(22.0, 22.0), fov=(28.0, 26.0), streak=(0.25, 0.3), glow=(0.2, 0.2)), cl(16.0, 16.7), cut=True, name="one streak, close"),
     B(2, riverbank(phase="storm", view_az=(4.0, 8.0), pitch=(18.0, 14.0), streak=(1.0, 0.9), heat=(0.1, 0.3), glow=(0.3, 0.2)), cl(16.7, 18.0), at="five", cut=True, name="five km per second"),
-    B(3, riverbank(phase="storm", view_az=(4.0, 6.0), pitch=(8.0, 8.0), streak=(0.6, 0.6), heat=(0.3, 0.35), glow=(0.2, 0.2)), over_all(flares(0.1), cl(18.0, 19.5)), cut=True, name="streaks flare and split"),
+    B(3, riverbank(phase="storm", view_az=(4.0, 6.0), pitch=(2.0, 1.0), streak=(1.0, 1.0), heat=(0.35, 0.45), glow=(0.25, 0.3)), cl(18.0, 19.5), cut=True, name="the glowing sky reflected on the water"),
     B(4, riverbank(phase="storm", view_az=(-30.0, -29.0), pitch=(6.0, 6.0), streak=(0.7, 0.6), heat=(0.5, 0.7), glow=(0.1, 0.1)), cl(19.5, 25.0), cut=True, name="the sky heats the forest"),
     B(4, riverbank(phase="storm", view_az=(-12.0, -10.0), pitch=(10.0, 10.0), fov=(40.0, 40.0), streak=(0.6, 0.5), heat=(0.8, 0.95)), cl(25.0, 32.0), at="forest", cut=True, name="treetops under a glowing sky"),
 ]
@@ -203,11 +203,11 @@ c6a = [
 ]
 c6b = [
     B(0, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.5, 0.55), mud=(1.0, 1.0), muddy=(1.0, 1.0), ash=(0.2, 0.3), focus=(0.5, 0.36)), cl(135.0, 140.0, True), cut=True, name="the river is gone, filled with mud"),
-    B(0, riverbank(phase="still", view_az=(-6.0, -4.0), pitch=(4.0, 4.0), dust=(0.45, 0.5), level=(1.4, 1.4), buried=(0.25, 0.25), mist=(0.2, 0.25)), cl(140.0, 144.0), at="Nothing", cut=True, name="a silent mudflat where the river was"),
+    B(0, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.5, 0.55), mud=(1.0, 1.0), muddy=(1.0, 1.0), ash=(0.3, 0.4), focus=(0.5, 0.36)), cl(140.0, 144.0), at="Nothing", name="nothing moves over the buried river"),
     B(1, na(sound=(144.0, 151.5), link=(1.0, 1.0), lat=(42.0, 44.0), lon=(-100.0, -102.0), R=(2600.0, 3600.0)), over_all(lab("tanis", "the river", 0.2, color=(0.6, 1.0, 0.95)), cl(144.0, 151.5)), cut=True, name="the ring reaches the river"),
     B(1, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.55, 0.55), mud=(1.0, 1.0), muddy=(1.0, 1.0), ash=(0.5, 0.6), slosh=(0.0, 0.0), roll=(0.0, 0.06)), cl(151.5, 151.68, True), at="sound", cut=True, name="silence"),
-    B(1, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.55, 0.6), mud=(1.0, 1.0), muddy=(1.0, 1.0), boom=(0.1, 0.55), shake=(2.0, 1.0), jolt=(0.8, 0.3), ash=(0.3, 0.6)),
-      cl(SND, SND + 0.07, True), at="arrives", name="the boom sweeps across"),
+    B(1, thunder_diagram(sound=(0.85, 1.0), flash=(0.0, 0.0), km=3, show_watch=0.0),
+      cl(SND, SND + 0.07, True), at="arrives", name="the sound finally arrives (the storm diagram again)"),
 ]
 c6c = [
     B(0, na(sound=(140.0, 152.0), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), over_all(serif("9,120 seconds", "Nine", y=H * 0.9), clock((0.0, 151.7), big=True)), cut=True, name="9,120 seconds of counting"),

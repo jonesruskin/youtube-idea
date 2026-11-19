@@ -4,7 +4,11 @@
                                              -> build/<ep>/mute/frames/<seg>_<beat>.jpg  (one strip per beat)
                                              -> build/<ep>/mute/blind_<k>.md   batches for blind viewers (no script)
                                              -> build/<ep>/mute/narration.json  what is said over each beat (for judges)
-  (a fresh AI with no context describes each strip into build/<ep>/mute/blind_<k>.json:
+  python3 tools/mute_test.py retest <ep> beat1,beat2,...   one batch file (blind_retest.md) with only those beats
+  ONE subagent viewer per round (founder rule: never several viewers + judges; it burns usage): it describes
+  every listed beat blind first, then reads narration.json and writes verdicts. Later judge files override
+  earlier ones per beat, so PASS verdicts from earlier rounds carry over.
+  (the viewer describes each strip into build/<ep>/mute/blind_<k>.json:
        [{"beat": "c1a#0", "sees": "...", "problems": "..."}]
    a second fresh AI compares those descriptions with narration.json into build/<ep>/mute/judge_<k>.json:
        [{"beat": "c1a#0", "verdict": "PASS"|"FAIL", "why": "..."}])
@@ -72,6 +76,16 @@ def prepare(ep, only=None):
     print(f"{len(beats)} beats in {(len(beats) + BATCH - 1) // BATCH} batches -> {B}")
 
 
+def retest(ep, beats):
+    B = os.path.join(ROOT, "build", ep, "mute")
+    narr = json.load(open(os.path.join(B, "narration.json")))
+    with open(os.path.join(B, "blind_retest.md"), "w") as f:
+        f.write("Each image is ONE shot of a film, shown as three moments left to right (start, middle, end). No sound, no captions.\n\n")
+        for key in beats:
+            f.write(f"- {key}: {os.path.join(B, narr[key]['image'])}\n")
+    print(f"{len(beats)} beats -> {B}/blind_retest.md")
+
+
 def finalize(ep):
     from story_gate import fingerprint
     B = os.path.join(ROOT, "build", ep, "mute")
@@ -99,5 +113,7 @@ if __name__ == "__main__":
     cmd, ep = sys.argv[1], sys.argv[2]
     if cmd == "prepare":
         prepare(ep, set(sys.argv[3].split(",")) if len(sys.argv) > 3 else None)
+    elif cmd == "retest":
+        retest(ep, sys.argv[3].split(","))
     else:
         finalize(ep)

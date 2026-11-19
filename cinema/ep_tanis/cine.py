@@ -280,7 +280,7 @@ def foreground(t, sway, ink):
 @scene_factory(keys=["phase"])
 def riverbank(phase="dawn", view_az=(0.0, 3.0), pitch=(5.0, 5.0), fov=(62.0, 60.0), glow=(0.0, 0.0), streak=(0.0, 0.0),
               heat=(0.0, 0.0), dust=(0.0, 0.0), dark=(0.0, 0.0), shake=(0.0, 0.0), slosh=(0.0, 0.0), level=(0.0, 0.0),
-              beads=(0.0, 0.0), mist=(0.7, 0.6), sun_vis=1.0, cover=0.5, buried=(0.0, 0.0), sun_alt=(5.0, 6.0)):
+              beads=(0.0, 0.0), mist=(0.7, 0.6), sun_vis=1.0, cover=0.5, buried=(0.0, 0.0), sun_alt=(5.0, 6.0), roll=(0.0, 0.0)):
     """Eye level on the riverbank, looking across the channel at the far bank. The sky does the storytelling."""
     def f(ctx, t, u, fi):
         e = ease(u)
@@ -351,9 +351,12 @@ def riverbank(phase="dawn", view_az=(0.0, 3.0), pitch=(5.0, 5.0), fov=(62.0, 60.
             mud_y = H - bu * H * 1.15 + 18 * np.sin(xs * 0.01 + t * 2)
             m = clamp((ys - mud_y) / 40)
             img = img * (1 - m[..., None]) + (np.array([0.09, 0.07, 0.045], np.float32) * (0.6 + 0.4 * cv2.resize(fbm(480, 270, 30, 4, 3), (W, H))[..., None])) * m[..., None]
-        if sh > 1.0:                                      # shaking shows as motion blur
-            k_ = int(1 + sh * 3)
-            img = cv2.blur(img, (k_, max(1, k_ // 2)))
+        rl_ = L(roll)
+        if rl_ > 0:                                       # the ground rolling like the sea: the bank heaves in waves
+            dy = rl_ * 40 * np.sin(xs * 0.006 - t * 3.0) * clamp((ys - H * 0.15) / (H * 0.2))
+            img = cv2.remap(img.astype(np.float32), xs.astype(np.float32), (ys - dy).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+        if sh > 1.0:                                      # shaking shows as motion blur (soft, not boxy)
+            img = cv2.GaussianBlur(img, (0, 0), sigmaX=0.6 + sh * 0.9, sigmaY=0.4 + sh * 0.5)
         exp = 1.15 * (1 - 0.65 * s["dark"])
         return img, dict(exposure=exp, bloom=0.45 + 0.35 * s["heat"] + 0.3 * s["glow"], grain=0.006)
     return f

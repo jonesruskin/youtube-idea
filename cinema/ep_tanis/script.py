@@ -201,7 +201,7 @@ META = dict(
     ),
     shots={"riverbank": "pov", "sky_up": "pov", "surge_scene": "pov", "fish_scene": "pov", "water": "pov", "storm": "pov",
            "gills": "macro", "droplet": "macro", "xray_scene": "micro", "amber_scene": "micro", "fossil": "macro",
-           "dig_scene": "interior", "badlands": "pov", "beads_macro": "macro", "species": "diagram", "resin": "macro", "cutaway": "diagram", "earth_cut": "diagram", "spring_wave": "diagram", "globe": "map"},
+           "dig_scene": "interior", "badlands": "pov", "beads_macro": "macro", "species": "diagram", "resin": "macro", "thunder_diagram": "diagram", "cutaway": "diagram", "earth_cut": "diagram", "spring_wave": "diagram", "globe": "map"},
     alts=["The Dinosaur Asteroid Hit Mexico. Its Sound Reached Dakota Last.",
           "3,000 km From the Dinosaur Asteroid, Everything Arrived in the Wrong Order"],
     tags="dinosaur asteroid, chicxulub, chicxulub impact, tanis, tanis fossil site, day the dinosaurs died, asteroid impact simulation, k-pg extinction, dinosaur extinction, impact glass, tektites, paddlefish fossil, hell creek, mass extinction, seismic waves, space documentary, earth science, science explained, gravity dial",

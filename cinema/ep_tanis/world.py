@@ -1014,8 +1014,12 @@ def _beads_fall(img, t, n, sy_, by_, seed=7, size=1.6, x_range=(0, W), speed=(18
     sp = r.uniform(*speed, n)
     by = sy_ + (r.uniform(0, 1, n) * (by_ - sy_) + t * sp) % (by_ - sy_)
     tw = 0.6 + 0.4 * np.sin(t * r.uniform(2, 6, n) + r.uniform(0, 6, n))
-    col = np.array([[0.55, 0.95, 0.75]], np.float32) * (tw[:, None] * glow)
-    return splat_points(img, bx, by, col, sigma=size)
+    lay = np.zeros((H, W), np.float32)
+    rad = max(1, int(round(size * 0.6)))
+    for x_, y_, w_ in zip(bx, by, tw):                  # little glass discs that stay visible at any size
+        cv2.circle(lay, (int(x_), int(y_)), rad, float(w_), -1, cv2.LINE_AA)
+    lay = lay + fast_blur(lay, 2 + rad) * 0.8
+    return img + lay[..., None] * np.array([0.55, 0.95, 0.75], np.float32) * (glow * 0.35)
 
 
 def _tone(y, murk=0.0):
@@ -2067,8 +2071,8 @@ def resin(flow=(0.0, 1.0), zoom=(1.0, 1.1)):
         cx, top = W * 0.5, H * 0.12
         bot = top + H * (0.45 + 0.3 * fl)
         m = np.zeros((H, W), np.float32)
-        pts = [(cx - 40, top), (cx + 40, top), (cx + 70, bot - 120), (cx + 95, bot - 40), (cx, bot + 30), (cx - 95, bot - 40), (cx - 70, bot - 120)]
-        cv2.fillPoly(m, [np.array(pts, np.int32)], 1.0, cv2.LINE_AA)
+        cv2.line(m, (int(cx), int(top)), (int(cx), int(bot - 90)), 1.0, 46, cv2.LINE_AA)       # the run down the bark
+        cv2.circle(m, (int(cx), int(bot - 40)), 95, 1.0, -1, cv2.LINE_AA)                    # the round drop at the bottom
         m = blur(m, 6)
         amber = np.array([1.0, 0.62, 0.15], np.float32) * (0.55 + 0.6 * clamp(1 - np.abs(xs - cx) / 110)[..., None])
         img = img * (1 - 0.85 * m[..., None]) + amber * 0.85 * m[..., None]
@@ -2173,4 +2177,65 @@ def dial_top(span_min=(140.0, 151.7), y=0.18, R=80):
     from ep_tanis.cine import _dial
     def f(ctx, img, t, u):
         return _dial(img, lerp(span_min[0], span_min[1], u), W * 0.5, H * y, R, 1.0, False)
+    return f
+
+
+# ======================================================================================== the storm rule, drawn
+@scene_factory(keys=[])
+def thunder_diagram(sound=(0.0, 1.0), flash=(1.0, 0.0), km=3, show_watch=1.0, shake_at=1.0):
+    """Side-on explainer: a storm cloud strikes the ground on the left; a house with a lit window on the right, km
+    away. The flash reaches the window at once (a bright line); the sound spreads out in arcs, slowly, lighting up
+    each kilometre tick as it passes; a stopwatch above counts the seconds (3 s per km). sound: 0..1 of the way to
+    the house; when it arrives the house shakes."""
+    from ep_tanis.cine import _dial
+    def f(ctx, t, u, fi):
+        e = ease(u)
+        xs, ys = grid()
+        img = np.array([0.03, 0.04, 0.09], np.float32) * (0.6 + 0.8 * clamp(ys / H)[..., None])
+        img = np.broadcast_to(img, (H, W, 3)).copy()
+        gy = H * 0.76
+        img = np.where((ys > gy)[..., None], np.array([0.05, 0.07, 0.04], np.float32), img)
+        kmi = max(1, int(round(km)))
+        x0, x1 = W * 0.14, W * 0.14 + (W * 0.70) * (km / 3.0) * 0.9
+        x1 = min(x1, W * 0.88)
+        sn = lerp(*sound, e)
+        fl = lerp(*flash, e)
+        lay = np.zeros((H, W), np.float32)
+        # cloud and bolt
+        for dx, dy, rx, ry in ((-60, 0, 120, 55), (40, -20, 110, 60), (120, 10, 90, 45), (-130, 15, 80, 40)):
+            cv2.ellipse(img, (int(x0 + dx), int(H * 0.2 + dy)), (rx, ry), 0, 0, 360, (0.16, 0.17, 0.22), -1, cv2.LINE_AA)
+        if fl > 0.05:
+            for (a, b, w) in _bolt(911, x0, H * 0.24, x0 + 10, gy):
+                cv2.line(lay, (int(a[0]), int(a[1])), (int(b[0]), int(b[1])), 1.0, max(1, int(w)), cv2.LINE_AA)
+            img = img + (lay + fast_blur(lay, 8) * 2)[..., None] * np.array([0.85, 0.9, 1.0], np.float32) * 2.5 * fl
+            # the light reaching the window at once
+            ll = np.zeros((H, W), np.float32)
+            cv2.line(ll, (int(x0 + 10), int(gy - 60)), (int(x1 - 30), int(gy - 95)), 1.0, 4, cv2.LINE_AA)
+            img = img + (ll + fast_blur(ll, 6))[..., None] * np.array([1.0, 0.95, 0.7], np.float32) * fl
+        # the house (shakes when the sound arrives)
+        shk = 8 * np.sin(t * 40) * clamp((sn - 0.98) * 50) * shake_at
+        hx = x1 + shk
+        cv2.rectangle(img, (int(hx - 30), int(gy - 120)), (int(hx + 110), int(gy)), (0.12, 0.10, 0.09), -1, cv2.LINE_AA)
+        cv2.fillPoly(img, [np.array([(hx - 45, gy - 120), (hx + 40, gy - 190), (hx + 125, gy - 120)], np.int32)], (0.14, 0.11, 0.10), cv2.LINE_AA)
+        cv2.rectangle(img, (int(hx - 10), int(gy - 100)), (int(hx + 30), int(gy - 60)), (0.95, 0.80, 0.45), -1, cv2.LINE_AA)
+        cv2.circle(img, (int(hx + 10), int(gy - 82)), 9, (0.10, 0.08, 0.07), -1, cv2.LINE_AA)          # someone at the window
+        # sound: arcs spreading from the strike, slowly
+        sl = np.zeros((H, W), np.float32)
+        R = sn * (x1 - x0)
+        for k in range(4):
+            rr = R - k * 40
+            if rr > 5:
+                cv2.ellipse(sl, (int(x0), int(gy)), (int(rr), int(rr)), 0, 180, 360, max(0.0, 1.0 - k * 0.25), 3, cv2.LINE_AA)
+        img = img + (sl + fast_blur(sl, 5))[..., None] * np.array([0.55, 0.75, 1.0], np.float32) * 0.9
+        # km ticks on the ground: light up as the sound passes
+        tl = np.zeros((H, W), np.float32)
+        for k in range(1, kmi + 1):
+            xk = x0 + (x1 - x0) * k / kmi
+            on = 1.0 if R >= (x1 - x0) * k / kmi - 2 else 0.35
+            cv2.line(tl, (int(xk), int(gy + 6)), (int(xk), int(gy + 40)), on, 5, cv2.LINE_AA)
+        cv2.line(tl, (int(x0), int(gy + 22)), (int(x1), int(gy + 22)), 0.35, 2, cv2.LINE_AA)
+        img = img + tl[..., None] * np.array([1.0, 0.85, 0.4], np.float32)
+        if show_watch > 0:
+            img = _dial(img, sn * km * 3.0 / 60.0, W * 0.5, H * 0.2, 80, show_watch, True)
+        return img, dict(exposure=1.15, bloom=0.4, grain=0.012)
     return f
