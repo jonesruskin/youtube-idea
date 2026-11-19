@@ -1474,8 +1474,10 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
         if bm > 0:                                             # the sound: a pressure front sweeping in from the left
             fx0 = -W * 0.2 + bm * W * 1.5
             rr_ = np.hypot(xs - (fx0 - W * 0.8), (ys - g) * 1.0)
-            band = np.exp(-((rr_ - W * 0.8) / 70.0) ** 2) * (ys < g + 4)
-            img = img * (1 + 0.25 * band[..., None])
+            band = np.exp(-((rr_ - W * 0.8) / 18.0) ** 2) * (ys < g + 4)          # the bright ring of the sound map, now arriving
+            for k5 in (1, 2, 3):
+                band = band + (0.5 ** k5) * np.exp(-((rr_ - W * 0.8 + 70 * k5) / 12.0) ** 2) * (ys < g + 4)
+            img = img + band[..., None] * np.array([1.0, 0.92, 0.75], np.float32) * 0.8
             puff = np.exp(-np.clip(fx0 - xs, 0, None) / 300.0) * (xs < fx0) * np.exp(-np.clip(g - ys, 0, None) / 120.0) * (ys < g + 6)
             img = img * (1 - 0.3 * puff[..., None]) + (puff * 0.45)[..., None] * np.array([0.55, 0.48, 0.40], np.float32)
             r5 = rng_at(814 + int(tc * 3))

@@ -204,7 +204,7 @@ c6b = [
     B(0, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.5, 0.55), mud=(1.0, 1.0), muddy=(1.0, 1.0), ash=(0.2, 0.3), focus=(0.5, 0.36)), cl(135.0, 140.0, True), cut=True, name="the river is gone, filled with mud"),
     B(0, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.5, 0.55), mud=(1.0, 1.0), muddy=(1.0, 1.0), ash=(0.3, 0.4), focus=(0.5, 0.36)), cl(140.0, 144.0), at="Nothing", name="nothing moves over the buried river"),
     B(1, na(sound=(144.0, 151.5), link=(1.0, 1.0), lat=(42.0, 44.0), lon=(-100.0, -102.0), R=(2600.0, 3600.0)), over_all(lab("tanis", "the river", 0.2, color=(0.6, 1.0, 0.95)), cl(144.0, 151.5)), cut=True, name="the ring reaches the river"),
-    B(1, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.55, 0.55), mud=(1.0, 1.0), muddy=(1.0, 1.0), ash=(0.5, 0.6), slosh=(0.0, 0.0), roll=(0.0, 0.06)), cl(151.5, 151.68, True), at="sound", cut=True, name="silence"),
+    B(1, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.55, 0.55), mud=(1.0, 1.0), muddy=(1.0, 1.0), ash=(0.5, 0.6), slosh=(0.0, 0.0), roll=(0.0, 0.06), boom=(0.15, 0.62)), cl(151.5, 151.68, True), at="sound", cut=True, name="silence"),
     B(1, thunder_diagram(sound=(0.85, 1.0), flash=(0.0, 0.0), km=3, show_watch=0.0),
       cl(SND, SND + 0.07, True), at="arrives", name="the sound finally arrives (the storm diagram again)"),
 ]
