@@ -214,8 +214,8 @@ c6c = [
     B(1, riverbank(phase="still", view_az=(-8.0, -4.0), pitch=(4.0, 4.0), dust=(0.5, 0.55), level=(1.4, 1.4), buried=(0.25, 0.25), mist=(0.2, 0.2)), cut=True, name="no one left to hear: a silent mudflat"),
     B(2, globe(lat=(25.0, 25.0), lon=(-85.0, -70.0), R=(520.0, 520.0), clouds=0.25, soot=(0.05, 0.45)), cut=True, name="soot spreads from the crater"),
     B(2, globe(lat=(25.0, 25.0), lon=(-70.0, -55.0), R=(520.0, 520.0), clouds=0.25, soot=(0.45, 1.0)), at="whole", name="over the whole planet"),
-    B(3, species(fade=(0.0, 0.4), zoom=(1.0, 1.15), focus=(0.5, 0.5)), serif("three in four species", "three", y=H * 0.84), cut=True, name="four kinds of life"),
-    B(3, species(fade=(0.4, 1.0), zoom=(1.3, 1.0), focus=(0.75, 0.55)), at="morning", cut=True, name="three of the four go dark"),
+    B(3, species(fade=(0.0, 0.67), zoom=(1.0, 1.15), focus=(0.5, 0.5)), serif("three in four species", "three", y=H * 0.84), cut=True, name="four kinds of life"),
+    B(3, species(fade=(0.67, 1.0), zoom=(1.3, 1.0), focus=(0.75, 0.55)), at="morning", cut=True, name="three of the four go dark"),
 ]
 
 # ───────────── 66 million years later · the record ─────────────
@@ -231,7 +231,7 @@ c7a = [
     B(4, fossil(zoom=(1.7, 1.9), focus=(0.36, 0.26), glint=0.6), at="glass", cut=True, name="glass beads at the gills"),
 ]
 c7b = [
-    B(0, gills(caught=(0.5, 0.7), food=0.5, zoom=(1.7, 1.85)), cut=True, name="breathing in glass"),
+    B(0, fish_scene(hero=(0.62, 0.72), hero_y=(0.42, 0.44), size=(1700.0, 1800.0), beads=(1.0, 1.0), intake=(0.8, 1.0), red=(0.1, 0.1), school=0, pan=(300.0, 360.0)), cut=True, name="breathing in glass"),
     B(0, fish_scene(hero=(0.1, 0.5), hero_y=(0.45, 0.45), size=(800.0, 900.0), beads=(1.0, 1.0), red=(0.1, 0.1), school=2), at=("alive", 1), cut=True, name="alive when it arrived"),
     B(1, resin(flow=(0.0, 1.0), zoom=(1.0, 1.08)), tag("Amber from the tree trunks", 0.4), cut=True, name="resin running down a tree, catching glass"),
     B(1, amber_scene(light=(-0.2, 0.4), zoom=(1.05, 1.1), focus=(0.3, 0.8)), at="amber", name="glass sealed in amber"),

@@ -2124,7 +2124,7 @@ def species(fade=(0.0, 1.0), zoom=(1.0, 1.0), focus=(0.5, 0.5)):
             m = np.zeros((H, W), np.float32)
             fn(m, cx, cy, sc_)
             m = blur(m, 1.0)
-            dead = fd if k < 3 else 0.0
+            dead = float(clamp(fd * 3.0 - k)) if k < 3 else 0.0      # they go dark one after another
             col = np.array([0.95, 0.78, 0.55], np.float32) * (1 - dead) + np.array([0.16, 0.14, 0.13], np.float32) * dead
             img = img * (1 - m[..., None]) + m[..., None] * col
             glow = fast_blur(m, 18) * (1 - dead) * 0.35
