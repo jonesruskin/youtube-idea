@@ -965,7 +965,7 @@ def underwater(t, pan=0.0, sky=(0.55, 0.65, 0.55), murk=0.0, red=0.0, shake=0.0,
     # light shafts
     sh = cv2.resize(fbm(160, 1, scale=12, octaves=2, seed=503), (W, 1))[0]
     ang = 0.25
-    u_ = ((xs - (ys - sy_) * ang + t * 12 + pan * 0.4) % W).astype(np.int32)
+    u_ = ((xs - (ys - sy_) * ang + t * 12 + pan * 0.4) % W).astype(np.int32) % W
     shafts = clamp((sh[u_] - 0.5) * 3) ** 2 * (1 - depth) ** 1.2 * (1 - murk)
     img = img + shafts[..., None] * skyc * 0.18
     # far bank / bed silhouette, moving with a slower parallax
