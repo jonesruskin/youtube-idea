@@ -4,7 +4,7 @@ Any FAIL blocks upload. WARNs need a human decision, recorded in the report.
   python tools/qa.py ep_blackhole pre     # after `engine.render --stills` (uses QA_LOG + stills)
   python tools/qa.py ep_blackhole post    # after finalize (video + mix + captions + thumbnail)
 """
-import os, sys, json, re, subprocess, importlib, importlib.util
+import os, glob, sys, json, re, subprocess, importlib, importlib.util
 import numpy as np, cv2
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
@@ -269,6 +269,22 @@ def claims():
         res("PASS" if ok else "FAIL", "story-logic", f"{fn.__name__}: {detail}")
 
 
+PROGRESS = {"apophis", "fall", "mud", "rain", "hits", "caught", "rays", "path", "plume", "sound", "seis", "tsec", "fade", "boom",
+            "temp", "rise", "fill", "flow", "intake"}      # quantities that only move one way inside a shot
+
+
+def particle_clock():
+    """Falling/drifting particles must use the episode's global clock, not the shot clock that restarts at every cut:
+    otherwise the same beads jump back up at a cut and seem to stop mid-air and fall again (Ep4 v2, founder)."""
+    bad = []
+    for fn in glob.glob(os.path.join(ROOT, ep, "*.py")):
+        for i, line in enumerate(open(fn), 1):
+            if "%" in line and re.search(r"\btc\s*\*\s*r\w*\.uniform", line):
+                bad.append(f"{os.path.basename(fn)}:{i}")
+    res("FAIL" if bad else "PASS", "particle-clock",
+        "particles run on the global clock (no reset at cuts)" if not bad else f"particles on the shot clock (reset at every cut): {bad[:6]}")
+
+
 def motion_continuity():
     """No stop-start inside a continuous shot: every start→end parameter that continues across beats is one Track,
     and no sim clock runs backwards between consecutive beats of one shot (docs/QUALITY_GATE.md #14)."""
@@ -292,6 +308,15 @@ def motion_continuity():
                 if _isnum(v) and _isnum(pv) and isinstance(v, (tuple, list)) and len(v) == 2 and np.ndim(v[0]) == 0 \
                         and abs(pv[1] - v[0]) < 1e-9 and pv != v:
                     bad.append(f"{sid}#{beats.index(b)} {k}")
+                # a progress value that jumps or runs backwards at a beat boundary inside one shot (Ep4 v2: Apophis
+                # went 0.35 -> 0.25 and slid backwards on screen; founder caught it)
+                if k not in q._spec[1] and _isnum(v) and _isnum(pv) and isinstance(v, (tuple, list)) and isinstance(pv, (tuple, list)) and len(v) == 2 \
+                        and len(pv) == 2 and np.ndim(v[0]) == 0 and np.ndim(pv[1]) == 0:
+                    span_ = max(abs(pv[1] - pv[0]), abs(v[1] - v[0]), 1e-9)
+                    if abs(v[0] - pv[1]) > 0.02 * span_ + 1e-6:
+                        bad.append(f"{sid}#{beats.index(b)} {k} jumps {pv[1]} -> {v[0]} at the beat boundary")
+                    elif (pv[1] - pv[0]) * (v[1] - v[0]) < 0 and k in PROGRESS:
+                        bad.append(f"{sid}#{beats.index(b)} {k} reverses direction")
             for pr in q._spec[0]:
                 a_, b_ = pr[0], pr[1]
                 if _isnum(q._kw.get(a_)) and _isnum(p._kw.get(b_)) and q._kw[a_] < p._kw[b_] - 1e-9 and q._kw[a_] != q._kw.get(b_):
@@ -383,6 +408,7 @@ if mode == "pre":
     originality()
     claims()
     motion_continuity()
+    particle_clock()
     sys.path.insert(0, os.path.join(ROOT, "tools"))
     from creative_gate import creative_pre
     from engine.render import episode_layout

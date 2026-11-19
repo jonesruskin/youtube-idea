@@ -294,10 +294,11 @@ def riverbank(phase="dawn", view_az=(0.0, 3.0), pitch=(5.0, 5.0), fov=(62.0, 60.
         s = dict(glow=L(glow), heat=L(heat), dust=L(dust), dark=L(dark), sun_vis=sun_vis, cover=cover, sun_alt=L(sun_alt))
         lv = L(level) + L(slosh) * 1.1 * np.sin(t * 0.8)      # water level (deg of view): the seiche
         img = sky(az, alt, s)
-        dens, ccol = clouds(az, alt, t, s)
+        tg = ctx.seg["start"] + ctx.beat.t0 + t        # global time: clouds, streaks and water keep moving across cuts
+        dens, ccol = clouds(az, alt, tg, s)
         img = img * (1 - dens[..., None]) + ccol * dens[..., None]
-        img = streaks(img, t, L(streak), va, pt, fpx)
-        img = _land(img, az, alt, t, s, lv)
+        img = streaks(img, tg, L(streak), va, pt, fpx)
+        img = _land(img, az, alt, tg, s, lv)
         # water below the waterline: reflections stretched by ripples, Fresnel, silt
         xs, ys = grid()
         wl = -0.95 + lv                                       # waterline altitude (deg)

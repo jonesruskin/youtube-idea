@@ -1055,10 +1055,10 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
         sy_, by_ = H * 0.07, H * 0.86
         bd = L(beads)
         if bd > 0:
-            img = _beads_fall(img, tc, int(900 * bd * bead_size), sy_, by_, seed=8, size=1.3 * bead_size, speed=(25, 45), glow=1.1)   # far
+            img = _beads_fall(img, ctx.seg["start"] + ctx.beat.t0 + t, int(900 * bd * bead_size), sy_, by_, seed=8, size=1.3 * bead_size, speed=(25, 45), glow=1.1)   # far
         r = rng_at(601)
         for k in range(int(round(school))):                                        # the school: smaller, farther, fogged
-            xk = (r.uniform(-0.2, 1.1) * W + facing * tc * r.uniform(30, 55) + 0 * L(pan)) % (W * 1.4) - W * 0.2
+            xk = (r.uniform(-0.2, 1.1) * W + facing * (ctx.seg["start"] + ctx.beat.t0 + t) * r.uniform(30, 55) + 0 * L(pan)) % (W * 1.4) - W * 0.2
             hy0 = L(hero_y)
             band = (0.16, 0.30) if hy0 > 0.45 else (0.62, 0.74)
             yk = H * (band[0] + (band[1] - band[0]) * ((k * 0.61 + 0.13) % 1)) + 12 * np.sin(tc * 0.6 + k) + 70 * (k % 2)
@@ -1079,7 +1079,7 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
             mx_, my_ = hx + facing * L(size) * 0.06, hy + L(size) * 0.02
             r3 = rng_at(612)
             n3 = int(60 * ik)
-            ph = (r3.uniform(0, 1, n3) + tc * 0.5) % 1.0
+            ph = (r3.uniform(0, 1, n3) + (ctx.seg["start"] + ctx.beat.t0 + t) * 0.5) % 1.0
             sx0, sy0 = mx_ + facing * r3.uniform(200, 700, n3), my_ + r3.uniform(-260, 260, n3)
             pb = np.clip(ph - 0.12, 0, 1)                    # where each bead was a moment ago: its streak points at the mouth
             px_, py_ = sx0 + (mx_ - sx0) * ph, sy0 + (my_ - sy0) * ph
@@ -1105,7 +1105,7 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
                 ph = ((tc * 0.9 + j / 4) % 1)
                 img = ring_px(img, tipx - facing * L(size) * 0.12, hy, 40 + 260 * ph, (0.45, 0.9, 1.0), 2.0, se * 0.6 * (1 - ph), 4)
         if bd > 0:
-            img = _beads_fall(img, tc, int(320 * bd), sy_, by_, seed=9, size=4.6 * bead_size, speed=(30, 60), glow=3.6)       # near
+            img = _beads_fall(img, ctx.seg["start"] + ctx.beat.t0 + t, int(320 * bd), sy_, by_, seed=9, size=4.6 * bead_size, speed=(30, 60), glow=3.6)       # near
         shk = L(shake)
         if shk > 0.5:                                  # a jolt: the whole view lurches and tilts
             Mr = cv2.getRotationMatrix2D((W / 2, H / 2), 6 * shk * np.sin(tc * 11 + 1.0), 1.12)
@@ -1374,7 +1374,7 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
             lm = np.zeros((H, W), np.float32)
             r = rng_at(810)
             for k in range(6):
-                lx = (r.uniform(0, W) + tc * r.uniform(-60, 60)) % W
+                lx = (r.uniform(0, W) + (ctx.seg["start"] + ctx.beat.t0 + t) * r.uniform(-60, 60)) % W
                 ly = surf[int(lx)] + r.uniform(30, 140)
                 if ly > top_mud[int(lx)] - 20 and not (lv > 0.5):
                     continue
@@ -1393,7 +1393,7 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
             r = rng_at(811)
             n = int(500 * rn)
             px = r.uniform(0, W, n)
-            py = (r.uniform(0, 1, n) + tc * r.uniform(0.25, 0.5, n)) % 1.0 * (H * 0.95)
+            py = (r.uniform(0, 1, n) + (ctx.seg["start"] + ctx.beat.t0 + t) * r.uniform(0.25, 0.5, n)) % 1.0 * (H * 0.95)
             gl = np.zeros((H, W), np.float32)
             solid = np.where((xs[0] > W * 0.16) & (xs[0] < W * 0.84), top_mud, g)
             for x_, y_ in zip(px, py):
@@ -1478,7 +1478,7 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
             r = rng_at(812)
             n = int(900 * ah)
             px = (r.uniform(0, W, n) + 20 * np.sin(tc * 0.5 + r.uniform(0, 6, n))) % W
-            py = (r.uniform(0, 1, n) + tc * r.uniform(0.03, 0.08, n)) % 1.0 * H
+            py = (r.uniform(0, 1, n) + (ctx.seg["start"] + ctx.beat.t0 + t) * r.uniform(0.03, 0.08, n)) % 1.0 * H
             img = splat_points(img, px, py, np.tile(np.array([[0.55, 0.52, 0.5]], np.float32), (n, 1)) * 0.6, sigma=1.6)
         bm = L(boom)
         if bm > 0:                                             # the sound: a pressure front sweeping in from the left
@@ -1581,7 +1581,7 @@ def storm(view="window", strike=(1.0, 1.0), ring=(0.0, 0.0), thunder=(-1.0, -1.0
         r = rng_at(906)
         n = int(900 * rain)
         rx = (r.uniform(0, W, n) + tc * 60) % W
-        ry = (r.uniform(0, H, n) + tc * r.uniform(900, 1400, n)) % H
+        ry = (r.uniform(0, H, n) + (ctx.seg["start"] + ctx.beat.t0 + t) * r.uniform(900, 1400, n)) % H
         rl = np.zeros((H, W), np.float32)
         for x, y in zip(rx, ry):
             cv2.line(rl, (int(x), int(y)), (int(x - 6), int(y + 26)), 1.0, 1, cv2.LINE_AA)
@@ -1601,7 +1601,7 @@ def storm(view="window", strike=(1.0, 1.0), ring=(0.0, 0.0), thunder=(-1.0, -1.0
             rd = rng_at(907)
             m = 160
             dx_ = rd.uniform(W * 0.1, W * 0.9, m)
-            dy_ = (rd.uniform(0, 1, m) * H * 0.8 + tc * rd.uniform(0, 30, m) * (rd.uniform(0, 1, m) < 0.3)) % (H * 0.78) + H * 0.08
+            dy_ = (rd.uniform(0, 1, m) * H * 0.8 + (ctx.seg["start"] + ctx.beat.t0 + t) * rd.uniform(0, 30, m) * (rd.uniform(0, 1, m) < 0.3)) % (H * 0.78) + H * 0.08
             drops = np.zeros((H, W), np.float32)
             for x, y, s_ in zip(dx_, dy_, rd.uniform(2, 6, m)):
                 cv2.circle(drops, (int(x), int(y)), int(s_), 1.0, -1, cv2.LINE_AA)
@@ -1646,7 +1646,7 @@ def water(hits=(0.0, 0.5), red=(0.3, 0.3), dust=(0.1, 0.1), view_az=(-8.0, -4.0)
             spl = np.zeros((H, W), np.float32)
             cyc = 2.2 + 6.0 * (1 - rate)
             for k in range(int(n * rate)):
-                age = (tc - born[k]) % cyc
+                age = (ctx.seg["start"] + ctx.beat.t0 + t - born[k]) % cyc
                 if age > 2.2:
                     continue
                 sy = hz + fpx * cam_h / zw[k]
@@ -1675,7 +1675,7 @@ def water(hits=(0.0, 0.5), red=(0.3, 0.3), dust=(0.1, 0.1), view_az=(-8.0, -4.0)
             r2 = rng_at(923)
             m = int(260 * fa)
             gx = r2.uniform(0, W, m) + 12 * np.sin(tc * 0.4 + r2.uniform(0, 6, m))
-            gy = (r2.uniform(0, 1, m) * H + tc * r2.uniform(60, 160, m)) % H
+            gy = (r2.uniform(0, 1, m) * H + (ctx.seg["start"] + ctx.beat.t0 + t) * r2.uniform(60, 160, m)) % H
             gl = np.zeros((H, W), np.float32)
             for x_, y_ in zip(gx, gy):
                 cv2.line(gl, (int(x_), int(y_ - 10)), (int(x_), int(y_)), 1.0, 2, cv2.LINE_AA)
