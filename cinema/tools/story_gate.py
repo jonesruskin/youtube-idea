@@ -181,7 +181,27 @@ def mute_test(ep, res, mod, lay, B):
         f"all {len(want)} beats understood with the sound off and captions hidden (blind viewer + judge)")
 
 
+def anatomy_reference(ep, res, mod):
+    """Founder, Ep4 v2 (the paddlefish's mouth 'makes the whole fish appear something else'): every real creature
+    drawn on screen is checked against its real anatomy first. BRIEF.md needs an 'Anatomy reference' section that
+    names each creature, the features drawn, and at least one source link."""
+    brief = open(os.path.join(ROOT, ep, "BRIEF.md")).read() if os.path.exists(os.path.join(ROOT, ep, "BRIEF.md")) else ""
+    m = re.search(r"^#+\s*anatomy reference(.*?)(^#+\s|\Z)", brief, re.I | re.M | re.S)
+    hero = mod.META.get("cast", {}).get("hero_word", "")
+    bad = []
+    if not m:
+        bad.append("BRIEF.md has no 'Anatomy reference' section")
+    else:
+        body = m.group(1)
+        if hero and hero.lower() not in body.lower():
+            bad.append(f"the hero ({hero}) is not described in it")
+        if "http" not in body:
+            bad.append("no source link")
+    res("FAIL" if bad else "PASS", "anatomy-reference", "; ".join(bad) if bad else f"creatures checked against real anatomy (hero: {hero})")
+
+
 def story_pre(ep, res, mod, lay, B):
+    anatomy_reference(ep, res, mod)
     open_moment(ep, res, mod, lay)
     cadence_plan(ep, res, mod, lay)
     simplicity(ep, res, mod, lay)

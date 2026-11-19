@@ -5,6 +5,8 @@
                                              -> build/<ep>/mute/blind_<k>.md   batches for blind viewers (no script)
                                              -> build/<ep>/mute/narration.json  what is said over each beat (for judges)
   python3 tools/mute_test.py retest <ep> beat1,beat2,...   one batch file (blind_retest.md) with only those beats
+  The viewer also checks that every ACTION the narration states is visibly happening (founder, Ep4 v2: "the fish are
+  feeding" needs food going into a mouth), and that creatures look like the real animal.
   ONE subagent viewer per round (founder rule: never several viewers + judges; it burns usage): it describes
   every listed beat blind first, then reads narration.json and writes verdicts. Later judge files override
   earlier ones per beat, so PASS verdicts from earlier rounds carry over.

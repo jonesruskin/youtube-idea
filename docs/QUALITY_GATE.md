@@ -185,3 +185,15 @@ check (`tools/story_gate.py`, run by `tools/qa.py` for slot >= 4):
 | 5 | Put everything inside the story | `story-end` | an end card / title card; the story does not run to the last frame (`META['story_end']`); the next-episode teaser ends < 20 s before the end |
 
 Order of work: script → voice → beats → stills → **mute test** → qa pre → render → qa post.
+
+## Founder's review of Episode 4 v2 (Nov 2026; every episode from #4)
+
+| Founder said | Gate (where) | What it checks |
+|---|---|---|
+| "Where is the end scene where you say subscribe … with the name of our channel and logo" | `story-end` (tools/story_gate.py, pre) | The story runs to its own ending. Then the last segment is ONE branded outro, under 12 s: an `endcard` showing the channel name and logo, over an in-world picture, with "subscribe" and the channel name said aloud. |
+| "The background score is not good enough … plain sound that is unsettling … incorporate other background music" | `music` (tools/music_gate.py, post, on `build/<ep>/music_stem.wav`) | The bed is music: a note onset at least every 6 s over ≥ 90 % of the runtime; low rumble (< 110 Hz) median ≤ 30 % and no 10 s stretch above 45 %; no silent bed longer than 4 s. Ambience and SFX ride under a scored bed (felt piano, strings, bass, celesta, one recurring motif). |
+| "Glass beads … stopping mid air and falling again" | `particle-clock` (tools/qa.py, pre) | Falling or drifting particles use the episode's global clock, never the shot clock that restarts at a cut. Otherwise the same beads jump back up at every cut. |
+| "Apophis going backwards while moving forward" | `motion-continuity` (tools/qa.py, pre), extended | Inside one continuous shot, no start→end value may jump at a beat boundary, and progress values (flyby, fall, fill, sound ring …) may never reverse. Camera zoom is not allowed to move an object backwards against its own motion: keep the zoom fixed while it moves. |
+| "The paddlefish's mouth doesn't look good … research … the real structure" | `anatomy-reference` (tools/story_gate.py, pre) | BRIEF.md has an "Anatomy reference" section: every creature on screen, the features drawn, and source links. The hero is drawn true to life and not grotesque. |
+| "Where the narration says the fish are feeding, there is no visual that shows they are really feeding" | `mute-test` (the viewer's brief) | The viewer checks that every action the narration states is visibly happening in the picture. Feeding means food is seen going into the mouth. |
+| Everything already fixed in Ep4 | All of the above, plus `cadence-video`, `self-repeat`, `jump-cuts`, `motion-stalls` | These carry forward to every episode. |

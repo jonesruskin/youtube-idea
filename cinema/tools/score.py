@@ -331,6 +331,8 @@ def reverb(x, secs=3.2, mix=0.35):
 
 
 bus = reverb(music + sfx * 0.8, 3.4, 0.4)
+# the music bed on its own (before ducking), for the music-quality gate (tools/music_gate.py)
+sf.write(os.path.join(ROOT, "build", ep, "music_stem.wav"), (reverb(music, 3.4, 0.4)[:, 0] / (np.abs(music).max() + 1e-9)).astype(np.float32), SR, subtype="PCM_16")
 # sidechain duck under narration
 envv = np.abs(voice)
 win = int(0.25 * SR)

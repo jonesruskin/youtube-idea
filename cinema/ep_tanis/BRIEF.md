@@ -81,3 +81,25 @@ the gill comb catching glass; the fossil slab for the evidence. A new picture ev
 ## Everything inside the story
 No end card. The Apophis teaser comes before the story's last beat (the living paddlefish turning to stone), so the
 end-screen window sits on story.
+
+## Anatomy reference
+
+**Paddlefish (Polyodon spathula), the hero.** It is a ram suspension feeder: it swims forward with the mouth open, and water flows over long, comb-like gill rakers (550–600 on the first arch), which sieve out zooplankton.
+- **Mouth:** large and set low, under the base of the paddle (rostrum). We draw it as a low, soft, dark gape behind the paddle base.
+- **Gape:** kept modest (32 % of maximum), so the fish never reads as a toothy grin or a monster.
+- **No teeth and no red cavity:** adults have few or no teeth.
+- **Rakers:** shown only in the gill close-ups.
+- **Paddle:** long and flat, seen thin from the side. A 1979 study suggested it acts as a stabiliser.
+- **Gill cover:** long, sweeping back toward the pectoral fin.
+- **Tail:** shark-like heterocercal.
+- **Feeding on screen:** whenever the mouth is open, plankton specks drift into it.
+
+Sources:
+- https://fishesoftexas.org/taxa/polyodon-spathula
+- https://www.smithsonianmag.com/blogs/national-museum-of-natural-history/2026/09/22/meet-the-spatula-nosed-fish-whose-anatomy-has-hardly-changed-since-the-cretaceous/
+- https://en.wikipedia.org/wiki/American_paddlefish
+
+**Sturgeon (Acipenseriformes):**
+- bony scutes in rows;
+- four barbels under the snout;
+- ventral mouth.

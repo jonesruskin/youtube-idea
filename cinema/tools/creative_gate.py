@@ -292,6 +292,8 @@ def creative_post(ep, res, mod, B):
         return
     from story_gate import cadence_video             # rule 2 on the finished picture
     cadence_video(ep, res, B)
+    from music_gate import gate as music_gate         # founder, Ep4 v2: pleasant music under everything
+    music_gate(ep, res)
     vid = os.path.join(B, "final.mp4")
     H, T = _hashes(vid)
     if len(H) == 0:
