@@ -717,10 +717,10 @@ def earth_cut(cx=(0.0, 0.0), cy=(0.0, 0.0), scale=(0.075, 0.075), tsec=(0.0, 0.0
             img = np.where(hidden[..., None], img * 0.85, img)
             LN.add([P2(tx + dx * s_, ty + dy * s_) for s_ in np.linspace(0, 4500 * sight, 40)], (0.9, 0.95, 1.0), 2, 0.7)
         ry_ = L(rays)
-        if ry_ > 0:                                  # straight light rays from the flash: those aimed at the river hit the planet
+        if ry_ > 0 or eye > 0:                       # straight light rays from the flash: those aimed at the river hit the planet
             a = np.radians(TH_C)
             cxp, cyp = M.R_E * np.cos(a), M.R_E * np.sin(a)
-            for k_, ang in enumerate(np.linspace(-0.05, 0.04, 4)):
+            for k_, ang in enumerate(np.linspace(-0.05, 0.04, 4) if ry_ > 0 else []):
                 d_ = np.array([-np.sin(a) * -1, np.cos(a) * -1])        # local horizontal toward Tanis (clockwise)
                 up = np.array([np.cos(a), np.sin(a)])
                 dirv = d_ * np.cos(ang) + up * np.sin(ang)
@@ -741,7 +741,7 @@ def earth_cut(cx=(0.0, 0.0), cy=(0.0, 0.0), scale=(0.075, 0.075), tsec=(0.0, 0.0
                 a1 = np.radians(TH_T)
                 xr_, yr_ = P2(np.cos(a1) * M.R_E, np.sin(a1) * M.R_E)
                 img = glow_dot(img, xr_, yr_, 10 + 6 * np.sin(t * 12), (0.6, 0.9, 1.0), 0.9)
-            if ry_ >= 0.6 and eye > 0:                      # the straight line from the flash to the river runs into rock
+            if (ry_ >= 0.6 or ry_ <= 0) and eye > 0:        # the straight line from the flash to the river runs into rock
                 a1 = np.radians(TH_T)
                 p1 = np.array([np.cos(a1), np.sin(a1)]) * M.R_E
                 p0 = np.array([cxp, cyp])

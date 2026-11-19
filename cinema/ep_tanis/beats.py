@@ -83,9 +83,9 @@ c2a = [
     B(2, riverbank(phase="dawn", view_az=(-6.0, -3.0), pitch=(3.0, 3.0), mist=(0.6, 0.6), glow=(0.0, 0.3)), cl(0.05, 0.1), cut=True, name="the light flies over the river"),
     B(2, fish_scene(hero=(0.3, 0.55), school=2, pan=(0.0, 100.0)), cl(0.1, 0.2), at="sees", cut=True, name="the fish see nothing"),
     B(3, earth_cut(cx=(0.0, 0.0), cy=(4000.0, 4800.0), scale=(0.11, 0.17), eye=1.0, shell=0.0), lab("tanis", "the river", 0.2, dy=-50), cut=True, name="the Earth is curved"),
-    B(3, earth_cut(cx=(0.0, 0.0), cy=(4800.0, 5800.0), scale=(0.2, 0.26), eye=1.0, rays=(0.0, 1.0), shell=0.0), lab("chx", "rock in the way", 0.3, dy=-60, color=(1.0, 0.5, 0.4)), at="planet", name="the planet is in the way"),
-    B(4, earth_cut(rays=(1.0, 1.0), cx=(-300.0, -500.0), cy=(5900.0, 6200.0), scale=(0.26, 0.3), sight=1.0, eye=1.0, plume=(0.0, 450.0), shell=0.0), name="the fireball climbs"),
-    B(4, earth_cut(cx=(-500.0, -500.0), cy=(6200.0, 6300.0), scale=(0.3, 0.3), sight=1.0, eye=1.0, plume=(450.0, 860.0), shell=0.0), lab("tanis", "807 km to be seen", 0.4, dy=-60), at="eight", name="over 800 km: now visible"),
+    B(3, earth_cut(cx=(0.0, 0.0), cy=(4800.0, 5800.0), scale=(0.2, 0.26), eye=1.0, rays=(0.0, 0.0), shell=0.0), lab("chx", "rock in the way", 0.3, dy=-60, color=(1.0, 0.5, 0.4)), at="planet", name="the planet is in the way"),
+    B(4, earth_cut(rays=(0.0, 0.0), cx=(-300.0, -500.0), cy=(5900.0, 6200.0), scale=(0.26, 0.3), sight=1.0, eye=1.0, plume=(0.0, 720.0), shell=0.0), name="the fireball climbs"),
+    B(4, earth_cut(cx=(-500.0, -500.0), cy=(6200.0, 6300.0), scale=(0.3, 0.3), sight=1.0, eye=1.0, plume=(720.0, 860.0), shell=0.0), lab("tanis", "807 km to be seen", 0.4, dy=-60), at="eight", name="over 800 km: now visible"),
     B(4, riverbank(phase="south", view_az=(0.0, 1.0), pitch=(5.0, 5.0), glow=(0.0, 0.5), mist=(0.4, 0.4)), over_all(height_line(), cl(1.0, 1.3)), at="sky", cut=True, name="a glow appears"),
 ]
 c2b = [
@@ -111,7 +111,7 @@ c3b = [
     B(0, earth_cut(cx=(1200.0, 1500.0), cy=(5700.0, 5900.0), scale=(0.3, 0.34), tsec=(310.0, P_S + 4), show=("P",), quake_glow=1.0), cl(5.2, P_MIN, True), cut=True, name="the first wave reaches the river"),
     B(0, cutaway(jolt=(1.0, 0.8)), cl(P_MIN, P_MIN + 0.3, True), at="arrives", cut=True, name="the riverbed jolts: silt bursts up"),
     B(1, riverbank(phase="quake", view_az=(-30.0, -26.0), pitch=(10.0, 12.0), glow=(0.5, 0.5), shake=(3.0, 2.0), slosh=(0.25, 0.3)), birds(0.1), cut=True, name="birds burst out"),
-    B(1, fish_scene(hero=(0.4, 0.65), hero_y=(0.4, 0.4), dive=(0.0, 1.0), school=3, shake=(0.8, 0.5), silt=(0.0, 0.8)), at="paddlefish", cut=True, name="the paddlefish dives"),
+    B(1, fish_scene(hero=(0.4, 0.62), hero_y=(0.35, 0.35), dive=(0.0, 1.6), gape=0.15, school=3, shake=(0.8, 0.5), silt=(0.0, 0.8)), at="paddlefish", cut=True, name="the paddlefish dives"),
     B(2, earth_cut(cx=(0.0, 0.0), cy=(3000.0, 3000.0), scale=(0.13, 0.13), tsec=(560.0, S_S + 4), show=("S",), quake_glow=1.0), cl(9.3, S_MIN, True), cut=True, name="the slower second wave"),
     B(2, cutaway(sway=(1.0, 0.9), slosh=(0.5, 0.7)), cl(S_MIN, S_MIN + 0.2, True), at="shakes", cut=True, name="everything shakes side to side"),
     B(3, na(seis=(10.0, R_MIN), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), cl(10.0, R_MIN, True), cut=True, name="the slowest wave spreads across the land"),
