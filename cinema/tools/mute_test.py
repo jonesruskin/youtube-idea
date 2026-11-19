@@ -91,9 +91,9 @@ def finalize(ep):
     B = os.path.join(ROOT, "build", ep, "mute")
     narr = json.load(open(os.path.join(B, "narration.json")))
     blind, judge = {}, {}
-    for f in sorted(glob.glob(os.path.join(B, "blind_*.json"))):
+    for f in sorted(glob.glob(os.path.join(B, "blind_*.json")), key=os.path.getmtime):   # newest round wins
         blind.update({r["beat"]: r for r in json.load(open(f))})
-    for f in sorted(glob.glob(os.path.join(B, "judge_*.json"))):
+    for f in sorted(glob.glob(os.path.join(B, "judge_*.json")), key=os.path.getmtime):
         judge.update({r["beat"]: r for r in json.load(open(f))})
     res = []
     for key in narr:
