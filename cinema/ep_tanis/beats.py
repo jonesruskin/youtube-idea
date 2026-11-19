@@ -160,8 +160,8 @@ c4d = [
     B(0, fish_scene(hero=(-0.3, -0.1), school=0, beads=(1.0, 1.0), red=(0.15, 0.15), pan=(0.0, 60.0), bead_size=2.5, glow_surface=(0.4, 0.4)), cl(57.0, 58.0), cut=True, name="beads sinking"),
     B(1, fish_scene(hero=(0.25, 0.45), hero_y=(0.45, 0.45), size=(700.0, 900.0), beads=(1.0, 1.0), red=(0.15, 0.15), school=0, pan=(60.0, 160.0), bead_size=1.6), cl(58.0, 59.0), name="the paddlefish keeps feeding"),
     B(1, fish_scene(hero=(0.45, 0.55), hero_y=(0.48, 0.5), size=(1400.0, 1600.0), beads=(0.9, 1.0), red=(0.15, 0.15), pan=(160.0, 220.0), intake=(0.5, 1.0), school=0), cl(59.0, 60.0), at="sieves", cut=True, name="sieving glass"),
-    B(2, gills(caught=(0.0, 0.05), food=1.0, zoom=(1.3, 1.38)), cl(60.0, 60.5), name="the comb inside its gills"),
-    B(2, gills(caught=(0.05, 0.35), food=0.6, zoom=(1.38, 1.5)), cl(60.5, 61.0), at="Now", name="now it catches glass"),
+    B(2, gills(caught=(0.0, 0.0), food=1.0, zoom=(1.3, 1.38)), cl(60.0, 60.5), name="the comb inside its gills"),
+    B(2, gills(caught=(0.1, 0.6), food=0.25, zoom=(1.38, 1.5)), cl(60.5, 61.0), at="Now", name="now it catches glass"),
     B(3, gills(caught=(0.35, 0.95), food=0.3, zoom=(1.05, 1.3)), cl(61.0, 62.0), name="the beads lodge, one after another"),
 ]
 
@@ -214,7 +214,7 @@ c6c = [
     B(1, riverbank(phase="still", view_az=(-8.0, -4.0), pitch=(4.0, 4.0), dust=(0.5, 0.55), level=(1.4, 1.4), buried=(0.25, 0.25), mist=(0.2, 0.2)), cut=True, name="no one left to hear: a silent mudflat"),
     B(2, globe(lat=(25.0, 25.0), lon=(-85.0, -70.0), R=(520.0, 520.0), clouds=0.25, soot=(0.05, 0.45)), cut=True, name="soot spreads from the crater"),
     B(2, globe(lat=(25.0, 25.0), lon=(-70.0, -55.0), R=(520.0, 520.0), clouds=0.25, soot=(0.45, 1.0)), at="whole", name="over the whole planet"),
-    B(3, species(fade=(0.0, 0.4), zoom=(1.0, 1.7), focus=(0.25, 0.5)), serif("three in four species", "three", y=H * 0.84), cut=True, name="four kinds of life"),
+    B(3, species(fade=(0.0, 0.4), zoom=(1.0, 1.15), focus=(0.5, 0.5)), serif("three in four species", "three", y=H * 0.84), cut=True, name="four kinds of life"),
     B(3, species(fade=(0.4, 1.0), zoom=(1.3, 1.0), focus=(0.75, 0.55)), at="morning", cut=True, name="three of the four go dark"),
 ]
 

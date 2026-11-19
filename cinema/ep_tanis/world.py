@@ -1223,7 +1223,11 @@ def gills(fossil=False, caught=(0.0, 0.0), flow=1.0, food=1.0, zoom=(1.0, 1.1)):
                 cy = gy0 + (cy - H * 0.06) / (H * 0.88) * (gy1 - gy0)
                 rad_k = (gx1 - gx0) / (W * 0.68)
             show = r.uniform(0, 1, n) < c
+            glint = (r.uniform(0, 1, n) < 0.25) & show & (not fossil)     # glass catches the light: a few sparkle
             rad = r.uniform(5, 11, n) * (1.0 if fossil else max(0.8, rad_k * 1.2))
+            for x, y, rr in zip(cx[glint], cy[glint], rad[glint]):
+                cv2.line(img, (int(x - rr * 2.2), int(y - rr * 0.35)), (int(x + rr * 1.4), int(y - rr * 0.35)), (1.0, 1.0, 0.95), 1, cv2.LINE_AA)
+                cv2.line(img, (int(x - rr * 0.35), int(y - rr * 2.2)), (int(x - rr * 0.35), int(y + rr * 1.4)), (1.0, 1.0, 0.95), 1, cv2.LINE_AA)
             for x, y, rr in zip(cx[show], cy[show], rad[show]):
                 x0, x1, y0, y1 = _win(x, y, rr + 4)
                 yy, xx = np.mgrid[y0:y1, x0:x1].astype(np.float32)
