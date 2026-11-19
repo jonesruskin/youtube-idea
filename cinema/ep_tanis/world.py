@@ -1411,16 +1411,28 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
             lean = clamp((g - ys) / 320.0) * clamp((ys - (g - 340)) / 20.0)   # trees whip over: tops swing furthest
             dxm = sw_ * 26 * np.sin(tc * 9.0) * gm + sw_ * 90 * np.sin(tc * 4.3 + 0.7) * lean
             dym = (jl * 70 * np.sin(tc * 23.0) * np.exp(-((tc * 3) % 1) * 3) + rl_ * 34 * np.sin(xs * 0.008 - tc * 3.2)) * gm
-            bump = np.exp(-((u - 0.5) / 0.13) ** 2) * jl         # the jolt itself: the whole ground is punched upward
+            if jl > 0.3:                                       # the wave coming up from below: a bright front rising through the soil
+                fy = H + 40 - (H + 40 - g) * clamp(u / 0.5)
+                wf = np.exp(-((ys - fy - 0.00012 * (xs - W / 2) ** 2) / 14.0) ** 2) * (ys > g) * (u < 0.56)
+                img = img + wf[..., None] * np.array([1.0, 0.75, 0.4], np.float32) * 0.9 * jl
+                if u > 0.5:                                    # after the jolt: cracks split the ground
+                    ck = np.zeros((H, W), np.float32)
+                    rc = rng_at(821)
+                    for q in range(5):
+                        x0 = rc.uniform(0.05, 0.95) * W
+                        if abs(x0 - W / 2) < W * 0.2:
+                            x0 += W * 0.25 * np.sign(x0 - W / 2 + 1e-3)
+                        pts = [(x0, g)]
+                        for j in range(6):
+                            pts.append((pts[-1][0] + rc.uniform(-25, 25), pts[-1][1] + rc.uniform(25, 50) * clamp((u - 0.5) / 0.2)))
+                        cv2.polylines(ck, [np.array(pts, np.int32)], False, 1.0, 4, cv2.LINE_AA)
+                    img = img * (1 - 0.85 * ck[..., None])
+            bump = np.exp(-((u - 0.5) / 0.13) ** 2) * jl         # the jolt itself: the whole ground is punched upward and shoved
             dym = dym - 90 * bump * clamp((ys - (g - 340)) / 30.0)
+            dxm = dxm + 70 * bump * clamp((ys - (g - 340)) / 30.0)
             img = cv2.remap(img.astype(np.float32), (xs - dxm).astype(np.float32), (ys - dym).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
-            if bump > 0.2:                                     # water flung up out of the channel, ground smeared by the speed
-                img = cv2.blur(img, (1, int(1 + 25 * bump)))
-                rs_ = rng_at(819)
-                for q in range(26):
-                    sx = W * 0.5 + rs_.uniform(-0.28, 0.28) * W
-                    sh_ = rs_.uniform(60, 200) * bump
-                    cv2.line(img, (int(sx), int(g - 90 * bump + 30)), (int(sx + rs_.uniform(-30, 30)), int(g - 90 * bump + 30 - sh_)), (0.55, 0.75, 0.75), int(rs_.uniform(5, 12)), cv2.LINE_AA)
+            if bump > 0.2:                                     # the ground lurches faster than the eye: a doubled, smeared outline
+                img = 0.6 * img + 0.4 * np.roll(img, -int(50 * bump), 1)
             if jl > 0.3 or sw_ > 0.3:
                 k_ = int(1 + 10 * max(jl, sw_))
                 img = cv2.blur(img, (k_ if sw_ > jl else 1, k_ if jl >= sw_ else 1))
