@@ -215,8 +215,8 @@ c6c = [
     B(2, globe(lat=(25.0, 25.0), lon=(-85.0, -70.0), R=(520.0, 520.0), clouds=0.25, soot=(0.05, 0.45)), cut=True, name="soot spreads from the crater"),
     B(2, globe(lat=(25.0, 25.0), lon=(-70.0, -55.0), R=(520.0, 520.0), clouds=0.25, soot=(0.45, 1.0)), at="whole", name="over the whole planet"),
     B(3, species(fade=(0.0, 0.33), zoom=(1.0, 1.1), focus=(0.5, 0.5)), serif("three in four species", "three", y=H * 0.84), cut=True, name="four kinds of life"),
-    B(3, species(fade=(0.33, 0.67), zoom=(1.7, 1.55), focus=(0.4, 0.5)), at="plants", cut=True, name="two of them fade"),
-    B(3, species(fade=(0.67, 1.0), zoom=(1.8, 1.6), focus=(0.75, 0.55)), at="morning", cut=True, name="three of the four go dark"),
+    B(3, species(fade=(0.33, 0.67), zoom=(2.3, 2.1), focus=(0.31, 0.48)), at="plants", cut=True, name="two of them fade"),
+    B(3, species(fade=(0.67, 1.0), zoom=(2.3, 2.1), focus=(0.72, 0.54)), at="morning", cut=True, name="three of the four go dark"),
 ]
 
 # ───────────── 66 million years later · the record ─────────────
