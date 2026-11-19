@@ -2228,6 +2228,27 @@ def light_overhead(y=0.16, speed=4.0):
     return f
 
 
+def height_line(y0=0.47, y1=0.07, x=0.5):
+    """Overlay: a dashed line climbing from a point behind the horizon high into the sky, ending in an arrowhead and
+    tick marks: 'only something this high could be seen from here'."""
+    def f(ctx, img, t, u):
+        q = clamp(u * 1.4)
+        top = H * (y0 - (y0 - y1) * q)
+        lay = np.zeros((H, W), np.float32)
+        yy = H * y0
+        while yy > top:
+            cv2.line(lay, (int(W * x), int(yy)), (int(W * x), int(max(top, yy - 18))), 1.0, 3, cv2.LINE_AA)
+            yy -= 30
+        for k in range(1, 8):                               # height ticks
+            ty = H * y0 - (H * (y0 - y1)) * k / 8
+            if ty > top:
+                cv2.line(lay, (int(W * x - 14), int(ty)), (int(W * x + 14), int(ty)), 0.8, 2, cv2.LINE_AA)
+        cv2.fillPoly(lay, [np.array([(W * x - 16, top + 22), (W * x + 16, top + 22), (W * x, top - 6)], np.int32)], 1.0, cv2.LINE_AA)
+        lay = blur(lay, 0.8)
+        return img * (1 - 0.3 * lay[..., None]) + lay[..., None] * np.array([1.0, 0.9, 0.7], np.float32) * 0.9
+    return f
+
+
 def flares(at=0.2):
     """Overlay: a few streaks flaring bright and splitting in two."""
     def f(ctx, img, t, u):

@@ -5,7 +5,7 @@ from engine.beats import Beat as B
 from engine.core import W, H
 from ep_tanis import model as M
 from ep_tanis.cine import riverbank, sky_up, surge_scene, xray_scene, amber_scene, dig_scene, serif, tag, clock, over_all, slice_label, PEACH, INK
-from ep_tanis.world import (seismograph, light_overhead, globe, earth_cut, fish_scene, gills, cutaway, storm, water, droplet, fossil, spring_wave, birds, flow_arrows,
+from ep_tanis.world import (height_line, seismograph, light_overhead, globe, earth_cut, fish_scene, gills, cutaway, storm, water, droplet, fossil, spring_wave, birds, flow_arrows,
                             badlands, moving_star, distance_ticks, beads_macro, species, resin, fireball_horizon, flares, count_ticks, leaves, dial_top, thunder_diagram, TEAL)
 
 P_MIN, S_MIN, R_MIN, SND = M.seismic_minutes("P"), M.seismic_minutes("S"), M.rayleigh_minutes(), M.sound_hours() * 60
@@ -86,7 +86,7 @@ c2a = [
     B(3, earth_cut(cx=(0.0, 0.0), cy=(5600.0, 5800.0), scale=(0.2, 0.26), eye=1.0, rays=(1.0, 1.0), shell=0.0), lab("chx", "rock in the way", 0.3, dy=-60, color=(1.0, 0.5, 0.4)), at="planet", name="the planet is in the way"),
     B(4, earth_cut(cx=(-300.0, -500.0), cy=(5900.0, 6200.0), scale=(0.26, 0.3), sight=1.0, eye=1.0, plume=(0.0, 450.0), shell=0.0), name="the fireball climbs"),
     B(4, earth_cut(cx=(-500.0, -500.0), cy=(6200.0, 6300.0), scale=(0.3, 0.3), sight=1.0, eye=1.0, plume=(450.0, 860.0), shell=0.0), lab("tanis", "807 km to be seen", 0.4, dy=-60), at="eight", name="over 800 km: now visible"),
-    B(4, riverbank(phase="south", view_az=(0.0, 1.0), pitch=(5.0, 5.0), glow=(0.0, 0.5), mist=(0.4, 0.4)), cl(1.0, 1.3), at="sky", cut=True, name="a glow appears"),
+    B(4, riverbank(phase="south", view_az=(0.0, 1.0), pitch=(5.0, 5.0), glow=(0.0, 0.5), mist=(0.4, 0.4)), over_all(height_line(), cl(1.0, 1.3)), at="sky", cut=True, name="a glow appears"),
 ]
 c2b = [
     B(0, riverbank(phase="south", view_az=(1.0, 2.0), glow=(0.5, 0.7), mist=(0.4, 0.35)), over_all(fireball_horizon(y=0.47, rise=(0.1, 0.6)), cl(1.3, 2.0)), name="the fireball over the edge"),
