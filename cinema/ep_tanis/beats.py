@@ -115,10 +115,10 @@ c3b = [
     B(2, earth_cut(cx=(0.0, 0.0), cy=(3000.0, 3000.0), scale=(0.13, 0.13), tsec=(560.0, S_S + 4), show=("S",), quake_glow=1.0), cl(9.3, S_MIN, True), cut=True, name="the slower second wave"),
     B(2, cutaway(sway=(1.0, 0.9), slosh=(0.5, 0.7)), cl(S_MIN, S_MIN + 0.2, True), at="shakes", cut=True, name="everything shakes side to side"),
     B(3, na(seis=(10.0, R_MIN), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), cl(10.0, R_MIN, True), cut=True, name="the slowest wave spreads across the land"),
-    B(3, riverbank(phase="quake", view_az=(30.0, 32.0), pitch=(5.0, 5.0), glow=(0.4, 0.35), shake=(2.0, 2.0), slosh=(0.5, 0.5), roll=(1.0, 1.0)), cl(R_MIN, R_MIN + 0.3, True), at="roll", cut=True, name="the ground rolls like the sea"),
+    B(3, cutaway(roll=(1.5, 1.5), slosh=(0.3, 0.4)), cl(R_MIN, R_MIN + 0.3, True), at="roll", cut=True, name="the ground rolls like the sea"),
 ]
 c3c = [
-    B(0, riverbank(phase="quake", view_az=(-10.0, -14.0), pitch=(4.0, 3.0), glow=(0.35, 0.3), shake=(6.0, 5.0), slosh=(0.4, 0.4), roll=(1.0, 0.8)), over_all(leaves(0.0, n=300, seed=1405), birds(0.2, n=24, seed=1003), cl(13.3, 13.6)), cut=True, name="the biggest earthquake"),
+    B(0, fish_scene(hero=(0.35, 0.55), hero_y=(0.42, 0.5), school=3, shake=(2.0, 1.8), silt=(1.0, 1.0), murk=(0.2, 0.4)), cl(13.3, 13.6), cut=True, name="the biggest earthquake"),
     B(1, cutaway(slosh=(0.4, 0.75), roll=(0.3, 0.1)), cl(13.6, 13.9), cut=True, name="like a shaken bathtub"),
     B(1, cutaway(slosh=(0.55, 0.9), shake=(0.4, 0.3)), cl(13.9, 14.2), at="slosh", name="it starts to slosh"),
 ]

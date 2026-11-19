@@ -1410,7 +1410,7 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
             gm = clamp((ys - (g - 330)) / 30.0)                 # trees and ground move together, the sky does not
             lean = clamp((g - ys) / 320.0) * clamp((ys - (g - 340)) / 20.0)   # trees whip over: tops swing furthest
             dxm = sw_ * 26 * np.sin(tc * 9.0) * gm + sw_ * 90 * np.sin(tc * 4.3 + 0.7) * lean
-            dym = (jl * 70 * np.sin(tc * 23.0) * np.exp(-((tc * 3) % 1) * 3) + rl_ * 34 * np.sin(xs * 0.008 - tc * 3.2)) * gm
+            dym = (jl * 70 * np.sin(tc * 23.0) * np.exp(-((tc * 3) % 1) * 3) + rl_ * 45 * np.sin(xs * 0.006 - tc * 2.2)) * gm
             if jl > 0.3:                                       # the wave coming up from below: a bright front rising through the soil
                 fy = H + 40 - (H + 40 - g) * clamp(u / 0.5)
                 wf = np.exp(-((ys - fy - 0.00012 * (xs - W / 2) ** 2) / 14.0) ** 2) * (ys > g) * (u < 0.56)
