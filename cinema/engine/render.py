@@ -150,22 +150,27 @@ def _chunk_job(a):
     seg, ep, i0, i1, path = a
     R = SegRenderer(seg, ep)
     ff = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-                           "-c:v", "libx264", "-preset", "medium", "-crf", "16", "-pix_fmt", "yuv420p", "-tune", "grain", path], stdin=subprocess.PIPE)
+                           "-c:v", "libx264", "-preset", "medium", "-crf", "16", "-pix_fmt", "yuv420p", "-tune", "grain", path + ".part.mp4"], stdin=subprocess.PIPE)
     for i in range(i0, i1):
         ff.stdin.write(R.frame(i).tobytes())
     ff.stdin.close()
-    ff.wait()
+    if ff.wait() != 0:
+        raise RuntimeError(f"ffmpeg failed on {path}")
+    os.replace(path + ".part.mp4", path)   # a finished chunk survives a crash elsewhere; a resumed run skips it
     return path
 
 
-def render_chunked(seg, outdir, ep, k=4):
+def render_chunked(seg, outdir, ep, k=4, par=None):
     """One slow segment split across k processes by frame range, then joined losslessly."""
-    from multiprocessing import Pool
+    # ProcessPoolExecutor, not Pool: a worker killed by the memory limit raises BrokenProcessPool
+    # instead of hanging forever (Ep4: one OOM-killed worker stalled a 2-hour render with no error)
+    from concurrent.futures import ProcessPoolExecutor
     n = SegRenderer(seg, ep).n
     cuts = [round(n * j / k) for j in range(k + 1)]
     parts = [os.path.join(outdir, f"{seg['id']}.chunk{j}.mp4") for j in range(k)]
-    with Pool(k) as p:
-        p.map(_chunk_job, [(seg, ep, cuts[j], cuts[j + 1], parts[j]) for j in range(k)])
+    todo = [(seg, ep, cuts[j], cuts[j + 1], parts[j]) for j in range(k) if not os.path.exists(parts[j])]
+    with ProcessPoolExecutor(min(par or k, max(1, len(todo)))) as p:
+        list(p.map(_chunk_job, todo))
     lst = os.path.join(outdir, f"{seg['id']}.chunks.txt")
     open(lst, "w").write("".join(f"file '{os.path.basename(q)}'\n" for q in parts))
     path = os.path.join(outdir, seg["id"] + ".mp4")
@@ -206,6 +211,7 @@ def main():
     ap.add_argument("--stills", action="store_true")
     ap.add_argument("--only", default="")
     ap.add_argument("--jobs", type=int, default=4)
+    ap.add_argument("--max-par", type=int, default=None, help="with --chunked: run at most this many chunk workers at once (memory)")
     ap.add_argument("--chunked", action="store_true", help="split each listed segment across --jobs processes (for one slow segment)")
     a = ap.parse_args()
     mod, segs = load(a.ep)
@@ -229,7 +235,7 @@ def main():
     t0 = time.time()
     if a.chunked:
         for s in todo:
-            sid, n = render_chunked(s, out, a.ep, a.jobs)
+            sid, n = render_chunked(s, out, a.ep, a.jobs, a.max_par)
             print(f"{sid:8s} {n:5d} frames chunked x{a.jobs}  elapsed {time.time() - t0:.0f}s", flush=True)
         return
     with Pool(a.jobs) as p:

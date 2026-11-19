@@ -197,3 +197,8 @@ Order of work: script → voice → beats → stills → **mute test** → qa pr
 | "The paddlefish's mouth doesn't look good … research … the real structure" | `anatomy-reference` (tools/story_gate.py, pre) | BRIEF.md has an "Anatomy reference" section: every creature on screen, the features drawn, and source links. The hero is drawn true to life and not grotesque. |
 | "Where the narration says the fish are feeding, there is no visual that shows they are really feeding" | `mute-test` (the viewer's brief) | The viewer checks that every action the narration states is visibly happening in the picture. Feeding means food is seen going into the mouth. |
 | Everything already fixed in Ep4 | All of the above, plus `cadence-video`, `self-repeat`, `jump-cuts`, `motion-stalls` | These carry forward to every episode. |
+
+### Render reliability (added during Ep4 v3)
+| Gate | Why | How it is enforced |
+|---|---|---|
+| A killed render worker must fail loudly, never hang | One chunk worker was killed for memory (6.7 GB) and `multiprocessing.Pool` waited forever, wasting a 2-hour render slot | `render_chunked` uses `ProcessPoolExecutor` (raises `BrokenProcessPool`); each chunk is written to `.part` and renamed when complete, so a rerun skips finished chunks; `run_chunked.sh` retries with 3, then 2, workers at a time |
