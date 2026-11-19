@@ -80,7 +80,7 @@ c2a = [
     B(1, globe(lat=(21.5, 21.4), lon=(-89.4, -89.5), R=(3600.0, 7000.0), clouds=0.15, impact=(0.6, 0.3), crater=(0.2, 1.0)), lab("chx", "a crater 180 km wide", 0.5, dy=110, color=PEACH),
       at="crater", name="the crater opens"),
     B(1, riverbank(phase="dawn", view_az=(-6.0, 0.0), mist=(0.6, 0.55)), clock((0.0, 0.05), big=True), at="count", cut=True, name="the count begins"),
-    B(2, earth_cut(cx=(0.0, 0.0), cy=(5800.0, 5800.0), scale=(0.26, 0.26), rays=(0.1, 0.55), eye=1.0, shell=0.0), over_all(cl(0.05, 0.1), lab("tanis", "the river", 0.3, dy=-50), lab("chx", "the impact", 0.3, dy=-34)),
+    B(2, earth_cut(cx=(0.0, 0.0), cy=(5800.0, 5800.0), scale=(0.26, 0.26), rays=(0.55, 0.55), eye=1.0, shell=0.0), over_all(cl(0.05, 0.1), lab("tanis", "the river", 0.3, dy=-50), lab("chx", "the impact", 0.3, dy=-34)),
       cut=True, name="the light flies over the river"),
     B(2, fish_scene(hero=(0.3, 0.55), school=2, pan=(0.0, 100.0)), cl(0.1, 0.2), at="sees", cut=True, name="the fish see nothing"),
     B(3, earth_cut(cx=(0.0, 0.0), cy=(4000.0, 4800.0), scale=(0.11, 0.17), eye=1.0, shell=0.0), lab("tanis", "the river", 0.2, dy=-50), cut=True, name="the Earth is curved"),
@@ -110,7 +110,7 @@ c3a = [
 ]
 c3b = [
     B(0, earth_cut(cx=(1200.0, 1500.0), cy=(5700.0, 5900.0), scale=(0.3, 0.34), tsec=(310.0, P_S + 4), show=("P",), quake_glow=1.0), cl(5.2, P_MIN, True), cut=True, name="the first wave reaches the river"),
-    B(0, fish_scene(hero=(0.4, 0.5), hero_y=(0.45, 0.45), school=0, shake=(1.4, 0.6), silt=(0.0, 0.9)), cl(P_MIN, P_MIN + 0.3, True), at="arrives", cut=True, name="the riverbed jolts: silt bursts up"),
+    B(0, fish_scene(hero=(0.4, 0.5), hero_y=(0.45, 0.45), school=0, shake=(1.6, 1.0), silt=(0.5, 1.0)), cl(P_MIN, P_MIN + 0.3, True), at="arrives", cut=True, name="the riverbed jolts: silt bursts up"),
     B(1, riverbank(phase="quake", view_az=(-30.0, -26.0), pitch=(10.0, 12.0), glow=(0.5, 0.5), shake=(3.0, 2.0), slosh=(0.25, 0.3)), birds(0.1), cut=True, name="birds burst out"),
     B(1, fish_scene(hero=(0.4, 0.65), hero_y=(0.4, 0.4), dive=(0.0, 1.0), school=3, shake=(0.8, 0.5), silt=(0.0, 0.8)), at="paddlefish", cut=True, name="the paddlefish dives"),
     B(2, earth_cut(cx=(0.0, 0.0), cy=(3000.0, 3000.0), scale=(0.13, 0.13), tsec=(560.0, S_S + 4), show=("S",), quake_glow=1.0), cl(9.3, S_MIN, True), cut=True, name="the slower second wave"),
@@ -238,7 +238,7 @@ c7b = [
     B(1, amber_scene(light=(-0.2, 0.4), zoom=(1.05, 1.1), focus=(0.3, 0.8)), at="amber", name="glass sealed in amber"),
     B(1, na(link=(0.0, 1.0)), pins(0.2), at="chemistry", cut=True, name="matches the crater"),
     B(2, fossil(zoom=(1.6, 2.4), focus=(0.64, 0.30), glint=1.0), cut=True, name="still glass"),
-    B(2, resin(flow=(1.0, 1.0), zoom=(1.3, 1.5)), at="sixty", cut=True, name="still glass inside the amber"),
+    B(2, beads_macro(zoom=(1.15, 1.3)), at="sixty", cut=True, name="the beads are still glass"),
     B(3, badlands(push=(0.45, 0.6), pan=(60.0, 66.0), diggers=1.0, trench=1.0), cut=True, name="scientists still at work"),
     B(3, fossil(zoom=(1.8, 2.4), focus=(0.72, 0.54), glint=1.0), at="gills", cut=True, name="the glass in the gills"),
 ]

@@ -355,6 +355,10 @@ def riverbank(phase="dawn", view_az=(0.0, 3.0), pitch=(5.0, 5.0), fov=(62.0, 60.
         if rl_ > 0:                                       # the ground rolling like the sea: the bank heaves in waves
             dy = rl_ * 40 * np.sin(xs * 0.006 - t * 3.0) * clamp((ys - H * 0.15) / (H * 0.2))
             img = cv2.remap(img.astype(np.float32), xs.astype(np.float32), (ys - dy).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+        if sh > 4.0:                                      # a hard quake: the whole view lurches and tilts
+            Mr = cv2.getRotationMatrix2D((W / 2, H / 2), 0.5 * sh * np.sin(t * 9.0), 1.06)
+            Mr[0, 2] += 6 * sh * np.sin(t * 7.0)
+            img = cv2.warpAffine(img.astype(np.float32), Mr, (W, H), borderMode=cv2.BORDER_REFLECT)
         if sh > 1.0:                                      # shaking shows as motion blur (soft, not boxy)
             img = cv2.GaussianBlur(img, (0, 0), sigmaX=0.6 + sh * 0.9, sigmaY=0.4 + sh * 0.5)
         exp = 1.15 * (1 - 0.65 * s["dark"])

@@ -1016,7 +1016,8 @@ def _beads_fall(img, t, n, sy_, by_, seed=7, size=1.6, x_range=(0, W), speed=(18
     tw = 0.6 + 0.4 * np.sin(t * r.uniform(2, 6, n) + r.uniform(0, 6, n))
     lay = np.zeros((H, W), np.float32)
     rad = max(1, int(round(size * 0.6)))
-    for x_, y_, w_ in zip(bx, by, tw):                  # little glass discs that stay visible at any size
+    for x_, y_, w_ in zip(bx, by, tw):                  # little glass discs that stay visible at any size, with a wake
+        cv2.line(lay, (int(x_), int(y_ - rad * 6)), (int(x_), int(y_)), float(w_) * 0.35, max(1, rad), cv2.LINE_AA)
         cv2.circle(lay, (int(x_), int(y_)), rad, float(w_), -1, cv2.LINE_AA)
     lay = lay + fast_blur(lay, 2 + rad) * 0.8
     return img + lay[..., None] * np.array([0.55, 0.95, 0.75], np.float32) * (glow * 0.35)
@@ -1091,6 +1092,12 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
                 img = ring_px(img, tipx - facing * L(size) * 0.12, hy, 40 + 260 * ph, (0.45, 0.9, 1.0), 2.0, se * 0.6 * (1 - ph), 4)
         if bd > 0:
             img = _beads_fall(img, tc, int(320 * bd), sy_, by_, seed=9, size=4.6 * bead_size, speed=(30, 60), glow=3.6)       # near
+        shk = L(shake)
+        if shk > 0.5:                                  # a jolt: the whole view lurches and tilts
+            Mr = cv2.getRotationMatrix2D((W / 2, H / 2), 5 * shk * np.sin(tc * 11), 1.06)
+            Mr[0, 2] += 40 * shk * np.sin(tc * 13)
+            Mr[1, 2] += 30 * shk * np.sin(tc * 17)
+            img = cv2.warpAffine(img, Mr, (W, H), borderMode=cv2.BORDER_REFLECT)
         gs = L(glow_surface)
         if gs > 0:
             xs, ys = grid()
@@ -2056,33 +2063,35 @@ def species(fade=(0.0, 1.0)):
 
 @scene_factory(keys=[])
 def resin(flow=(0.0, 1.0), zoom=(1.0, 1.1)):
-    """A drop of golden resin running down the bark of a tree, with tiny green glass beads caught inside it."""
+    """Close on a tree trunk: rough, deeply cracked bark, and on it several glossy drops of golden resin, a few with
+    tiny green glass beads caught inside."""
     def f(ctx, t, u, fi):
         e = ease(u)
         xs, ys = grid()
-        fib = cv2.resize(fbm(160, 30, scale=8, octaves=5, seed=1201), (W, H))           # vertical bark ridges
-        ridges = cv2.resize(fbm(240, 20, scale=12, octaves=3, seed=1203), (W, H))
-        trunk = clamp(1 - np.abs(xs - W / 2) / (W * 0.36))
-        cyl = np.sqrt(clamp(1 - ((xs - W / 2) / (W * 0.36)) ** 2))
-        bark = np.array([0.22, 0.15, 0.09], np.float32) * (0.35 + 0.8 * cyl[..., None]) * (0.6 + 0.6 * ridges[..., None]) * (0.85 + 0.3 * fib[..., None])
-        forest = np.array([0.10, 0.16, 0.10], np.float32) * (0.6 + 0.6 * cv2.GaussianBlur(fib, (0, 0), 12)[..., None])
-        img = np.where((trunk > 0)[..., None], bark, forest)
+        fib = cv2.resize(fbm(200, 40, scale=8, octaves=5, seed=1201), (W, H))
+        cracks = clamp((cv2.resize(fbm(120, 24, scale=10, octaves=3, seed=1204), (W, H)) - 0.62) * 8)
+        img = np.array([0.26, 0.18, 0.11], np.float32) * (0.6 + 0.6 * fib[..., None])
+        img = img * (1 - 0.8 * cracks[..., None])                           # deep vertical fissures
+        img = img * (0.7 + 0.45 * clamp(1 - np.abs(xs - W / 2) / (W * 0.6)))[..., None]   # the trunk curving away
         fl = lerp(*flow, e)
-        cx, top = W * 0.5, H * 0.12
-        bot = top + H * (0.45 + 0.3 * fl)
-        m = np.zeros((H, W), np.float32)
-        cv2.line(m, (int(cx), int(top)), (int(cx), int(bot - 90)), 1.0, 46, cv2.LINE_AA)       # the run down the bark
-        cv2.circle(m, (int(cx), int(bot - 40)), 95, 1.0, -1, cv2.LINE_AA)                    # the round drop at the bottom
-        m = blur(m, 6)
-        amber = np.array([1.0, 0.62, 0.15], np.float32) * (0.55 + 0.6 * clamp(1 - np.abs(xs - cx) / 110)[..., None])
-        img = img * (1 - 0.85 * m[..., None]) + amber * 0.85 * m[..., None]
-        hl = np.exp(-(((xs - cx + 30) / 14) ** 2 + ((ys - (bot - 140)) / 70) ** 2))
-        img = img + (hl * m)[..., None] * 0.6
-        r = rng_at(1202)
-        for k in range(9):
-            bx, by = cx + r.uniform(-55, 55), lerp(top + 40, bot - 20, r.uniform(0.2, 1.0))
-            img = glow_dot(img, bx, by, 5, (0.2, 0.55, 0.35), 0.9)
-            img = glow_dot(img, bx - 2, by - 2, 1.5, (0.9, 1.0, 0.9), 0.8)
+        r = rng_at(1205)
+        for k in range(6):
+            cx, cy = r.uniform(0.2, 0.8) * W, r.uniform(0.2, 0.7) * H
+            rr = r.uniform(40, 95)
+            m = np.zeros((H, W), np.float32)
+            pts = [(cx + rr * np.cos(a) * r.uniform(0.8, 1.15), cy + rr * 0.85 * np.sin(a) * r.uniform(0.8, 1.15)) for a in np.linspace(0, 2 * np.pi, 10)]
+            cv2.fillPoly(m, [np.array(pts, np.int32)], 1.0, cv2.LINE_AA)
+            run = rr * (0.6 + 1.2 * fl) * r.uniform(0.5, 1.0)                # a drip running down
+            cv2.line(m, (int(cx), int(cy)), (int(cx + r.uniform(-8, 8)), int(cy + rr * 0.6 + run)), 1.0, int(rr * 0.45), cv2.LINE_AA)
+            m = blur(m, 4)
+            dome = np.sqrt(clamp(1 - ((xs - cx) ** 2 + (ys - cy) ** 2) / (rr * rr)))
+            amber = np.array([0.95, 0.55, 0.10], np.float32) * (0.45 + 0.7 * dome[..., None])
+            img = img * (1 - 0.85 * m[..., None]) + amber * 0.85 * m[..., None]
+            hl = np.exp(-(((xs - cx + rr * 0.35) / (rr * 0.18)) ** 2 + ((ys - cy + rr * 0.35) / (rr * 0.12)) ** 2))
+            img = img + (hl * m)[..., None] * 0.9
+            if k % 2 == 0:
+                for q in range(3):
+                    img = glow_dot(img, cx + r.uniform(-rr, rr) * 0.4, cy + r.uniform(-rr, rr) * 0.3, 4, (0.2, 0.6, 0.35), 0.9)
         z = lerp(*zoom, e)
         Mz = cv2.getRotationMatrix2D((W / 2, H * 0.45), 0, z)
         img = cv2.warpAffine(img, Mz, (W, H), borderMode=cv2.BORDER_REPLICATE)
