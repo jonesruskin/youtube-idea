@@ -720,7 +720,7 @@ def earth_cut(cx=(0.0, 0.0), cy=(0.0, 0.0), scale=(0.075, 0.075), tsec=(0.0, 0.0
         if ry_ > 0:                                  # straight light rays from the flash: those aimed at the river hit the planet
             a = np.radians(TH_C)
             cxp, cyp = M.R_E * np.cos(a), M.R_E * np.sin(a)
-            for k_, ang in enumerate(np.linspace(-0.24, 0.10, 8)):
+            for k_, ang in enumerate(np.linspace(-0.05, 0.04, 4)):
                 d_ = np.array([-np.sin(a) * -1, np.cos(a) * -1])        # local horizontal toward Tanis (clockwise)
                 up = np.array([np.cos(a), np.sin(a)])
                 dirv = d_ * np.cos(ang) + up * np.sin(ang)
@@ -729,10 +729,18 @@ def earth_cut(cx=(0.0, 0.0), cy=(0.0, 0.0), scale=(0.075, 0.075), tsec=(0.0, 0.0
                 rr2 = np.hypot(pts[:, 0], pts[:, 1])
                 hit = np.where(rr2[5:] < M.R_E)[0]
                 end = (hit[0] + 5) if len(hit) else len(ts_)
-                LN.add([P2(x_, y_) for x_, y_ in pts[:max(2, int(end * min(1.0, ry_)))]], (1.0, 0.85, 0.5), 2, 0.8)
+                nn = max(2, int(end * min(1.0, ry_)))
+                LN.add([P2(x_, y_) for x_, y_ in pts[:nn]], (1.0, 0.92, 0.6), 3, 0.9)
+                if ry_ < 1.0:                                   # the front of the light, racing outward
+                    hx, hy = P2(*pts[nn - 1])
+                    img = glow_dot(img, hx, hy, 9, (1.0, 0.95, 0.75), 1.2)
                 if len(hit) and ry_ >= 1.0:
                     x_, y_ = P2(*pts[end - 1])
                     img = glow_dot(img, x_, y_, 4, (1.0, 0.4, 0.2), 0.8)
+            if ry_ >= 0.7:                                  # the light has reached the river's sky: the river marker pulses
+                a1 = np.radians(TH_T)
+                xr_, yr_ = P2(np.cos(a1) * M.R_E, np.sin(a1) * M.R_E)
+                img = glow_dot(img, xr_, yr_, 10 + 6 * np.sin(t * 12), (0.6, 0.9, 1.0), 0.9)
             if ry_ >= 0.6 and eye > 0:                      # the straight line from the flash to the river runs into rock
                 a1 = np.radians(TH_T)
                 p1 = np.array([np.cos(a1), np.sin(a1)]) * M.R_E
@@ -1094,10 +1102,24 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
             img = _beads_fall(img, tc, int(320 * bd), sy_, by_, seed=9, size=4.6 * bead_size, speed=(30, 60), glow=3.6)       # near
         shk = L(shake)
         if shk > 0.5:                                  # a jolt: the whole view lurches and tilts
-            Mr = cv2.getRotationMatrix2D((W / 2, H / 2), 5 * shk * np.sin(tc * 11), 1.06)
+            Mr = cv2.getRotationMatrix2D((W / 2, H / 2), 6 * shk * np.sin(tc * 11 + 1.0), 1.12)
             Mr[0, 2] += 40 * shk * np.sin(tc * 13)
             Mr[1, 2] += 30 * shk * np.sin(tc * 17)
             img = cv2.warpAffine(img, Mr, (W, H), borderMode=cv2.BORDER_REFLECT)
+            xs_, ys_ = grid()                              # the bed bucks: clouds of mud billow up from the riverbed
+            pl = np.zeros((H, W), np.float32)
+            rp = rng_at(1099)
+            for q in range(6):
+                px_ = rp.uniform(0.05, 0.95) * W
+                hh = (0.15 + 0.45 * min(1.0, u * 1.6 + rp.uniform(0, 0.3))) * H
+                for j in range(16):                        # a mushrooming column: narrow at the bed, wide at the top
+                    f_ = j / 15
+                    yy = H * 0.97 - hh * f_
+                    rr_ = 50 + 130 * f_ ** 1.5
+                    pl = np.maximum(pl, np.exp(-(((xs_ - px_ - 40 * np.sin(3 * f_ + q)) / rr_) ** 2 + ((ys_ - yy) / (rr_ * 0.9)) ** 2)))
+            tex = cv2.resize(fbm(160, 90, scale=6, octaves=4, seed=1098), (W, H))
+            pl = clamp(pl * (0.6 + 0.8 * tex)) * clamp(shk) * 0.8
+            img = img * (1 - pl[..., None]) + pl[..., None] * np.array([0.22, 0.17, 0.10], np.float32)
         gs = L(glow_surface)
         if gs > 0:
             xs, ys = grid()
@@ -2068,10 +2090,13 @@ def resin(flow=(0.0, 1.0), zoom=(1.0, 1.1)):
     def f(ctx, t, u, fi):
         e = ease(u)
         xs, ys = grid()
-        fib = cv2.resize(fbm(200, 40, scale=8, octaves=5, seed=1201), (W, H))
-        cracks = clamp((cv2.resize(fbm(120, 24, scale=10, octaves=3, seed=1204), (W, H)) - 0.62) * 8)
-        img = np.array([0.26, 0.18, 0.11], np.float32) * (0.6 + 0.6 * fib[..., None])
-        img = img * (1 - 0.8 * cracks[..., None])                           # deep vertical fissures
+        warp = cv2.resize(fbm(60, 34, scale=4, octaves=3, seed=1201), (W, H))
+        fine = cv2.resize(fbm(W // 2, H // 2, scale=40, octaves=3, seed=1202), (W, H))
+        ph = xs * 0.05 + 2.2 * warp + 0.8 * np.sin(ys * 0.01 + xs * 0.002)
+        ridge = np.abs(np.sin(ph)) ** 0.35                                  # sharp vertical bark ridges
+        brk = np.sin(ys * 0.02 + 6 * warp + xs * 0.003) > 0.93              # cross-breaks between plates
+        img = np.array([0.30, 0.21, 0.13], np.float32) * (0.25 + 0.95 * ridge[..., None]) * (0.75 + 0.5 * fine[..., None])
+        img = img * (1 + 0.35 * np.clip(np.cos(ph + 0.6), 0, 1))[..., None]   # light catching one side of each ridge
         img = img * (0.7 + 0.45 * clamp(1 - np.abs(xs - W / 2) / (W * 0.6)))[..., None]   # the trunk curving away
         fl = lerp(*flow, e)
         r = rng_at(1205)
@@ -2079,19 +2104,24 @@ def resin(flow=(0.0, 1.0), zoom=(1.0, 1.1)):
             cx, cy = r.uniform(0.2, 0.8) * W, r.uniform(0.2, 0.7) * H
             rr = r.uniform(40, 95)
             m = np.zeros((H, W), np.float32)
-            pts = [(cx + rr * np.cos(a) * r.uniform(0.8, 1.15), cy + rr * 0.85 * np.sin(a) * r.uniform(0.8, 1.15)) for a in np.linspace(0, 2 * np.pi, 10)]
-            cv2.fillPoly(m, [np.array(pts, np.int32)], 1.0, cv2.LINE_AA)
-            run = rr * (0.6 + 1.2 * fl) * r.uniform(0.5, 1.0)                # a drip running down
-            cv2.line(m, (int(cx), int(cy)), (int(cx + r.uniform(-8, 8)), int(cy + rr * 0.6 + run)), 1.0, int(rr * 0.45), cv2.LINE_AA)
+            ln = rr * (2.2 + 1.2 * fl) * r.uniform(0.8, 1.1)                # a teardrop of sap oozing down: pointed top, heavy bulb
+            th = np.linspace(0, 2 * np.pi, 60)
+            px_ = rr * 0.75 * np.sin(th) * np.abs(np.sin(th / 2)) ** 1.3
+            py_ = -np.cos(th) * ln / 2
+            cv2.fillPoly(m, [np.stack([cx + px_, cy + py_], 1).astype(np.int32)], 1.0, cv2.LINE_AA)
+            cy = cy + ln * 0.28                                              # the bulb is where the light and beads sit
             m = blur(m, 4)
             dome = np.sqrt(clamp(1 - ((xs - cx) ** 2 + (ys - cy) ** 2) / (rr * rr)))
             amber = np.array([0.95, 0.55, 0.10], np.float32) * (0.45 + 0.7 * dome[..., None])
-            img = img * (1 - 0.85 * m[..., None]) + amber * 0.85 * m[..., None]
+            img = img * (1 - 0.8 * m[..., None]) + (amber * 0.8 + img * 0.25) * m[..., None]   # translucent: bark shows through
             hl = np.exp(-(((xs - cx + rr * 0.35) / (rr * 0.18)) ** 2 + ((ys - cy + rr * 0.35) / (rr * 0.12)) ** 2))
             img = img + (hl * m)[..., None] * 0.9
             if k % 2 == 0:
-                for q in range(3):
-                    img = glow_dot(img, cx + r.uniform(-rr, rr) * 0.4, cy + r.uniform(-rr, rr) * 0.3, 4, (0.2, 0.6, 0.35), 0.9)
+                for q in range(int(r.integers(3, 6))):           # green glass beads trapped inside the resin
+                    bx_, by_ = int(cx + r.uniform(-rr, rr) * 0.4), int(cy + r.uniform(-rr, rr) * 0.45)
+                    br_ = int(r.uniform(4, 7))
+                    cv2.circle(img, (bx_, by_), br_, (0.10, 0.42, 0.22), -1, cv2.LINE_AA)
+                    cv2.circle(img, (bx_ - br_ // 3, by_ - br_ // 3), max(2, br_ // 3), (0.7, 1.0, 0.8), -1, cv2.LINE_AA)
         z = lerp(*zoom, e)
         Mz = cv2.getRotationMatrix2D((W / 2, H * 0.45), 0, z)
         img = cv2.warpAffine(img, Mz, (W, H), borderMode=cv2.BORDER_REPLICATE)
