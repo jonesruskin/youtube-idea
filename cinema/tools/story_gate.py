@@ -18,9 +18,10 @@ creative_gate.creative_pre / creative_post for slot >= 4.
                     description with the narration spoken over the beat. Every beat must PASS, and the test must be
                     for the current beats (fingerprint), not an older cut. Anatomy and continuity errors the blind
                     viewer reports (fish with two tails, things popping in and out) also fail.
-  story-end      5. Put everything inside the story. No end card or title card after the story; the last segment is
-                    the story's own ending; the next-episode teaser ends at least 20 s before the end, so YouTube's
-                    end-screen elements sit on top of story, not on a card people leave at.
+  story-end      5. Put everything inside the story: no title or chapter cards; the story runs to its own ending, then
+                    ONE short branded outro (founder, Ep4 v2): 'subscribe' and the channel name said aloud, channel
+                    name + logo on screen over an in-world picture, under 12 s. The next-episode teaser ends >= 20 s
+                    before the end.
 """
 import os, re, json, hashlib, importlib
 import numpy as np
@@ -109,29 +110,49 @@ def simplicity(ep, res, mod, lay):
 
 
 def story_end(ep, res, mod, lay):
+    """Rule 5 + founder, Ep4 v2: everything inside the story, then ONE short branded outro: 'subscribe' said aloud,
+    the channel name and logo on screen (engine endcard) over an in-world picture. No title or chapter cards."""
+    from engine.brand import CHANNEL
     segs = mod.SEGMENTS
     bad = []
+    last = segs[-1]
+    outro = last if (last.get("card") or {}).get("kind") == "endcard" else None
     for s in segs:
+        if s is outro:
+            continue
         if s.get("card") or s.get("shot", {}).get("type") in ("end", "endcard", "title"):
             bad.append(f"{s['id']} is a card")
     for sid, (seg, beats, _) in lay.items():
         for b in beats:
             if _kinds(mod.META).get(_scene_name(b)) == "title":
                 bad.append(f"{sid} uses a title scene")
+    if outro is None:
+        bad.append("no branded outro: the last segment must be an endcard (channel name + logo) with 'subscribe' said aloud")
+    else:
+        line = " ".join(outro["lines"]).lower()
+        if "subscribe" not in line:
+            bad.append("the outro never says 'subscribe'")
+        if CHANNEL.lower() not in line:
+            bad.append(f"the outro never says the channel's name ({CHANNEL})")
+        od = lay[outro["id"]][0]["dur"]
+        if od > 12.0:
+            bad.append(f"the outro runs {od:.0f} s (keep it under 12 s)")
     kw = [k.lower() for k in mod.META.get("next_teaser_keywords", [])]
-    t, ends, tease_end = 0.0, {}, None
+    ends, tease_end = {}, None
     for sid, (seg, beats, _) in lay.items():
         t = seg["start"] + seg["dur"]
         ends[sid] = t
         if kw and any(all(k in " ".join(seg_["lines"]).lower() for k in kw) for seg_ in segs if seg_["id"] == sid):
             tease_end = t
     total = max(ends.values())
-    if mod.META.get("story_end") != segs[-1]["id"]:
-        bad.append(f"META['story_end'] must name the last segment ({segs[-1]['id']}): the story ends the video")
+    story_last = segs[-2]["id"] if outro is not None else segs[-1]["id"]
+    if mod.META.get("story_end") != story_last:
+        bad.append(f"META['story_end'] must name the story's last segment ({story_last}), just before the outro")
     if tease_end is not None and total - tease_end < 20.0:
-        bad.append(f"teaser ends {total - tease_end:.0f} s before the end (need >= 20 s of story after it)")
+        bad.append(f"teaser ends {total - tease_end:.0f} s before the end (need >= 20 s after it)")
     res("FAIL" if bad else "PASS", "story-end", "; ".join(bad) if bad else
-        f"no end card; story runs to the last frame; teaser ends {total - (tease_end or total):.0f} s before the end")
+        f"story runs to its own ending, then a {lay[outro['id']][0]['dur']:.0f} s branded outro (subscribe + {CHANNEL} + logo); "
+        f"teaser ends {total - (tease_end or total):.0f} s before the end")
 
 
 def mute_test(ep, res, mod, lay, B):

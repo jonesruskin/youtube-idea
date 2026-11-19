@@ -170,7 +170,10 @@ SEGMENTS = [
          lines=["But for one young paddlefish, on one spring morning, the count ended at two hours and thirty-two minutes.",
                 "And sixty-six million years later, it's still telling us what it saw.",
                 "A clock written in mud, with glass for its ticks."],
-         hold=4.6),
+         hold=2.0),
+    dict(id="outro", shot=dict(type="fish"),
+         lines=["Subscribe to Gravity Dial, and we'll start the next count together."],
+         hold=3.5, card=dict(kind="endcard")),
 ]
 
 META = dict(

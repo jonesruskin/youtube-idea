@@ -820,7 +820,7 @@ def fish_sprite(kind="paddle", L=600, gape=0.0, tail=0.0, tone=1.0):
     tf = 0.55 + 0.45 * abs(np.cos(tail * np.pi))                    # caudal foreshortening
     ty_ = 0.02 * np.sin(tail * np.pi)
     if kind == "paddle":
-        g = gape
+        g = 0.32 * gape            # a real paddlefish's gape is wide but low under the paddle base; kept subtle so it reads as a fish
         # body from caudal peduncle (x=.16) to the rostrum base (x=.64); the paddle continues to x=1.0
         top = [(0.14, 0.022), (0.22, 0.040), (0.34, 0.072), (0.46, 0.088), (0.56, 0.082), (0.62, 0.060), (0.66, 0.030)]
         bot = [(0.14, -0.020), (0.22, -0.034), (0.34, -0.060), (0.46, -0.072), (0.54, -0.070 - 0.035 * g), (0.60, -0.052 - 0.05 * g),
@@ -832,8 +832,8 @@ def fish_sprite(kind="paddle", L=600, gape=0.0, tail=0.0, tone=1.0):
         cv2.fillPoly(body, [_poly(_smooth_outline(pt, pb, 60), Ls, x0, y0)], 255, cv2.LINE_AA, shift=4)
         # open mouth: a dark cavity under the paddle base, with the red gill arches showing through
         if g > 0.05:
-            mt = [(0.505, -0.012), (0.56, 0.006), (0.62, 0.010), (0.655, 0.010)]
-            mb = [(0.505, -0.012), (0.54, -0.024 * g - 0.012), (0.60, -0.028 * g - 0.012), (0.655, -0.016 * g - 0.006)]
+            mt = [(0.53, -0.020), (0.58, -0.006), (0.63, 0.000), (0.66, 0.004)]          # low, under the paddle base
+            mb = [(0.53, -0.020), (0.56, -0.030 * g - 0.020), (0.62, -0.030 * g - 0.014), (0.66, -0.014 * g - 0.004)]
             cv2.fillPoly(mouth, [_poly(_smooth_outline(mt, mb, 40), Ls, x0, y0)], 255, cv2.LINE_AA, shift=4)
         # gill cover: a long flap, its edge a soft line sweeping back to x~0.44
         gc = [(0.585, 0.055), (0.53, 0.05), (0.47, 0.03), (0.43, 0.0), (0.45, -0.035), (0.50, -0.06)]
@@ -898,9 +898,11 @@ def fish_sprite(kind="paddle", L=600, gape=0.0, tail=0.0, tone=1.0):
     if kind == "paddle" and gape > 0.05:                         # the open mouth: dark red, gill arches showing inside
         xx_ = np.arange(w)[None, :].astype(np.float32)
         arches = 0.5 + 0.5 * np.cos((xx_ - pad) / L * 2 * np.pi * 22)
-        inside = np.array([0.11, 0.05, 0.05], np.float32) * (0.85 + 0.15 * arches[..., None])
+        # inside: shadowed grey with the pale comb of gill rakers glinting (not a red cavity)
+        inside = np.array([0.10, 0.11, 0.12], np.float32) * (0.9 + 0.1 * arches[..., None])
+        mouth = blur(mouth, 1.0)
         rim = clamp(mouth - cv2.erode(mouth, np.ones((3, 3), np.uint8)))
-        rgb = rgb * (1 - mouth[..., None]) + inside * mouth[..., None] + rim[..., None] * 0.08
+        rgb = rgb * (1 - mouth[..., None]) + inside * mouth[..., None] * 0.9 + rgb * mouth[..., None] * 0.1 + rim[..., None] * 0.12
     rgb = rgb * (1 - line[..., None] * 0.35)
     alpha = clamp(a_body + a_fin)
     return (rgb * tone).astype(np.float32), alpha.astype(np.float32), (pad, h // 2)
@@ -1016,6 +1018,10 @@ def underwater(t, pan=0.0, sky=(0.55, 0.65, 0.55), murk=0.0, red=0.0, shake=0.0,
     return img
 
 
+def school_only_flag(loc):
+    return False
+
+
 def _beads_fall(img, t, n, sy_, by_, seed=7, size=1.6, x_range=(0, W), speed=(18, 40), glow=0.6):
     r = rng_at(seed)
     bx = r.uniform(*x_range, n) + 8 * np.sin(t * 0.7 + r.uniform(0, 6, n))
@@ -1074,6 +1080,19 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
         img = put_fish(img, "paddle", hx, hy, L(size), facing, gape=gape * (0.85 + 0.15 * np.sin(tc * 1.7)),
                        tail=(tc * (1.4 + 3 * (dive[1] - dive[0]))) % 2 - 1, tilt=tilt, tone=_tone(hy, L(murk)), tint=_tint(L(red)),
                        fog=0.12 + 0.5 * L(murk), fogc=(0.06, 0.05, 0.03))
+        if gape > 0.3 and L(intake) <= 0 and not school_only_flag(locals()):   # feeding: plankton drifting into the open mouth
+            mx2, my2 = hx + facing * L(size) * 0.085, hy + L(size) * 0.05
+            r6 = rng_at(613)
+            n6 = 70
+            tg6 = ctx.seg["start"] + ctx.beat.t0 + t
+            ph6 = (r6.uniform(0, 1, n6) + tg6 * 0.35) % 1.0
+            sx6, sy6 = mx2 + facing * r6.uniform(120, 520, n6), my2 + r6.uniform(-160, 160, n6)
+            for k6 in range(n6):
+                if ph6[k6] > 0.95:
+                    continue
+                x6 = sx6[k6] + (mx2 - sx6[k6]) * ph6[k6] ** 1.4
+                y6 = sy6[k6] + (my2 - sy6[k6]) * ph6[k6] ** 1.4
+                cv2.circle(img, (int(x6), int(y6)), 2, (0.55, 0.55, 0.38), -1, cv2.LINE_AA)
         ik = L(intake)
         if ik > 0:                                      # glass beads swept into the open mouth with the water
             mx_, my_ = hx + facing * L(size) * 0.06, hy + L(size) * 0.02

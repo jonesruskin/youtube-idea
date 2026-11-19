@@ -259,5 +259,10 @@ end1 = [
     B(2, fossil(zoom=(2.0, 2.5), focus=(0.27, 0.22), glint=1.0), at="ticks", cut=True, name="glass for its ticks"),
 ]
 
-BEATS = dict(open1=open1, open2=open2, c1a=c1a, c1b=c1b, c2a=c2a, c2b=c2b, c3a=c3a, c3b=c3b, c3c=c3c, c4a=c4a, c4b=c4b, c4c=c4c, c4d=c4d,
+outro = [
+    B(0, fossil(zoom=(2.5, 2.2), focus=(0.27, 0.22), glint=1.0), None, name="end card over the glinting fossil: channel name and logo"),
+    B(0, riverbank(phase="dawn", view_az=(-40.0, -30.0), sun_alt=(4.0, 6.0), mist=(0.6, 0.5)), at="next", cut=True, name="the river at dawn under the end card"),
+]
+
+BEATS = dict(outro=outro, open1=open1, open2=open2, c1a=c1a, c1b=c1b, c2a=c2a, c2b=c2b, c3a=c3a, c3b=c3b, c3c=c3c, c4a=c4a, c4b=c4b, c4c=c4c, c4d=c4d,
              c5a=c5a, c5b=c5b, c5c=c5c, c6a=c6a, c6b=c6b, c6c=c6c, c7a=c7a, c7b=c7b, next=next_, end1=end1)
