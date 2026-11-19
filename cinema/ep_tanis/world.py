@@ -745,13 +745,26 @@ def earth_cut(cx=(0.0, 0.0), cy=(0.0, 0.0), scale=(0.075, 0.075), tsec=(0.0, 0.0
                 a1 = np.radians(TH_T)
                 p1 = np.array([np.cos(a1), np.sin(a1)]) * M.R_E
                 p0 = np.array([cxp, cyp])
+                # the straight line itself, drawn growing out of the crater: it never leaves the rock. The slab of
+                # planet it has to pass through (between the line and the surface) lights up red: the planet is in the way.
+                qa = float(clamp(u * 1.6))
+                a0_ = np.arctan2(p0[1], p0[0])
+                arc = [P2(*(np.array([np.cos(a_), np.sin(a_)]) * M.R_E)) for a_ in np.linspace(a0_, a1, 40)]
+                chord_pts = [P2(*(p0 + (p1 - p0) * q)) for q in np.linspace(1, 0, 40)]
+                slab = np.zeros((H, W), np.float32)
+                cv2.fillPoly(slab, [np.array(arc + chord_pts, np.int32)], 1.0, cv2.LINE_AA)
+                img = img * (1 - 0.35 * slab[..., None] * qa) + slab[..., None] * np.array([1.0, 0.25, 0.15], np.float32) * 0.9 * qa * (0.8 + 0.2 * np.sin(t * 6))
+                for k_ in range(20):                                  # dashed: the path light would need, through stone
+                    q0_, q1_ = k_ / 20, (k_ + 0.5) / 20
+                    if q1_ > qa:
+                        break
+                    LN.add([P2(*(p0 + (p1 - p0) * q0_)), P2(*(p0 + (p1 - p0) * q1_))], (1.0, 0.35, 0.28), 3, 0.95)
                 mid = p0 + (p1 - p0) * 0.5
-                mid = mid / np.linalg.norm(mid) * M.R_E                 # where it meets the bulge
-                LN.add([P2(*(p0 + (mid - p0) * q)) for q in np.linspace(0, 1, 20)], (1.0, 0.3, 0.25), 3, 0.9)
                 xm, ym = P2(*mid)
                 xl = np.zeros((H, W), np.float32)
-                cv2.line(xl, (int(xm - 22), int(ym - 22)), (int(xm + 22), int(ym + 22)), 1.0, 6, cv2.LINE_AA)
-                cv2.line(xl, (int(xm - 22), int(ym + 22)), (int(xm + 22), int(ym - 22)), 1.0, 6, cv2.LINE_AA)
+                if qa > 0.5:
+                    cv2.line(xl, (int(xm - 22), int(ym - 22)), (int(xm + 22), int(ym + 22)), 1.0, 6, cv2.LINE_AA)
+                    cv2.line(xl, (int(xm - 22), int(ym + 22)), (int(xm + 22), int(ym - 22)), 1.0, 6, cv2.LINE_AA)
                 img = img + (xl + fast_blur(xl, 6))[..., None] * np.array([1.0, 0.25, 0.2], np.float32)
         if chord > 0:                                # the straight line from the river to the crater runs through rock
             a1, a2 = np.radians(TH_T), np.radians(TH_C)
