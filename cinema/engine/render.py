@@ -146,6 +146,36 @@ def render_segment(args):
     return seg["id"], R.n, time.time() - t0
 
 
+def _chunk_job(a):
+    seg, ep, i0, i1, path = a
+    R = SegRenderer(seg, ep)
+    ff = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
+                           "-c:v", "libx264", "-preset", "medium", "-crf", "16", "-pix_fmt", "yuv420p", "-tune", "grain", path], stdin=subprocess.PIPE)
+    for i in range(i0, i1):
+        ff.stdin.write(R.frame(i).tobytes())
+    ff.stdin.close()
+    ff.wait()
+    return path
+
+
+def render_chunked(seg, outdir, ep, k=4):
+    """One slow segment split across k processes by frame range, then joined losslessly."""
+    from multiprocessing import Pool
+    n = SegRenderer(seg, ep).n
+    cuts = [round(n * j / k) for j in range(k + 1)]
+    parts = [os.path.join(outdir, f"{seg['id']}.chunk{j}.mp4") for j in range(k)]
+    with Pool(k) as p:
+        p.map(_chunk_job, [(seg, ep, cuts[j], cuts[j + 1], parts[j]) for j in range(k)])
+    lst = os.path.join(outdir, f"{seg['id']}.chunks.txt")
+    open(lst, "w").write("".join(f"file '{os.path.basename(q)}'\n" for q in parts))
+    path = os.path.join(outdir, seg["id"] + ".mp4")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", path + ".part.mp4"], check=True, cwd=outdir)
+    os.replace(path + ".part.mp4", path)
+    for q in parts + [lst]:
+        os.remove(q)
+    return seg["id"], n
+
+
 def stills(seg, outdir, ep):
     R = SegRenderer(seg, ep)
     if R.beats is None:
@@ -176,6 +206,7 @@ def main():
     ap.add_argument("--stills", action="store_true")
     ap.add_argument("--only", default="")
     ap.add_argument("--jobs", type=int, default=4)
+    ap.add_argument("--chunked", action="store_true", help="split each listed segment across --jobs processes (for one slow segment)")
     a = ap.parse_args()
     mod, segs = load(a.ep)
     segs = boundary_fades(segs)
@@ -196,6 +227,11 @@ def main():
     os.makedirs(out, exist_ok=True)
     todo.sort(key=lambda s: -s["dur"])
     t0 = time.time()
+    if a.chunked:
+        for s in todo:
+            sid, n = render_chunked(s, out, a.ep, a.jobs)
+            print(f"{sid:8s} {n:5d} frames chunked x{a.jobs}  elapsed {time.time() - t0:.0f}s", flush=True)
+        return
     with Pool(a.jobs) as p:
         for sid, n, dt in p.imap_unordered(render_segment, [(s, out, a.ep) for s in todo]):
             print(f"{sid:8s} {n:5d} frames  {dt:6.1f}s  ({n / dt:.2f} fps)  elapsed {time.time() - t0:.0f}s", flush=True)
