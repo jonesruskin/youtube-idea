@@ -2103,7 +2103,7 @@ def _sil_mammal(m, cx, cy, s):
 
 
 @scene_factory(keys=[])
-def species(fade=(0.0, 1.0)):
+def species(fade=(0.0, 1.0), zoom=(1.0, 1.0), focus=(0.5, 0.5)):
     """Four kinds of life from that morning, lit as silhouettes: a dinosaur, a pterosaur, an ammonite, a small
     mammal. Three in four go dark (fade 0..1); only the little mammal stays lit."""
     def f(ctx, t, u, fi):
@@ -2123,6 +2123,10 @@ def species(fade=(0.0, 1.0)):
             img = img * (1 - m[..., None]) + m[..., None] * col
             glow = fast_blur(m, 18) * (1 - dead) * 0.35
             img = img + glow[..., None] * np.array([1.0, 0.7, 0.4], np.float32)
+        z = lerp(zoom[0], zoom[1], ease(u))
+        if abs(z - 1.0) > 1e-3:                            # a slow push toward one of the animals
+            Mz = cv2.getRotationMatrix2D((W * focus[0], H * focus[1]), 0, z)
+            img = cv2.warpAffine(img.astype(np.float32), Mz, (W, H), borderMode=cv2.BORDER_REPLICATE)
         return img, dict(exposure=1.1, bloom=0.4, grain=0.015)
     return f
 

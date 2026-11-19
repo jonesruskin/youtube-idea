@@ -26,8 +26,8 @@ def big(n, word, x):
 open1 = [
     B(0, storm(view="window", strike=(-1.0, -1.0), zoom=(1.0, 1.05)), name="rain on the window"),
     B(1, storm(view="lake", strike=(0.25, 0.25), horizon=0.5, zoom=(1.0, 1.04)), clock((0.0, 0.01), big=True, show_from=1.4), at="Lightning", cut=True, name="lightning, and the stopwatch starts"),
-    B(1, storm(view="lake", strike=(-1.0, -1.0), horizon=0.5, zoom=(1.04, 1.1)), over_all(clock((0.0, 0.05), big=True), big("1", "One", W * 0.2), big("2", "Two", W * 0.5), big("3", "Three", W * 0.8)),
-      at="One", name="a stopwatch counts one, two, three"),
+    B(1, storm(view="lake", strike=(-1.0, -1.0), horizon=0.25, zoom=(1.0, 1.08)), over_all(clock((0.0, 0.05), big=True), big("1", "One", W * 0.2), big("2", "Two", W * 0.5), big("3", "Three", W * 0.8)),
+      at="One", cut=True, name="a stopwatch counts one, two, three"),
     B(2, thunder_diagram(sound=(0.85, 1.0), flash=(0.0, 0.0), km=1), at="thunder", cut=True, name="the sound reaches the house: thunder"),
     B(3, thunder_diagram(sound=(0.0, 0.0), flash=(1.0, 0.6), km=3), serif("light first", "Light", y=H * 0.9), cut=True, name="the flash reaches the window at once"),
     B(3, thunder_diagram(sound=(0.0, 0.5), flash=(0.0, 0.0), km=3), serif("sound later", "Sound", y=H * 0.9), at="Sound", name="the sound spreads slowly toward the house"),
@@ -58,8 +58,8 @@ c1a = [
 c1b = [
     B(0, globe(lat=(46.0, 44.0), lon=(-103.0, -101.0), R=(9000.0, 5200.0), clouds=0.1, style="map", borders=(1.0, 1.0), tanis=(1.0, 1.0)),
       lab("tanis", "the river (North Dakota)", 0.5, color=(0.6, 1.0, 0.95)), cut=True, name="the river on the map"),
-    B(1, globe(lat=(44.0, 36.0), lon=(-101.0, -96.0), R=(5200.0, 1750.0), clouds=0.0, style="map", borders=(1.0, 1.0), tanis=(1.0, 1.0), chx=(0.0, 1.0), link=(0.0, 1.0)), name="pull back: 3,000 km south"),
-    B(1, na(compare=(0.0, 1.0), chx=(0.0, 0.0)), over_all(lab("tanis", "the river", 0.2, color=(0.6, 1.0, 0.95)), lab("ny", "New York", 0.4, dy=34), lab("denver", "Denver", 0.8, dy=34)),
+    B(1, globe(lat=(44.0, 36.0), lon=(-101.0, -96.0), R=(5200.0, 3000.0), clouds=0.0, style="map", borders=(1.0, 1.0), tanis=(1.0, 1.0), chx=(0.0, 1.0), link=(0.0, 1.0)), name="pull back: 3,000 km south"),
+    B(1, na(compare=(0.0, 1.0), chx=(0.0, 0.0)), over_all(lab("tanis", "the river", 0.2, color=(0.6, 1.0, 0.95)), lab("ny", "New York", 0.4, dy=34), lab("denver", "Denver", 0.8, dy=34)), cut=True,
       at="farther", name="farther than New York to Denver"),
     B(1, na(compare=(1.0, 1.0), chx=(0.0, 1.0), link=(0.0, 1.0)), pins(0.2), at="Mexico", name="three thousand km south"),
     B(2, globe(lat=(30.0, 26.0), lon=(-80.0, -86.0), R=(800.0, 1200.0), clouds=0.25, chx=(1.0, 1.0), rock=(0.0, 0.6)), cut=True, name="a rock falling"),
@@ -86,7 +86,7 @@ c2a = [
     B(3, earth_cut(cx=(0.0, 0.0), cy=(5600.0, 5800.0), scale=(0.2, 0.26), eye=1.0, rays=(1.0, 1.0), shell=0.0), lab("chx", "rock in the way", 0.3, dy=-60, color=(1.0, 0.5, 0.4)), at="planet", name="the planet is in the way"),
     B(4, earth_cut(cx=(-300.0, -500.0), cy=(5900.0, 6200.0), scale=(0.26, 0.3), sight=1.0, eye=1.0, plume=(0.0, 450.0), shell=0.0), name="the fireball climbs"),
     B(4, earth_cut(cx=(-500.0, -500.0), cy=(6200.0, 6300.0), scale=(0.3, 0.3), sight=1.0, eye=1.0, plume=(450.0, 860.0), shell=0.0), lab("tanis", "807 km to be seen", 0.4, dy=-60), at="eight", name="over 800 km: now visible"),
-    B(4, riverbank(phase="south", view_az=(0.0, 1.0), glow=(0.0, 0.6), mist=(0.4, 0.4)), cl(1.0, 1.3), at="sky", cut=True, name="a glow appears"),
+    B(4, riverbank(phase="south", view_az=(-14.0, 2.0), pitch=(2.0, 8.0), glow=(0.0, 0.9), mist=(0.5, 0.3)), cl(1.0, 1.3), at="sky", cut=True, name="a glow appears"),
 ]
 c2b = [
     B(0, riverbank(phase="south", view_az=(1.0, 2.0), glow=(0.5, 0.7), mist=(0.4, 0.35)), over_all(fireball_horizon(y=0.47, rise=(0.1, 0.6)), cl(1.3, 2.0)), name="the fireball over the edge"),
@@ -159,7 +159,7 @@ c4c = [
 c4d = [
     B(0, fish_scene(hero=(-0.3, -0.1), school=0, beads=(1.0, 1.0), red=(0.15, 0.15), pan=(0.0, 60.0), bead_size=2.5, glow_surface=(0.4, 0.4)), cl(57.0, 58.0), cut=True, name="beads sinking"),
     B(1, fish_scene(hero=(0.25, 0.45), hero_y=(0.45, 0.45), size=(700.0, 900.0), beads=(1.0, 1.0), red=(0.15, 0.15), school=0, pan=(60.0, 160.0), bead_size=1.6), cl(58.0, 59.0), name="the paddlefish keeps feeding"),
-    B(1, fish_scene(hero=(0.45, 0.55), hero_y=(0.48, 0.5), size=(1400.0, 1600.0), beads=(0.9, 1.0), red=(0.15, 0.15), pan=(160.0, 220.0), intake=(0.5, 1.0), school=0), cl(59.0, 60.0), at="sieves", name="sieving glass"),
+    B(1, fish_scene(hero=(0.45, 0.55), hero_y=(0.48, 0.5), size=(1400.0, 1600.0), beads=(0.9, 1.0), red=(0.15, 0.15), pan=(160.0, 220.0), intake=(0.5, 1.0), school=0), cl(59.0, 60.0), at="sieves", cut=True, name="sieving glass"),
     B(2, gills(caught=(0.0, 0.05), food=1.0), cl(60.0, 60.5), cut=True, name="the comb inside its gills"),
     B(2, gills(caught=(0.05, 0.35), food=0.6, zoom=(1.0, 1.05)), cl(60.5, 61.0), at="Now", name="now it catches glass"),
     B(3, gills(caught=(0.35, 0.95), food=0.3, zoom=(1.05, 1.3)), cl(61.0, 62.0), name="the beads lodge, one after another"),
@@ -178,23 +178,23 @@ c5b = [
     B(2, cutaway(level=(0.7, 0.5), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.3, 0.3), zoom=(1.0, 1.6), focus=(0.86, 0.45), debris=(0.5, 0.5), muddy=(1.0, 1.0)), cl(76.0, 78.0), at="bank", name="stranded fish"),
 ]
 c5c = [
-    B(0, cutaway(level=(0.5, 0.05), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.3, 0.3), mud=(0.0, 0.1), muddy=(1.0, 1.0), focus=(0.5, 0.72), debris=(0.6, 0.6)), cl(78.0, 82.0), cut=True, name="the water pulls back"),
-    B(0, cutaway(level=(0.05, 1.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, debris=(0.6, 0.6), dust=(0.3, 0.3), mud=(0.1, 0.15), muddy=(1.0, 1.0), focus=(0.5, 0.72)), cl(82.0, 86.0), at="again", name="and comes again, higher"),
-    B(1, cutaway(level=(0.85, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, debris=(0.6, 0.0), dust=(0.3, 0.32), mud=(0.15, 0.45), muddy=(1.0, 1.0), focus=(0.5, 0.72)), cl(86.0, 92.0), name="a layer of mud"),
-    B(1, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.32, 0.35), mud=(0.45, 0.7), muddy=(1.0, 1.0), focus=(0.5, 0.72)), cl(92.0, 98.0), at="burying", name="burying the fish"),
-    B(2, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.35, 0.38), mud=(0.7, 0.8), rain=(0.6, 1.0), muddy=(1.0, 1.0), focus=(0.5, 0.72)), cl(98.0, 105.0), name="glass keeps falling into the mud"),
-    B(3, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.38, 0.45), mud=(0.8, 1.0), rain=(1.0, 0.7), muddy=(1.0, 1.0), focus=(0.5, 0.72)), cl(105.0, 120.0, True), name="the channel fills"),
-    B(3, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.45, 0.5), mud=(1.0, 1.0), rain=(0.7, 0.5), muddy=(1.0, 1.0), focus=(0.5, 0.72)),
-      over_all(serif("more than a metre of mud and glass", "metre", y=H * 0.9, size=56), cl(120.0, 125.0)), at="metre", name="layer on layer"),
+    B(0, cutaway(level=(0.5, 0.05), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.3, 0.3), mud=(0.0, 0.1), muddy=(1.0, 1.0), focus=(0.5, 0.72), zoom=(1.0, 1.15), debris=(0.6, 0.6)), cl(78.0, 82.0), cut=True, name="the water pulls back"),
+    B(0, cutaway(level=(0.05, 1.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, debris=(0.6, 0.6), dust=(0.3, 0.3), mud=(0.1, 0.15), muddy=(1.0, 1.0), focus=(0.86, 0.45), zoom=(1.7, 1.55)), cl(82.0, 86.0), at="again", cut=True, name="and comes again, higher"),
+    B(1, cutaway(level=(0.85, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, debris=(0.6, 0.0), dust=(0.3, 0.32), mud=(0.15, 0.45), muddy=(1.0, 1.0), focus=(0.5, 0.6), zoom=(1.0, 1.2)), cl(86.0, 92.0), cut=True, name="a layer of mud"),
+    B(1, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.32, 0.35), mud=(0.45, 0.7), muddy=(1.0, 1.0), focus=(0.86, 0.5), zoom=(1.9, 2.1)), cl(92.0, 98.0), at="burying", cut=True, name="burying the fish"),
+    B(2, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.35, 0.38), mud=(0.7, 0.8), rain=(0.6, 1.0), muddy=(1.0, 1.0), focus=(0.3, 0.45), zoom=(1.7, 2.0)), cl(98.0, 105.0), cut=True, name="glass keeps falling into the mud"),
+    B(3, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.38, 0.45), mud=(0.8, 1.0), rain=(1.0, 0.7), muddy=(1.0, 1.0), focus=(0.5, 0.72), zoom=(1.0, 1.0)), cl(105.0, 120.0, True), cut=True, name="the channel fills"),
+    B(3, cutaway(level=(0.0, 0.0), fish_on_bank=(1.0, 1.0), fish_in=0.0, dust=(0.45, 0.5), mud=(1.0, 1.0), rain=(0.7, 0.5), muddy=(1.0, 1.0), focus=(0.5, 0.8), zoom=(1.6, 1.35)),
+      over_all(serif("more than a metre of mud and glass", "metre", y=H * 0.9, size=56), cl(120.0, 125.0)), at="metre", cut=True, name="layer on layer"),
 ]
 
 # ───────────── 2:32:00 · the end of the count ─────────────
 c6a = [
     B(0, na(link=(1.0, 1.0), R=(1500.0, 1750.0)), over_all(pins(0.1), cl(125.0, 126.0)), cut=True, name="back to the count"),
     B(1, storm(view="lake", strike=(0.1, 0.1), ring=(0.0, 0.35), horizon=0.34), clock((0.0, 0.08), big=True), cut=True, name="sound is slow: the ring crawls while the stopwatch runs"),
-    B(1, na(sound=(5.0, 20.0), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), over_all(pins(0.1), cl(5.0, 20.0)), at="third", cut=True, name="the sound ring spreads slowly"),
-    B(2, na(sound=(20.0, 40.0), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), over_all(pins(0.1), cl(20.0, 40.0)), name="two and a half hours to cross"),
-    B(3, na(sound=(40.0, 60.0), states=(("Texas", 0.6),), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), over_all(lab("texas", "Texas", 0.3, dy=0, size=40), cl(40.0, 60.0)), name="one hour: the Texas coast"),
+    B(1, na(sound=(5.0, 20.0), link=(1.0, 1.0), lat=(30.0, 32.0), lon=(-90.0, -92.0), R=(3200.0, 2700.0)), over_all(pins(0.1), cl(5.0, 20.0)), at="third", cut=True, name="the sound ring spreads slowly"),
+    B(2, na(sound=(20.0, 40.0), link=(1.0, 1.0), lat=(30.0, 33.0), lon=(-92.0, -95.0), R=(2600.0, 2000.0)), over_all(pins(0.1), cl(20.0, 40.0)), cut=True, name="two and a half hours to cross"),
+    B(3, na(sound=(40.0, 60.0), states=(("Texas", 0.6),), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), over_all(lab("texas", "Texas", 0.3, dy=0, size=40), cl(40.0, 60.0)), cut=True, name="one hour: the Texas coast"),
     B(3, na(sound=(60.0, 62.0), states=(("Texas", 0.6),), link=(1.0, 1.0), lat=(34.0, 30.0), lon=(-97.0, -94.0), R=(1500.0, 2400.0)), cl(60.0, 62.0), at="coast", name="only just reaching the coast"),
     B(4, na(sound=(110.0, 122.0), states=(("Nebraska", 0.6),), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), over_all(lab("nebraska", "Nebraska", 0.3, dy=0, size=40), cl(110.0, 122.0)), cut=True, name="two hours: Nebraska"),
     B(4, na(sound=(122.0, 132.0), states=(("Nebraska", 0.6),), link=(1.0, 1.0), lat=(34.0, 40.0), lon=(-97.0, -99.0), R=(1500.0, 2000.0)), over_all(lab("tanis", "the river", 0.2, color=(0.6, 1.0, 0.95)), cl(122.0, 132.0)),
@@ -214,8 +214,8 @@ c6c = [
     B(1, riverbank(phase="still", view_az=(-8.0, -4.0), pitch=(4.0, 4.0), dust=(0.5, 0.55), level=(1.4, 1.4), buried=(0.25, 0.25), mist=(0.2, 0.2)), cut=True, name="no one left to hear: a silent mudflat"),
     B(2, globe(lat=(25.0, 25.0), lon=(-85.0, -70.0), R=(520.0, 520.0), clouds=0.25, soot=(0.05, 0.45)), cut=True, name="soot spreads from the crater"),
     B(2, globe(lat=(25.0, 25.0), lon=(-70.0, -55.0), R=(520.0, 520.0), clouds=0.25, soot=(0.45, 1.0)), at="whole", name="over the whole planet"),
-    B(3, species(fade=(0.0, 0.4)), serif("three in four species", "three", y=H * 0.84), cut=True, name="four kinds of life"),
-    B(3, species(fade=(0.4, 1.0)), at="morning", name="three of the four go dark"),
+    B(3, species(fade=(0.0, 0.4), zoom=(1.0, 1.25), focus=(0.3, 0.5)), serif("three in four species", "three", y=H * 0.84), cut=True, name="four kinds of life"),
+    B(3, species(fade=(0.4, 1.0), zoom=(1.3, 1.0), focus=(0.75, 0.55)), at="morning", cut=True, name="three of the four go dark"),
 ]
 
 # ───────────── 66 million years later · the record ─────────────
