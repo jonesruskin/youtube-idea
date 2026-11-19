@@ -1408,12 +1408,36 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
         jl, sw_, rl_ = L(jolt), L(sway), L(roll)
         if jl > 0 or sw_ > 0 or rl_ > 0:                       # the ground moves: up-down jolt, side to side, rolling waves
             gm = clamp((ys - (g - 330)) / 30.0)                 # trees and ground move together, the sky does not
-            dxm = sw_ * 26 * np.sin(tc * 9.0) * gm
-            dym = (jl * 30 * np.sin(tc * 23.0) * np.exp(-((tc * 3) % 1) * 3) + rl_ * 34 * np.sin(xs * 0.008 - tc * 3.2)) * gm
+            lean = clamp((g - ys) / 320.0) * clamp((ys - (g - 340)) / 20.0)   # trees whip over: tops swing furthest
+            dxm = sw_ * 26 * np.sin(tc * 9.0) * gm + sw_ * 90 * np.sin(tc * 4.3 + 0.7) * lean
+            dym = (jl * 70 * np.sin(tc * 23.0) * np.exp(-((tc * 3) % 1) * 3) + rl_ * 34 * np.sin(xs * 0.008 - tc * 3.2)) * gm
             img = cv2.remap(img.astype(np.float32), (xs - dxm).astype(np.float32), (ys - dym).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
             if jl > 0.3 or sw_ > 0.3:
                 k_ = int(1 + 10 * max(jl, sw_))
                 img = cv2.blur(img, (k_ if sw_ > jl else 1, k_ if jl >= sw_ else 1))
+            if jl > 0.3:                                       # the jolt throws earth up off both banks
+                rj = rng_at(817)
+                lay = np.zeros((H, W), np.float32)
+                hop = 0.3 + 0.7 * abs(np.sin(tc * 2.5))
+                dust_ = np.zeros((H, W), np.float32)
+                for q in range(9):                             # bursts of earth thrown up off the banks
+                    bx0 = rj.uniform(0, W)
+                    if abs(bx0 - W / 2) < W * 0.2:
+                        continue
+                    hgt = hop * rj.uniform(120, 300) * jl
+                    cv2.ellipse(dust_, (int(bx0), int(g)), (int(70 + 0.4 * hgt), int(hgt * 0.8)), 0, 180, 360, 1.0, -1, cv2.LINE_AA)
+                    for c_ in range(16):
+                        a_ = rj.uniform(-0.6, 0.6)
+                        d_ = rj.uniform(0.3, 1.0) * hgt
+                        cx_, cy_ = bx0 + d_ * np.sin(a_), g - d_ * np.cos(a_)
+                        rr_ = rj.uniform(3, 10)
+                        cv2.ellipse(lay, (int(cx_), int(cy_)), (int(rr_ * 1.3), int(rr_)), rj.uniform(0, 180), 0, 360, 1.0, -1, cv2.LINE_AA)
+                dust_ = blur(dust_, 25) * 0.55
+                img = img * (1 - dust_[..., None]) + dust_[..., None] * np.array([0.42, 0.34, 0.24], np.float32)
+                lay = blur(lay, 1.2)
+                img = img * (1 - lay[..., None]) + lay[..., None] * np.array([0.35, 0.27, 0.18], np.float32)
+                wsp = np.exp(-((ys - (g - 20 - 60 * hop * jl)) / 40.0) ** 2) * clamp(1 - np.abs(xs - W / 2) / (W * 0.2))
+                img = img + wsp[..., None] * np.array([0.5, 0.6, 0.65], np.float32) * 0.5 * jl   # the water leaps up
             r = rng_at(813 + int(tc * 4))
             n = int(120 * max(jl, sw_, rl_))                    # dust shaken off the banks
             px, py = r.uniform(0, W, n), g + r.uniform(-30, 10, n)
@@ -2119,9 +2143,17 @@ def resin(flow=(0.0, 1.0), zoom=(1.0, 1.1)):
             if k % 2 == 0:
                 for q in range(int(r.integers(3, 6))):           # green glass beads trapped inside the resin
                     bx_, by_ = int(cx + r.uniform(-rr, rr) * 0.4), int(cy + r.uniform(-rr, rr) * 0.45)
-                    br_ = int(r.uniform(4, 7))
+                    br_ = int(r.uniform(7, 11))
                     cv2.circle(img, (bx_, by_), br_, (0.10, 0.42, 0.22), -1, cv2.LINE_AA)
                     cv2.circle(img, (bx_ - br_ // 3, by_ - br_ // 3), max(2, br_ // 3), (0.7, 1.0, 0.8), -1, cv2.LINE_AA)
+        rb = rng_at(1207)                                    # glass beads raining down past the trunk
+        for q in range(40):
+            bx_ = rb.uniform(0, W)
+            by_ = (rb.uniform(0, H) + t * rb.uniform(260, 420)) % (H + 80) - 40
+            br_ = int(rb.uniform(5, 9))
+            cv2.line(img, (int(bx_), int(by_ - br_ * 5)), (int(bx_), int(by_)), (0.2, 0.45, 0.3), max(1, br_ // 2), cv2.LINE_AA)
+            cv2.circle(img, (int(bx_), int(by_)), br_, (0.12, 0.5, 0.28), -1, cv2.LINE_AA)
+            cv2.circle(img, (int(bx_ - br_ / 3), int(by_ - br_ / 3)), max(1, br_ // 3), (0.75, 1.0, 0.85), -1, cv2.LINE_AA)
         z = lerp(*zoom, e)
         Mz = cv2.getRotationMatrix2D((W / 2, H * 0.45), 0, z)
         img = cv2.warpAffine(img, Mz, (W, H), borderMode=cv2.BORDER_REPLICATE)
@@ -2141,6 +2173,21 @@ def fireball_horizon(y=0.5, at=0.0, rise=(0.2, 1.0)):
         cv2.rectangle(lay, (int(cx - 40 * q - 10), int(base - h)), (int(cx + 40 * q + 10), int(base)), 1.0, -1, cv2.LINE_AA)
         lay = blur(lay, 18)
         return img * (1 - 0.2 * lay[..., None]) + lay[..., None] * np.array([1.0, 0.62, 0.32], np.float32) * 0.85
+    return f
+
+
+def light_overhead(y=0.16, speed=4.0):
+    """Overlay: the flash's light racing across the top of the sky, high above a river that stays dark."""
+    def f(ctx, img, t, u):
+        front = min(1.15, 0.1 + u * speed) * W
+        xs, ys = grid()
+        band = np.exp(-((ys - H * y - (xs - W * 0.5) * 0.03) / 26.0) ** 2) * (xs < front)
+        band = band * (0.35 + 0.65 * clamp(xs / max(front, 1)))
+        core = np.exp(-((ys - H * y - (xs - W * 0.5) * 0.03) / 5.0) ** 2) * (xs < front)
+        img = img + band[..., None] * np.array([1.0, 0.85, 0.6], np.float32) * 0.9 + core[..., None] * 1.2
+        if front < W:
+            img = glow_dot(img, front, H * y + (front - W * 0.5) * 0.03, 22, (1.0, 0.95, 0.8), 1.4)
+        return img
     return f
 
 

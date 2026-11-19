@@ -5,7 +5,7 @@ from engine.beats import Beat as B
 from engine.core import W, H
 from ep_tanis import model as M
 from ep_tanis.cine import riverbank, sky_up, surge_scene, xray_scene, amber_scene, dig_scene, serif, tag, clock, over_all, slice_label, PEACH, INK
-from ep_tanis.world import (globe, earth_cut, fish_scene, gills, cutaway, storm, water, droplet, fossil, spring_wave, birds, flow_arrows,
+from ep_tanis.world import (light_overhead, globe, earth_cut, fish_scene, gills, cutaway, storm, water, droplet, fossil, spring_wave, birds, flow_arrows,
                             badlands, moving_star, distance_ticks, beads_macro, species, resin, fireball_horizon, flares, count_ticks, leaves, dial_top, thunder_diagram, TEAL)
 
 P_MIN, S_MIN, R_MIN, SND = M.seismic_minutes("P"), M.seismic_minutes("S"), M.rayleigh_minutes(), M.sound_hours() * 60
@@ -80,8 +80,7 @@ c2a = [
     B(1, globe(lat=(21.5, 21.4), lon=(-89.4, -89.5), R=(3600.0, 7000.0), clouds=0.15, impact=(0.6, 0.3), crater=(0.2, 1.0)), lab("chx", "a crater 180 km wide", 0.5, dy=110, color=PEACH),
       at="crater", name="the crater opens"),
     B(1, riverbank(phase="dawn", view_az=(-6.0, 0.0), mist=(0.6, 0.55)), clock((0.0, 0.05), big=True), at="count", cut=True, name="the count begins"),
-    B(2, earth_cut(cx=(0.0, 0.0), cy=(5800.0, 5800.0), scale=(0.26, 0.26), rays=(0.15, 1.2), eye=0.0, shell=0.0), over_all(cl(0.05, 0.1), lab("tanis", "the river", 0.3, dy=-50), lab("chx", "the impact", 0.3, dy=-34)),
-      cut=True, name="the light flies over the river"),
+    B(2, riverbank(phase="dawn", view_az=(-28.0, -24.0), pitch=(16.0, 17.0), mist=(0.6, 0.6)), over_all(light_overhead(), cl(0.05, 0.1)), cut=True, name="the light flies over the river"),
     B(2, fish_scene(hero=(0.3, 0.55), school=2, pan=(0.0, 100.0)), cl(0.1, 0.2), at="sees", cut=True, name="the fish see nothing"),
     B(3, earth_cut(cx=(0.0, 0.0), cy=(4000.0, 4800.0), scale=(0.11, 0.17), eye=1.0, shell=0.0), lab("tanis", "the river", 0.2, dy=-50), cut=True, name="the Earth is curved"),
     B(3, earth_cut(cx=(0.0, 0.0), cy=(5600.0, 5800.0), scale=(0.2, 0.26), eye=1.0, rays=(1.0, 1.0), shell=0.0), lab("chx", "rock in the way", 0.3, dy=-60, color=(1.0, 0.5, 0.4)), at="planet", name="the planet is in the way"),
@@ -110,11 +109,11 @@ c3a = [
 ]
 c3b = [
     B(0, earth_cut(cx=(1200.0, 1500.0), cy=(5700.0, 5900.0), scale=(0.3, 0.34), tsec=(310.0, P_S + 4), show=("P",), quake_glow=1.0), cl(5.2, P_MIN, True), cut=True, name="the first wave reaches the river"),
-    B(0, fish_scene(hero=(0.4, 0.5), hero_y=(0.45, 0.45), school=0, shake=(1.6, 1.2), silt=(0.9, 1.0)), cl(P_MIN, P_MIN + 0.3, True), at="arrives", cut=True, name="the riverbed jolts: silt bursts up"),
+    B(0, cutaway(jolt=(1.0, 0.8)), cl(P_MIN, P_MIN + 0.3, True), at="arrives", cut=True, name="the riverbed jolts: silt bursts up"),
     B(1, riverbank(phase="quake", view_az=(-30.0, -26.0), pitch=(10.0, 12.0), glow=(0.5, 0.5), shake=(3.0, 2.0), slosh=(0.25, 0.3)), birds(0.1), cut=True, name="birds burst out"),
     B(1, fish_scene(hero=(0.4, 0.65), hero_y=(0.4, 0.4), dive=(0.0, 1.0), school=3, shake=(0.8, 0.5), silt=(0.0, 0.8)), at="paddlefish", cut=True, name="the paddlefish dives"),
     B(2, earth_cut(cx=(0.0, 0.0), cy=(3000.0, 3000.0), scale=(0.13, 0.13), tsec=(560.0, S_S + 4), show=("S",), quake_glow=1.0), cl(9.3, S_MIN, True), cut=True, name="the slower second wave"),
-    B(2, riverbank(phase="quake", view_az=(20.0, 26.0), pitch=(6.0, 6.0), glow=(0.5, 0.45), shake=(8.0, 6.0), slosh=(0.3, 0.3)), cl(S_MIN, S_MIN + 0.2, True), at="shakes", cut=True, name="everything shakes side to side"),
+    B(2, cutaway(sway=(1.0, 0.9), slosh=(0.5, 0.7)), cl(S_MIN, S_MIN + 0.2, True), at="shakes", cut=True, name="everything shakes side to side"),
     B(3, na(seis=(10.0, R_MIN), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), cl(10.0, R_MIN, True), cut=True, name="the slowest wave spreads across the land"),
     B(3, riverbank(phase="quake", view_az=(30.0, 32.0), pitch=(5.0, 5.0), glow=(0.4, 0.35), shake=(2.0, 2.0), slosh=(0.5, 0.5), roll=(1.0, 1.0)), cl(R_MIN, R_MIN + 0.3, True), at="roll", cut=True, name="the ground rolls like the sea"),
 ]
