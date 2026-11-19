@@ -1411,7 +1411,16 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
             lean = clamp((g - ys) / 320.0) * clamp((ys - (g - 340)) / 20.0)   # trees whip over: tops swing furthest
             dxm = sw_ * 26 * np.sin(tc * 9.0) * gm + sw_ * 90 * np.sin(tc * 4.3 + 0.7) * lean
             dym = (jl * 70 * np.sin(tc * 23.0) * np.exp(-((tc * 3) % 1) * 3) + rl_ * 34 * np.sin(xs * 0.008 - tc * 3.2)) * gm
+            bump = np.exp(-((u - 0.5) / 0.13) ** 2) * jl         # the jolt itself: the whole ground is punched upward
+            dym = dym - 90 * bump * clamp((ys - (g - 340)) / 30.0)
             img = cv2.remap(img.astype(np.float32), (xs - dxm).astype(np.float32), (ys - dym).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+            if bump > 0.2:                                     # water flung up out of the channel, ground smeared by the speed
+                img = cv2.blur(img, (1, int(1 + 25 * bump)))
+                rs_ = rng_at(819)
+                for q in range(26):
+                    sx = W * 0.5 + rs_.uniform(-0.28, 0.28) * W
+                    sh_ = rs_.uniform(60, 200) * bump
+                    cv2.line(img, (int(sx), int(g - 90 * bump + 30)), (int(sx + rs_.uniform(-30, 30)), int(g - 90 * bump + 30 - sh_)), (0.55, 0.75, 0.75), int(rs_.uniform(5, 12)), cv2.LINE_AA)
             if jl > 0.3 or sw_ > 0.3:
                 k_ = int(1 + 10 * max(jl, sw_))
                 img = cv2.blur(img, (k_ if sw_ > jl else 1, k_ if jl >= sw_ else 1))

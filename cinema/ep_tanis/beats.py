@@ -80,7 +80,7 @@ c2a = [
     B(1, globe(lat=(21.5, 21.4), lon=(-89.4, -89.5), R=(3600.0, 7000.0), clouds=0.15, impact=(0.6, 0.3), crater=(0.2, 1.0)), lab("chx", "a crater 180 km wide", 0.5, dy=110, color=PEACH),
       at="crater", name="the crater opens"),
     B(1, riverbank(phase="dawn", view_az=(-6.0, 0.0), mist=(0.6, 0.55)), clock((0.0, 0.05), big=True), at="count", cut=True, name="the count begins"),
-    B(2, riverbank(phase="dawn", view_az=(-28.0, -24.0), pitch=(16.0, 17.0), mist=(0.6, 0.6)), over_all(light_overhead(), cl(0.05, 0.1)), cut=True, name="the light flies over the river"),
+    B(2, riverbank(phase="dawn", view_az=(-6.0, -3.0), pitch=(3.0, 3.0), mist=(0.6, 0.6), glow=(0.0, 0.3)), cl(0.05, 0.1), cut=True, name="the light flies over the river"),
     B(2, fish_scene(hero=(0.3, 0.55), school=2, pan=(0.0, 100.0)), cl(0.1, 0.2), at="sees", cut=True, name="the fish see nothing"),
     B(3, earth_cut(cx=(0.0, 0.0), cy=(4000.0, 4800.0), scale=(0.11, 0.17), eye=1.0, shell=0.0), lab("tanis", "the river", 0.2, dy=-50), cut=True, name="the Earth is curved"),
     B(3, earth_cut(cx=(0.0, 0.0), cy=(5600.0, 5800.0), scale=(0.2, 0.26), eye=1.0, rays=(1.0, 1.0), shell=0.0), lab("chx", "rock in the way", 0.3, dy=-60, color=(1.0, 0.5, 0.4)), at="planet", name="the planet is in the way"),
