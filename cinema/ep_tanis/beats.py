@@ -86,7 +86,7 @@ c2a = [
     B(3, earth_cut(cx=(0.0, 0.0), cy=(5600.0, 5800.0), scale=(0.2, 0.26), eye=1.0, rays=(1.0, 1.0), shell=0.0), lab("chx", "rock in the way", 0.3, dy=-60, color=(1.0, 0.5, 0.4)), at="planet", name="the planet is in the way"),
     B(4, earth_cut(cx=(-300.0, -500.0), cy=(5900.0, 6200.0), scale=(0.26, 0.3), sight=1.0, eye=1.0, plume=(0.0, 450.0), shell=0.0), name="the fireball climbs"),
     B(4, earth_cut(cx=(-500.0, -500.0), cy=(6200.0, 6300.0), scale=(0.3, 0.3), sight=1.0, eye=1.0, plume=(450.0, 860.0), shell=0.0), lab("tanis", "807 km to be seen", 0.4, dy=-60), at="eight", name="over 800 km: now visible"),
-    B(4, riverbank(phase="south", view_az=(-12.0, 1.0), pitch=(5.0, 5.0), glow=(0.0, 0.5), mist=(0.4, 0.4)), cl(1.0, 1.3), at="sky", cut=True, name="a glow appears"),
+    B(4, riverbank(phase="south", view_az=(0.0, 1.0), pitch=(5.0, 5.0), glow=(0.0, 0.5), mist=(0.4, 0.4)), cl(1.0, 1.3), at="sky", cut=True, name="a glow appears"),
 ]
 c2b = [
     B(0, riverbank(phase="south", view_az=(1.0, 2.0), glow=(0.5, 0.7), mist=(0.4, 0.35)), over_all(fireball_horizon(y=0.47, rise=(0.1, 0.6)), cl(1.3, 2.0)), name="the fireball over the edge"),
@@ -214,7 +214,8 @@ c6c = [
     B(1, riverbank(phase="still", view_az=(-8.0, -4.0), pitch=(4.0, 4.0), dust=(0.5, 0.55), level=(1.4, 1.4), buried=(0.25, 0.25), mist=(0.2, 0.2)), cut=True, name="no one left to hear: a silent mudflat"),
     B(2, globe(lat=(25.0, 25.0), lon=(-85.0, -70.0), R=(520.0, 520.0), clouds=0.25, soot=(0.05, 0.45)), cut=True, name="soot spreads from the crater"),
     B(2, globe(lat=(25.0, 25.0), lon=(-70.0, -55.0), R=(520.0, 520.0), clouds=0.25, soot=(0.45, 1.0)), at="whole", name="over the whole planet"),
-    B(3, species(fade=(0.0, 0.67), zoom=(1.0, 1.45), focus=(0.5, 0.5)), serif("three in four species", "three", y=H * 0.84), cut=True, name="four kinds of life"),
+    B(3, species(fade=(0.0, 0.33), zoom=(1.0, 1.1), focus=(0.5, 0.5)), serif("three in four species", "three", y=H * 0.84), cut=True, name="four kinds of life"),
+    B(3, species(fade=(0.33, 0.67), zoom=(1.7, 1.55), focus=(0.4, 0.5)), at="plants", cut=True, name="two of them fade"),
     B(3, species(fade=(0.67, 1.0), zoom=(1.8, 1.6), focus=(0.75, 0.55)), at="morning", cut=True, name="three of the four go dark"),
 ]
 
