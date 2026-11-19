@@ -1081,9 +1081,15 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
             n3 = int(60 * ik)
             ph = (r3.uniform(0, 1, n3) + tc * 0.5) % 1.0
             sx0, sy0 = mx_ + facing * r3.uniform(200, 700, n3), my_ + r3.uniform(-260, 260, n3)
+            pb = np.clip(ph - 0.12, 0, 1)                    # where each bead was a moment ago: its streak points at the mouth
             px_, py_ = sx0 + (mx_ - sx0) * ph, sy0 + (my_ - sy0) * ph
-            for x_, y_ in zip(px_, py_):
-                img = glow_dot(img, x_, y_, 3.5, (0.55, 1.0, 0.75), 0.9)
+            qx_, qy_ = sx0 + (mx_ - sx0) * pb, sy0 + (my_ - sy0) * pb
+            for x_, y_, a_, b_, p_ in zip(px_, py_, qx_, qy_, ph):
+                if p_ > 0.96:
+                    continue                                 # gone inside the mouth
+                cv2.line(img, (int(a_), int(b_)), (int(x_), int(y_)), (0.35, 0.6, 0.5), 2, cv2.LINE_AA)
+                cv2.circle(img, (int(x_), int(y_)), 5, (0.3, 0.75, 0.5), -1, cv2.LINE_AA)
+                cv2.circle(img, (int(x_ - 1.5), int(y_ - 1.5)), 2, (0.9, 1.0, 0.95), -1, cv2.LINE_AA)
         se = L(sense)
         if se > 0:                                     # the paddle feeling the tiny electric fields of plankton ahead
             tipx = hx + facing * L(size) * 0.45
