@@ -1410,7 +1410,7 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
             gm = clamp((ys - (g - 330)) / 30.0)                 # trees and ground move together, the sky does not
             lean = clamp((g - ys) / 320.0) * clamp((ys - (g - 340)) / 20.0)   # trees whip over: tops swing furthest
             dxm = sw_ * 26 * np.sin(tc * 9.0) * gm + sw_ * 90 * np.sin(tc * 4.3 + 0.7) * lean
-            dym = (jl * 70 * np.sin(tc * 23.0) * np.exp(-((tc * 3) % 1) * 3) + rl_ * 45 * np.sin(xs * 0.006 - tc * 2.2)) * gm
+            dym = (jl * 70 * np.sin(tc * 23.0) * np.exp(-((tc * 3) % 1) * 3) + rl_ * 50 * np.sin(xs * 0.011 - tc * 3.0)) * gm
             if jl > 0.3:                                       # the wave coming up from below: a bright front rising through the soil
                 fy = H + 40 - (H + 40 - g) * clamp(u / 0.5)
                 wf = np.exp(-((ys - fy - 0.00012 * (xs - W / 2) ** 2) / 14.0) ** 2) * (ys > g) * (u < 0.56)
@@ -2345,4 +2345,42 @@ def thunder_diagram(sound=(0.0, 1.0), flash=(1.0, 0.0), km=3, show_watch=1.0, sh
         if show_watch > 0:
             img = _dial(img, sn * km * 3.0 / 60.0, W * 0.5, H * 0.2, 80, show_watch, True)
         return img, dict(exposure=1.15, bloom=0.4, grain=0.012)
+    return f
+
+
+@scene_factory(keys=[])
+def seismograph(amp=(0.1, 1.0)):
+    """A seismograph on a desk: paper scrolling under a pen. The trace grows from small wiggles to a scrawl so violent it
+    runs off both edges of the paper."""
+    def f(ctx, t, u, fi):
+        xs, ys = grid()
+        img = np.array([0.10, 0.08, 0.07], np.float32) * (0.8 + 0.4 * cv2.resize(fbm(64, 36, scale=4, octaves=3, seed=2201), (W, H)))[..., None]
+        top, bot = H * 0.2, H * 0.8
+        paper = (ys > top) & (ys < bot)
+        img = np.where(paper[..., None], np.array([0.86, 0.83, 0.74], np.float32), img)
+        speed = 260.0
+        gx = ((xs + t * speed) % 60) < 2
+        gy = ((ys - top) % 60) < 2
+        img = np.where((paper & (gx | gy))[..., None], np.array([0.78, 0.62, 0.58], np.float32), img)
+        px, cy = W * 0.72, H * 0.5
+        a_now = lerp(amp[0], amp[1], u)
+        xx = np.arange(0, int(px))
+        tt = t - (px - xx) / speed                       # the paper left of the pen was drawn earlier
+        uu = np.clip(u - (px - xx) / speed / max(ctx.beat.t1 - ctx.beat.t0, 0.1), 0, 1)
+        aa = lerp(amp[0], amp[1], uu) * H * 0.42
+        r = rng_at(2202)
+        sig = np.sin(tt * 41) * 0.6 + np.sin(tt * 67 + 1) * 0.3 + np.sin(tt * 113 + 2) * 0.2
+        yy = cy + aa * sig
+        pts = np.stack([xx, yy], 1).astype(np.int32)
+        lay = np.zeros((H, W), np.float32)
+        cv2.polylines(lay, [pts], False, 1.0, 3, cv2.LINE_AA)
+        img = img * (1 - 0.9 * lay[..., None])
+        yp = cy + a_now * H * 0.42 * (np.sin(t * 41) * 0.6 + np.sin(t * 67 + 1) * 0.3 + np.sin(t * 113 + 2) * 0.2)
+        cv2.line(img, (int(px), int(yp)), (int(W * 0.95), int(H * 0.5)), (0.55, 0.55, 0.58), 6, cv2.LINE_AA)   # the pen arm
+        cv2.circle(img, (int(W * 0.95), int(H * 0.5)), 22, (0.35, 0.35, 0.38), -1, cv2.LINE_AA)
+        cv2.circle(img, (int(px), int(yp)), 7, (0.15, 0.15, 0.6), -1, cv2.LINE_AA)
+        sh = a_now * 14                                  # the whole desk shakes with it
+        M_ = np.float32([[1, 0, sh * np.sin(t * 37)], [0, 1, sh * np.sin(t * 29)]])
+        img = cv2.warpAffine(img, M_, (W, H), borderMode=cv2.BORDER_REFLECT)
+        return img, dict(exposure=1.1, bloom=0.2, grain=0.01)
     return f

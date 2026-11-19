@@ -5,7 +5,7 @@ from engine.beats import Beat as B
 from engine.core import W, H
 from ep_tanis import model as M
 from ep_tanis.cine import riverbank, sky_up, surge_scene, xray_scene, amber_scene, dig_scene, serif, tag, clock, over_all, slice_label, PEACH, INK
-from ep_tanis.world import (light_overhead, globe, earth_cut, fish_scene, gills, cutaway, storm, water, droplet, fossil, spring_wave, birds, flow_arrows,
+from ep_tanis.world import (seismograph, light_overhead, globe, earth_cut, fish_scene, gills, cutaway, storm, water, droplet, fossil, spring_wave, birds, flow_arrows,
                             badlands, moving_star, distance_ticks, beads_macro, species, resin, fireball_horizon, flares, count_ticks, leaves, dial_top, thunder_diagram, TEAL)
 
 P_MIN, S_MIN, R_MIN, SND = M.seismic_minutes("P"), M.seismic_minutes("S"), M.rayleigh_minutes(), M.sound_hours() * 60
@@ -118,7 +118,7 @@ c3b = [
     B(3, cutaway(roll=(1.5, 1.5), slosh=(0.3, 0.4)), cl(R_MIN, R_MIN + 0.3, True), at="roll", cut=True, name="the ground rolls like the sea"),
 ]
 c3c = [
-    B(0, fish_scene(hero=(0.35, 0.55), hero_y=(0.42, 0.5), school=3, shake=(2.0, 1.8), silt=(1.0, 1.0), murk=(0.2, 0.4)), cl(13.3, 13.6), cut=True, name="the biggest earthquake"),
+    B(0, seismograph(amp=(0.15, 1.6)), cl(13.3, 13.6), cut=True, name="the biggest earthquake"),
     B(1, cutaway(slosh=(0.4, 0.75), roll=(0.3, 0.1)), cl(13.6, 13.9), cut=True, name="like a shaken bathtub"),
     B(1, cutaway(slosh=(0.55, 0.9), shake=(0.4, 0.3)), cl(13.9, 14.2), at="slosh", name="it starts to slosh"),
 ]
