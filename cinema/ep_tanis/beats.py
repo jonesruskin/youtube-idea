@@ -92,7 +92,7 @@ c2b = [
     B(0, riverbank(phase="south", view_az=(1.0, 2.0), glow=(0.5, 0.7), mist=(0.4, 0.35)), over_all(fireball_horizon(y=0.47, rise=(0.1, 0.6)), cl(1.3, 2.0)), name="the fireball over the edge"),
     B(0, riverbank(phase="south", view_az=(2.0, 2.0), pitch=(5.0, 5.0), fov=(62.0, 60.0), glow=(0.7, 0.75), mist=(0.35, 0.35)), over_all(fireball_horizon(y=0.47, rise=(0.6, 1.0)), cl(2.0, 2.6)), at="rises", name="the fireball rises over the edge"),
     B(1, riverbank(phase="south", view_az=(-14.0, -10.0), pitch=(5.0, 5.0), glow=(0.75, 0.75), mist=(0.3, 0.3)), over_all(fireball_horizon(y=0.47, rise=(1.0, 1.0)), cl(2.6, 3.2)), cut=True, name="a second sunrise in the south"),
-    B(2, fish_scene(hero=(0.2, 0.5), school=3, glow_surface=(0.5, 0.7), red=(0.15, 0.2), pan=(0.0, 120.0)), cl(3.2, 3.8), cut=True, name="no sound, the fish feed"),
+    B(2, fish_scene(hero=(0.35, 0.55), hero_y=(0.58, 0.55), size=(1100.0, 1200.0), school=3, glow_surface=(0.5, 0.7), red=(0.15, 0.2), pan=(200.0, 320.0)), cl(3.2, 3.8), cut=True, name="no sound, the fish feed"),
 ]
 
 # ───────────── 5:47 · the ground ─────────────
@@ -160,14 +160,14 @@ c4d = [
     B(0, fish_scene(hero=(-0.3, -0.1), school=0, beads=(1.0, 1.0), red=(0.15, 0.15), pan=(0.0, 60.0), bead_size=2.5, glow_surface=(0.4, 0.4)), cl(57.0, 58.0), cut=True, name="beads sinking"),
     B(1, fish_scene(hero=(0.25, 0.45), hero_y=(0.45, 0.45), size=(700.0, 900.0), beads=(1.0, 1.0), red=(0.15, 0.15), school=0, pan=(60.0, 160.0), bead_size=1.6), cl(58.0, 59.0), name="the paddlefish keeps feeding"),
     B(1, fish_scene(hero=(0.45, 0.55), hero_y=(0.48, 0.5), size=(1400.0, 1600.0), beads=(0.9, 1.0), red=(0.15, 0.15), pan=(160.0, 220.0), intake=(0.5, 1.0), school=0), cl(59.0, 60.0), at="sieves", cut=True, name="sieving glass"),
-    B(2, gills(caught=(0.0, 0.05), food=1.0), cl(60.0, 60.5), cut=True, name="the comb inside its gills"),
-    B(2, gills(caught=(0.05, 0.35), food=0.6, zoom=(1.0, 1.05)), cl(60.5, 61.0), at="Now", name="now it catches glass"),
+    B(2, gills(caught=(0.0, 0.05), food=1.0, zoom=(1.3, 1.38)), cl(60.0, 60.5), name="the comb inside its gills"),
+    B(2, gills(caught=(0.05, 0.35), food=0.6, zoom=(1.38, 1.5)), cl(60.5, 61.0), at="Now", name="now it catches glass"),
     B(3, gills(caught=(0.35, 0.95), food=0.3, zoom=(1.05, 1.3)), cl(61.0, 62.0), name="the beads lodge, one after another"),
 ]
 
 # ───────────── the river comes back ─────────────
 c5a = [
-    B(0, cutaway(slosh=(0.9, 1.0), level=(0.0, 0.3), red=(0.15, 0.15), dust=(0.1, 0.1)), cl(62.0, 65.0), cut=True, name="the sloshing grows violent"),
+    B(0, cutaway(slosh=(0.9, 1.0), level=(0.0, 0.3), red=(0.15, 0.15), dust=(0.1, 0.1), zoom=(1.35, 1.5), focus=(0.5, 0.55)), cl(62.0, 65.0), cut=True, name="the sloshing grows violent"),
     B(1, surge_scene(rise=(0.25, 0.7), speed=1.0), cl(65.0, 68.0), cut=True, name="the water runs backwards and rises"),
     B(1, cutaway(level=(0.3, 1.0), debris=(0.0, 0.8), red=(0.15, 0.15), dust=(0.2, 0.25), fish_in=0.7, muddy=(0.0, 0.4)), over_all(serif("at least 10 metres", "metres", y=H * 0.9), cl(68.0, 70.0)), at="rises", cut=True, name="rising ten metres"),
 ]
@@ -214,7 +214,7 @@ c6c = [
     B(1, riverbank(phase="still", view_az=(-8.0, -4.0), pitch=(4.0, 4.0), dust=(0.5, 0.55), level=(1.4, 1.4), buried=(0.25, 0.25), mist=(0.2, 0.2)), cut=True, name="no one left to hear: a silent mudflat"),
     B(2, globe(lat=(25.0, 25.0), lon=(-85.0, -70.0), R=(520.0, 520.0), clouds=0.25, soot=(0.05, 0.45)), cut=True, name="soot spreads from the crater"),
     B(2, globe(lat=(25.0, 25.0), lon=(-70.0, -55.0), R=(520.0, 520.0), clouds=0.25, soot=(0.45, 1.0)), at="whole", name="over the whole planet"),
-    B(3, species(fade=(0.0, 0.4), zoom=(1.0, 1.25), focus=(0.3, 0.5)), serif("three in four species", "three", y=H * 0.84), cut=True, name="four kinds of life"),
+    B(3, species(fade=(0.0, 0.4), zoom=(1.0, 1.7), focus=(0.25, 0.5)), serif("three in four species", "three", y=H * 0.84), cut=True, name="four kinds of life"),
     B(3, species(fade=(0.4, 1.0), zoom=(1.3, 1.0), focus=(0.75, 0.55)), at="morning", cut=True, name="three of the four go dark"),
 ]
 
@@ -231,11 +231,11 @@ c7a = [
     B(4, fossil(zoom=(1.7, 1.9), focus=(0.36, 0.26), glint=0.6), at="glass", cut=True, name="glass beads at the gills"),
 ]
 c7b = [
-    B(0, gills(caught=(0.5, 0.7), food=0.5, zoom=(1.0, 1.05)), cut=True, name="breathing in glass"),
+    B(0, gills(caught=(0.5, 0.7), food=0.5, zoom=(1.7, 1.85)), cut=True, name="breathing in glass"),
     B(0, fish_scene(hero=(0.1, 0.5), hero_y=(0.45, 0.45), size=(800.0, 900.0), beads=(1.0, 1.0), red=(0.1, 0.1), school=2), at=("alive", 1), cut=True, name="alive when it arrived"),
     B(1, resin(flow=(0.0, 1.0), zoom=(1.0, 1.08)), tag("Amber from the tree trunks", 0.4), cut=True, name="resin running down a tree, catching glass"),
     B(1, amber_scene(light=(-0.2, 0.4), zoom=(1.05, 1.1), focus=(0.3, 0.8)), at="amber", name="glass sealed in amber"),
-    B(1, na(link=(0.0, 1.0)), pins(0.2), at="chemistry", cut=True, name="matches the crater"),
+    B(1, na(link=(0.0, 1.0), lat=(27.0, 30.0), lon=(-93.0, -96.0), R=(2700.0, 2300.0)), pins(0.2), at="chemistry", cut=True, name="matches the crater"),
     B(2, fossil(zoom=(1.6, 2.4), focus=(0.64, 0.30), glint=1.0), cut=True, name="still glass"),
     B(2, beads_macro(zoom=(1.15, 1.3)), at="sixty", cut=True, name="the beads are still glass"),
     B(3, badlands(push=(0.45, 0.6), pan=(60.0, 66.0), diggers=1.0, trench=1.0), cut=True, name="scientists still at work"),
