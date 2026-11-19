@@ -1404,7 +1404,7 @@ def cutaway(level=(0.0, 0.0), slosh=(0.0, 0.0), mud=(0.0, 0.0), rain=(0.0, 0.0),
                 fy = ff - dep * lamk
                 cov = float(clamp((top_mud[int(fx)] - fy) / -20.0 + 1)) if fy > top_mud[int(fx)] else 0.0
                 img = put_fish(img, "sturgeon" if k % 2 else "paddle", fx, fy, 210, 1, gape=0.0, tail=0.3,
-                               tone=0.35, tint=(0.75, 0.66, 0.52), tilt=10 * (k % 3 - 1), fog=0.35 + 0.45 * cov, fogc=(0.20, 0.15, 0.10))
+                               tone=0.5, tint=(0.85, 0.74, 0.56), tilt=10 * (k % 3 - 1), fog=0.15 + 0.25 * cov, fogc=(0.20, 0.15, 0.10))
         jl, sw_, rl_ = L(jolt), L(sway), L(roll)
         if jl > 0 or sw_ > 0 or rl_ > 0:                       # the ground moves: up-down jolt, side to side, rolling waves
             gm = clamp((ys - (g - 330)) / 30.0)                 # trees and ground move together, the sky does not
