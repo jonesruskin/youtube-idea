@@ -85,12 +85,12 @@ c2a = [
     B(3, earth_cut(cx=(0.0, 0.0), cy=(4000.0, 4800.0), scale=(0.11, 0.17), eye=1.0, shell=0.0), lab("tanis", "the river", 0.2, dy=-50), cut=True, name="the Earth is curved"),
     B(3, earth_cut(cx=(0.0, 0.0), cy=(4800.0, 5800.0), scale=(0.2, 0.26), eye=1.0, rays=(0.0, 0.0), shell=0.0), lab("chx", "rock in the way", 0.3, dy=-60, color=(1.0, 0.5, 0.4)), at="planet", name="the planet is in the way"),
     B(4, earth_cut(rays=(0.0, 0.0), cx=(-300.0, -500.0), cy=(5900.0, 6200.0), scale=(0.26, 0.3), sight=1.0, eye=1.0, plume=(0.0, 720.0), shell=0.0), name="the fireball climbs"),
-    B(4, earth_cut(cx=(-500.0, -500.0), cy=(6200.0, 6300.0), scale=(0.3, 0.3), sight=1.0, eye=1.0, plume=(720.0, 860.0), shell=0.0), lab("tanis", "807 km to be seen", 0.4, dy=-60), at="eight", name="over 800 km: now visible"),
+    B(4, earth_cut(cx=(-500.0, -620.0), cy=(6200.0, 6500.0), scale=(0.3, 0.34), sight=1.0, eye=1.0, plume=(720.0, 900.0), shell=0.0), lab("tanis", "807 km to be seen", 0.4, dy=-60), at="eight", name="over 800 km: now visible"),
     B(4, riverbank(phase="south", view_az=(0.0, 1.0), pitch=(5.0, 5.0), glow=(0.0, 0.5), mist=(0.4, 0.4)), over_all(height_line(), cl(1.0, 1.3)), at="sky", cut=True, name="a glow appears"),
 ]
 c2b = [
-    B(0, riverbank(phase="south", view_az=(1.0, 2.0), glow=(0.5, 0.7), mist=(0.4, 0.35)), over_all(fireball_horizon(y=0.47, rise=(0.1, 0.6)), cl(1.3, 2.0)), name="the fireball over the edge"),
-    B(0, riverbank(phase="south", view_az=(2.0, 2.0), pitch=(5.0, 5.0), fov=(62.0, 60.0), glow=(0.7, 0.75), mist=(0.35, 0.35)), over_all(fireball_horizon(y=0.47, rise=(0.6, 1.0)), cl(2.0, 2.6)), at="rises", name="the fireball rises over the edge"),
+    B(0, riverbank(phase="south", view_az=(1.0, 2.0), pitch=(5.0, 6.5), fov=(60.0, 30.0), glow=(0.5, 0.7), mist=(0.4, 0.35)), over_all(fireball_horizon(y=0.47, rise=(0.1, 0.6)), cl(1.3, 2.0)), name="the lens pushes in on the fireball over the edge"),
+    B(0, riverbank(phase="south", view_az=(2.0, 2.0), pitch=(6.5, 5.0), fov=(30.0, 60.0), glow=(0.7, 0.75), mist=(0.35, 0.35)), over_all(fireball_horizon(y=0.47, rise=(0.6, 1.0)), cl(2.0, 2.6)), at="rises", name="the fireball rises over the edge"),
     B(1, riverbank(phase="south", view_az=(-14.0, -10.0), pitch=(5.0, 5.0), glow=(0.75, 0.75), mist=(0.3, 0.3)), over_all(fireball_horizon(y=0.47, rise=(1.0, 1.0)), cl(2.6, 3.2)), cut=True, name="a second sunrise in the south"),
     B(2, fish_scene(hero=(0.35, 0.55), hero_y=(0.58, 0.55), size=(1100.0, 1200.0), school=3, glow_surface=(0.5, 0.7), red=(0.15, 0.2), pan=(200.0, 320.0)), cl(3.2, 3.8), cut=True, name="no sound, the fish feed"),
 ]
@@ -210,7 +210,7 @@ c6b = [
 ]
 c6c = [
     B(0, na(sound=(140.0, 152.0), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), over_all(serif("9,120 seconds", "Nine", y=H * 0.9), clock((0.0, 151.7), big=True)), cut=True, name="9,120 seconds of counting"),
-    B(0, na(sound=(152.0, 152.0), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 1500.0)), over_all(pins(0.1), serif("divided by 3: about 3,000 km", "storm", y=H * 0.9)), at="storm", name="the storm rule: 3,000 km"),
+    B(0, na(sound=(152.0, 152.0), link=(1.0, 1.0), lat=(34.0, 34.0), R=(1500.0, 2700.0)), over_all(pins(0.1), serif("divided by 3: about 3,000 km", "storm", y=H * 0.9)), at="storm", name="the storm rule: 3,000 km"),
     B(1, riverbank(phase="still", view_az=(-8.0, -4.0), pitch=(4.0, 4.0), dust=(0.5, 0.55), level=(1.4, 1.4), buried=(0.25, 0.25), mist=(0.2, 0.2)), cut=True, name="no one left to hear: a silent mudflat"),
     B(2, globe(lat=(25.0, 25.0), lon=(-85.0, -70.0), R=(520.0, 520.0), clouds=0.25, soot=(0.05, 0.45)), cut=True, name="soot spreads from the crater"),
     B(2, globe(lat=(25.0, 25.0), lon=(-70.0, -55.0), R=(520.0, 520.0), clouds=0.25, soot=(0.45, 1.0)), at="whole", name="over the whole planet"),
