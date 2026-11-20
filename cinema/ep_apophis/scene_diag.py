@@ -188,7 +188,7 @@ def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare_k=0.0, seed=81,
             L.circle((p[0], p[1]), 34, GOLD, ring, th=4)
             q = (A0 if which == 1 else A1)
             q = (q - np.array([W / 2, H / 2])) * z + np.array([W / 2, H / 2])
-            L.circle((q[0], q[1]), 34, GOLD, ring * 0.35, th=2, dash=0)
+            L.circle((q[0], q[1]), 34, GOLD, ring * 0.35, th=2)
             img = L.composite(img, 0.4)
         if aged > 0:                                   # an old photographic plate: sepia, scratches, a worn edge
             g_ = img.mean(-1, keepdims=True)
@@ -196,7 +196,7 @@ def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare_k=0.0, seed=81,
             xs_, ys_ = grid()
             edge = clamp((np.minimum(np.minimum(xs_, W - xs_), np.minimum(ys_, H - ys_)) - 40) / 60)
             img = img * (0.25 + 0.75 * edge[..., None] * aged + (1 - aged) * 0.75)
-            rr_ = np.random.default_rng(seed)
+            rr_ = np.random.default_rng(int(round(seed)))
             for k_ in range(14):
                 x_ = rr_.uniform(0, W)
                 cv2.line(img, (int(x_), 0), (int(x_ + rr_.normal() * 40), H), (0.22, 0.2, 0.17), 1, cv2.LINE_AA)
@@ -694,7 +694,8 @@ def sea(zoom=(1.0, 1.0), atoms=(0.0, 1.0), h=(22.0, 22.1)):
         if a > 0:
             L = Layer()
             cx, cy, r = W * 0.5, H * 0.66, 230
-            L.circle((cx, cy), r, INK, a, th=4)
+            L.circle((cx, cy), r, INK, a, th=6)
+            L.circle((cx, cy), r - 3, (0.02, 0.03, 0.06), a * 0.6, fill=True)
             L.line((cx + r * 0.7, cy + r * 0.7), (cx + r * 1.3, cy + r * 1.3), color=INK, alpha=a, th=10)
             for i in range(-6, 7):
                 for j in range(-6, 7):
@@ -702,7 +703,7 @@ def sea(zoom=(1.0, 1.0), atoms=(0.0, 1.0), h=(22.0, 22.1)):
                     if np.hypot(px - cx, py - cy) < r - 16:
                         up = 1.0 if i >= 0 else 0.0
                         water = py > cy - 32 * (1 + 2 * up * a)
-                        L.circle((px, py - 0), 9, (0.45, 0.65, 1.0) if water else (0.25, 0.27, 0.3), a * (0.9 if water else 0.4), fill=True)
+                        L.circle((px, py - 0), 11, (0.5, 0.75, 1.0) if water else (0.55, 0.57, 0.6), a, fill=True)
             img = L.composite(img, 0.4)
         return img, dict(exposure=1.3, bloom=0.45)
     return f

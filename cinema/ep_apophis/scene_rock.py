@@ -583,7 +583,6 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
                 cv2.ellipse(lay_, (int(hp_[0]), int(hp_[1])), (int(hs_ * 1.1), int(hs_ * 0.55)), 0, 0, 360, 1.0, -1, cv2.LINE_AA)
                 for f_ in range(4):
                     cv2.line(lay_, (int(hp_[0] - hs_ * 0.8 + f_ * hs_ * 0.5), int(hp_[1])), (int(hp_[0] - hs_ * 0.9 + f_ * hs_ * 0.55), int(hp_[1] + hs_ * 0.9)), 1.0, max(2, int(hs_ * 0.28)), cv2.LINE_AA)
-                cv2.line(lay_, (int(hp_[0] + hs_), int(hp_[1])), (int(W * 0.9), H + 20), 1.0, max(3, int(hs_ * 0.9)), cv2.LINE_AA)
                 m_ = lay_[..., None] * ha
                 img = img * (1 - m_) + m_ * np.array([0.32, 0.30, 0.32], np.float32)
             hp = cw_project(cw, Q, Ap, np.array([0.2, RL + 1.55, 3.0]), camL)

@@ -121,7 +121,7 @@ open1 = [
       name="dusk over the rooftops: a point of light glides; someone points"),
     B(1, R(19.80, 19.86, az=(236.0, 238.0), alt=(18.0, 18.0), fov=(68.0, 66.0), sat=(0.40, 0.62), sat_path=((205.0, 14.0), (268.0, 30.0)), figure=1.0, figure_az=212.0, apophis=0.0),
       name="steady, silent: it glides on"),
-    B(1, R(19.86, 19.90, az=(250.0, 252.0), alt=(22.0, 22.0), fov=(34.0, 33.0), sat=(0.62, 0.80), sat_path=((205.0, 14.0), (268.0, 30.0)), plane=1.0, plane_at=(242.0, 18.0, 0.0), apophis=0.0), at="blink", cut=True,
+    B(1, R(19.86, 19.90, az=(244.0, 245.0), alt=(19.0, 19.0), fov=(16.0, 15.0), sat=(0.62, 0.80), sat_path=((205.0, 14.0), (268.0, 30.0)), plane=1.0, plane_at=(242.0, 18.0, 0.0), apophis=0.0), at="blink", cut=True,
       name="a plane blinks red and green; the satellite does not"),
     B(2, lane(dist=(16000.0, 15000.0), az=(-160.0, -150.0), el=(30.0, 32.0), fov=(55.0, 54.0), h=(19.9, 19.95), ring=0.0, gps=1.0, shells=1.0, path=0.0, glint=1.0), pointer("glint_xy", "", 0, 0, 0.3, ring=26),
       cut=True, name="satellites hundreds of km above Earth's night side"),
@@ -176,7 +176,7 @@ c1b = [
     B(6, odds_meter(size=(0.55, 0.55), off=(1.9, 1.9), elong=(3.0, 3.0), keyhole=(1.0, 1.0), drift=(0.0, 1.0)), lab("about 170 metres a year", 0.4), at="drifts",
       cut=True, name="the push drifts its orbit"),
     B(7, radar(rot=(80.0, 100.0), scan=(0.2, 1.0)), tag("Radar, 2021", 0.3), cut=True, name="radar pins it down"),
-    B(7, odds_meter(size=(0.55, 0.06), off=(1.9, 3.2), elong=(3.0, 3.0), keyhole=(1.0, 0.0)), lab("no danger for 100+ years", 0.4, color=(0.6, 1.0, 0.7)),
+    B(7, odds_meter(size=(0.55, 0.06), off=(1.9, 3.2), elong=(3.0, 3.0), keyhole=(1.0, 0.0), zoom=(1.9, 1.7)), lab("no danger for 100+ years", 0.4, color=(0.6, 1.0, 0.7)),
       at="ruled", cut=True, name="ruled out"),
 ]
 
@@ -238,7 +238,7 @@ c3b = [
 ]
 
 c3c = [
-    B(0, R(20.80, 20.86, view="country", az=(150.0, 154.0), alt=(18.0, 19.0), fov=(72.0, 70.0), figures=3, light_glow=0.15), AP("", at=0.5), cut=True,
+    B(0, R(19.95, 20.0, view="country", az=(150.0, 154.0), alt=(13.0, 14.0), fov=(72.0, 70.0), figures=3, light_glow=0.15), AP("", at=0.5), cut=True,
       name="people on dark terraces, no telescopes"),
     B(1, R(20.90, 20.903, fov=(7.0, 7.0), binoc=1.0), AP("", at=0.0, ring=30), cut=True, name="through binoculars it creeps past the stars"),
     B(2, R(21.05, 21.07, daz=0.3, dalt=-0.3, fov=(10.0, 10.0), streak=1.0), lab("one minute's exposure", 0.4), cut=True,
@@ -277,7 +277,7 @@ c4b = [
       name="closest approach: Earth fills 19 degrees"),
     B(3, surface(h=(21.75, 21.77), view_az=(4.0, 4.0), pitch=(22.0, 22.0), fov=(34.0, 33.0), earth_az=(4.0, 4.0), earth_alt=(22.0, 22.0), sun_alt=(10.0, 10.0)), moons_row(0.2),
       at="thirty", cut=True, name="37 full Moons side by side"),
-    B(4, surface(h=(21.77, 21.8), view_az=(4.0, 4.0), pitch=(22.0, 22.0), fov=(30.0, 28.0), earth_az=(4.0, 4.0), earth_alt=(22.0, 22.0), sun_alt=(10.0, 10.0)), cut=True,
+    B(4, surface(h=(21.77, 21.8), view_az=(4.0, 4.0), pitch=(22.0, 22.0), fov=(33.0, 26.0), earth_az=(4.0, 4.0), earth_alt=(22.0, 22.0), sun_alt=(10.0, 10.0)),
       name="half daylight, half night"),
     B(5, surface(h=(21.8, 21.82), view_az=(100.0, 104.0), pitch=(-3.0, -2.0), fov=(66.0, 64.0), earth_az=(4.0, 4.0), earth_alt=(22.0, 22.0), sun_alt=(-15.0, -15.0), light="earth"),
       cut=True, name="Earthlight: boulders casting sharp shadows"),
