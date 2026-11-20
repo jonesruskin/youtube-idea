@@ -324,7 +324,7 @@ c5c = [
       cut=True, name="grains start to slip on a steep slope"),
     B(1, slope(push=(1.0, 1.1), slide=(0.3, 1.0)), at="landslides", cut=True,
       name="a small landslide puffs dust"),
-    B(2, rock(dist=(700.0, 560.0), az=(60.0, 72.0), el=(30.0, 36.0), fov=(34.0, 30.0), h=(21.75, 21.75), tumble_s=(80600.0, 81400.0), slide=(0.12, 1.0)), cut=True,
+    B(2, rock(dist=(1250.0, 1050.0), az=(60.0, 72.0), el=(14.0, 18.0), fov=(34.0, 32.0), h=(21.75, 21.75), tumble_s=(80600.0, 81400.0), slide=(0.12, 1.0)), cut=True,
       name="fresh, brighter rock where it slid"),
     B(2, rock(dist=(2000.0, 1850.0), az=(21.0, 24.0), el=(6.0, 7.0), fov=(54.0, 52.0), h=(21.75, 21.75), frame_earth=1.0, tumble_s=(81000.0, 84000.0), slide=(1.0, 1.0), earth=1.0), at="Some",
       cut=True, name="a new face from a planet's pull"),

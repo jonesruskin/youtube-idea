@@ -173,13 +173,17 @@ def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare_k=0.0, seed=81,
         glow_dot(img, (A1 if which == 0 else A0)[0], (A1 if which == 0 else A0)[1], (0.5, 0.5, 0.5), 3.0, 0.0)
         nz = np.random.default_rng(int(gt * 30) % 997).normal(0, 0.012, (H // 2, W // 2)).astype(np.float32)
         img += cv2.resize(nz, (W, H))[..., None]
-        if gl > 0:                                     # the Sun's glare creeping in from the corner: the dot is lost
-            xs_, ys_ = grid()
-            dd = np.hypot(xs_ - W * 1.05, ys_ + H * 0.1) / W
-            img = img + (np.exp(-dd * (4.5 - 3.4 * gl)) * 2.2 * gl)[..., None] * np.array([1.0, 0.95, 0.85], np.float32)
         z = L2(zoom, e)
         Mz = cv2.getRotationMatrix2D((W / 2, H / 2), 0, z)
         img = cv2.warpAffine(img, Mz, (W, H), borderMode=cv2.BORDER_REFLECT)
+        if gl > 0:                                     # the Sun's glare creeping in from the corner: the dot is lost
+            xs_, ys_ = grid()
+            dd = np.hypot(xs_ - W * 1.05, ys_ + H * 0.1) / W
+            img = img + (np.exp(-dd * (4.2 - 1.6 * gl)) * 2.4 * gl)[..., None] * np.array([1.0, 0.93, 0.8], np.float32)
+            ang = np.arctan2(ys_ - H * 0.06, xs_ - W * 0.97)              # the Sun itself at the corner: a blinding core and rays
+            rays = (0.5 + 0.5 * np.cos(ang * 12)) ** 6 * np.exp(-dd * 2.2)
+            img = img + (rays * 0.5 * gl)[..., None] * np.array([1.0, 0.92, 0.75], np.float32)
+            glow_dot(img, W * 0.97, H * 0.06, (1.0, 0.97, 0.9), 90 * gl + 10, 6.0 * gl)
         p = (ap - np.array([W / 2, H / 2])) * z + np.array([W / 2, H / 2])
         ctx.state["dot_xy"] = (p[0], p[1])
         ctx.state["frame"] = which

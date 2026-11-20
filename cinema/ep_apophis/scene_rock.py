@@ -302,9 +302,9 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
         Rb = tumble(lerp(tumble_s[0], tumble_s[1], u), rate=rate)
         sl = L2(slide, e)
         cdir_b = Rb.T @ ((pos - np.asarray(look)) / D)
-        sb_dir = cdir_b + np.array([0.0, 0.0, 0.45])
-        sb_dir = sb_dir / np.linalg.norm(sb_dir)
-        sdir = Rb @ sb_dir
+        sw_ = (pos - np.asarray(look)) / D * 0.55 + np.array([0.0, 0.0, 1.0])   # near the upper limb: the slide sprays against black space
+        sdir = sw_ / np.linalg.norm(sw_)
+        sb_dir = Rb.T @ sdir
         if twin > 0:                                   # the same rock twice: the old tumble (left) and twice as fast (right)
             fwd_ = (np.asarray(look) - pos) / D
             rg_ = np.cross(fwd_, [0, 0, 1.0]); rg_ /= np.linalg.norm(rg_)
@@ -342,16 +342,19 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
                 gt_ = ctx.seg["start"] + ctx.beat.t0 + t
                 down = np.cross(sdir, np.cross([0, 0, 1.0], sdir)); down = -down / (np.linalg.norm(down) + 1e-9)
                 peb = np.zeros((H, W, 3), np.float32)
-                for k in range(180):
+                for k in range(240):
                     rng = np.random.default_rng(500 + k)
                     ph = (gt_ * 0.35 + rng.random()) % 1.0
                     # a fan, not a sheet: narrow where the slope gives way, spreading and thinning as the grains run downhill
                     side = np.cross(sdir, down) * rng.normal() * (6 + 26 * ph)
-                    p0 = sp + side + down * (ph * 120 * (0.7 + 0.6 * rng.random())) + sdir * (6 * np.abs(np.sin(ph * 18 + k)))
-                    a0 = cam.project(p0)
-                    if a0[2] > 0:
+                    run = 120 * (0.7 + 0.6 * rng.random())
+                    p0 = sp + side + down * (ph * run) + sdir * (6 * np.abs(np.sin(ph * 18 + k)))
+                    p1 = sp + side + down * (max(ph - 0.06, 0) * run) + sdir * (6 * np.abs(np.sin(max(ph - 0.06, 0) * 18 + k)))
+                    a0, a1 = cam.project(p0), cam.project(p1)
+                    if a0[2] > 0 and a1[2] > 0:
                         fade = float(np.sin(np.pi * ph)) * (0.5 + 0.5 * rng.random())       # grains appear, run, settle out of sight
-                        rr_ = int(2 + 4 * rng.random() * (1 - 0.5 * ph))
+                        rr_ = int(np.clip(cam.f * (0.6 + 1.2 * rng.random()) / max(a0[2], 1.0), 1, 5))
+                        cv2.line(peb, (int(a1[0]), int(a1[1])), (int(a0[0]), int(a0[1])), (0.3 * fade, 0.29 * fade, 0.27 * fade), rr_, cv2.LINE_AA)  # motion trail
                         cv2.circle(peb, (int(a0[0]), int(a0[1])), rr_, (0.62 * fade, 0.6 * fade, 0.56 * fade), -1, cv2.LINE_AA)
                 img = np.maximum(img, cv2.GaussianBlur(peb, (0, 0), 0.7)) + cv2.GaussianBlur(peb, (0, 0), 9.0) * 0.18
         if eiffel_k > 0:
