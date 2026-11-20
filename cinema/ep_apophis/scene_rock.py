@@ -334,11 +334,11 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
                 dust = np.zeros((H, W, 3), np.float32)
                 for k in range(260):
                     rng = np.random.default_rng(k)
-                    off = rng.normal(size=3) * 18 * sl + sdir * rng.uniform(0, 45) * sl
+                    off = rng.normal(size=3) * (10 + 16 * sl) + sdir * rng.uniform(0, 70) * sl
                     px, py, pz = cam.project(sp + off)
                     if 0 < px < W and 0 < py < H:
                         cv2.circle(dust, (int(px), int(py)), int(2 + 3 * rng.random()), (0.7, 0.67, 0.62), -1, cv2.LINE_AA)
-                img += cv2.GaussianBlur(dust, (0, 0), 3.0) * 0.55 * sl
+                img += cv2.GaussianBlur(dust, (0, 0), 6.0) * 0.8 * sl + cv2.GaussianBlur(dust, (0, 0), 1.5) * 0.25 * sl   # a soft cloud, a few grains crisp
                 gt_ = ctx.seg["start"] + ctx.beat.t0 + t
                 down = np.cross(sdir, np.cross([0, 0, 1.0], sdir)); down = -down / (np.linalg.norm(down) + 1e-9)
                 peb = np.zeros((H, W, 3), np.float32)
