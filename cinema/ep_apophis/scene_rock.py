@@ -341,16 +341,19 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
                 img += cv2.GaussianBlur(dust, (0, 0), 3.0) * 0.55 * sl
                 gt_ = ctx.seg["start"] + ctx.beat.t0 + t
                 down = np.cross(sdir, np.cross([0, 0, 1.0], sdir)); down = -down / (np.linalg.norm(down) + 1e-9)
+                peb = np.zeros((H, W, 3), np.float32)
                 for k in range(180):
                     rng = np.random.default_rng(500 + k)
                     ph = (gt_ * 0.35 + rng.random()) % 1.0
-                    side = np.cross(sdir, down) * rng.uniform(-35, 35)
-                    p0 = sp + side + down * (ph * 120) + sdir * (6 * np.abs(np.sin(ph * 18 + k)))   # pebbles bouncing downhill
+                    # a fan, not a sheet: narrow where the slope gives way, spreading and thinning as the grains run downhill
+                    side = np.cross(sdir, down) * rng.normal() * (6 + 26 * ph)
+                    p0 = sp + side + down * (ph * 120 * (0.7 + 0.6 * rng.random())) + sdir * (6 * np.abs(np.sin(ph * 18 + k)))
                     a0 = cam.project(p0)
                     if a0[2] > 0:
-                        rr_ = int(3 + 4 * rng.random())
-                        cv2.circle(img, (int(a0[0]), int(a0[1])), rr_, (0.62, 0.6, 0.56), -1, cv2.LINE_AA)
-                        glow_dot(img, a0[0] - 6, a0[1] + 4, (0.6, 0.58, 0.55), 6 + 10 * ph, 0.12)
+                        fade = float(np.sin(np.pi * ph)) * (0.5 + 0.5 * rng.random())       # grains appear, run, settle out of sight
+                        rr_ = int(2 + 4 * rng.random() * (1 - 0.5 * ph))
+                        cv2.circle(peb, (int(a0[0]), int(a0[1])), rr_, (0.62 * fade, 0.6 * fade, 0.56 * fade), -1, cv2.LINE_AA)
+                img = np.maximum(img, cv2.GaussianBlur(peb, (0, 0), 0.7)) + cv2.GaussianBlur(peb, (0, 0), 9.0) * 0.18
         if eiffel_k > 0:
             fwd = (np.asarray(look) - pos) / D
             rgt = np.cross(fwd, [0, 0, 1.0]); rgt /= np.linalg.norm(rgt)

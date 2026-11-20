@@ -137,9 +137,9 @@ def mirror_split(at=0.0):
 open1 = [
     B(0, R(19.72, 19.80, az=(234.0, 236.0), alt=(18.0, 18.0), fov=(70.0, 68.0), sat=(0.05, 0.40), sat_path=((205.0, 14.0), (268.0, 30.0)), figure=1.0, figure_az=212.0, apophis=0.0),
       name="dusk over the rooftops: a point of light glides; someone points"),
-    B(1, R(19.80, 19.86, az=(236.0, 238.0), alt=(18.0, 18.0), fov=(68.0, 66.0), sat=(0.40, 0.62), sat_path=((205.0, 14.0), (268.0, 30.0)), figure=1.0, figure_az=212.0, apophis=0.0),
+    B(1, R(19.80, 19.86, az=(236.0, 238.0), alt=(18.0, 11.0), fov=(68.0, 66.0), sat=(0.40, 0.62), sat_path=((205.0, 14.0), (268.0, 30.0)), figure=1.0, figure_az=212.0, apophis=0.0),
       name="steady, silent: it glides on"),
-    B(1, R(19.86, 19.90, az=(238.0, 249.0), alt=(18.0, 23.0), fov=(66.0, 34.0), sat=(0.62, 0.76), sat_path=((205.0, 14.0), (268.0, 30.0)), plane=1.0, plane_at=(246.0, 19.0, 0.0), apophis=0.0), at="blink",
+    B(1, R(19.86, 19.90, az=(247.0, 249.0), alt=(21.5, 22.5), fov=(18.0, 16.0), sat=(0.62, 0.76), sat_path=((205.0, 14.0), (268.0, 30.0)), plane=1.0, plane_at=(246.0, 19.0, 0.0), apophis=0.0), at="blink", cut=True,
       name="a plane blinks red and green; the satellite does not"),
     B(2, lane(dist=(14000.0, 13500.0), az=(137.1, 143.1), el=(24.2, 26.2), fov=(60.0, 59.0), h=(19.9, 19.95), ring=0.0, gps=1.0, shells=1.0, path=0.0, glint=1.0), pointer("glint_xy", "", 0, 0, 0.3, ring=26),
       cut=True, name="satellites hundreds of km above Earth's night side"),
@@ -167,9 +167,9 @@ open2 = [
 # ═══════════════════════════════ 2004: the scare ═══════════════════════════════
 c1a = [
     B(0, dome(pan=(0.0, 50.0), zoom=(1.0, 1.06)), tag("Kitt Peak, Arizona", 0.6, sub="June 2004"), cut=True, name="a mountaintop observatory, 2004"),
-    B(1, blink(zoom=(1.0, 1.04)), cut=True, name="two pictures of the same sky, flicking"),
-    B(1, blink(zoom=(1.04, 1.1), ring=1.0), at="Every", name="every star stays put; one dot jumps"),
-    B(2, blink(zoom=(1.1, 1.14), ring=0.0, glare_k=1.0), name="the Sun's glare floods in: lost"),
+    B(1, blink(zoom=(1.0, 1.06)), cut=True, name="two pictures of the same sky, flicking"),
+    B(1, blink(zoom=(2.6, 2.75), ring=1.0), at="Every", cut=True, name="every star stays put; one dot jumps"),
+    B(2, blink(zoom=(2.75, 2.85), ring=0.0, glare_k=1.0), name="the Sun's glare floods in: lost"),
     B(2, track(lat=(-24.0, -28.0), lon=(140.0, 146.0), dist=(30000.0, 26000.0), h=(10.0, 10.2), path=(0.0, 0.0), lisbon=0.0),
       over_all(tag("Siding Spring, Australia", 0.3, sub="December 2004"), pointer("aus_xy", "", 0, 0, 0.2)), at="telescope", cut=True,
       name="a telescope in Australia finds it again"),
@@ -209,9 +209,9 @@ c2a = [
       name="grey rock, boulders and gravel, close"),
     B(2, surface(h=(20.6, 20.62), view_az=(-40.0, -34.0), pitch=(-6.0, -5.0), fov=(70.0, 68.0), earth_az=(90.0, 90.0), earth_alt=(9.0, 9.0), sun_alt=(14.0, 14.0)), at="Probably", cut=True,
       name="a loose rubble pile"),
-    B(3, rock(dist=(2000.0, 2000.0), az=(80.0, 80.0), el=(10.0, 10.0), fov=(40.0, 40.0), h=(20.0, 20.0), tumble_s=(0.0, 100000.0), rate=1.0), lapse("time-lapse: about a day"),
+    B(3, rock(dist=(2000.0, 1900.0), az=(80.0, 100.0), el=(10.0, 12.0), fov=(40.0, 40.0), h=(20.0, 20.0), tumble_s=(0.0, 100000.0), rate=1.0), lapse("time-lapse: about a day"),
       cut=True, name="it tumbles: a wobble about once a day"),
-    B(3, rock(dist=(2000.0, 2000.0), az=(80.0, 80.0), el=(10.0, 10.0), fov=(40.0, 40.0), h=(20.0, 20.0), tumble_s=(100000.0, 950000.0), rate=1.0), lapse("faster: eleven days"),
+    B(3, rock(dist=(1900.0, 1800.0), az=(100.0, 125.0), el=(12.0, 14.0), fov=(40.0, 40.0), h=(20.0, 20.0), tumble_s=(100000.0, 950000.0), rate=1.0), lapse("faster: eleven days"),
       at="rolling", name="rolling end over end"),
     B(4, rock(dist=(1700.0, 1550.0), az=(62.0, 68.0), el=(16.0, 18.0), fov=(40.0, 40.0), h=(20.0, 20.0), tumble_s=(60000.0, 62000.0)), over_all(serpent(0.5), tag("Apep", 0.5, x=W * 0.68, y=H * 0.42, sub="Egyptian serpent of chaos")),
       cut=True, name="named for Apep, the serpent of chaos"),
@@ -306,7 +306,7 @@ c4b = [
 # ═══════════════════════════════ the pull: Earth is the truck ═══════════════════════════════
 c5a = [
     B(0, road(truck=(-1.0, 0.0), wobble=(0.0, 0.0), cam=(0.0, 0.0)), cut=True, name="a bike on a road at dusk"),
-    B(1, road(truck=(0.0, 1.5), wobble=(0.0, 1.0), dust=(0.0, 1.0), cam=(0.0, 0.0)), name="a truck passes too close; the bike wobbles"),
+    B(1, road(truck=(0.0, 1.5), wobble=(0.0, 1.0), dust=(0.0, 1.0), cam=(0.0, 0.0), cz=(1.7, 1.6)), cut=True, name="a truck passes too close; the bike wobbles"),
     B(2, bend(h=(21.0, 22.2), scale=(1.6, 1.5), tilt=(80.0, 80.0)), cut=True, name="Earth is the truck"),
 ]
 c5b = [
@@ -379,7 +379,7 @@ next_ = [
 end1 = [
     B(0, lane(dist=(160000.0, 220000.0), az=(-30.0, -24.0), el=(14.0, 16.0), fov=(40.0, 42.0), h=(22.6, 26.0), ring=1.0, path=1.0, trail_from=-10.0, follow=0.0), cut=True,
       name="it heads back out into the dark"),
-    B(1, R(22.45, 22.95, dalt=-8.0, fov=(56.0, 54.0), figure=1.0, figure_az=280.0), over_all(utc(22.45, 22.95), AP("", at=0.0)), cut=True,
+    B(1, R(22.45, 22.95, az=(AA(22.7, -8.0, 0.0)[0],) * 2, alt=(AA(22.7, -8.0, 0.0)[1],) * 2, fov=(56.0, 56.0), figure=1.0, figure_az=280.0), over_all(utc(22.45, 22.95), AP("", at=0.0)), cut=True,
       name="from the ground: the moving star fades"),
     B(2, surface(h=(30.0, 110.0), view_az=(2.0, 4.0), pitch=(10.0, 12.0), fov=(40.0, 36.0), earth_az=(4.0, 4.0), earth_alt=(14.0, 14.0), sun_alt=(8.0, 8.0)), cut=True,
       name="from the asteroid: Earth shrinks to a point"),

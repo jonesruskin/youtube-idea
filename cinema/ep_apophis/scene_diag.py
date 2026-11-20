@@ -500,7 +500,7 @@ def _truck(lay, x, y, s):
 
 
 @scene_factory(keys=[])
-def road(truck=(-0.3, 1.4), wobble=(0.0, 0.0), dust=(0.0, 0.0), cam=(0.0, 0.0), zoom=(1.0, 1.0)):
+def road(truck=(-0.3, 1.4), wobble=(0.0, 0.0), dust=(0.0, 0.0), cam=(0.0, 0.0), zoom=(1.0, 1.0), cz=(1.0, 1.0)):
     """A country road at dusk, side-on. The cyclist rides slowly right; the truck (truck: its x as a fraction of the
     frame) overtakes, very close; afterwards the bike wobbles (wobble) and dust and leaves swirl in the truck's wake."""
     rng = np.random.default_rng(61)
@@ -558,6 +558,14 @@ def road(truck=(-0.3, 1.4), wobble=(0.0, 0.0), dust=(0.0, 0.0), cam=(0.0, 0.0), 
             glow_dot(img, trx - 500, rd0 + 10, (0.5, 0.4, 0.3), 160, 0.06 * ds)
         ctx.state["bike_xy"] = (bx, by - s)
         ctx.state["truck_xy"] = (trx - 2 * 120 * z, rd1 - 200 * z)
+        c_ = L2(cz, e)
+        if abs(c_ - 1.0) > 1e-3:                                # a closer camera on the bike (the truck fills the frame as it passes)
+            cx_, cy_ = bx, by - 0.5 * s
+            Mz = cv2.getRotationMatrix2D((cx_, cy_), 0, c_)
+            img = cv2.warpAffine(img, Mz, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+            for k_ in ("bike_xy", "truck_xy"):
+                x_, y_ = ctx.state[k_]
+                ctx.state[k_] = (cx_ + (x_ - cx_) * c_, cy_ + (y_ - cy_) * c_)
         return img, dict(exposure=1.2, bloom=0.5, grade=((0.01, 0.006, 0.004), (1.0, 0.96, 0.9)))
     return f
 
