@@ -728,9 +728,11 @@ def roof(view="town", az=(110.0, 112.0), alt=(18.0, 20.0), fov=(60.0, 58.0), h=(
         base, sa = _sky_ground(cam, azm, altm, hh, light_glow)
         stars = cam.sky(gain=1.0)
         ext = clamp((altm + 2) / 12) * (1 - 0.85 * smooth(span(sa, -16, -4)))      # extinction near the horizon and in twilight
-        img = base + stars * ext[..., None] * (0.9 if binoc <= 0 else 1.6) * (1 + 0.8 * streak)
-        if streak > 0:                                 # a minute-long exposure over a city soaks up the sodium skyglow: a brown-orange sky
-            img += (np.array([0.085, 0.065, 0.05], np.float32) + SODIUM * 0.03 * clamp(1 - altm / 70)[..., None]) * streak
+        sk_ = L2(streak, e) if isinstance(streak, tuple) else streak      # how much of the minute has been exposed so far
+        xk_ = 1.0 if (max(streak) if isinstance(streak, tuple) else streak) > 0 else 0.0
+        img = base + stars * ext[..., None] * (0.9 if binoc <= 0 else 1.6) * (1 + 0.8 * xk_)
+        if xk_ > 0:                                 # a minute-long exposure over a city soaks up the sodium skyglow: a brown-orange sky
+            img += (np.array([0.085, 0.065, 0.05], np.float32) + SODIUM * 0.03 * clamp(1 - altm / 70)[..., None]) * xk_
         if binoc > 0:                                  # urban sky through binoculars: grey, not black
             img += np.array([0.03, 0.033, 0.045], np.float32) * binoc
         if L2(sat, e) > 0 or sat[1] > 0:
@@ -762,8 +764,8 @@ def roof(view="town", az=(110.0, 112.0), alt=(18.0, 20.0), fov=(60.0, 58.0), h=(
         pa = None
         if apophis > 0:
             st = None
-            if streak > 0:
-                st = (hh - 1.0 / 60 * streak, hh)
+            if sk_ > 0:
+                st = (hh - 1.0 / 60 * sk_, hh)
             pa = _apophis_on(img, cam, hh, apophis, st)
             if pa is not None:
                 from engine import cards

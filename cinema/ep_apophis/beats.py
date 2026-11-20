@@ -167,9 +167,9 @@ open2 = [
 # ═══════════════════════════════ 2004: the scare ═══════════════════════════════
 c1a = [
     B(0, dome(pan=(0.0, 50.0), zoom=(1.0, 1.06)), tag("Kitt Peak, Arizona", 0.6, sub="June 2004"), cut=True, name="a mountaintop observatory, 2004"),
-    B(1, blink(zoom=(1.0, 1.06)), cut=True, name="two pictures of the same sky, flicking"),
-    B(1, blink(zoom=(2.6, 2.75), ring=1.0), at="Every", cut=True, name="every star stays put; one dot jumps"),
-    B(2, blink(zoom=(2.75, 2.85), ring=0.0, glare_k=1.0), name="the Sun's glare floods in: lost"),
+    B(1, blink(zoom=(1.0, 1.06), rate=2.45), cut=True, name="two pictures of the same sky, flicking"),
+    B(1, blink(zoom=(2.6, 2.75), ring=1.0, rate=2.45), at="Every", cut=True, name="every star stays put; one dot jumps"),
+    B(2, blink(zoom=(2.75, 2.85), ring=0.0, glare_k=1.0, rate=2.45), name="the Sun's glare floods in: lost"),
     B(2, track(lat=(-24.0, -28.0), lon=(140.0, 146.0), dist=(30000.0, 26000.0), h=(10.0, 10.2), path=(0.0, 0.0), lisbon=0.0),
       over_all(tag("Siding Spring, Australia", 0.3, sub="December 2004"), pointer("aus_xy", "", 0, 0, 0.2)), at="telescope", cut=True,
       name="a telescope in Australia finds it again"),
@@ -259,7 +259,7 @@ c3c = [
     B(0, R(19.95, 20.0, view="country", az=(150.0, 154.0), alt=(13.0, 14.0), fov=(72.0, 70.0), figures=3, light_glow=0.15, apophis=1.0, figure_az=None), AP("", at=0.5), cut=True,
       name="people on dark terraces, no telescopes"),
     B(1, R(20.90, 20.95, fov=(7.0, 7.0), binoc=1.0), AP("", at=0.0, ring=30), cut=True, name="through binoculars it creeps past the stars"),
-    B(2, R(21.05, 21.07, daz=0.3, dalt=-0.3, fov=(10.0, 10.0), streak=1.0), lab("one minute's exposure", 0.4), cut=True,
+    B(2, R(21.05, 21.07, daz=0.3, dalt=-0.3, fov=(10.0, 10.0), streak=(0.08, 1.0)), lab("one minute's exposure", 0.4), cut=True,
       name="a one-minute exposure: a straight line"),
     B(3, track(lat=(42.0, 40.0), lon=(-2.0, -6.0), dist=(150000.0, 145000.0), h=(20.9, 21.0), path=(0.55, 0.55), lisbon=0.0, sight=1.0, wide=1.0), cut=True,
       name="everyone looking at the same rock"),
@@ -324,9 +324,9 @@ c5c = [
       cut=True, name="grains start to slip on a steep slope"),
     B(1, slope(push=(1.0, 1.1), slide=(0.3, 1.0)), at="landslides", cut=True,
       name="a small landslide puffs dust"),
-    B(2, rock(dist=(700.0, 560.0), az=(60.0, 72.0), el=(30.0, 36.0), fov=(34.0, 30.0), h=(21.75, 21.75), tumble_s=(80600.0, 81400.0), slide=(1.0, 1.0)), cut=True,
+    B(2, rock(dist=(700.0, 560.0), az=(60.0, 72.0), el=(30.0, 36.0), fov=(34.0, 30.0), h=(21.75, 21.75), tumble_s=(80600.0, 81400.0), slide=(0.12, 1.0)), cut=True,
       name="fresh, brighter rock where it slid"),
-    B(2, rock(dist=(1800.0, 1650.0), az=(10.0, 16.0), el=(8.0, 9.0), fov=(40.0, 40.0), h=(21.75, 21.75), frame_earth=1.0, tumble_s=(81000.0, 84000.0), slide=(1.0, 1.0), earth=1.0), at="Some",
+    B(2, rock(dist=(2000.0, 1850.0), az=(21.0, 24.0), el=(6.0, 7.0), fov=(54.0, 52.0), h=(21.75, 21.75), frame_earth=1.0, tumble_s=(81000.0, 84000.0), slide=(1.0, 1.0), earth=1.0), at="Some",
       cut=True, name="a new face from a planet's pull"),
     B(3, rock(dist=(2400.0, 2400.0), az=(95.0, 95.0), el=(8.0, 8.0), fov=(44.0, 44.0), h=(21.75, 21.75), tumble_s=(0.0, 200000.0), twin=1.0), over_all(lapse("time-lapse"), spin_arrows(0.3)), cut=True,
       name="its tumble twisted"),
@@ -357,7 +357,7 @@ c6b = [
       name="mapping every boulder before"),
     B(3, rock(dist=(700.0, 640.0), az=(80.0, 86.0), el=(20.0, 22.0), fov=(36.0, 36.0), h=(22.5, 22.5), tumble_s=(91000.0, 91500.0), slide=(0.0, 0.8), probe_k=1.0, thrust=1.0, probe_pos=(380.0, 330.0)),
       tag("OSIRIS-APEX", 0.4, sub="NASA, soon after"), cut=True, name="OSIRIS-APEX stirs the surface with its thrusters"),
-    B(4, surface(h=(21.74, 21.76), view_az=(-6.0, -2.0), pitch=(12.0, 13.0), fov=(74.0, 72.0), earth_az=(-2.0, -2.0), earth_alt=(20.0, 20.0), sun_alt=(8.0, 8.0), slide=(0.5, 1.0)),
+    B(4, slope(push=(1.12, 1.22), slide=(0.0, 1.0)),
       cut=True, name="a planet reshaping an asteroid, as it happens"),
 ]
 

@@ -168,15 +168,15 @@ def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare_k=0.0, seed=81,
         buf = splat_points(buf, sx, sy, np.repeat(sb[:, None], 3, 1).astype(np.float32), sigma=2.2)
         img += buf
         ap = A0 if which == 0 else A1
-        glow_dot(img, ap[0], ap[1], (1.0, 1.0, 1.0), 3.2, 2.4)
+        gl = glare_k * smooth(u)
+        glow_dot(img, ap[0], ap[1], (1.0, 1.0, 1.0), 3.2, 2.4 * (1 - smooth(clamp(gl * 1.4))))   # drowned by the glare
         glow_dot(img, (A1 if which == 0 else A0)[0], (A1 if which == 0 else A0)[1], (0.5, 0.5, 0.5), 3.0, 0.0)
         nz = np.random.default_rng(int(gt * 30) % 997).normal(0, 0.012, (H // 2, W // 2)).astype(np.float32)
         img += cv2.resize(nz, (W, H))[..., None]
-        gl = glare_k * smooth(u)
         if gl > 0:                                     # the Sun's glare creeping in from the corner: the dot is lost
             xs_, ys_ = grid()
             dd = np.hypot(xs_ - W * 1.05, ys_ + H * 0.1) / W
-            img = img + (np.exp(-dd * (4.5 - 2.0 * gl)) * 1.1 * gl)[..., None] * np.array([1.0, 0.95, 0.85], np.float32)
+            img = img + (np.exp(-dd * (4.5 - 3.4 * gl)) * 2.2 * gl)[..., None] * np.array([1.0, 0.95, 0.85], np.float32)
         z = L2(zoom, e)
         Mz = cv2.getRotationMatrix2D((W / 2, H / 2), 0, z)
         img = cv2.warpAffine(img, Mz, (W, H), borderMode=cv2.BORDER_REFLECT)
