@@ -239,10 +239,10 @@ def odds_meter(size=(1.0, 1.0), off=(0.0, 0.0), elong=(3.0, 3.0), keyhole=(0.0, 
         if ghosts > 0:                                 # where the cloud was on earlier nights: it narrows
             for k_, gs in enumerate((2.2, 1.7, 1.35)):
                 eg = np.stack([np.cos(th) * el * sz * gs, np.sin(th) * sz * gs], -1) @ R2.T + np.array([of, 0.0])
-                L.polyline(np.stack([cx + eg[:, 0] * Re, cy - eg[:, 1] * Re], -1), CYAN, ghosts * (0.18 + 0.1 * k_), th=2, closed=True)
+                L.polyline(np.stack([cx + eg[:, 0] * Re, cy - eg[:, 1] * Re], -1), CYAN, ghosts * (0.35 + 0.15 * k_), th=3, closed=True)
         rp_ = L2(ret, e)
         if rp_ > 0:                                    # through the keyhole, once around the Sun, and back into Earth
-            kx, ky = cx + 1.7 * Re, cy - 0.35 * Re
+            kx, ky = cx + 2.4 * Re, cy - 0.5 * Re
             tt_ = np.linspace(0, 1, 120)
             loop = np.stack([kx + 520 * np.sin(np.pi * tt_) * z + 60 * tt_, ky - 380 * np.sin(np.pi * tt_) ** 0.8 * z + (cy - ky) * tt_], -1)
             loop[:, 0] = loop[:, 0] * (1 - tt_) + (loop[:, 0] * 0.0 + cx + Re * 0.2) * tt_ ** 3 + loop[:, 0] * tt_ ** 3 * 0
@@ -251,13 +251,19 @@ def odds_meter(size=(1.0, 1.0), off=(0.0, 0.0), elong=(3.0, 3.0), keyhole=(0.0, 
                 L.circle((cx + Re * 0.2, cy), 26, RED, 1.0, th=4)
         kh = L2(keyhole, e)
         if kh > 0:
-            kx, ky = cx + 1.7 * Re, cy - 0.35 * Re
-            L.rect(kx - 3, ky - 14, kx + 3, ky + 14, GOLD, kh, th=2, fill=True)
-            L.circle((kx, ky), 34, GOLD, kh * 0.7, th=2)
+            kx, ky = cx + 2.4 * Re, cy - 0.5 * Re
+            glow_dot(img, kx, ky, (1.0, 0.8, 0.45), 10, 1.5 * kh)
+            L.rect(kx - 4, ky - 16, kx + 4, ky + 16, GOLD, kh, th=2, fill=True)
+            L.circle((kx, ky), 40, GOLD, kh * 0.8, th=3)
             ctx.state["keyhole_xy"] = (kx, ky)
         dr = L2(drift, e)
-        if dr > 0:
-            L.arrow((cx + of * Re, cy - 2.2 * Re), (cx + of * Re + 160 * dr, cy - 2.2 * Re), GOLD, 0.9, th=3)
+        if dr > 0:                                     # the cloud's centre slides a little every year: one tick per year
+            for k_ in range(5):
+                if dr * 5 > k_:
+                    eg = np.stack([np.cos(th) * el * sz, np.sin(th) * sz], -1) @ R2.T + np.array([of - 0.5 + k_ * 0.25, 0.0])
+                    L.polyline(np.stack([cx + eg[:, 0] * Re, cy - eg[:, 1] * Re], -1), GOLD, 0.25 + 0.15 * k_, th=2, closed=True)
+                    L.circle((cx + (of - 0.5 + k_ * 0.25) * Re, cy), 7, GOLD, 0.9, fill=True)
+            L.arrow((cx + (of - 0.5) * Re, cy + 0.9 * Re), (cx + (of - 0.5 + dr) * Re, cy + 0.9 * Re), GOLD, 0.9, th=4)
         img = L.composite(img, 0.5)
         o = L2(odds, e)
         if o > 0:                                     # the odds meter (a bar that fills)
@@ -275,47 +281,28 @@ def odds_meter(size=(1.0, 1.0), off=(0.0, 0.0), elong=(3.0, 3.0), keyhole=(0.0, 
 # ═══════════════════════════════════════════ radar ═══════════════════════════════════════════
 @scene_factory(keys=[])
 def radar(rot=(0.0, 60.0), scan=(1.0, 1.0), zoom=(1.0, 1.1)):
-    """A delay-Doppler radar image built from our shape model: brightness by range (down) and Doppler (across),
-    the way Goldstone and Arecibo pictured Apophis. Two lobes appear as the body turns."""
-    from ep_apophis.scene_rock import shape, NLON, NLAT
-    S = shape()
-    lon = (np.arange(NLON) + 0.5) / NLON * 2 * np.pi - np.pi
-    lat = np.pi / 2 - (np.arange(NLAT) + 0.5) / NLAT * np.pi
-    LO, LA = np.meshgrid(lon[::4], lat[::4])
-    r = S[::4, ::4, 0]
-    P = np.stack([np.cos(LA) * np.cos(LO), np.cos(LA) * np.sin(LO), np.sin(LA)], -1) * r[..., None]
-    Nn = S[::4, ::4, 1:4]
-    P, Nn = P.reshape(-1, 3), Nn.reshape(-1, 3)
-    wt = np.cos(LA).reshape(-1)
-
+    """A radar picture of the asteroid: the shape model lit from the radar's own direction (as an echo is),
+    shown as a grainy blue-white image the way Goldstone pictured Apophis: two lobes and a waist."""
+    from ep_apophis.scene_rock import render_rock, tumble
     def f(ctx, t, u, fi):
         e = ease(u)
-        a = np.radians(L2(rot, e))
-        Rz = np.array([[np.cos(a), -np.sin(a), 0], [np.sin(a), np.cos(a), 0], [0, 0, 1]])
-        Q = P @ Rz.T
-        Nq = Nn @ Rz.T
-        los = np.array([0.0, -1.0, 0.0])
-        mu = np.clip(-(Nq @ los), 0, 1)
-        vis = mu > 0
-        rng_ = Q[:, 1]
-        dop = Q[:, 0]
         z = L2(zoom, e)
-        sc = 2.6 * z
-        x = W / 2 + dop * sc
-        y = H * 0.5 + rng_ * sc
+        a = np.radians(L2(rot, e))
+        cam = Camera((0.0, -1500.0 / z, 0.0), (0.0, 0.0, 0.0), fov=40, up=(0, 0, 1))
+        Rb = np.array([[np.cos(a), -np.sin(a), 0], [np.sin(a), np.cos(a), 0], [0, 0, 1.0]]) @ np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0.0]])
         img = np.zeros((H, W, 3), np.float32)
-        val = (mu ** 1.5 * wt)[vis] * 2.2
-        img = splat_points(img, x[vis], y[vis], np.repeat(val[:, None], 3, 1).astype(np.float32), sigma=3.0)
-        img = img / (np.percentile(img[img > 1e-6], 99.5) + 1e-6) * 0.9 if (img > 1e-6).any() else img
-        img *= np.array([0.85, 0.95, 1.0], np.float32)
-        nz = np.random.default_rng(int(fi) % 50).normal(0, 0.01, (H // 3, W // 3)).astype(np.float32)
-        img += np.abs(cv2.resize(nz, (W, H)))[..., None] * 0.7
-        sc_ = L2(scan, e)
-        yy = np.arange(H, dtype=np.float32)[:, None, None]
-        img = img * clamp((H * (0.1 + 0.95 * sc_) - yy) / 40)
+        render_rock(img, cam, Rb, np.array([0.0, -1.0, 0.0]), steps=48)
+        g = img.mean(-1)
+        g = g / (np.percentile(g[g > 1e-5], 98) + 1e-6) if (g > 1e-5).any() else g
+        rng = np.random.default_rng(int(fi) % 60)
+        sp = np.clip(g * rng.gamma(4.0, 0.25, g.shape), 0, 1.4)
+        sp = cv2.GaussianBlur(sp.astype(np.float32), (0, 0), 1.4)
+        out = sp[..., None] * np.array([0.75, 0.9, 1.0], np.float32) * 0.9
         xs_, ys_ = grid()
-        img += ((np.abs((xs_ % 120) - 60) < 0.6) | (np.abs((ys_ % 120) - 60) < 0.6))[..., None] * 0.012
-        return img, dict(exposure=1.3, bloom=0.3, grain=0.02)
+        out += ((np.abs((xs_ % 120) - 60) < 0.6) | (np.abs((ys_ % 120) - 60) < 0.6))[..., None] * 0.015
+        sc_ = L2(scan, e)
+        out = out * clamp((H * (0.1 + 0.95 * sc_) - ys_) / 40)[..., None]
+        return out, dict(exposure=1.3, bloom=0.3, grain=0.02)
     return f
 
 
@@ -746,4 +733,52 @@ def split(h_ground=(22.4, 22.9), h_rock=(30.0, 90.0), mix=1.0):
         out = np.concatenate([left[:, W // 4: W // 4 + W // 2] * 1.0, right[:, W // 4: W // 4 + W // 2]], 1)
         out[:, W // 2 - 2: W // 2 + 2] = 0.6
         return out, dict(exposure=1.45, bloom=0.4)
+    return f
+
+
+def stopwatch(at=0.0, turns=2.6, x=W - 170, y=H - 190, r=90):
+    """A stopwatch dial whose hand sweeps once per minute: 2.6 turns for the pebble's 156-second fall."""
+    def f(ctx, img, t, u):
+        a = fade(t, at, ctx.dur, 0.3)
+        L = Layer()
+        L.circle((x, y), r, INK, a, th=4)
+        L.circle((x, y - r - 14), 10, INK, a, fill=True)
+        for k in range(12):
+            q = 2 * np.pi * k / 12
+            L.line((x + 0.82 * r * np.sin(q), y - 0.82 * r * np.cos(q)), (x + 0.95 * r * np.sin(q), y - 0.95 * r * np.cos(q)), color=INK, alpha=a, th=2)
+        q = 2 * np.pi * turns * u
+        L.line((x, y), (x + 0.8 * r * np.sin(q), y - 0.8 * r * np.cos(q)), color=GOLD, alpha=a, th=5)
+        prog_ = (turns * u) % 1.0
+        L.circle((x, y), r * 0.45, GOLD, a * 0.6, th=6, progress=min(1.0, turns * u / turns))
+        return L.composite(img, 0.4)
+    return f
+
+
+def gauge(at=0.3, drop=0.026, x=W * 0.12, y=H * 0.25, h=H * 0.5):
+    """The pull of gravity at the surface as a downward arrow that shrinks a few percent (exaggerated scale marks)."""
+    def f(ctx, img, t, u):
+        a = fade(t, at, ctx.dur, 0.3)
+        k = smooth(clamp((t - at) / max(0.5, ctx.dur - at - 0.4)))
+        L = Layer()
+        full = h
+        L.line((x - 40, y), (x + 40, y), color=DIM, alpha=a, th=2)
+        L.line((x - 40, y + full), (x + 40, y + full), color=DIM, alpha=a * 0.6, th=2)
+        ln = full * (1 - drop * 6 * k)
+        L.arrow((x, y), (x, y + ln), GOLD, a, th=10, head=34)
+        return L.composite(img, 0.4)
+    return f
+
+
+def spin_arrows(at=0.2):
+    """Curved arrows around the two rocks: a short sweep for the old tumble (left), a long one for the new (right)."""
+    def f(ctx, img, t, u):
+        a = fade(t, at, ctx.dur, 0.3)
+        L = Layer()
+        for cx, sweep in ((W * 0.33, 0.8), (W * 0.67, 2.2)):
+            q = np.linspace(-0.4, -0.4 + sweep * prog(t, at, 1.2), 60)
+            pts = np.stack([cx + 300 * np.cos(q), H * 0.5 - 200 * np.sin(q)], -1)
+            L.polyline(pts, GOLD, a, th=4)
+            if len(pts) > 2:
+                L.arrow(tuple(pts[-3]), tuple(pts[-1]), GOLD, a, th=4, head=22)
+        return L.composite(img, 0.4)
     return f

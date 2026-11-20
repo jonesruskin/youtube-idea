@@ -11,9 +11,11 @@ from ep_apophis import model as M
 from ep_apophis.scene_sky import roof, lane, bend, track, apophis_altaz, local_frame, GOLD, CYAN, INK
 from ep_apophis.scene_rock import rock, surface, probe_scene
 from ep_apophis.scene_diag import (dome, blink, odds_meter, radar, tide, orbit_map, road, over_all, label, tag, utc, pointer, orbit_label,
-                                   balance, serpent, DIM, RED, timeline_scene, sea, neutrino, split)
+                                   balance, serpent, DIM, RED, timeline_scene, sea, neutrino, split, stopwatch, gauge, spin_arrows)
 
-TC = M.closest()[0] - 69.2 / 3600          # closest approach, UTC hours
+TC = M.closest()[0] - 69.2 / 3600
+from ep_apophis.scene_sky import moon_world
+MOON_HALF = tuple(float(x) for x in moon_world() * 0.5)          # closest approach, UTC hours
 
 
 def AA(h, dalt=0.0, daz=0.0):
@@ -121,9 +123,9 @@ open1 = [
       name="dusk over the rooftops: a point of light glides; someone points"),
     B(1, R(19.80, 19.86, az=(236.0, 238.0), alt=(18.0, 18.0), fov=(68.0, 66.0), sat=(0.40, 0.62), sat_path=((205.0, 14.0), (268.0, 30.0)), figure=1.0, figure_az=212.0, apophis=0.0),
       name="steady, silent: it glides on"),
-    B(1, R(19.86, 19.90, az=(244.0, 245.0), alt=(19.0, 19.0), fov=(16.0, 15.0), sat=(0.62, 0.80), sat_path=((205.0, 14.0), (268.0, 30.0)), plane=1.0, plane_at=(242.0, 18.0, 0.0), apophis=0.0), at="blink", cut=True,
+    B(1, R(19.86, 19.90, az=(249.0, 250.0), alt=(23.0, 23.0), fov=(34.0, 33.0), sat=(0.64, 0.76), sat_path=((205.0, 14.0), (268.0, 30.0)), plane=1.0, plane_at=(246.0, 19.0, 0.0), apophis=0.0), at="blink", cut=True,
       name="a plane blinks red and green; the satellite does not"),
-    B(2, lane(dist=(16000.0, 15000.0), az=(-160.0, -150.0), el=(30.0, 32.0), fov=(55.0, 54.0), h=(19.9, 19.95), ring=0.0, gps=1.0, shells=1.0, path=0.0, glint=1.0), pointer("glint_xy", "", 0, 0, 0.3, ring=26),
+    B(2, lane(dist=(14000.0, 13500.0), az=(-160.0, -150.0), el=(30.0, 32.0), fov=(60.0, 59.0), h=(19.9, 19.95), ring=0.0, gps=1.0, shells=1.0, path=0.0, glint=1.0), pointer("glint_xy", "", 0, 0, 0.3, ring=26),
       cut=True, name="satellites hundreds of km above Earth's night side"),
 ]
 open2 = [
@@ -155,7 +157,7 @@ c1a = [
     B(2, track(lat=(-24.0, -28.0), lon=(140.0, 146.0), dist=(30000.0, 26000.0), h=(10.0, 10.2), path=(0.0, 0.0), lisbon=0.0),
       over_all(tag("Siding Spring, Australia", 0.3, sub="December 2004"), pointer("aus_xy", "", 0, 0, 0.2)), at="telescope", cut=True,
       name="a telescope in Australia finds it again"),
-    B(3, odds_meter(size=(6.0, 3.6), off=(0.6, 0.4), elong=(3.0, 3.0), ghosts=1.0), tag("Where it could be in April 2029", 0.4), cut=True,
+    B(3, odds_meter(size=(7.0, 3.6), off=(0.6, 0.4), elong=(3.0, 3.0), ghosts=1.0), tag("Where it could be in April 2029", 0.4), cut=True,
       name="the cloud of possible paths shrinks"),
     B(4, odds_meter(size=(3.6, 2.6), off=(0.4, 0.25), elong=(3.0, 3.0), odds=(0.0, 0.35), ghosts=1.0), at="Christmas",
       name="it shrinks, but Earth stays inside: the odds rise"),
@@ -185,7 +187,7 @@ c2a = [
     B(0, rock(dist=(3200.0, 2600.0), az=(75.0, 82.0), el=(12.0, 12.0), fov=(36.0, 36.0), h=(20.0, 20.0), tumble_s=(30000.0, 33000.0)), cut=True,
       name="what is coming: the rock out of the dark"),
     B(1, radar(rot=(95.0, 120.0), scan=(0.2, 1.0), zoom=(1.0, 1.1)), tag("Radar echo", 0.3), cut=True, name="radar: two lobes"),
-    B(1, rock(dist=(1700.0, 1600.0), az=(90.0, 92.0), el=(5.0, 5.0), fov=(40.0, 40.0), h=(20.0, 20.0), tumble_s=(0.0, 0.0), rate=0.0), lab("about 450 metres end to end", 0.3),
+    B(1, rock(dist=(2300.0, 2200.0), az=(90.0, 92.0), el=(5.0, 5.0), fov=(40.0, 40.0), h=(20.0, 20.0), tumble_s=(0.0, 0.0), rate=0.0, eiffel_k=0.8), lab("about 450 metres end to end", 0.3),
       at="four", cut=True, name="two lobes and a narrow waist, end to end"),
     B(2, rock(dist=(620.0, 560.0), az=(55.0, 60.0), el=(25.0, 27.0), fov=(32.0, 30.0), h=(20.0, 20.0), tumble_s=(40000.0, 41000.0)), cut=True,
       name="grey rock, boulders and gravel, close"),
@@ -227,7 +229,7 @@ c3b = [
       over_all(utc(21.5, 21.8), AP("31,600 km up", dx=90, dy=-60, at=0.8)), cut=True, name="21:45: closest, over the Atlantic"),
     B(4, lane(dist=(80000.0, 72000.0), az=(114.0, 120.0), el=(24.0, 20.0), fov=(42.0, 42.0), h=(21.8, 22.0), ring=1.0, path=1.0, trail_from=-8.0),
       lab("lower than the geostationary satellites", 0.3), name="inside the geostationary ring"),
-    B(4, lane(dist=(700000.0, 760000.0), az=(-30.0, -26.0), el=(26.0, 26.0), fov=(44.0, 44.0), h=(22.0, 22.2), ring=1.0, moon=1.0, path=1.0, trail_from=-30.0),
+    B(4, lane(dist=(900000.0, 950000.0), az=(-30.0, -26.0), el=(40.0, 40.0), fov=(40.0, 40.0), h=(22.0, 22.2), ring=1.0, moon=1.0, path=1.0, trail_from=-30.0, look=MOON_HALF),
       lab("a tenth of the way to the Moon", 0.3), at="tenth", cut=True, name="the Moon, ten times farther"),
     B(5, lane(dist=(150000.0, 140000.0), az=(-95.0, -85.0), el=(2.0, 2.0), fov=(40.0, 40.0), h=(20.6, 21.4), ring=1.0, path=1.0, trail_from=-10.0), cut=True,
       name="seen edge-on: the ring is a line; the path passes well above it"),
@@ -240,7 +242,7 @@ c3b = [
 c3c = [
     B(0, R(19.95, 20.0, view="country", az=(150.0, 154.0), alt=(13.0, 14.0), fov=(72.0, 70.0), figures=3, light_glow=0.15), AP("", at=0.5), cut=True,
       name="people on dark terraces, no telescopes"),
-    B(1, R(20.90, 20.903, fov=(7.0, 7.0), binoc=1.0), AP("", at=0.0, ring=30), cut=True, name="through binoculars it creeps past the stars"),
+    B(1, R(20.90, 20.95, fov=(7.0, 7.0), binoc=1.0), AP("", at=0.0, ring=30), cut=True, name="through binoculars it creeps past the stars"),
     B(2, R(21.05, 21.07, daz=0.3, dalt=-0.3, fov=(10.0, 10.0), streak=1.0), lab("one minute's exposure", 0.4), cut=True,
       name="a one-minute exposure: a straight line"),
     B(3, track(lat=(36.0, 34.0), lon=(8.0, 2.0), dist=(40000.0, 39000.0), h=(20.9, 21.0), path=(0.55, 0.55), lisbon=0.0, sight=1.0), cut=True,
@@ -260,7 +262,7 @@ c4a = [
     B(3, surface(h=(20.3, 20.32), view_az=(-10.0, -8.0), pitch=(-4.0, -3.0), fov=(64.0, 64.0), earth_az=(10.0, 10.0), earth_alt=(9.0, 9.0), sun_alt=(12.0, 12.0), exposure=0.55),
       balance(0.3), cut=True, name="a person weighs the same as a paper clip"),
     B(4, surface(h=(20.32, 20.34), view_az=(4.0, 4.0), pitch=(-4.0, -4.0), fov=(60.0, 60.0), earth_az=(80.0, 80.0), earth_alt=(9.0, 9.0), sun_alt=(12.0, 12.0), pebble=(0.0, 1.0)),
-      lapse("156 seconds, sped up"), cut=True, name="a pebble drops from shoulder height, slowly"),
+      over_all(lapse("156 seconds, sped up"), stopwatch(0.0)), cut=True, name="a pebble drops from shoulder height, slowly"),
     B(5, surface(h=(20.34, 20.36), view_az=(-14.0, -10.0), pitch=(8.0, 14.0), fov=(64.0, 64.0), earth_az=(10.0, 10.0), earth_alt=(9.0, 9.0), sun_alt=(12.0, 12.0), jump=(0.0, 0.5)),
       cut=True, name="a toss that never comes down"),
     B(5, surface(h=(20.36, 20.38), view_az=(-10.0, -6.0), pitch=(14.0, 22.0), fov=(64.0, 64.0), earth_az=(10.0, 10.0), earth_alt=(9.0, 9.0), sun_alt=(12.0, 12.0), jump=(0.5, 1.0)),
@@ -301,7 +303,7 @@ c5b = [
 ]
 c5c = [
     B(0, surface(h=(21.75, 21.77), view_az=(30.0, 34.0), pitch=(-6.0, -5.0), fov=(60.0, 58.0), earth_az=(40.0, 40.0), earth_alt=(24.0, 24.0), sun_alt=(14.0, 14.0), lift=1.0),
-      lab("surface gravity changes by a few percent", 0.4), cut=True, name="the tide on the surface"),
+      over_all(lab("surface gravity changes by a few percent", 0.4), gauge(0.3)), cut=True, name="the tide on the surface"),
     B(1, surface(h=(21.77, 21.8), view_az=(-30.0, -26.0), pitch=(0.0, 1.0), fov=(60.0, 58.0), earth_az=(-10.0, -10.0), earth_alt=(24.0, 24.0), sun_alt=(14.0, 14.0), slide=(0.0, 0.6)),
       cut=True, name="grains start to slip on a steep slope"),
     B(1, rock(dist=(900.0, 820.0), az=(60.0, 66.0), el=(30.0, 32.0), fov=(40.0, 40.0), h=(21.75, 21.75), tumble_s=(80000.0, 80600.0), slide=(0.0, 1.0)), at="landslides", cut=True,
@@ -310,7 +312,7 @@ c5c = [
       name="fresh, brighter rock where it slid"),
     B(2, rock(dist=(1800.0, 1650.0), az=(10.0, 16.0), el=(8.0, 9.0), fov=(40.0, 40.0), h=(21.75, 21.75), frame_earth=1.0, tumble_s=(81000.0, 84000.0), slide=(1.0, 1.0), earth=1.0), at="Some",
       cut=True, name="a new face from a planet's pull"),
-    B(3, rock(dist=(2400.0, 2400.0), az=(95.0, 95.0), el=(8.0, 8.0), fov=(44.0, 44.0), h=(21.75, 21.75), tumble_s=(0.0, 200000.0), twin=1.0), lapse("time-lapse"), cut=True,
+    B(3, rock(dist=(2400.0, 2400.0), az=(95.0, 95.0), el=(8.0, 8.0), fov=(44.0, 44.0), h=(21.75, 21.75), tumble_s=(0.0, 200000.0), twin=1.0), over_all(lapse("time-lapse"), spin_arrows(0.3)), cut=True,
       name="its tumble twisted"),
     B(3, rock(dist=(2400.0, 2400.0), az=(95.0, 95.0), el=(8.0, 8.0), fov=(44.0, 44.0), h=(21.75, 21.75), tumble_s=(200000.0, 400000.0), twin=1.0), lab("twice as fast, or half as fast", 0.3),
       at="twice", name="spinning faster, or slower"),
@@ -327,8 +329,9 @@ c6a = [
       over_all(orbit_label("before", "ATEN", 0.2, (0.85, 0.87, 0.9)), orbit_label("after", "APOLLO", 1.0, GOLD)), cut=True, name="a new family name: Aten to Apollo"),
     B(4, orbit_map(before=(0.0, 0.0), after=(0.3, 1.0), day=(-40.0, 80.0), zoom=(1.15, 0.95), inside=0.0, morph=(1.0, 1.0)), lab("one evening rewrote its calendar", 0.6),
       name="one evening, a new calendar"),
+    B(5, track(lat=(30.0, 30.0), lon=(-25.0, -30.0), dist=(30000.0, 28000.0), h=(22.0, 22.1), path=(1.0, 1.0), lisbon=0.0), cut=True, name="Earth, untouched"),
     B(5, sea(atoms=(0.0, 1.0)), lab("its tide on Earth: a few atoms high", 0.6),
-      cut=True, name="Earth won't feel a thing"),
+      at="tide", cut=True, name="Earth won't feel a thing"),
 ]
 c6b = [
     B(0, probe_scene(h=(21.0, 21.1), dist=(60.0, 55.0), az=(200.0, 210.0), el=(10.0, 12.0)), cut=True, name="a probe alongside"),

@@ -321,12 +321,18 @@ def lane(dist=(160000.0, 120000.0), az=(-40.0, -30.0), el=(18.0, 16.0), fov=(40.
         if glint > 0:                                   # one satellite above the night side, still in sunlight, moving along its orbit
             ring_ = ring_circle(M.R_E + M.ISS_ALT, n=2000, inc=np.radians(51.6), node=np.radians(40))
             s_ = sun_world()
-            ok_ = np.where((ring_ @ s_ > -0.05 * np.linalg.norm(ring_, axis=1)) & (ring_ @ s_ < 0.25 * np.linalg.norm(ring_, axis=1)))[0]
+            gx0, gy0, gz0 = cam.project(ring_)
+            vis_ = (gz0 > 0) & ~occluded(cam, ring_) & (gx0 > W * 0.15) & (gx0 < W * 0.85) & (gy0 > H * 0.15) & (gy0 < H * 0.85)
+            lit_ = ring_ @ s_ / np.linalg.norm(ring_, axis=1)
+            ok_ = np.where(vis_ & (lit_ > 0.02))[0]
             if len(ok_):
+                ok_ = ok_[np.argsort(lit_[ok_])][: max(2, len(ok_) // 3)]
+                ok_ = np.sort(ok_)
                 j_ = ok_[int((len(ok_) - 1) * (0.2 + 0.6 * u))]
                 gx_, gy_, gz_ = cam.project(ring_[j_])
                 if gz_ > 0 and not occluded(cam, ring_[j_])[0]:
-                    glow_dot(img, gx_, gy_, (1.0, 0.98, 0.9), 3.0, 14.0 * glint)
+                    glow_dot(img, gx_, gy_, (1.0, 0.98, 0.9), 4.0, 30.0 * glint)
+                    glow_dot(img, gx_, gy_, (1.0, 0.95, 0.85), 16.0, 1.2 * glint)
                     from engine.core import star_spikes
                     star_spikes(img, gx_, gy_, (1.0, 0.95, 0.85), 60, 0.6 * glint)
                     ctx.state["glint_xy"] = (gx_, gy_)
@@ -411,7 +417,7 @@ def track(lat=(10.0, 20.0), lon=(10.0, -20.0), dist=(42000.0, 42000.0), h=(19.0,
         A = apophis_world(hh)
         x, y, z = cam.project(A)
         if z > 0 and not occluded(cam, A)[0]:
-            dot(img, x, y, (1.0, 0.85, 0.6), 2.2, 2.6)
+            dot(img, x, y, (1.0, 0.85, 0.6), 2.2 + 3.0 * sight, 2.6 + 8.0 * sight)
         if sight > 0 and z > 0:                       # lines of sight from cities on the night side to the asteroid
             lay = np.zeros((H, W), np.float32)
             for (cla, clo) in CITIES:
@@ -678,7 +684,7 @@ def _sat_on(img, cam, h, prog, gain=1.0):
     return x, y
 
 
-@scene_factory(keys=["view"])
+@scene_factory(keys=["view"], vectors=("sat_path", "plane_at"))
 def roof(view="town", az=(110.0, 112.0), alt=(18.0, 20.0), fov=(60.0, 58.0), h=(20.5, 20.55), sat=(0.0, 0.0), plane=0.0,
          apophis=1.0, streak=0.0, fistk=0.0, binoc=0.0, figure=0.0, figure_az=None, tlapse=1.0, light_glow=1.0, sn=(0.0, 0.0), figures=0,
          sat_path=None, plane_at=None, dipper=0.0, orion=0.0):

@@ -52,8 +52,15 @@ def _build_shape():
     lat = np.pi / 2 - (np.arange(NLAT, dtype=np.float32) + 0.5) / NLAT * np.pi
     LO, LA = np.meshgrid(lon, lat)
     d = np.stack([np.cos(LA) * np.cos(LO), np.cos(LA) * np.sin(LO), np.sin(LA)], -1).astype(np.float32)
-    lo_r, hi_r = np.zeros(LO.shape, np.float32), np.full(LO.shape, RB, np.float32)
-    for _ in range(30):                               # bisection along each direction for the SDF surface
+    rs = np.linspace(RB, 1.0, 240, dtype=np.float32)
+    r = np.zeros(LO.shape, np.float32)
+    found = np.zeros(LO.shape, bool)
+    for rr in rs:                                     # the OUTERMOST surface along each direction (star-shaped hull):
+        ins = (_sdf(d * rr) < 0) & ~found            # no holes or slivers where a ray crosses the neck twice
+        r = np.where(ins, rr, r)
+        found |= ins
+    lo_r, hi_r = r, r + (rs[0] - rs[1])
+    for _ in range(12):
         mid = (lo_r + hi_r) / 2
         ins = _sdf(d * mid[..., None]) < 0
         lo_r = np.where(ins, mid, lo_r)
@@ -93,7 +100,7 @@ def _build_shape():
 
 @functools.lru_cache(None)
 def shape():
-    return cached("ep5_apophis_shape_v3", _build_shape)
+    return cached("ep5_apophis_shape_v4", _build_shape)
 
 
 def _lookup(dirs, ch):
@@ -322,7 +329,7 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
                     rng = np.random.default_rng(k)
                     off = rng.normal(size=3) * 25 * sl + np.cross(sdir, [0, 0, 1]) * rng.uniform(-30, 30) * sl
                     px, py, pz = cam.project(sp + off + sdir * rng.uniform(0, 40) * sl)
-                    glow_dot(img, px, py, (0.55, 0.52, 0.48), 6 + 10 * sl, 0.12 * sl)
+                    glow_dot(img, px, py, (0.65, 0.62, 0.58), 10 + 22 * sl, 0.45 * sl)
         if eiffel_k > 0:
             fwd = (np.asarray(look) - pos) / D
             rgt = np.cross(fwd, [0, 0, 1.0]); rgt /= np.linalg.norm(rgt)
@@ -334,16 +341,16 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
             rg_ = np.cross(fwd_, [0, 0, 1.0]); rg_ /= np.linalg.norm(rg_)
             up_ = np.cross(rg_, fwd_)
             pp = np.asarray(look) - fwd_ * 120 + rg_ * lerp(probe_pos[0], probe_pos[1], e) * 0.6 + up_ * 170
-            probe(img, cam, pp, sun, s=8.0, alpha=probe_k)
+            probe(img, cam, pp, sun, s=16.0, alpha=probe_k)
             if thrust > 0:
                 tgt = Rb @ (np.array([0.2, 0.7, 0.68]) / np.linalg.norm([0.2, 0.7, 0.68]) * 150.0)
                 a_, b_ = cam.project(pp), cam.project(tgt)
                 for k in range(26):
                     f_ = k / 25
-                    glow_dot(img, lerp(a_[0], b_[0], f_ * 0.6), lerp(a_[1], b_[1], f_ * 0.6), (0.7, 0.8, 1.0), 3 + 10 * f_, 0.5 * thrust * (1 - f_))
+                    glow_dot(img, lerp(a_[0], b_[0], f_ * 0.7), lerp(a_[1], b_[1], f_ * 0.7), (0.75, 0.85, 1.0), 4 + 14 * f_, 1.6 * thrust * (1 - f_))
                 for k in range(30):
                     r_ = np.random.default_rng(k)
-                    glow_dot(img, b_[0] + r_.normal() * 60 * thrust, b_[1] + r_.normal() * 30 * thrust - 30 * thrust, (0.6, 0.57, 0.52), 14, 0.16 * thrust)
+                    glow_dot(img, b_[0] + r_.normal() * 90 * thrust, b_[1] + r_.normal() * 45 * thrust - 40 * thrust, (0.7, 0.67, 0.62), 22, 0.5 * thrust)
         x, y, z = cam.project(np.asarray(look, np.float64))
         ctx.state["rock_xy"] = (x, y)
         ctx.state["rock_px"] = cam.f * 232.0 / D
@@ -555,7 +562,7 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
             col *= np.array([0.62, 0.8, 1.15], np.float32)
         eLn = (eL / np.linalg.norm(eL)).astype(np.float32)
         col += ROCK_ALB * alb[..., None] * np.maximum(N @ eLn, 0)[..., None] * np.array([0.45, 0.68, 1.0], np.float32) * (0.05 + 1.6 * earth_light)
-        col += ROCK_ALB * alb[..., None] * 0.006
+        col += ROCK_ALB * alb[..., None] * 0.05
         # distance cue: nothing (no air), but fade the far horizon edge very slightly for anti-aliasing
         cov = anyhit.astype(np.float32)
         cov = cv2.GaussianBlur(cov, (0, 0), 0.7)
@@ -603,7 +610,7 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
             pu, rad, sd = BL[-2]
             cpos = pu * (RL + rad * 0.3)
             gt = ctx.seg["start"] + ctx.beat.t0 + t
-            for k in range(260):
+            for k in range(600):
                 r2 = np.random.default_rng(k)
                 ph0 = r2.uniform(0, 1)
                 s_ = (gt * 0.06 + ph0) % 1.0
@@ -612,7 +619,7 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
                 pp = cpos + rad * np.array([np.sin(th) * np.sin(ang + 1.6), np.cos(th), np.sin(th) * np.cos(ang + 1.6)]) * 1.02
                 pr = cw_project(cw, Q, Ap, pp, camL)
                 if pr is not None:
-                    glow_dot(img, pr[0], pr[1], (0.75, 0.72, 0.66), 1.4, 0.5 * sk * sun_up + 0.1 * sk)
+                    glow_dot(img, pr[0], pr[1], (0.85, 0.82, 0.76), 2.2, 1.6 * sk * sun_up + 0.4 * sk)
             pr = cw_project(cw, Q, Ap, cpos + rad * np.array([0.6, 0.1, -0.3]), camL)
             if pr is not None:
                 glow_dot(img, pr[0], pr[1], (0.6, 0.58, 0.55), 60 * sk, 0.08 * sk)
