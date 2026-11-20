@@ -196,7 +196,7 @@ META = dict(
     ),
     shots={"roof": "pov", "surface": "pov", "road": "pov", "probe_scene": "ride", "rock": "macro", "dome": "pov",
            "lane": "orbital", "bend": "orbital", "blink": "archive", "odds_meter": "data", "radar": "data",
-           "tide": "diagram", "orbit_map": "diagram", "track": "map"},
+           "tide": "diagram", "orbit_map": "diagram", "track": "map", "timeline_scene": "data", "sea": "pov", "neutrino": "diagram", "split": "pov"},
     alts=["In 2029 an Asteroid Misses Earth. Earth Doesn't Miss It.",
           "The Night of April 13, 2029, Seen From the Asteroid's Side"],
     tags="apophis, apophis 2029, asteroid apophis, april 13 2029, 99942 apophis, asteroid flyby, near earth asteroid, asteroid close approach, planetary defense, osiris-apex, ramses mission, esa ramses, asteroid simulation, geostationary satellites, tidal forces, space documentary, astronomy, science explained, gravity dial",

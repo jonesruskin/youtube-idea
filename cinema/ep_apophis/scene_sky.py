@@ -129,6 +129,8 @@ def draw_earth(img, cam, h, lights=1.0, clouds=1.0, exposure=1.0, atmo=1.0, tw=4
     ndh = np.sum(n * hv, -1)
     spec = np.maximum(ndh, 0) ** 140 * 0.8 + np.maximum(ndh, 0) ** 20 * 0.03
     lit += (spec * ocean * term * min(1.0, exposure))[..., None] * np.array([1.0, 0.93, 0.8], np.float32)
+    nightamb = (1 - smooth(span(ndl, -0.2, 0.05)))[..., None]
+    lit += col * nightamb * np.array([0.10, 0.13, 0.20], np.float32) * exposure
     if lights > 0:
         nl = cv2.remap(tex("8k_earth_nightmap.jpg", tw), mu, mv, cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
         dark = (1 - smooth(span(ndl, -0.12, 0.08)))[..., None]
@@ -268,7 +270,13 @@ def _orbit_cam(dist, az, el, fov, look=(0.0, 0.0, 0.0), roll=0.0):
 def _space(cam, h, path_to, shells, ring, gps, moon, path_alpha=1.0, mark=1.0, glow=1.0, trail_from=None):
     img = space_sky(cam, 0.9)
     if moon > 0:
-        cam.body(img, moon_world(), 1737.4, "moon", sun=moon_world() + sun_world() * 1.5e8, min_px=1.5)
+        polyline3(img, cam, ring_circle(np.linalg.norm(moon_world()), inc=np.radians(28.0), node=np.radians(np.degrees(np.arctan2(moon_world()[1], moon_world()[0])) - 90)), (0.75, 0.75, 0.8), 0.3 * moon, th=1, hide=False)
+        mx_, my_, mz_ = cam.project(moon_world())
+        if mz_ > 0:
+            glow_dot(img, mx_, my_, (0.9, 0.9, 0.85), 4.0, 6.0 * moon)
+            cv2.circle(img, (int(mx_), int(my_)), 7, (0.75, 0.75, 0.72), -1, cv2.LINE_AA)
+        from engine import cards
+        cards.mark("MOON", mx_, my_)
     draw_earth(img, cam, h, tw=4096)
     if ring > 0:
         polyline3(img, cam, ring_circle(M.R_E + M.GEO_ALT), (0.55, 0.62, 0.75), 0.25 * ring, th=1)
@@ -301,7 +309,7 @@ def _space(cam, h, path_to, shells, ring, gps, moon, path_alpha=1.0, mark=1.0, g
 
 @scene_factory(keys=[])
 def lane(dist=(160000.0, 120000.0), az=(-40.0, -30.0), el=(18.0, 16.0), fov=(40.0, 40.0), h=(20.0, 21.0), look=(0.0, 0.0, 0.0),
-         ring=1.0, gps=0.0, shells=0.0, moon=0.0, path=1.0, follow=0.0, trail_from=-14.0):
+         ring=1.0, gps=0.0, shells=0.0, moon=0.0, path=1.0, follow=0.0, trail_from=-14.0, glint=0.0):
     """Near-Earth space with the real path. follow: 0 = look at Earth, 1 = look at Apophis."""
     def f(ctx, t, u, fi):
         e = ease(u)
@@ -310,6 +318,18 @@ def lane(dist=(160000.0, 120000.0), az=(-40.0, -30.0), el=(18.0, 16.0), fov=(40.
         lk = np.asarray(look, np.float64) * (1 - follow) + A * follow
         cam = _orbit_cam(L2(dist, e), L2(az, e), L2(el, e), L2(fov, e), lk)
         img, (x, y) = _space(cam, hh, hh, shells, ring, gps, moon, path, trail_from=trail_from)
+        if glint > 0:                                   # one satellite above the night side, still in sunlight, moving along its orbit
+            ring_ = ring_circle(M.R_E + M.ISS_ALT, n=2000, inc=np.radians(51.6), node=np.radians(40))
+            s_ = sun_world()
+            ok_ = np.where((ring_ @ s_ > -0.05 * np.linalg.norm(ring_, axis=1)) & (ring_ @ s_ < 0.25 * np.linalg.norm(ring_, axis=1)))[0]
+            if len(ok_):
+                j_ = ok_[int((len(ok_) - 1) * (0.2 + 0.6 * u))]
+                gx_, gy_, gz_ = cam.project(ring_[j_])
+                if gz_ > 0 and not occluded(cam, ring_[j_])[0]:
+                    glow_dot(img, gx_, gy_, (1.0, 0.98, 0.9), 3.0, 14.0 * glint)
+                    from engine.core import star_spikes
+                    star_spikes(img, gx_, gy_, (1.0, 0.95, 0.85), 60, 0.6 * glint)
+                    ctx.state["glint_xy"] = (gx_, gy_)
         ctx.state["apophis_xy"] = (x, y)
         ctx.state["h"] = hh
         from engine import cards
@@ -445,6 +465,13 @@ def apophis_altaz(h):
 def sun_alt(h):
     _, _, up = local_frame(h)
     return float(np.degrees(np.arcsin(np.clip(sun_world() @ up, -1, 1))))
+
+
+# the Big Dipper and Orion (J2000 RA, Dec, magnitude) for comparisons on screen
+DIPPER = [(165.93, 61.75, 1.8), (165.46, 56.38, 2.4), (178.46, 53.69, 2.4), (183.86, 57.03, 3.3), (193.51, 55.96, 1.8), (200.98, 54.93, 2.2), (206.89, 49.31, 1.9)]
+DIPPER_L = [(0, 1), (1, 2), (2, 3), (3, 0), (3, 4), (4, 5), (5, 6)]
+ORION = [(88.79, 7.41, 0.5), (81.28, 6.35, 1.6), (83.00, -0.30, 2.2), (84.05, -1.20, 1.7), (85.19, -1.94, 1.8), (86.94, -9.67, 2.1), (78.63, -8.20, 0.1)]
+ORION_L = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 0), (4, 5), (2, 6), (5, 6)]
 
 
 # rooftops: a 360 degree panorama (azimuth x altitude), built once
@@ -590,18 +617,29 @@ def person(img, x, y, s, point=None, alpha=1.0, col=(0.02, 0.02, 0.025)):
 
 
 def fist(img, cx, cy, s, alpha=1.0):
-    """A fist held at arm's length, seen from behind (knuckles up), a dark silhouette rimmed by city glow."""
+    """A fist held out at arm's length, seen from behind: forearm rising from the lower right, four curled fingers
+    with knuckles on top, the thumb wrapped across the front. s = the width of the fist in pixels (10 degrees)."""
     lay = np.zeros((H, W), np.float32)
-    for k in range(4):                                                     # four knuckles
-        cv2.ellipse(lay, (int(cx - 0.36 * s + k * 0.24 * s), int(cy - 0.32 * s)), (int(0.14 * s), int(0.16 * s)), 0, 0, 360, 1.0, -1, cv2.LINE_AA)
-    cv2.rectangle(lay, (int(cx - 0.5 * s), int(cy - 0.34 * s)), (int(cx + 0.5 * s), int(cy + 0.25 * s)), 1.0, -1)
-    cv2.ellipse(lay, (int(cx - 0.52 * s), int(cy - 0.02 * s)), (int(0.16 * s), int(0.3 * s)), 15, 0, 360, 1.0, -1, cv2.LINE_AA)   # thumb side
-    arm = np.array([[cx - 0.42 * s, cy + 0.2 * s], [cx + 0.42 * s, cy + 0.2 * s], [cx + 0.7 * s, H + 10], [cx - 0.7 * s, H + 10]], np.int32)
+    # forearm and wrist, in perspective (wider toward the viewer)
+    arm = np.array([[cx - 0.30 * s, cy + 0.25 * s], [cx + 0.34 * s, cy + 0.22 * s], [cx + 0.95 * s, H + 40], [cx - 0.05 * s, H + 40]], np.int32)
     cv2.fillPoly(lay, [arm], 1.0, cv2.LINE_AA)
-    lay = cv2.GaussianBlur(lay, (0, 0), 1.2)
-    edge = clamp(lay - cv2.erode(lay, np.ones((7, 7), np.uint8)))
+    # the back of the hand (a rounded block) and four knuckles along the top
+    cv2.ellipse(lay, (int(cx), int(cy)), (int(0.5 * s), int(0.34 * s)), 0, 0, 360, 1.0, -1, cv2.LINE_AA)
+    for k in range(4):
+        cv2.circle(lay, (int(cx - 0.36 * s + k * 0.24 * s), int(cy - 0.28 * s)), int(0.13 * s), 1.0, -1, cv2.LINE_AA)
+    # thumb across the front-left
+    cv2.ellipse(lay, (int(cx - 0.42 * s), int(cy + 0.05 * s)), (int(0.17 * s), int(0.28 * s)), -25, 0, 360, 1.0, -1, cv2.LINE_AA)
+    lay = cv2.GaussianBlur(lay, (0, 0), 1.0)
+    creases = np.zeros((H, W), np.float32)
+    for k in range(1, 4):
+        x = cx - 0.36 * s + (k - 0.5) * 0.24 * s
+        cv2.line(creases, (int(x), int(cy - 0.32 * s)), (int(x + 0.02 * s), int(cy - 0.05 * s)), 1.0, max(2, int(0.02 * s)), cv2.LINE_AA)
+    rim = clamp(lay - cv2.erode(lay, np.ones((5, 5), np.uint8)))
+    skin = np.array([0.055, 0.04, 0.035], np.float32)
     m = lay[..., None] * alpha
-    img[:] = img * (1 - m) + np.array([0.025, 0.02, 0.018], np.float32) * m + (edge * alpha)[..., None] * SODIUM * 0.25
+    img[:] = img * (1 - m) + skin * m
+    img -= (creases * lay * alpha)[..., None] * 0.03
+    img += (rim * alpha)[..., None] * SODIUM * 0.55
     return img
 
 
@@ -642,7 +680,8 @@ def _sat_on(img, cam, h, prog, gain=1.0):
 
 @scene_factory(keys=["view"])
 def roof(view="town", az=(110.0, 112.0), alt=(18.0, 20.0), fov=(60.0, 58.0), h=(20.5, 20.55), sat=(0.0, 0.0), plane=0.0,
-         apophis=1.0, streak=0.0, fistk=0.0, binoc=0.0, figure=0.0, figure_az=None, tlapse=1.0, light_glow=1.0, sn=(0.0, 0.0), figures=0):
+         apophis=1.0, streak=0.0, fistk=0.0, binoc=0.0, figure=0.0, figure_az=None, tlapse=1.0, light_glow=1.0, sn=(0.0, 0.0), figures=0,
+         sat_path=None, plane_at=None, dipper=0.0, orion=0.0):
     """The sky over Lisbon at Universal Time h (hours on 13 April 2029). Rooftops in the lower frame, stars turning
     with the hour, Apophis where Horizons puts it. sat: progress of an ordinary satellite pass; streak: a one-minute
     exposure; fistk: a fist at arm's length; binoc: binocular view; figure: someone on a terrace pointing."""
@@ -666,9 +705,29 @@ def roof(view="town", az=(110.0, 112.0), alt=(18.0, 20.0), fov=(60.0, 58.0), h=(
         if L2(sat, e) > 0 or sat[1] > 0:
             sp = L2(sat, e)
             if 0 < sp < 1:
-                _sat_on(img, cam, hh, sp)
+                if sat_path is not None:
+                    (a0_, e0_), (a1_, e1_) = sat_path
+                    for k_ in range(14, -1, -1):                       # the glide, with a faint persistence trail
+                        q_ = max(0.0, sp - k_ * 0.006)
+                        p_ = altaz_dir(lerp(a0_, a1_, q_), lerp(e0_, e1_, q_), hh)
+                        sx_, sy_, sz_ = cam.project(p_ * 1e6)
+                        if sz_ > 0:
+                            glow_dot(img, sx_, sy_, (0.95, 0.97, 1.0), 1.8 if k_ == 0 else 1.2, 7.0 if k_ == 0 else 0.5 * (1 - k_ / 15))
+                    ctx.state["sat_xy"] = (sx_, sy_)
+                else:
+                    _sat_on(img, cam, hh, sp)
         if plane > 0:
-            _plane(img, cam, hh, ctx.seg["start"] + ctx.beat.t0 + t, plane)
+            gt_ = ctx.seg["start"] + ctx.beat.t0 + t
+            if plane_at is not None:
+                px_, py_, pz_ = cam.project(altaz_dir(plane_at[0] + 0.6 * u, plane_at[1], hh) * 1e6)
+                glow_dot(img, px_, py_, (1.0, 1.0, 1.0), 2.0, 4.0)
+                on_ = (gt_ * 1.6) % 1.0 < 0.5                      # strobes: on half the time, so every still catches some
+                if on_:
+                    glow_dot(img, px_ - 16, py_, (1.0, 0.15, 0.1), 3.5, 16.0)
+                    glow_dot(img, px_ + 16, py_, (0.2, 1.0, 0.3), 3.5, 12.0)
+                ctx.state["plane_xy"] = (px_, py_)
+            else:
+                _plane(img, cam, hh, gt_, plane)
         pa = None
         if apophis > 0:
             st = None
@@ -678,6 +737,22 @@ def roof(view="town", az=(110.0, 112.0), alt=(18.0, 20.0), fov=(60.0, 58.0), h=(
             if pa is not None:
                 from engine import cards
                 cards.mark("APOPHIS", pa[0], pa[1])
+        for k_, (flag, stars_, lines_) in enumerate(((dipper, DIPPER, DIPPER_L), (orion, ORION, ORION_L))):
+            if flag > 0:
+                P_ = []
+                for (ra_, de_, m_) in stars_:
+                    v_ = np.array([np.cos(np.radians(de_)) * np.cos(np.radians(ra_)), np.cos(np.radians(de_)) * np.sin(np.radians(ra_)), np.sin(np.radians(de_))])
+                    P_.append(cam.project(v_ * 1e6))
+                lay_ = np.zeros((H, W), np.float32)
+                for i_, j_ in lines_:
+                    if P_[i_][2] > 0 and P_[j_][2] > 0:
+                        cv2.line(lay_, (int(P_[i_][0] * 16), int(P_[i_][1] * 16)), (int(P_[j_][0] * 16), int(P_[j_][1] * 16)), 1.0, 2, cv2.LINE_AA, 4)
+                img += lay_[..., None] * np.array([0.5, 0.6, 0.8], np.float32) * 0.35 * flag
+                for (x_, y_, z_), (ra_, de_, m_) in zip(P_, stars_):
+                    if z_ > 0:
+                        b_ = 10 ** (-0.4 * (m_ - 2.0)) * 2.6
+                        col_ = (1.0, 0.55, 0.35) if (k_ == 1 and abs(ra_ - 88.79) < 0.1) else (0.95, 0.95, 1.0)
+                        glow_dot(img, x_, y_, col_, 1.9, b_ * 1.8)
         snk = L2(sn, e)
         if snk > 0:                                  # Betelgeuse (RA 5h55m10s, Dec +7.41) flaring up
             ra, de = np.radians(88.79), np.radians(7.407)
@@ -697,7 +772,11 @@ def roof(view="town", az=(110.0, 112.0), alt=(18.0, 20.0), fov=(60.0, 58.0), h=(
         mx = (azm * PPD).astype(np.float32)
         my = ((ALT_HI - altm) * PPD).astype(np.float32)
         inside = (altm < ALT_HI) & (altm > ALT_LO)
-        if inside.any():
+        if inside.any() and view == "country":
+            hill = -1.2 + 1.6 * np.sin(np.radians(azm) * 3) + 0.8 * np.sin(np.radians(azm) * 7 + 1)
+            a_ = clamp((hill - altm) * 3)[..., None]
+            img = img * (1 - a_) + np.array([0.008, 0.008, 0.01], np.float32) * a_
+        elif inside.any():
             smp = cv2.remap(R_, mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
             smp[~inside] = 0
             smp[altm <= ALT_LO] = (1.0, 0.0, 0.0)
@@ -716,7 +795,7 @@ def roof(view="town", az=(110.0, 112.0), alt=(18.0, 20.0), fov=(60.0, 58.0), h=(
             if fz > 0:
                 person(img, fx, fy, 230 * 60 / F, point=pa, alpha=figure)
         if fistk > 0:
-            fist(img, W * 0.5, H * 0.5 + 10 / F * cam.f * np.tan(np.radians(5)) * 0 + cam.f * np.tan(np.radians(5)) * 0.6, cam.f * np.tan(np.radians(10)), fistk)
+            fist(img, W * 0.5, H * 0.5 + cam.f * np.tan(np.radians(5)) * 0.75, cam.f * np.tan(np.radians(10)), fistk)
         if binoc > 0:
             xs, ys = grid()
             r1 = np.hypot(xs - W * 0.39, ys - H / 2)

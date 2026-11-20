@@ -114,7 +114,7 @@ def tumble(t_s, base=(0.3, -0.4, 0.2), rate=1.0):
     return Rz(a) @ Rx(np.radians(28 + base[2] * 40)) @ Rz(b)
 
 
-def render_rock(img, cam, Rb, sun, earth_dir=None, earth_k=0.0, exposure=1.0, steps=44, slide=None):
+def render_rock(img, cam, Rb, sun, earth_dir=None, earth_k=0.0, exposure=1.0, steps=72, slide=None, heat=0.0):
     """Ray-march the shape (body rotation Rb, centred at the world origin) into img. Returns depth alpha."""
     x, y, z = cam.project(np.zeros(3))
     alpha = np.zeros((H, W), np.float32)
@@ -196,8 +196,11 @@ def render_rock(img, cam, Rb, sun, earth_dir=None, earth_k=0.0, exposure=1.0, st
     if slide is not None:                              # a landslide: fresh, brighter rock and a dust plume
         sdir, sk = slide
         sdir = np.asarray(sdir, np.float32) / np.linalg.norm(sdir)
-        near = clamp((dirs @ sdir - 0.985) / 0.01) * sk
-        col *= (1 + 0.6 * near)[..., None]
+        near = clamp((dirs @ sdir - 0.955) / 0.02) * sk
+        col = col * (1 + 1.3 * near)[..., None] + near[..., None] * np.array([0.06, 0.055, 0.05], np.float32)
+    if heat > 0:                                       # sunlight warming one side: the warm side glows (infrared, shown red)
+        warm = clamp(n @ sb)
+        col += (warm ** 1.5 * heat)[..., None] * np.array([0.35, 0.06, 0.02], np.float32) * hit[..., None]
     col *= exposure
     reg = img[y0:y1, x0:x1]
     a = cv2.GaussianBlur(hit.astype(np.float32), (0, 0), 0.6)
@@ -266,7 +269,7 @@ def probe(img, cam, pos, sun, s=6.0, alpha=1.0):
 @scene_factory(keys=[])
 def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.0), tumble_s=(0.0, 6000.0), rate=1.0,
          h=(21.0, 21.0), earth=0.0, eiffel_k=0.0, dims=0.0, slide=(0.0, 0.0), probe_k=0.0, probe_pos=(0.0, 0.0), look=(0.0, 0.0, 0.0),
-         sun_k=1.0, frame_earth=0.0):
+         sun_k=1.0, frame_earth=0.0, heat=0.0, twin=0.0, thrust=0.0):
     """Apophis whole, tumbling (tumble_s: seconds of real tumble, sped up `rate` times). The camera orbits in the
     asteroid-centred frame whose axes are ICRF, so the Sun and Earth sit in their true directions for hour h."""
     def f(ctx, t, u, fi):
@@ -291,8 +294,26 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
         Rb = tumble(lerp(tumble_s[0], tumble_s[1], u), rate=rate)
         sl = L2(slide, e)
         sdir = Rb @ np.array([0.2, 0.7, 0.68])
-        render_rock(img, cam, Rb, sun * sun_k + (1 - sun_k) * np.array([0, 0, 1e-6]), earth_dir=edir, earth_k=0.6 + 0.6 * earth,
-                    slide=(np.array([0.2, 0.7, 0.68]), sl) if sl > 0 else None)
+        if twin > 0:                                   # the same rock twice: the old tumble (left) and twice as fast (right)
+            fwd_ = (np.asarray(look) - pos) / D
+            rg_ = np.cross(fwd_, [0, 0, 1.0]); rg_ /= np.linalg.norm(rg_)
+            for sgn, rate_ in ((-1, 1.0), (1, 2.6)):
+                cam_t = Camera(pos - rg_ * sgn * 330, np.asarray(look) - rg_ * sgn * 330, fov=L2(fov, e), up=(0.0, 0.0, 1.0))
+                render_rock(img, cam_t, tumble(lerp(tumble_s[0], tumble_s[1], u) * rate_), sun, earth_dir=edir, earth_k=0.6)
+        else:
+            render_rock(img, cam, Rb, sun * sun_k + (1 - sun_k) * np.array([0, 0, 1e-6]), earth_dir=edir, earth_k=0.6 + 0.6 * earth,
+                        slide=(np.array([0.2, 0.7, 0.68]), sl) if sl > 0 else None, heat=heat)
+        if heat > 0:                                   # the heat it gives off pushes back: a small arrow away from the warm side
+            from engine.hud import Layer
+            c0 = cam.project(np.asarray(look) + sun * 260)
+            c1 = cam.project(np.asarray(look) + sun * 420)
+            c2 = cam.project(np.asarray(look) - sun * 260)
+            c3 = cam.project(np.asarray(look) - sun * 430)
+            Lh = Layer()
+            for k in range(3):
+                Lh.line((c0[0], c0[1] + (k - 1) * 40), (c1[0], c1[1] + (k - 1) * 40), color=(1.0, 0.4, 0.25), alpha=0.6 * heat, th=3)
+            Lh.arrow((c2[0], c2[1]), (c3[0], c3[1]), (1.0, 0.75, 0.4), heat, th=5, head=22)
+            img = Lh.composite(img, 0.5)
         if sl > 0:                                      # the dust plume where the slope gives way
             sp = Rb @ (np.array([0.2, 0.7, 0.68]) / np.linalg.norm([0.2, 0.7, 0.68]) * 150.0)
             x, y, z = cam.project(sp)
@@ -309,8 +330,20 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
             eiffel(img, cam, np.asarray(look) + rgt * 330 - upv * 165, upv, rgt, eiffel_k)
             ctx.state["eiffel_xy"] = cam.project(np.asarray(look) + rgt * 330 + upv * 175)[:2]
         if probe_k > 0:
-            pp = np.asarray(look) + np.array([0.0, -1.0, 0.25]) * lerp(probe_pos[0], probe_pos[1], e) + np.array([-260.0, 0, 0])
+            fwd_ = (np.asarray(look) - pos) / D
+            rg_ = np.cross(fwd_, [0, 0, 1.0]); rg_ /= np.linalg.norm(rg_)
+            up_ = np.cross(rg_, fwd_)
+            pp = np.asarray(look) - fwd_ * 120 + rg_ * lerp(probe_pos[0], probe_pos[1], e) * 0.6 + up_ * 170
             probe(img, cam, pp, sun, s=8.0, alpha=probe_k)
+            if thrust > 0:
+                tgt = Rb @ (np.array([0.2, 0.7, 0.68]) / np.linalg.norm([0.2, 0.7, 0.68]) * 150.0)
+                a_, b_ = cam.project(pp), cam.project(tgt)
+                for k in range(26):
+                    f_ = k / 25
+                    glow_dot(img, lerp(a_[0], b_[0], f_ * 0.6), lerp(a_[1], b_[1], f_ * 0.6), (0.7, 0.8, 1.0), 3 + 10 * f_, 0.5 * thrust * (1 - f_))
+                for k in range(30):
+                    r_ = np.random.default_rng(k)
+                    glow_dot(img, b_[0] + r_.normal() * 60 * thrust, b_[1] + r_.normal() * 30 * thrust - 30 * thrust, (0.6, 0.57, 0.52), 14, 0.16 * thrust)
         x, y, z = cam.project(np.asarray(look, np.float64))
         ctx.state["rock_xy"] = (x, y)
         ctx.state["rock_px"] = cam.f * 232.0 / D
@@ -334,12 +367,12 @@ def _boulders(seed=4, n=170):
     for i in range(n):
         dist = 3.0 + 72.0 * rng.random() ** 1.6
         ang = rng.uniform(-np.pi, np.pi)
-        rad = min(6.0, 0.3 * dist, (rng.pareto(2.3) + 1) * 0.22 * (1 + dist / 30))
+        rad = min(4.0, 0.18 * dist, (rng.pareto(2.3) + 1) * 0.2 * (1 + dist / 30))
         # local tangent coords: x right, z forward (camera initially looks along +z)
         th = dist / RL
         p = np.array([np.sin(th) * np.sin(ang), np.cos(th), np.sin(th) * np.cos(ang)])
         out.append((p, rad, rng.uniform(0, 1000)))
-    for (dx, dz, r) in ((-3.2, 6.0, 0.8), (2.8, 9.0, 1.1), (-7.0, 14.0, 1.9), (6.0, 26.0, 2.4), (-16.0, 34.0, 4.6), (2.0, 4.5, 0.35)):
+    for (dx, dz, r) in ((-3.2, 6.0, 0.8), (2.8, 9.0, 1.1), (-7.0, 14.0, 1.9), (6.0, 26.0, 2.0), (-16.0, 34.0, 3.0), (2.0, 4.5, 0.35)):
         th = np.hypot(dx, dz) / RL
         ang = np.arctan2(dx, dz)
         out.append((np.array([np.sin(th) * np.sin(ang), np.cos(th), np.sin(th) * np.cos(ang)]), r, dx * 7 + dz))
@@ -401,7 +434,7 @@ def _roll_for(eaz, ealt, h, salt, side):
 @scene_factory(keys=[])
 def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.2), earth_az=(4.0, 4.0), earth_alt=(14.0, 14.0),
             sun_alt=(10.0, 10.0), sun_side=1.0, light="sun", pebble=(0.0, 0.0), jump=(0.0, 0.0), slide=(0.0, 0.0), dust=0.0, cam_x=(0.0, 0.0), cam_z=(0.0, 0.0),
-            exposure=1.0, end_fade=(0.0, 0.0)):
+            exposure=1.0, end_fade=(0.0, 0.0), lift=0.0):
     """Standing on Apophis at hour h. The local frame is turned so Earth stands at (earth_az, earth_alt) above our
     horizon; Earth's size, phase and lights, and the Sun's direction, then follow from the real geometry.
     pebble: 0..1 of the 156 s fall from 1.5 m (time-lapse); jump: 0..1 of a figure-free hop that never returns;
@@ -484,6 +517,7 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
         rt = np.sin(P @ np.array([3.1, 1.7, 2.3], np.float32)) * np.sin(P @ np.array([-1.9, 2.9, 1.3], np.float32) * 1.7) * 0.5 + 0.5
         rxy = cv2.remap(reg_a, ((P[..., 0] * 13.0) % 2048).astype(np.float32), ((P[..., 1] * 13.0) % 2048).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
         alb = np.where(ground, 0.38 + 0.45 * ra + 0.75 * rp_, 0.22 + 0.4 * ra + 0.5 * rxy - 0.2 * rp_)
+        alb = np.maximum(alb, 0.35)
         gyy, gxx = np.gradient(rp_ * 0.6 + ra * 0.3)
         N = N + np.where(ground[..., None], np.stack([-gxx, np.zeros_like(gxx), -gyy], -1) * 0.8, 0)
         N /= np.linalg.norm(N, axis=-1, keepdims=True) + 1e-6
@@ -541,6 +575,17 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
                 glow_dot(img, pr[0] - rr * 0.3, pr[1] - rr * 0.3, (1.0, 0.97, 0.9), max(1.0, rr * 0.4), 0.6 * sun_up)
                 # the hand that let go (fades out)
                 ctx.state["pebble_xy"] = pr
+            hp_ = cw_project(cw, Q, Ap, np.array([0.2, RL + 1.62, 3.0]), camL)
+            if hp_ is not None and pk < 0.25:
+                hs_ = 0.11 * cw.f / 3.0
+                ha = 1 - pk / 0.25
+                lay_ = np.zeros((H, W), np.float32)
+                cv2.ellipse(lay_, (int(hp_[0]), int(hp_[1])), (int(hs_ * 1.1), int(hs_ * 0.55)), 0, 0, 360, 1.0, -1, cv2.LINE_AA)
+                for f_ in range(4):
+                    cv2.line(lay_, (int(hp_[0] - hs_ * 0.8 + f_ * hs_ * 0.5), int(hp_[1])), (int(hp_[0] - hs_ * 0.9 + f_ * hs_ * 0.55), int(hp_[1] + hs_ * 0.9)), 1.0, max(2, int(hs_ * 0.28)), cv2.LINE_AA)
+                cv2.line(lay_, (int(hp_[0] + hs_), int(hp_[1])), (int(W * 0.9), H + 20), 1.0, max(3, int(hs_ * 0.9)), cv2.LINE_AA)
+                m_ = lay_[..., None] * ha
+                img = img * (1 - m_) + m_ * np.array([0.32, 0.30, 0.32], np.float32)
             hp = cw_project(cw, Q, Ap, np.array([0.2, RL + 1.55, 3.0]), camL)
             ctx.state["hand_xy"] = hp
         jk = lerp(jump[0], jump[1], u) if jump[1] > 0 else 0.0
@@ -572,6 +617,17 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
             pr = cw_project(cw, Q, Ap, cpos + rad * np.array([0.6, 0.1, -0.3]), camL)
             if pr is not None:
                 glow_dot(img, pr[0], pr[1], (0.6, 0.58, 0.55), 60 * sk, 0.08 * sk)
+        if lift > 0:                                   # grains lifted a hair as the pull of gravity weakens
+            gt_ = ctx.seg["start"] + ctx.beat.t0 + t
+            for k in range(140):
+                r_ = np.random.default_rng(1000 + k)
+                dx_, dz_ = r_.uniform(-3, 3), r_.uniform(1.5, 9)
+                hop = 0.12 * lift * (0.5 + 0.5 * np.sin(gt_ * 1.3 + k))
+                pr = cw_project(cw, Q, Ap, np.array([dx_, RL + 0.02 + hop, dz_]), camL)
+                pr0 = cw_project(cw, Q, Ap, np.array([dx_, RL + 0.01, dz_]), camL)
+                if pr is not None and pr0 is not None:
+                    glow_dot(img, pr[0], pr[1], (0.75, 0.72, 0.66), 1.6, 0.9)
+                    glow_dot(img, pr0[0], pr0[1], (0.0, 0.0, 0.0), 2.0, -0.02)
         return img, dict(exposure=1.3 * exposure, bloom=0.45, grade=((0.006, 0.006, 0.008), (1.0, 0.99, 0.97)))
     return f
 

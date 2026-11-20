@@ -150,7 +150,7 @@ def dome(pan=(0.0, 40.0), zoom=(1.0, 1.06), slit=(0.0, 1.0)):
 
 
 @scene_factory(keys=[])
-def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare=(0.0, 0.0), seed=81):
+def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare_k=0.0, seed=81, aged=0.0):
     """Two exposures of the same star field, flicking back and forth (a blink comparator): every star stays put,
     one faint dot jumps. CCD look: grey sky, noise, white stars."""
     rng = np.random.default_rng(int(round(seed)))
@@ -165,13 +165,14 @@ def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare=(0.0, 0.0), see
         which = int(gt * rate) % 2
         img = np.full((H, W, 3), 0.07, np.float32)
         buf = np.zeros((H, W, 3), np.float32)
-        buf = splat_points(buf, sx, sy, np.repeat(sb[:, None], 3, 1).astype(np.float32), sigma=1.6)
+        buf = splat_points(buf, sx, sy, np.repeat(sb[:, None], 3, 1).astype(np.float32), sigma=2.2)
         img += buf
         ap = A0 if which == 0 else A1
-        glow_dot(img, ap[0], ap[1], (1.0, 1.0, 1.0), 1.9, 0.9)
+        glow_dot(img, ap[0], ap[1], (1.0, 1.0, 1.0), 3.2, 2.4)
+        glow_dot(img, (A1 if which == 0 else A0)[0], (A1 if which == 0 else A0)[1], (0.5, 0.5, 0.5), 3.0, 0.0)
         nz = np.random.default_rng(int(gt * 30) % 997).normal(0, 0.012, (H // 2, W // 2)).astype(np.float32)
         img += cv2.resize(nz, (W, H))[..., None]
-        gl = L2(glare, e)
+        gl = glare_k * smooth(u)
         if gl > 0:                                     # the Sun's glare creeping in from the corner: the dot is lost
             xs_, ys_ = grid()
             dd = np.hypot(xs_ - W * 1.05, ys_ + H * 0.1) / W
@@ -184,15 +185,28 @@ def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare=(0.0, 0.0), see
         ctx.state["frame"] = which
         if ring > 0:
             L = Layer()
-            L.circle((p[0], p[1]), 30, GOLD, ring, th=3)
+            L.circle((p[0], p[1]), 34, GOLD, ring, th=4)
+            q = (A0 if which == 1 else A1)
+            q = (q - np.array([W / 2, H / 2])) * z + np.array([W / 2, H / 2])
+            L.circle((q[0], q[1]), 34, GOLD, ring * 0.35, th=2, dash=0)
             img = L.composite(img, 0.4)
+        if aged > 0:                                   # an old photographic plate: sepia, scratches, a worn edge
+            g_ = img.mean(-1, keepdims=True)
+            img = img * (1 - aged) + g_ * np.array([1.05, 0.85, 0.6], np.float32) * aged
+            xs_, ys_ = grid()
+            edge = clamp((np.minimum(np.minimum(xs_, W - xs_), np.minimum(ys_, H - ys_)) - 40) / 60)
+            img = img * (0.25 + 0.75 * edge[..., None] * aged + (1 - aged) * 0.75)
+            rr_ = np.random.default_rng(seed)
+            for k_ in range(14):
+                x_ = rr_.uniform(0, W)
+                cv2.line(img, (int(x_), 0), (int(x_ + rr_.normal() * 40), H), (0.22, 0.2, 0.17), 1, cv2.LINE_AA)
         return img, dict(exposure=1.2, bloom=0.2, grain=0.03, vig=True, grade=((0.0, 0.0, 0.0), (0.92, 0.95, 1.0)))
     return f
 
 
 # ═══════════════════════════════════════════ the odds ═══════════════════════════════════════════
 @scene_factory(keys=[])
-def odds_meter(size=(1.0, 1.0), off=(0.0, 0.0), elong=(3.0, 3.0), keyhole=(0.0, 0.0), drift=(0.0, 0.0), odds=(0.0, 0.0), zoom=(1.0, 1.0)):
+def odds_meter(size=(1.0, 1.0), off=(0.0, 0.0), elong=(3.0, 3.0), keyhole=(0.0, 0.0), drift=(0.0, 0.0), odds=(0.0, 0.0), zoom=(1.0, 1.0), ghosts=0.0, ret=(0.0, 0.0)):
     """Where Apophis could pass Earth in April 2029: a cloud of possible paths (cyan) against Earth's disc (seen face
     on, real texture). size: cloud size in Earth radii; off: centre offset in Earth radii; odds: fraction of the
     cloud on Earth, shown as a meter. keyhole: a tiny slot beside Earth; drift: sunlight's push as an arrow."""
@@ -221,7 +235,20 @@ def odds_meter(size=(1.0, 1.0), off=(0.0, 0.0), elong=(3.0, 3.0), keyhole=(0.0, 
         img += buf
         th = np.linspace(0, 2 * np.pi, 200)
         ell = np.stack([np.cos(th) * el * sz, np.sin(th) * sz], -1) @ R2.T + np.array([of, 0.0])
-        L.polyline(np.stack([cx + ell[:, 0] * Re, cy - ell[:, 1] * Re], -1), CYAN, 0.8, th=2, closed=True)
+        L.polyline(np.stack([cx + ell[:, 0] * Re, cy - ell[:, 1] * Re], -1), CYAN, 0.8, th=3, closed=True)
+        if ghosts > 0:                                 # where the cloud was on earlier nights: it narrows
+            for k_, gs in enumerate((2.2, 1.7, 1.35)):
+                eg = np.stack([np.cos(th) * el * sz * gs, np.sin(th) * sz * gs], -1) @ R2.T + np.array([of, 0.0])
+                L.polyline(np.stack([cx + eg[:, 0] * Re, cy - eg[:, 1] * Re], -1), CYAN, ghosts * (0.18 + 0.1 * k_), th=2, closed=True)
+        rp_ = L2(ret, e)
+        if rp_ > 0:                                    # through the keyhole, once around the Sun, and back into Earth
+            kx, ky = cx + 1.7 * Re, cy - 0.35 * Re
+            tt_ = np.linspace(0, 1, 120)
+            loop = np.stack([kx + 520 * np.sin(np.pi * tt_) * z + 60 * tt_, ky - 380 * np.sin(np.pi * tt_) ** 0.8 * z + (cy - ky) * tt_], -1)
+            loop[:, 0] = loop[:, 0] * (1 - tt_) + (loop[:, 0] * 0.0 + cx + Re * 0.2) * tt_ ** 3 + loop[:, 0] * tt_ ** 3 * 0
+            L.polyline(loop, GOLD, 0.95, th=3, progress=rp_, dash=14)
+            if rp_ > 0.97:
+                L.circle((cx + Re * 0.2, cy), 26, RED, 1.0, th=4)
         kh = L2(keyhole, e)
         if kh > 0:
             kx, ky = cx + 1.7 * Re, cy - 0.35 * Re
@@ -247,7 +274,7 @@ def odds_meter(size=(1.0, 1.0), off=(0.0, 0.0), elong=(3.0, 3.0), keyhole=(0.0, 
 
 # ═══════════════════════════════════════════ radar ═══════════════════════════════════════════
 @scene_factory(keys=[])
-def radar(rot=(0.0, 60.0), scan=(0.0, 1.0), zoom=(1.0, 1.1)):
+def radar(rot=(0.0, 60.0), scan=(1.0, 1.0), zoom=(1.0, 1.1)):
     """A delay-Doppler radar image built from our shape model: brightness by range (down) and Doppler (across),
     the way Goldstone and Arecibo pictured Apophis. Two lobes appear as the body turns."""
     from ep_apophis.scene_rock import shape, NLON, NLAT
@@ -285,7 +312,7 @@ def radar(rot=(0.0, 60.0), scan=(0.0, 1.0), zoom=(1.0, 1.1)):
         img += np.abs(cv2.resize(nz, (W, H)))[..., None] * 0.7
         sc_ = L2(scan, e)
         yy = np.arange(H, dtype=np.float32)[:, None, None]
-        img = img * (yy < H * (0.15 + 0.8 * sc_))
+        img = img * clamp((H * (0.1 + 0.95 * sc_) - yy) / 40)
         xs_, ys_ = grid()
         img += ((np.abs((xs_ % 120) - 60) < 0.6) | (np.abs((ys_ % 120) - 60) < 0.6))[..., None] * 0.012
         return img, dict(exposure=1.3, bloom=0.3, grain=0.02)
@@ -373,7 +400,7 @@ def _orbits():
 
 
 @scene_factory(keys=[])
-def orbit_map(before=(1.0, 1.0), after=(0.0, 0.0), day=(-60.0, 0.0), zoom=(1.0, 1.0), inside=0.0, cx=(0.0, 0.0)):
+def orbit_map(before=(1.0, 1.0), after=(0.0, 0.0), day=(-60.0, 0.0), zoom=(1.0, 1.0), inside=0.0, cx=(0.0, 0.0), morph=(0.0, 0.0)):
     """Top-down on the Solar System's plane. Sun at the centre, Earth's orbit (blue), Apophis's orbit before (grey)
     and after (gold), both from the Horizons elements; Earth and Apophis moving on their real positions at `day`
     (days from 13 April 2029). inside: shade the region inside Earth's orbit."""
@@ -401,6 +428,12 @@ def orbit_map(before=(1.0, 1.0), after=(0.0, 0.0), day=(-60.0, 0.0), zoom=(1.0, 
             L.polyline(P(bef), (0.72, 0.74, 0.78), 0.85 * b_, th=3, closed=True, progress=min(1.0, b_ * 1.0))
         if a_ > 0:
             L.polyline(P(aft), GOLD, 0.95, th=3, closed=True, progress=a_)
+        mo = L2(morph, e)
+        if mo > 0:                                     # the grey orbit stretching into the gold one
+            k_ = smooth(mo)
+            mid = bef * (1 - k_) + aft * k_
+            col_ = tuple(np.array((0.72, 0.74, 0.78)) * (1 - k_) + np.array(GOLD) * k_)
+            L.polyline(P(mid), col_, 1.0, th=5, closed=True)
         img = L.composite(img, 0.5)
         glow_dot(img, ox, oy, (1.0, 0.85, 0.55), 10, 3.0)
         glow_dot(img, ox, oy, (1.0, 0.8, 0.5), 40, 0.25)
@@ -506,21 +539,21 @@ def road(truck=(-0.3, 1.4), wobble=(0.0, 0.0), dust=(0.0, 0.0), cam=(0.0, 0.0), 
             x = (k - (gt * 120) % 160)
             cv2.rectangle(img, (int(x), rd0 + 40), (int(x + 70), rd0 + 46), (0.5, 0.45, 0.35), -1)
         s = 190 * z
-        bx, by = W * 0.42 + L2(cam, e), rd0 + 34
+        bx, by = W * 0.42 + L2(cam, e), rd1 + 30
         wb = L2(wobble, e)
-        lean = 0.10 * wb * np.sin(gt * 7.5) * np.exp(-0.0 * wb)
+        lean = 0.26 * wb * np.sin(gt * 6.0)
         sil = np.zeros((H, W), np.float32)
-        _bike(sil, bx + 18 * wb * np.sin(gt * 5.0), by, s, lean)
+        _bike(sil, bx + 26 * wb * np.sin(gt * 4.0), by, s, lean)
         trx = lerp(truck[0], truck[1], u) * W
         tl = np.zeros((H, W), np.float32)
-        _truck(tl, trx, rd1 - 6, 120 * z)
+        _truck(tl, trx, rd0 + 46, 100 * z)
         # truck motion blur
         tl = cv2.blur(tl, (25, 1))
         img = img * (1 - tl[..., None]) + tl[..., None] * np.array([0.11, 0.105, 0.12], np.float32)
-        stripe = tl * (np.abs(ys - (rd1 - 6 - 1.1 * 120 * z)) < 5)
+        stripe = tl * (np.abs(ys - (rd0 + 46 - 1.1 * 100 * z)) < 5)
         img += stripe[..., None] * np.array([0.5, 0.25, 0.1], np.float32)
-        for hx in (trx + 1.9 * 120 * z,):
-            glow_dot(img, hx, rd1 - 70, (1.0, 0.9, 0.7), 8, 2.0 * (0 < hx < W))
+        for hx in (trx + 1.9 * 100 * z,):
+            glow_dot(img, hx, rd0 - 10, (1.0, 0.9, 0.7), 8, 2.0 * (0 < hx < W))
         img = img * (1 - sil[..., None]) + sil[..., None] * np.array([0.004, 0.004, 0.005], np.float32)
         rim = clamp(sil - cv2.erode(sil, np.ones((5, 5), np.uint8)))
         img += rim[..., None] * np.array([1.0, 0.6, 0.3], np.float32) * 0.6
@@ -592,4 +625,124 @@ def serpent(at=0.2, x=W * 0.78, y=H * 0.3, s=1.0):
             L.line((hx + 24 * s, hy), (hx + 40 * s, hy - 6 * s), color=RED, alpha=a, th=3)
             L.line((hx + 24 * s, hy), (hx + 40 * s, hy + 6 * s), color=RED, alpha=a, th=3)
         return L.composite(img, 0.5)
+    return f
+
+
+# ═══════════════════════════════════════════ added after the mute test ═══════════════════════════════════════════
+def _pyramid(L, x, y, s, col, a):
+    L.poly(np.array([[x - s, y], [x + s, y], [x, y - s * 0.95]]), col, a)
+
+
+def _castle(L, x, y, s, col, a):
+    L.rect(x - s, y - s * 1.1, x + s, y, col, a, fill=True)
+    for k in range(-1, 2):
+        L.rect(x + k * s * 0.7 - s * 0.18, y - s * 1.35, x + k * s * 0.7 + s * 0.18, y - s * 1.1, col, a, fill=True)
+
+
+def _skyline(L, x, y, s, col, a):
+    for k, hh in enumerate((1.6, 2.4, 1.2, 3.0, 1.8)):
+        L.rect(x - s * 1.2 + k * s * 0.5, y - s * hh * 0.6, x - s * 0.8 + k * s * 0.5, y, col, a, fill=True)
+
+
+@scene_factory(keys=[])
+def timeline_scene(prog_=(0.0, 1.0), zoom=(1.0, 1.0)):
+    """Five thousand years on one line: the pyramids, castles, a modern city; marks where a rock this big passes this
+    close (about once every few thousand years) and the one we can see coming, in 2029."""
+    def f(ctx, t, u, fi):
+        e = ease(u)
+        img, _ = make_starfield(W, H, 2000, seed=17, brightness=0.4)
+        L = Layer()
+        y = H * 0.62
+        x0, x1 = W * 0.08, W * 0.92
+        L.line((x0, y), (x1, y), color=INK, alpha=0.8, th=3)
+        for k in range(11):
+            x = lerp(x0, x1, k / 10)
+            L.line((x, y - 10), (x, y + 10), color=DIM, alpha=0.6, th=2)
+        _pyramid(L, lerp(x0, x1, 0.04), y - 16, 60, (0.85, 0.7, 0.45), 0.9)
+        _castle(L, lerp(x0, x1, 0.62), y - 16, 40, (0.6, 0.62, 0.7), 0.9)
+        _skyline(L, lerp(x0, x1, 0.98), y - 16, 50, (0.55, 0.65, 0.85), 0.9)
+        p = L2(prog_, e)
+        for fx in (0.18, 0.55):                        # past close passes nobody saw
+            if p > fx:
+                L.circle((lerp(x0, x1, fx), y), 14, DIM, 0.8, th=3)
+        if p > 0.9:
+            L.circle((lerp(x0, x1, 0.985), y), 20, GOLD, 1.0, fill=True)
+            glow_dot(img, lerp(x0, x1, 0.985), y, (1.0, 0.8, 0.5), 18, 1.2)
+        L.line((x0, y), (lerp(x0, x1, p), y), color=GOLD, alpha=0.9, th=5)
+        img = L.composite(img, 0.5)
+        return img, dict(exposure=1.25, bloom=0.4)
+    return f
+
+
+@scene_factory(keys=[])
+def sea(zoom=(1.0, 1.0), atoms=(0.0, 1.0), h=(22.0, 22.1)):
+    """A calm night sea, then a magnifier on the waterline: a lattice of atoms and the tide Apophis raises, a step
+    only a few atoms high."""
+    rng = np.random.default_rng(5)
+
+    def f(ctx, t, u, fi):
+        e = ease(u)
+        xs, ys = grid()
+        hz = H * 0.52
+        img, _ = make_starfield(W, H, 3000, seed=21, brightness=0.6)
+        img = img * (ys < hz)[..., None] + np.array([0.01, 0.015, 0.03], np.float32) * (ys < hz)[..., None]
+        gt = ctx.seg["start"] + ctx.beat.t0 + t
+        wave = (np.sin(xs * 0.03 + gt * 0.8 + ys * 0.08) * 0.5 + 0.5) * clamp((ys - hz) / 200)
+        img += ((ys >= hz) * (0.02 + 0.03 * wave))[..., None] * np.array([0.3, 0.45, 0.7], np.float32)
+        glow_dot(img, W * 0.7, H * 0.22, (1.0, 0.9, 0.75), 2.2, 4.0)
+        a = L2(atoms, e)
+        if a > 0:
+            L = Layer()
+            cx, cy, r = W * 0.5, H * 0.66, 230
+            L.circle((cx, cy), r, INK, a, th=4)
+            L.line((cx + r * 0.7, cy + r * 0.7), (cx + r * 1.3, cy + r * 1.3), color=INK, alpha=a, th=10)
+            for i in range(-6, 7):
+                for j in range(-6, 7):
+                    px, py = cx + i * 32, cy + j * 32
+                    if np.hypot(px - cx, py - cy) < r - 16:
+                        up = 1.0 if i >= 0 else 0.0
+                        water = py > cy - 32 * (1 + 2 * up * a)
+                        L.circle((px, py - 0), 9, (0.45, 0.65, 1.0) if water else (0.25, 0.27, 0.3), a * (0.9 if water else 0.4), fill=True)
+            img = L.composite(img, 0.4)
+        return img, dict(exposure=1.3, bloom=0.45)
+    return f
+
+
+@scene_factory(keys=[])
+def neutrino(flow=(0.0, 1.0), flash=(0.0, 0.0)):
+    """The warning: a pulse of neutrinos from the dying star streams straight through the Earth (the star itself is
+    still unchanged, far off at left); the light comes later."""
+    from ep_apophis.scene_sky import draw_earth as _de
+    def f(ctx, t, u, fi):
+        e = ease(u)
+        cam = Camera((0.0, -6.0e4, 0.0), (0.0, 0.0, 0.0), fov=26, up=(0, 0, 1))
+        img = cam.sky(gain=0.5) * 0.6
+        _de(img, cam, 12.0)
+        fl = L2(flow, e)
+        L = Layer()
+        rng = np.random.default_rng(3)
+        for k in range(70):
+            y = rng.uniform(H * 0.1, H * 0.9)
+            x = (rng.uniform(0, 1) + fl * 1.6) % 1.6 * W - 0.3 * W
+            L.line((x, y), (x + 140, y), color=(0.6, 0.9, 1.0), alpha=0.7, th=2)
+        img = L.composite(img, 0.6)
+        glow_dot(img, W * 0.05, H * 0.5, (1.0, 0.6, 0.4), 4, 3.0 + 60 * L2(flash, e))
+        return img, dict(exposure=1.25, bloom=0.5)
+    return f
+
+
+@scene_factory(keys=[])
+def split(h_ground=(22.4, 22.9), h_rock=(30.0, 90.0), mix=1.0):
+    """The mirror: the rooftop sky (left) and the asteroid's sky (right), side by side, each with the other world
+    fading to a moving point of light."""
+    from ep_apophis.scene_sky import roof as _roof, apophis_altaz as _aa
+    from ep_apophis.scene_rock import surface as _surf
+
+    def f(ctx, t, u, fi):
+        a0, e0, _ = _aa(lerp(h_ground[0], h_ground[1], u))
+        left, kw = _roof(az=(a0, a0), alt=(max(e0 - 6, 8.0), max(e0 - 6, 8.0)), fov=(46.0, 46.0), h=(lerp(h_ground[0], h_ground[1], u),) * 2, figure=1.0, figure_az=a0 - 10)(ctx, t, u, fi)
+        right, _ = _surf(h=(lerp(h_rock[0], h_rock[1], u),) * 2, view_az=(2.0, 2.0), pitch=(8.0, 8.0), fov=(40.0, 40.0), earth_az=(4.0, 4.0), earth_alt=(10.0, 10.0), sun_alt=(8.0, 8.0))(ctx, t, u, fi)
+        out = np.concatenate([left[:, W // 4: W // 4 + W // 2] * 1.0, right[:, W // 4: W // 4 + W // 2]], 1)
+        out[:, W // 2 - 2: W // 2 + 2] = 0.6
+        return out, dict(exposure=1.45, bloom=0.4)
     return f
