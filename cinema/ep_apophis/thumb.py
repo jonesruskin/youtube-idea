@@ -44,13 +44,13 @@ def _save(o, d, name, big=None):
 
 def make(d):
     # A: the mirror
-    bg, kw = surface(h=(21.6, 21.6), view_az=(60.0, 60.0), pitch=(2.0, 2.0), fov=(62.0, 62.0), earth_az=(4.0, 4.0), earth_alt=(14.0, 14.0),
+    bg, kw = surface(h=(21.6, 21.6), view_az=(60.0, 60.0), pitch=(-15.0, -15.0), fov=(56.0, 56.0), earth_az=(4.0, 4.0), earth_alt=(14.0, 14.0),
                      sun_alt=(14.0, 14.0), sun_side=-1.0)(_Ctx(), 3.0, 0.5, 0)
-    ref, kw2 = surface(h=(22.1, 22.1), view_az=(2.0, 2.0), pitch=(14.0, 14.0), fov=(26.0, 26.0), earth_az=(2.0, 2.0), earth_alt=(14.0, 14.0),
+    ref, kw2 = surface(h=(23.2, 23.2), view_az=(2.0, 2.0), pitch=(18.0, 18.0), fov=(24.0, 24.0), earth_az=(2.0, 2.0), earth_alt=(14.0, 14.0),
                        sun_alt=(8.0, 8.0))(_Ctx(), 3.0, 0.5, 0)
-    A = _graded(bg, kw, 1.25)
+    A = _graded(bg, kw, 1.35) * np.array([1.18, 1.0, 0.72], np.float32)      # low golden sunlight on the gravel
     R = _graded(ref, kw2, 2.0)[:, ::-1]                       # a mirror shows it the other way round
-    cx, cy, rx, ry = W * 0.56, H * 0.42, 430, 330
+    cx, cy, rx, ry = W * 0.55, H * 0.45, 560, 430
     xs, ys = grid()
     dx, dy = (xs - cx) / rx, (ys - cy) / ry
     rr = np.sqrt(dx * dx + dy * dy)
@@ -68,8 +68,8 @@ def make(d):
     A = A * (1 - glass - rim) + Rw * glass + rimc * rim + sheen[..., None]
     p = _save(np.clip(A, 0, 1), d, "thumbnail.png", "thumbnail_1080.png")
     # B: the giant Earth over the boulders
-    img, kw = surface(h=(21.75, 21.75), view_az=(-4.0, -4.0), pitch=(6.0, 6.0), fov=(48.0, 48.0), earth_az=(2.0, 2.0), earth_alt=(2.0, 2.0),
-                      sun_alt=(16.0, 16.0), sun_side=-1.0)(_Ctx(), 3.0, 0.5, 0)
+    img, kw = surface(h=(21.75, 21.75), view_az=(24.0, 24.0), pitch=(3.0, 3.0), fov=(26.0, 26.0), earth_az=(22.0, 22.0), earth_alt=(5.0, 5.0),
+                      sun_alt=(5.0, 5.0), sun_side=-1.0)(_Ctx(), 3.0, 0.5, 0)
     _save(_graded(img, kw, 1.3), d, "thumbnail_B.png")
     # C: the long exposure over Lisbon
     a0, e0, _ = apophis_altaz(21.05)

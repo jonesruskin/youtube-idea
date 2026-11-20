@@ -83,6 +83,8 @@ def _build_shape():
     nrm = np.cross(Pe - Pw, Pn - Ps)
     nrm /= np.linalg.norm(nrm, axis=-1, keepdims=True) + 1e-9
     nrm = np.where((nrm * d).sum(-1, keepdims=True) < 0, -nrm, nrm)
+    nrm = cv2.GaussianBlur(nrm, (0, 0), 1.2)                      # no halftone moire up close
+    nrm /= np.linalg.norm(nrm, axis=-1, keepdims=True) + 1e-9
     cav = r - cv2.GaussianBlur(r, (0, 0), 6)
     alb = 1.0 + 0.18 * _waves3(d, 16, 8.0, 120.0, 13) + 0.25 * clamp(bould / 6) - 0.1
     ao = clamp(0.75 + cav * 0.05)
@@ -91,7 +93,7 @@ def _build_shape():
 
 @functools.lru_cache(None)
 def shape():
-    return cached("ep5_apophis_shape_v2", _build_shape)
+    return cached("ep5_apophis_shape_v3", _build_shape)
 
 
 def _lookup(dirs, ch):
@@ -162,10 +164,18 @@ def render_rock(img, cam, Rb, sun, earth_dir=None, earth_k=0.0, exposure=1.0, st
     bump = np.zeros_like(n)
     for k, (v_, fq) in enumerate(((np.array([0.6, 0.3, 0.75]), 0.35), (np.array([-0.4, 0.85, 0.3]), 0.6), (np.array([0.2, -0.5, 0.85]), 1.1), (np.array([0.9, 0.1, -0.4]), 1.9))):
         ph = p @ v_.astype(np.float32) * fq
-        bump += np.cos(ph * 2.3)[..., None] * np.cross(v_, [0.31, 0.52, 0.79]).astype(np.float32) * (0.08 / (k + 1))
+        bump += 0.0 * ph[..., None]
+    ta, tp = _regolith_tex()
+    an = np.abs(n)
+    tri = lambda u_, v_, k: cv2.remap(ta if k == 0 else tp, ((u_ * 3.0) % 2048).astype(np.float32), ((v_ * 3.0) % 2048).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
+    wsum = an.sum(-1) + 1e-6
+    tx = (tri(p[..., 1], p[..., 2], 0) * an[..., 0] + tri(p[..., 0], p[..., 2], 0) * an[..., 1] + tri(p[..., 0], p[..., 1], 0) * an[..., 2]) / wsum
+    tpb = (tri(p[..., 1] * 1.7, p[..., 2] * 1.7, 1) * an[..., 0] + tri(p[..., 0] * 1.7, p[..., 2] * 1.7, 1) * an[..., 1] + tri(p[..., 0] * 1.7, p[..., 1] * 1.7, 1) * an[..., 2]) / wsum
+    alb = alb * (0.55 + 0.75 * tx) * (1.0 - 0.35 * tpb)
+    gy, gx = np.gradient(tx * 3.0 + tpb)
+    bump = np.stack([gx, gy, np.zeros_like(gx)], -1) * 0.6
     n = n + bump * hit[..., None]
     n = n / (np.linalg.norm(n, axis=-1, keepdims=True) + 1e-6)
-    alb = alb * (0.85 + 0.3 * (0.5 + 0.5 * np.sin(p @ np.array([1.3, 0.7, 1.1], np.float32)) * np.sin(p @ np.array([-0.9, 1.6, 0.4], np.float32))))
     sb = (Rt @ np.asarray(sun, np.float64)).astype(np.float32)
     mu0 = np.maximum(n @ sb, 0)
     mu = np.maximum(-(n * db).sum(-1), 1e-3)
@@ -324,7 +334,7 @@ def _boulders(seed=4, n=170):
     for i in range(n):
         dist = 3.0 + 72.0 * rng.random() ** 1.6
         ang = rng.uniform(-np.pi, np.pi)
-        rad = min(6.0, (rng.pareto(2.3) + 1) * 0.22 * (1 + dist / 30))
+        rad = min(6.0, 0.3 * dist, (rng.pareto(2.3) + 1) * 0.22 * (1 + dist / 30))
         # local tangent coords: x right, z forward (camera initially looks along +z)
         th = dist / RL
         p = np.array([np.sin(th) * np.sin(ang), np.cos(th), np.sin(th) * np.cos(ang)])
@@ -523,7 +533,7 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
         if pebble[1] > 0:
             pk = lerp(pebble[0], pebble[1], u)
             yv = RL + 1.5 * (1 - pk ** 2) * 1.0 + 0.04
-            pp = np.array([0.15, yv, 1.1])
+            pp = np.array([0.2, yv, 3.0])
             pr = cw_project(cw, Q, Ap, pp, camL)
             if pr is not None:
                 rr = 0.07 * cw.f / np.linalg.norm(pp - camL)
@@ -531,7 +541,7 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
                 glow_dot(img, pr[0] - rr * 0.3, pr[1] - rr * 0.3, (1.0, 0.97, 0.9), max(1.0, rr * 0.4), 0.6 * sun_up)
                 # the hand that let go (fades out)
                 ctx.state["pebble_xy"] = pr
-            hp = cw_project(cw, Q, Ap, np.array([0.35, RL + 1.55, 1.6]), camL)
+            hp = cw_project(cw, Q, Ap, np.array([0.2, RL + 1.55, 3.0]), camL)
             ctx.state["hand_xy"] = hp
         jk = lerp(jump[0], jump[1], u) if jump[1] > 0 else 0.0
         if jump[1] > 0:                                         # a bag of tools tossed up at 0.3 m/s: it never returns

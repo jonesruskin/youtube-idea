@@ -404,6 +404,8 @@ def track(lat=(10.0, 20.0), lon=(10.0, -20.0), dist=(42000.0, 42000.0), h=(19.0,
                     glow_dot(img, qx, qy, (1.0, 0.8, 0.5), 2.0, 1.5 * sight)
             img += lay[..., None] * np.array([1.0, 0.8, 0.5], np.float32) * 0.45 * sight
         ctx.state["apophis_xy"] = (x, y)
+        ax_, ay_, az_ = cam.project(ll_to_world(-31.27, 149.06, hh, M.R_E))
+        ctx.state["aus_xy"] = (ax_, ay_) if az_ > 0 and not occluded(cam, ll_to_world(-31.27, 149.06, hh, M.R_E + 30))[0] else None
         lx, ly, lz = cam.project(ll_to_world(*LISBON, hh, M.R_E))
         ctx.state["lisbon_xy"] = (lx, ly) if (lz > 0 and lisbon > 0 and not occluded(cam, ll_to_world(*LISBON, hh, M.R_E + 1))[0]) else None
         ctx.state["h"] = hh

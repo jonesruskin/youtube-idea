@@ -89,7 +89,7 @@ SEGMENTS = [
                 "Over Central Africa, it will pass almost straight overhead.",
                 "Across Europe, Africa and western Asia, perhaps two billion people will be able to see it with no telescope at all.",
                 "At twenty-one forty-five, it reaches its closest: thirty-one thousand six hundred kilometres above the Atlantic Ocean.",
-                "That's lower than the geostationary satellites, and a tenth of the way to the Moon.",
+                "That's lower than the geostationary satellites, and only one tenth of the distance to the Moon.",
                 "It will pass the height of their ring well to the north of it. The nearest of them stays more than six thousand kilometres away.",
                 "A rock this big comes this close only once every few thousand years."],
          hold=1.2),
@@ -113,7 +113,7 @@ SEGMENTS = [
          lines=["And over that close horizon, a planet is rising.",
                 "At first Earth shows Apophis its night side: a dark disc, sprinkled with the lights of cities.",
                 "Hour by hour it grows, and the sunlit edge creeps around it.",
-                "At closest approach, Earth fills nineteen degrees of the sky. As wide as thirty-seven full Moons side by side.",
+                "At closest approach, Earth fills nineteen degrees of the sky. As wide as thirty-seven full Moons in a row.",
                 "Half of it in daylight, half of it in night.",
                 "Its sunlit half pours Earthlight onto Apophis, about a thousand times brighter than a full Moon, enough to cast sharp shadows from every boulder."],
          hold=1.4),
@@ -164,7 +164,7 @@ SEGMENTS = [
                 "Two moving stars, watching each other go. Only one of them will never be the same."],
          hold=2.8),
     dict(id="outro", music="mirror", shot=dict(type="surface"),
-         lines=["Subscribe to Gravity Dial, and we'll watch the next one together."],
+         lines=["If you'd like to watch the next one with us, subscribe to Gravity Dial."],
          hold=3.2, card=dict(kind="endcard")),
 ]
 

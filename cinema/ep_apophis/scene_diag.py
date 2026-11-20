@@ -150,7 +150,7 @@ def dome(pan=(0.0, 40.0), zoom=(1.0, 1.06), slit=(0.0, 1.0)):
 
 
 @scene_factory(keys=[])
-def blink(frame=(0.0, 1.0), zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare=(0.0, 0.0), seed=81):
+def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare=(0.0, 0.0), seed=81):
     """Two exposures of the same star field, flicking back and forth (a blink comparator): every star stays put,
     one faint dot jumps. CCD look: grey sky, noise, white stars."""
     rng = np.random.default_rng(int(round(seed)))
