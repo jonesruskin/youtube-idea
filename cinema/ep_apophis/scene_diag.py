@@ -802,3 +802,59 @@ def spin_arrows(at=0.2):
                 L.arrow(tuple(pts[-3]), tuple(pts[-1]), GOLD, a, th=4, head=22)
         return L.composite(img, 0.4)
     return f
+
+
+@scene_factory(keys=[])
+def slope(push=(1.0, 1.08), slide=(0.0, 1.0)):
+    """A small landslide, side-on: the steep flank of the asteroid's neck, grey gravel and rocks breaking loose and
+    tumbling down it, a dust trail behind them; black sky, Earth hanging large above."""
+    from ep_apophis.scene_rock import _regolith_tex
+    ta, tp = _regolith_tex()
+    rng = np.random.default_rng(11)
+    rocks = [(rng.uniform(0, 1), rng.uniform(10, 34), rng.uniform(0, 1)) for _ in range(46)]
+
+    def f(ctx, t, u, fi):
+        e = ease(u)
+        z = L2(push, e)
+        xs, ys = grid()
+        img, _ = make_starfield(W, H, 2600, seed=31, brightness=0.6)
+        # Earth, large, upper right (lit from the right)
+        from ep_apophis.scene_sky import apophis_world as _aw
+        Ap = _aw(21.75)
+        ce = Camera(Ap, Ap * 0.0, fov=60.0, up=(0.0, 0.0, 1.0))
+        tmp = np.zeros_like(img)
+        draw_earth(tmp, ce, 21.75)
+        sh_x, sh_y = int(W * 0.30), int(-H * 0.32)
+        tmp = np.roll(np.roll(tmp, sh_x, 1), sh_y, 0)
+        img = img + tmp
+        # the slope: from upper left down to lower right, about 40 degrees
+        cx, cy = W / 2, H / 2
+        X, Y = (xs - cx) / z + cx, (ys - cy) / z + cy
+        line_y = H * 0.18 + (X / W) * H * 0.85
+        ground = clamp((Y - line_y) * 0.6)
+        tex = cv2.remap(ta, (X * 1.3 % 2048).astype(np.float32), (Y * 1.3 % 2048).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
+        peb = cv2.remap(tp, (X * 1.1 % 2048).astype(np.float32), (Y * 1.1 % 2048).astype(np.float32), cv2.INTER_LINEAR, borderMode=cv2.BORDER_WRAP)
+        rock = (0.10 + 0.10 * tex - 0.04 * peb)[..., None] * np.array([1.0, 0.97, 0.93], np.float32)
+        rock *= (1.2 - 0.5 * clamp((Y - line_y) / 500))[..., None]
+        img = img * (1 - ground[..., None]) + rock * ground[..., None]
+        # rocks tumbling down the surface, with dust behind
+        sk = L2(slide, e)
+        gt = ctx.seg["start"] + ctx.beat.t0 + t
+        dust = np.zeros((H, W), np.float32)
+        L = Layer()
+        for (ph0, sz, jit) in rocks:
+            s_ = (ph0 + gt * 0.12) % 1.0 * sk
+            if s_ <= 0.02:
+                continue
+            x = W * (0.12 + 0.75 * s_)
+            y = H * 0.18 + (x / W) * H * 0.85 - sz * 0.9 - 10 * abs(np.sin(gt * 6 + jit * 20))
+            xx, yy = (x - cx) * z + cx, (y - cy) * z + cy
+            ang = gt * 3 + jit * 6
+            pts = np.array([[xx + sz * z * np.cos(ang + k * 1.3) * (0.8 + 0.3 * np.sin(k * 7 + jit)), yy + sz * z * np.sin(ang + k * 1.3) * (0.8 + 0.3 * np.cos(k * 5))] for k in range(5)])
+            L.poly(pts, (0.32, 0.31, 0.29), 1.0)
+            for k in range(6):
+                cv2.circle(dust, (int(xx - (k + 1) * 14 * z), int(yy - (k + 1) * 9 * z + 6)), int(sz * z * (0.8 + 0.25 * k)), 1.0, -1)
+        img += cv2.GaussianBlur(dust, (0, 0), 14)[..., None] * np.array([0.10, 0.095, 0.09], np.float32) * sk
+        img = L.composite(img, 0.0)
+        return img, dict(exposure=1.35, bloom=0.4)
+    return f

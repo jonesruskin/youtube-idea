@@ -11,7 +11,7 @@ from ep_apophis import model as M
 from ep_apophis.scene_sky import roof, lane, bend, track, apophis_altaz, local_frame, GOLD, CYAN, INK
 from ep_apophis.scene_rock import rock, surface, probe_scene
 from ep_apophis.scene_diag import (dome, blink, odds_meter, radar, tide, orbit_map, road, over_all, label, tag, utc, pointer, orbit_label,
-                                   balance, serpent, DIM, RED, timeline_scene, sea, neutrino, split, stopwatch, gauge, spin_arrows)
+                                   balance, serpent, DIM, RED, timeline_scene, sea, neutrino, split, stopwatch, gauge, spin_arrows, slope)
 
 TC = M.closest()[0] - 69.2 / 3600
 from ep_apophis.scene_sky import moon_world
@@ -322,7 +322,7 @@ c5c = [
       over_all(lab("surface gravity changes by a few percent", 0.4), gauge(0.3)), cut=True, name="the tide on the surface"),
     B(1, surface(h=(21.77, 21.8), view_az=(-30.0, -26.0), pitch=(0.0, 1.0), fov=(60.0, 58.0), earth_az=(-10.0, -10.0), earth_alt=(24.0, 24.0), sun_alt=(14.0, 14.0), slide=(0.0, 0.6)),
       cut=True, name="grains start to slip on a steep slope"),
-    B(1, surface(h=(21.8, 21.83), view_az=(-26.0, -27.0), pitch=(1.0, -6.0), fov=(58.0, 40.0), earth_az=(-10.0, -10.0), earth_alt=(24.0, 24.0), sun_alt=(14.0, 14.0), slide=(0.6, 1.0)), at="landslides",
+    B(1, slope(push=(1.0, 1.1), slide=(0.3, 1.0)), at="landslides", cut=True,
       name="a small landslide puffs dust"),
     B(2, rock(dist=(700.0, 560.0), az=(60.0, 72.0), el=(30.0, 36.0), fov=(34.0, 30.0), h=(21.75, 21.75), tumble_s=(80600.0, 81400.0), slide=(1.0, 1.0)), cut=True,
       name="fresh, brighter rock where it slid"),
