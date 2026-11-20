@@ -17,6 +17,9 @@ P="$D/pass"
 ffmpeg -v error -y -i "$D/final.mp4" -c:v libx264 -preset slow -b:v 1350k -maxrate 2600k -bufsize 5200k -pass 1 -passlogfile "$P" -an -f mp4 /dev/null
 ffmpeg -v error -y -i "$D/final.mp4" -c:v libx264 -preset slow -b:v 1350k -maxrate 2600k -bufsize 5200k -pass 2 -passlogfile "$P" -c:a aac -b:a 128k -movflags +faststart "$OUT/preview.mp4"
 rm -f "$P"*
+# thumbnails are rebuilt from the CURRENT scene code every time (Ep4 v3: a thumbnail made two days earlier still showed
+# the old wide-open fish mouth after the founder had it fixed in the video)
+(cd "$ROOT" && python3 tools/thumbnail.py "$EP" > /dev/null)
 cp "$D/thumbnail.png" "$D/captions.srt" "$D/UPLOAD.md" "$D/title.txt" "$D/description.txt" "$D/tags.txt" "$D/pinned_comment.txt" "$OUT/"
 [ -f "$D/thumbnail_B.png" ] && cp "$D/thumbnail_B.png" "$OUT/"
 [ -f "$D/thumbnail_C.png" ] && cp "$D/thumbnail_C.png" "$OUT/"

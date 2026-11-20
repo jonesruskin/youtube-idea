@@ -1,6 +1,6 @@
 """Thumbnails, three different ideas, no text, no numbers:
 A 'over-under'  - split at the waterline: above, the sky over the river full of shooting stars; below, the young
-                  paddlefish, mouth wide open, in water full of glowing glass beads
+                  paddlefish, mouth open in a true-to-life slit, feeding among glowing glass beads
 B 'the ringing' - the planet cut open: a seismic wavefront racing through the glowing mantle toward the river
 C 'the burial'  - the river cut open: fish thrown on the bank, mud and glass filling the channel"""
 import os
@@ -38,7 +38,7 @@ def make(d):
     from engine.core import W, H
     top, kw = riverbank(phase="storm", view_az=(6.0, 6.0), pitch=(16.0, 16.0), fov=(74.0, 74.0), streak=(1.0, 1.0), heat=(0.25, 0.25),
                         glow=(0.0, 0.0), mist=(0.0, 0.0))(_Ctx(), 7.3, 0.5, 0)
-    low, _ = fish_scene(hero=(0.47, 0.47), hero_y=(0.69, 0.69), size=(1450.0, 1450.0), beads=(1.0, 1.0), red=(0.3, 0.3), school=0, gape=1.0, glow_surface=(0.3, 0.3))(_Ctx(), 3.0, 0.5, 0)
+    low, _ = fish_scene(hero=(0.55, 0.55), hero_y=(0.69, 0.69), size=(1250.0, 1250.0), beads=(0.45, 0.45), red=(0.3, 0.3), school=0, gape=1.0, glow_surface=(0.3, 0.3))(_Ctx(), 3.0, 0.5, 0)
     ys = np.arange(H)[:, None]
     wl = H * 0.46 + 10 * np.sin(np.arange(W)[None, :] * 0.01)
     a = np.clip((ys - wl) / 3.0, 0, 1)[..., None]
