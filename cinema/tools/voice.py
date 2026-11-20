@@ -8,8 +8,9 @@ root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 spec = importlib.util.spec_from_file_location("script", os.path.join(root, ep, "script.py"))
 mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
 out = os.path.join(root, "build", ep, "voice"); os.makedirs(out, exist_ok=True)
-VOICE, SPEED, SR = os.environ.get("VOICE", "af_heart"), float(os.environ.get("SPEED", "0.94")), 24000
-p = KPipeline(lang_code="a")
+VOICE = os.environ.get("VOICE", getattr(mod, "VOICE", "af_heart"))     # an episode may set its own narrator (Ep5: bf_emma)
+SPEED, SR = float(os.environ.get("SPEED", getattr(mod, "SPEED", 0.94))), 24000
+p = KPipeline(lang_code=VOICE[0])                                     # a = American, b = British voices
 # reuse already-narrated segments whose text is unchanged, so adding a segment never alters existing narration
 _old_p = os.path.join(out, "timeline.json")
 OLD = {s["id"]: s for s in json.load(open(_old_p))["segments"]} if os.path.exists(_old_p) else {}

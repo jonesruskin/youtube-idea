@@ -34,7 +34,9 @@ INSIDE = {"pov", "ride", "macro", "interior"}
 def fingerprint(ep):
     """What the mute test saw: the beat sheet, the scene code and the narration."""
     h = hashlib.sha256()
-    for f in ("beats.py", "cine.py", "world.py", "script.py"):
+    import glob as _g                       # Ep5 on: scenes may live in scene_*.py modules too
+    extra = sorted(os.path.basename(x) for x in _g.glob(os.path.join(ROOT, ep, "scene_*.py")))
+    for f in ("beats.py", "cine.py", "world.py", "script.py", *extra):
         p = os.path.join(ROOT, ep, f)
         if os.path.exists(p):
             h.update(open(p, "rb").read())
