@@ -150,7 +150,7 @@ def dome(pan=(0.0, 40.0), zoom=(1.0, 1.06), slit=(0.0, 1.0)):
 
 
 @scene_factory(keys=[])
-def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare_k=0.0, seed=81, aged=0.0, plates=0.0):
+def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare_k=0.0, seed=81, aged=0.0, plates=0.0, diff=(0.0, 0.0)):
     """Two exposures of the same star field, flicking back and forth (a blink comparator): every star stays put,
     one faint dot jumps. CCD look: grey sky, noise, white stars."""
     rng = np.random.default_rng(int(round(seed)))
@@ -171,6 +171,15 @@ def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare_k=0.0, seed=81,
         gl = glare_k * smooth(u)
         glow_dot(img, ap[0], ap[1], (1.0, 1.0, 1.0), 3.2, 2.4 * (1 - smooth(clamp(gl * 1.4))))   # drowned by the glare
         glow_dot(img, (A1 if which == 0 else A0)[0], (A1 if which == 0 else A0)[1], (0.5, 0.5, 0.5), 3.0, 0.0)
+        dk = L2(diff, e)
+        if dk > 0:                                     # subtract one plate from the other: every fixed star cancels, the mover stays as a pair
+            dimg = np.full((H, W, 3), 0.07, np.float32)
+            glow_dot(dimg, ap[0], ap[1], (1.0, 1.0, 1.0), 3.2, 2.4 * (1 - smooth(clamp(gl * 1.4))))
+            bp = A1 if which == 0 else A0
+            dark = np.zeros((H, W, 3), np.float32)
+            glow_dot(dark, bp[0], bp[1], (1.0, 1.0, 1.0), 3.2, 2.4)
+            dimg = np.clip(dimg - dark * 0.07 / max(float(dark.max()), 1e-6) * (1 - smooth(clamp(gl * 1.4))), 0, None)
+            img = img * (1 - dk) + dimg * dk
         nz = np.random.default_rng(int(gt * 30) % 997).normal(0, 0.012, (H // 2, W // 2)).astype(np.float32)
         img += cv2.resize(nz, (W, H))[..., None]
         z = L2(zoom, e)

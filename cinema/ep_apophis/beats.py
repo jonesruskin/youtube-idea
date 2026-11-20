@@ -167,9 +167,9 @@ open2 = [
 # ═══════════════════════════════ 2004: the scare ═══════════════════════════════
 c1a = [
     B(0, dome(pan=(0.0, 50.0), zoom=(1.0, 1.06)), tag("Kitt Peak, Arizona", 0.6, sub="June 2004"), cut=True, name="a mountaintop observatory, 2004"),
-    B(1, blink(zoom=(1.0, 1.25), rate=2.45, ring=0.35, plates=1.0), cut=True, name="two pictures of the same sky, flicking"),
-    B(1, blink(zoom=(1.25, 2.6), ring=1.0, rate=2.45, plates=1.0), at="Every", name="every star stays put; one dot jumps"),
-    B(2, blink(zoom=(2.6, 2.75), ring=0.0, glare_k=1.0, rate=2.45, plates=1.0), name="the Sun's glare floods in: lost"),
+    B(1, blink(zoom=(1.0, 2.2), rate=2.45, ring=0.35, plates=1.0), cut=True, name="two pictures of the same sky, flicking"),
+    B(1, blink(zoom=(2.2, 2.2), ring=1.0, rate=2.45, plates=1.0, diff=(0.0, 1.0)), at="Every", name="every star stays put; one dot jumps"),
+    B(2, blink(zoom=(2.2, 2.3), ring=0.0, glare_k=1.0, rate=2.45, plates=1.0, diff=(1.0, 1.0)), name="the Sun's glare floods in: lost"),
     B(2, track(lat=(-24.0, -28.0), lon=(140.0, 146.0), dist=(30000.0, 26000.0), h=(10.0, 10.2), path=(0.0, 0.0), lisbon=0.0),
       over_all(tag("Siding Spring, Australia", 0.3, sub="December 2004"), pointer("aus_xy", "", 0, 0, 0.2)), at="telescope", cut=True,
       name="a telescope in Australia finds it again"),
