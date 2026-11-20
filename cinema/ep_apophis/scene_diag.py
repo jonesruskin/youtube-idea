@@ -150,7 +150,7 @@ def dome(pan=(0.0, 40.0), zoom=(1.0, 1.06), slit=(0.0, 1.0)):
 
 
 @scene_factory(keys=[])
-def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare_k=0.0, seed=81, aged=0.0):
+def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare_k=0.0, seed=81, aged=0.0, plates=0.0):
     """Two exposures of the same star field, flicking back and forth (a blink comparator): every star stays put,
     one faint dot jumps. CCD look: grey sky, noise, white stars."""
     rng = np.random.default_rng(int(round(seed)))
@@ -184,6 +184,15 @@ def blink(frame=0.0, zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare_k=0.0, seed=81,
             rays = (0.5 + 0.5 * np.cos(ang * 12)) ** 6 * np.exp(-dd * 2.2)
             img = img + (rays * 0.5 * gl)[..., None] * np.array([1.0, 0.92, 0.75], np.float32)
             glow_dot(img, W * 0.97, H * 0.06, (1.0, 0.97, 0.9), 90 * gl + 10, 6.0 * gl)
+        if plates > 0:                                 # two photographic plates, the one on screen lit: we are flicking between two pictures
+            for k_ in (0, 1):
+                x0_, y0_ = int(W - 250 + k_ * 110), int(H - 150)
+                on = 1.0 if k_ == which else 0.25
+                cv2.rectangle(img, (x0_, y0_), (x0_ + 90, y0_ + 70), (0.85 * on, 0.85 * on, 0.85 * on), 3 if on < 1 else -1, cv2.LINE_AA)
+                if on == 1.0:
+                    rr_ = np.random.default_rng(k_ + 7)
+                    for _ in range(14):
+                        cv2.circle(img, (int(x0_ + rr_.uniform(8, 82)), int(y0_ + rr_.uniform(8, 62))), 2, (0.05, 0.05, 0.05), -1)
         p = (ap - np.array([W / 2, H / 2])) * z + np.array([W / 2, H / 2])
         ctx.state["dot_xy"] = (p[0], p[1])
         ctx.state["frame"] = which
