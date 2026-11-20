@@ -123,7 +123,7 @@ open1 = [
       name="dusk over the rooftops: a point of light glides; someone points"),
     B(1, R(19.80, 19.86, az=(236.0, 238.0), alt=(18.0, 18.0), fov=(68.0, 66.0), sat=(0.40, 0.62), sat_path=((205.0, 14.0), (268.0, 30.0)), figure=1.0, figure_az=212.0, apophis=0.0),
       name="steady, silent: it glides on"),
-    B(1, R(19.86, 19.90, az=(249.0, 250.0), alt=(23.0, 23.0), fov=(34.0, 33.0), sat=(0.64, 0.76), sat_path=((205.0, 14.0), (268.0, 30.0)), plane=1.0, plane_at=(246.0, 19.0, 0.0), apophis=0.0), at="blink", cut=True,
+    B(1, R(19.86, 19.90, az=(238.0, 249.0), alt=(18.0, 23.0), fov=(66.0, 34.0), sat=(0.62, 0.76), sat_path=((205.0, 14.0), (268.0, 30.0)), plane=1.0, plane_at=(246.0, 19.0, 0.0), apophis=0.0), at="blink",
       name="a plane blinks red and green; the satellite does not"),
     B(2, lane(dist=(14000.0, 13500.0), az=(-160.0, -150.0), el=(30.0, 32.0), fov=(60.0, 59.0), h=(19.9, 19.95), ring=0.0, gps=1.0, shells=1.0, path=0.0, glint=1.0), pointer("glint_xy", "", 0, 0, 0.3, ring=26),
       cut=True, name="satellites hundreds of km above Earth's night side"),
