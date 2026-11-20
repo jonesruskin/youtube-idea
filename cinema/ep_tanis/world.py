@@ -1096,20 +1096,24 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
         if gape > 0.3 and L(intake) <= 0 and not school_only_flag(locals()):   # feeding: plankton drifting into the open mouth
             mx2, my2 = hx + facing * L(size) * 0.10, hy + L(size) * 0.025     # the mouth, under the paddle base
             r6 = rng_at(613)
-            n6 = 46
+            n6 = 70
             tg6 = ctx.seg["start"] + ctx.beat.t0 + t
-            ph6 = (r6.uniform(0, 1, n6) + tg6 * 0.45) % 1.0
-            sx6, sy6 = mx2 + facing * r6.uniform(160, 560, n6), my2 + r6.uniform(-200, 200, n6)
+            ph6 = (r6.uniform(0, 1, n6) + tg6 * 0.35) % 1.0
+            # a funnel in front of the mouth: wide far out, narrowing into the mouth, so the direction reads in a still
+            dd6 = r6.uniform(180, 620, n6)
+            sx6, sy6 = mx2 + facing * dd6, my2 + r6.uniform(-1, 1, n6) * (0.25 + dd6 / 620.0) * 260
             fl6 = np.zeros((H, W), np.float32)
             for k6 in range(n6):
-                if ph6[k6] > 0.97:
-                    continue                                   # swallowed
-                q0, q1 = ph6[k6] ** 1.6, max(0.0, ph6[k6] - 0.1) ** 1.6
-                x6, y6 = sx6[k6] + (mx2 - sx6[k6]) * q0, sy6[k6] + (my2 - sy6[k6]) * q0
-                xa, ya = sx6[k6] + (mx2 - sx6[k6]) * q1, sy6[k6] + (my2 - sy6[k6]) * q1
-                cv2.line(fl6, (int(xa), int(ya)), (int(x6), int(y6)), 0.35, 2, cv2.LINE_AA)      # its path, pointing into the mouth
-                cv2.circle(fl6, (int(x6), int(y6)), 3, 1.0, -1, cv2.LINE_AA)
-            img = img + (fl6 + fast_blur(fl6, 3) * 0.6)[..., None] * np.array([0.75, 0.72, 0.45], np.float32) * 0.8
+                if ph6[k6] > 0.88:
+                    continue                                   # swallowed: it vanishes inside the mouth
+                e0 = 1 - (1 - ph6[k6]) ** 1.4
+                e1 = 1 - (1 - max(0.0, ph6[k6] - 0.06)) ** 1.4
+                x6, y6 = sx6[k6] + (mx2 - sx6[k6]) * e0, sy6[k6] + (my2 - sy6[k6]) * e0
+                xa, ya = sx6[k6] + (mx2 - sx6[k6]) * e1, sy6[k6] + (my2 - sy6[k6]) * e1
+                br = 0.55 + 0.45 * ph6[k6]                      # faint far out, bright as it gathers at the mouth
+                cv2.line(fl6, (int(xa), int(ya)), (int(x6), int(y6)), 0.35 * br, 1, cv2.LINE_AA)   # tail behind it
+                cv2.circle(fl6, (int(x6), int(y6)), 2, br, -1, cv2.LINE_AA)
+            img = img + fl6[..., None] * np.array([0.72, 0.86, 0.84], np.float32) * 0.75     # pale plankton, no glow (gold read as sparks)
         ik = L(intake)
         if ik > 0:                                      # glass beads swept into the open mouth with the water
             mx_, my_ = hx + facing * L(size) * 0.06, hy + L(size) * 0.02

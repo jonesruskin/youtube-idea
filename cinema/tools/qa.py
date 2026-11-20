@@ -302,6 +302,32 @@ def motion_continuity():
                 continue
             for k, v in q._kw.items():
                 pv = p._kw.get(k)
+                if isinstance(v, Track) and isinstance(pv, Track) and v is not pv and v.kind == pv.kind == "range":
+                    # two separate smooth tracks meet here: the first eases to a stop, the second starts again (and may
+                    # jump). Ep4 v3: c2a#8 cx 0 -> -300 split the fireball move in two; the post gate saw a stall at 114.7 s
+                    g = c.seg["start"] + b.t0
+                    a0, b0 = float(np.ravel(pv(g))[0]), float(np.ravel(v(g))[0])
+                    span_ = max(np.ptp([float(np.ravel(pv(x))[0]) for x in pv.t]), np.ptp([float(np.ravel(v(x))[0]) for x in v.t]), 1e-9)
+                    moving = np.ptp(pv.v) > 1e-9 and np.ptp(v.v) > 1e-9
+                    if abs(a0 - b0) > 0.02 * span_ + 1e-6:
+                        bad.append(f"{sid}#{beats.index(b)} {k} jumps {a0:.4g} -> {b0:.4g} at the beat boundary")
+                    elif moving:
+                        bad.append(f"{sid}#{beats.index(b)} {k} eases to a stop and restarts (two separate moves)")
+                    continue
+                if (isinstance(v, Track) or isinstance(pv, Track)) and k not in q._spec[1]:
+                    # one side smoothed, the other a plain start->end range: compare the values at the boundary
+                    g = c.seg["start"] + b.t0
+                    def _end(x, at_end):
+                        if isinstance(x, Track):
+                            return float(np.ravel(x(g))[0])
+                        if _isnum(x) and isinstance(x, (tuple, list)) and len(x) == 2 and np.ndim(x[0]) == 0:
+                            return float(x[1] if at_end else x[0])
+                        return None
+                    a0, b0 = _end(pv, True), _end(v, False)
+                    if a0 is not None and b0 is not None and not (isinstance(v, Track) and v is pv):
+                        span_ = max(abs(a0), abs(b0), 1e-9)
+                        if abs(a0 - b0) > 0.02 * span_ + 1e-6:
+                            bad.append(f"{sid}#{beats.index(b)} {k} jumps {a0:.4g} -> {b0:.4g} at the beat boundary")
                 if isinstance(v, Track) or isinstance(pv, Track):
                     n += 1
                     continue

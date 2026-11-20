@@ -83,8 +83,8 @@ c2a = [
     B(2, riverbank(phase="dawn", view_az=(-6.0, -3.0), pitch=(3.0, 3.0), mist=(0.6, 0.6), glow=(0.0, 0.3)), cl(0.05, 0.1), cut=True, name="the light flies over the river"),
     B(2, fish_scene(hero=(0.3, 0.55), school=2, pan=(0.0, 100.0)), cl(0.1, 0.2), at="sees", cut=True, name="the fish see nothing"),
     B(3, earth_cut(cx=(0.0, 0.0), cy=(4000.0, 4800.0), scale=(0.11, 0.17), eye=1.0, shell=0.0), lab("tanis", "the river", 0.2, dy=-50), cut=True, name="the Earth is curved"),
-    B(3, earth_cut(cx=(0.0, 0.0), cy=(4800.0, 5800.0), scale=(0.2, 0.26), eye=1.0, rays=(0.0, 0.0), shell=0.0), lab("chx", "rock in the way", 0.3, dy=-60, color=(1.0, 0.5, 0.4)), at="planet", name="the planet is in the way"),
-    B(4, earth_cut(rays=(0.0, 0.0), cx=(-300.0, -500.0), cy=(5900.0, 6200.0), scale=(0.26, 0.3), sight=1.0, eye=1.0, plume=(0.0, 720.0), shell=0.0), name="the fireball climbs"),
+    B(3, earth_cut(cx=(0.0, 0.0), cy=(4800.0, 5800.0), scale=(0.17, 0.26), eye=1.0, rays=(0.0, 0.0), shell=0.0), lab("chx", "rock in the way", 0.3, dy=-60, color=(1.0, 0.5, 0.4)), at="planet", name="the planet is in the way"),
+    B(4, earth_cut(rays=(0.0, 0.0), cx=(0.0, -500.0), cy=(5800.0, 6200.0), scale=(0.26, 0.3), sight=1.0, eye=1.0, plume=(0.0, 720.0), shell=0.0), name="the fireball climbs"),
     B(4, earth_cut(cx=(-500.0, -620.0), cy=(6200.0, 6500.0), scale=(0.3, 0.34), sight=1.0, eye=1.0, plume=(720.0, 900.0), shell=0.0), lab("tanis", "807 km to be seen", 0.4, dy=-60), at="eight", name="over 800 km: now visible"),
     B(4, riverbank(phase="south", view_az=(0.0, 1.0), pitch=(5.0, 5.0), glow=(0.0, 0.5), mist=(0.4, 0.4)), over_all(height_line(), cl(1.0, 1.3)), at="sky", cut=True, name="a glow appears"),
 ]
@@ -157,12 +157,12 @@ c4c = [
     B(2, water(hits=(0.35, 0.9), red=(0.3, 0.28), dust=(0.2, 0.22), pitch=(-14.0, -16.0)), cl(55.5, 57.0), at="Tick", name="like rain"),
 ]
 c4d = [
-    B(0, fish_scene(hero=(-0.3, -0.1), school=0, beads=(1.0, 1.0), red=(0.15, 0.15), pan=(0.0, 60.0), bead_size=2.5, glow_surface=(0.4, 0.4)), cl(57.0, 58.0), cut=True, name="beads sinking"),
+    B(0, fish_scene(hero=(-0.1, 0.25), size=(520.0, 700.0), school=0, beads=(1.0, 1.0), red=(0.15, 0.15), pan=(0.0, 60.0), bead_size=2.5, glow_surface=(0.4, 0.4)), cl(57.0, 58.0), cut=True, name="beads sinking"),
     B(1, fish_scene(glow_surface=(0.4, 0.0), hero=(0.25, 0.45), hero_y=(0.45, 0.45), size=(700.0, 900.0), beads=(1.0, 1.0), red=(0.15, 0.15), school=0, pan=(60.0, 160.0), bead_size=1.6), cl(58.0, 59.0), name="the paddlefish keeps feeding"),
     B(1, fish_scene(hero=(0.45, 0.55), hero_y=(0.45, 0.5), size=(900.0, 1600.0), beads=(1.0, 1.0), red=(0.15, 0.15), pan=(160.0, 220.0), intake=(0.0, 1.0), school=0), cl(59.0, 60.0), at="sieves", name="sieving glass"),
     B(2, gills(caught=(0.0, 0.0), food=1.0, zoom=(1.3, 1.38)), cl(60.0, 60.5), name="the comb inside its gills"),
     B(2, gills(caught=(0.0, 0.6), food=0.25, zoom=(1.38, 1.5)), cl(60.5, 61.0), at="Now", name="now it catches glass"),
-    B(3, gills(caught=(0.6, 0.95), food=0.3, zoom=(1.05, 1.3)), cl(61.0, 62.0), name="the beads lodge, one after another"),
+    B(3, gills(caught=(0.6, 0.95), food=0.3, zoom=(1.5, 1.7)), cl(61.0, 62.0), name="the beads lodge, one after another"),
 ]
 
 # ───────────── the river comes back ─────────────
