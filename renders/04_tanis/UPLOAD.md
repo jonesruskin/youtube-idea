@@ -7,7 +7,7 @@ Everything needed to upload this episode to YouTube. Each field below is also a 
 | Video file | `These Fish Saw the First Hour After the Dinosaur Asteroid. Here's Every Minute.mp4` (1080p master, Git LFS; named after the title) |
 | Title | **These Fish Saw the First Hour After the Dinosaur Asteroid. Here's Every Minute.** (79 chars) · `title.txt` |
 | Thumbnail | `thumbnail.png` (1280×720) · no text: from under the river looking up through Snell's window: the circle of sky full of glowing streaks, a paddlefish silhouette crossing it, glass beads sinking past |
-| Description | `description.txt` (3153 / 5000 chars, includes chapters, sources, credits, hashtags) |
+| Description | `description.txt` (3162 / 5000 chars, includes chapters, sources, credits, hashtags) |
 | Tags | `tags.txt` (316 / 500 chars) |
 | Subtitles | `captions.srt` (English, synced to the narration) |
 | Pinned comment | `pinned_comment.txt` |

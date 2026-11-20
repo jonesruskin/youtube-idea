@@ -98,6 +98,10 @@ def put(name, text):
         f.write(text if text.endswith("\n") else text + "\n")
 
 
+# YouTube rejects "<" and ">" in titles, descriptions and tags (Ep4: "more than 50 %" had been written ">50 %")
+for _f, _t in (("title", title), ("description", desc), ("tags", META["tags"]), ("pinned comment", META.get("pinned", ""))):
+    assert not any(c in _t for c in "<>"), f"angle bracket in the {_f} (YouTube rejects < and >): " + \
+        "; ".join(l.strip()[:80] for l in _t.splitlines() if any(c in l for c in "<>"))
 put("title.txt", title)
 put("description.txt", desc)
 put("tags.txt", META["tags"])

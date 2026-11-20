@@ -18,7 +18,7 @@ CHAPTERS
 7:27 Next: Apophis
 
 THE SCIENCE (sources)
-• Tanis, Hell Creek Formation, North Dakota: DePalma et al. 2019, PNAS 116, 8190 ("A seismically induced onshore surge deposit at the KPg boundary"): ~3,050 km from Chicxulub; P/S/Rayleigh arrivals 6/10/13 min; spherules overhead 13–25 min (launch 30–60°); most fell within 1–2 h; spherules 0.3–1.4 mm; ≥10 m runup; spherules in the gill rakers of >50 % of sturgeon and paddlefish; unaltered glass in amber matching Chicxulub black glass
+• Tanis, Hell Creek Formation, North Dakota: DePalma et al. 2019, PNAS 116, 8190 ("A seismically induced onshore surge deposit at the KPg boundary"): ~3,050 km from Chicxulub; P/S/Rayleigh arrivals 6/10/13 min; spherules overhead 13–25 min (launch 30–60°); most fell within 1–2 h; spherules 0.3–1.4 mm; ≥10 m runup; spherules in the gill rakers of more than 50 % of sturgeon and paddlefish; unaltered glass in amber matching Chicxulub black glass
 • Impact season (spring), from Tanis fish bones: During et al. 2022, Nature 603, 91; DePalma et al. 2021, Sci. Rep. 11, 23704 (DePalma was cleared of fabrication over the latter by the University of Manchester, 2023)
 • Re-entry heating: Goldin & Melosh 2009, Geology 37, 1135 (peak ~6 kW/m², above sunlight ~25 min with self-shielding); Melosh et al. 1990, Nature 343, 251 (higher); the debate continues
 • Impact angle (~60°, from the north-east): Collins et al. 2020, Nature Communications 11, 1480
