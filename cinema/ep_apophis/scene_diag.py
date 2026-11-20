@@ -237,8 +237,10 @@ def odds_meter(size=(1.0, 1.0), off=(0.0, 0.0), elong=(3.0, 3.0), keyhole=(0.0, 
         ell = np.stack([np.cos(th) * el * sz, np.sin(th) * sz], -1) @ R2.T + np.array([of, 0.0])
         L.polyline(np.stack([cx + ell[:, 0] * Re, cy - ell[:, 1] * Re], -1), CYAN, 0.8, th=3, closed=True)
         if ghosts > 0:                                 # where the cloud was on earlier nights: it narrows
-            for k_, gs in enumerate((2.2, 1.7, 1.35)):
-                eg = np.stack([np.cos(th) * el * sz * gs, np.sin(th) * sz * gs], -1) @ R2.T + np.array([of, 0.0])
+            for k_, gs_abs in enumerate((3.2, 2.6, 2.0, 1.5)):          # where the cloud stood on earlier nights (fixed sizes)
+                if gs_abs <= sz * 1.02:
+                    continue
+                eg = np.stack([np.cos(th) * el * gs_abs, np.sin(th) * gs_abs], -1) @ R2.T + np.array([of, 0.0])
                 L.polyline(np.stack([cx + eg[:, 0] * Re, cy - eg[:, 1] * Re], -1), CYAN, ghosts * (0.35 + 0.15 * k_), th=3, closed=True)
         rp_ = L2(ret, e)
         if rp_ > 0:                                    # through the keyhole, once around the Sun, and back into Earth
@@ -270,6 +272,8 @@ def odds_meter(size=(1.0, 1.0), off=(0.0, 0.0), elong=(3.0, 3.0), keyhole=(0.0, 
             x0, y0, w_, h_ = W * 0.74, H * 0.28, 60, H * 0.44
             cv2.rectangle(img, (int(x0), int(y0)), (int(x0 + w_), int(y0 + h_)), (0.25, 0.27, 0.3), 2)
             fill = clamp(o)
+            rec = y0 + h_ - 4 - (h_ - 8) * 0.08                       # the previous record, low on the scale
+            cv2.line(img, (int(x0 - 18), int(rec)), (int(x0 + w_ + 18), int(rec)), (0.75, 0.75, 0.8), 3, cv2.LINE_AA)
             cv2.rectangle(img, (int(x0 + 4), int(y0 + h_ - 4 - (h_ - 8) * fill)), (int(x0 + w_ - 4), int(y0 + h_ - 4)), RED, -1)
             ctx.state["meter_top"] = (x0 + w_ / 2, y0 + h_ - (h_ - 8) * fill)
         ctx.state["earth_xy"] = (cx, cy)

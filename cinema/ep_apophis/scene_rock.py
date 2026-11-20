@@ -345,11 +345,12 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
                     rng = np.random.default_rng(500 + k)
                     ph = (gt_ * 0.35 + rng.random()) % 1.0
                     side = np.cross(sdir, down) * rng.uniform(-35, 35)
-                    p0 = sp + side + down * (ph * 120)
-                    p1 = sp + side + down * (ph * 120 + 9)
-                    a0, a1 = cam.project(p0), cam.project(p1)
+                    p0 = sp + side + down * (ph * 120) + sdir * (6 * np.abs(np.sin(ph * 18 + k)))   # pebbles bouncing downhill
+                    a0 = cam.project(p0)
                     if a0[2] > 0:
-                        cv2.line(img, (int(a0[0]), int(a0[1])), (int(a1[0]), int(a1[1])), (0.8, 0.77, 0.72), 2, cv2.LINE_AA)
+                        rr_ = int(3 + 4 * rng.random())
+                        cv2.circle(img, (int(a0[0]), int(a0[1])), rr_, (0.62, 0.6, 0.56), -1, cv2.LINE_AA)
+                        glow_dot(img, a0[0] - 6, a0[1] + 4, (0.6, 0.58, 0.55), 6 + 10 * ph, 0.12)
         if eiffel_k > 0:
             fwd = (np.asarray(look) - pos) / D
             rgt = np.cross(fwd, [0, 0, 1.0]); rgt /= np.linalg.norm(rgt)
