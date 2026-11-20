@@ -139,7 +139,7 @@ open1 = [
       name="dusk over the rooftops: a point of light glides; someone points"),
     B(1, R(19.80, 19.86, az=(236.0, 238.0), alt=(18.0, 11.0), fov=(68.0, 66.0), sat=(0.40, 0.62), sat_path=((205.0, 14.0), (268.0, 30.0)), figure=1.0, figure_az=212.0, apophis=0.0),
       name="steady, silent: it glides on"),
-    B(1, R(19.86, 19.90, az=(247.0, 249.0), alt=(21.5, 22.5), fov=(18.0, 16.0), sat=(0.62, 0.76), sat_path=((205.0, 14.0), (268.0, 30.0)), plane=1.0, plane_at=(246.0, 19.0, 0.0), apophis=0.0), at="blink", cut=True,
+    B(1, R(19.86, 19.90, az=(238.0, 249.0), alt=(11.0, 22.0), fov=(66.0, 20.0), sat=(0.62, 0.76), sat_path=((205.0, 14.0), (268.0, 30.0)), plane=1.0, plane_at=(246.0, 19.0, 0.0), apophis=0.0), at="blink",
       name="a plane blinks red and green; the satellite does not"),
     B(2, lane(dist=(14000.0, 13500.0), az=(137.1, 143.1), el=(24.2, 26.2), fov=(60.0, 59.0), h=(19.9, 19.95), ring=0.0, gps=1.0, shells=1.0, path=0.0, glint=1.0), pointer("glint_xy", "", 0, 0, 0.3, ring=26),
       cut=True, name="satellites hundreds of km above Earth's night side"),
@@ -167,9 +167,9 @@ open2 = [
 # ═══════════════════════════════ 2004: the scare ═══════════════════════════════
 c1a = [
     B(0, dome(pan=(0.0, 50.0), zoom=(1.0, 1.06)), tag("Kitt Peak, Arizona", 0.6, sub="June 2004"), cut=True, name="a mountaintop observatory, 2004"),
-    B(1, blink(zoom=(1.0, 1.06), rate=2.45), cut=True, name="two pictures of the same sky, flicking"),
-    B(1, blink(zoom=(2.6, 2.75), ring=1.0, rate=2.45), at="Every", cut=True, name="every star stays put; one dot jumps"),
-    B(2, blink(zoom=(2.75, 2.85), ring=0.0, glare_k=1.0, rate=2.45), name="the Sun's glare floods in: lost"),
+    B(1, blink(zoom=(1.0, 1.25), rate=2.45), cut=True, name="two pictures of the same sky, flicking"),
+    B(1, blink(zoom=(1.25, 2.6), ring=1.0, rate=2.45), at="Every", name="every star stays put; one dot jumps"),
+    B(2, blink(zoom=(2.6, 2.75), ring=0.0, glare_k=1.0, rate=2.45), name="the Sun's glare floods in: lost"),
     B(2, track(lat=(-24.0, -28.0), lon=(140.0, 146.0), dist=(30000.0, 26000.0), h=(10.0, 10.2), path=(0.0, 0.0), lisbon=0.0),
       over_all(tag("Siding Spring, Australia", 0.3, sub="December 2004"), pointer("aus_xy", "", 0, 0, 0.2)), at="telescope", cut=True,
       name="a telescope in Australia finds it again"),
@@ -305,8 +305,8 @@ c4b = [
 
 # ═══════════════════════════════ the pull: Earth is the truck ═══════════════════════════════
 c5a = [
-    B(0, road(truck=(-1.0, 0.0), wobble=(0.0, 0.0), cam=(0.0, 0.0)), cut=True, name="a bike on a road at dusk"),
-    B(1, road(truck=(0.0, 1.5), wobble=(0.0, 1.0), dust=(0.0, 1.0), cam=(0.0, 0.0), cz=(1.7, 1.6)), cut=True, name="a truck passes too close; the bike wobbles"),
+    B(0, road(truck=(-1.0, 0.0), wobble=(0.0, 0.0), cam=(0.0, 0.0), cz=(1.0, 1.6)), cut=True, name="a bike on a road at dusk"),
+    B(1, road(truck=(0.0, 1.5), wobble=(0.0, 1.0), dust=(0.0, 1.0), cam=(0.0, 0.0), cz=(1.6, 2.2)), name="a truck passes too close; the bike wobbles"),
     B(2, bend(h=(21.0, 22.2), scale=(1.6, 1.5), tilt=(80.0, 80.0)), cut=True, name="Earth is the truck"),
 ]
 c5b = [
