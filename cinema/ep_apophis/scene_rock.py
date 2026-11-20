@@ -612,13 +612,14 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
                     pr_ = cw_project(cw, Q, Ap, pq, camL)
                     if pr_ is not None:
                         glow_dot(img, pr_[0], pr_[1], (1.0, 0.85, 0.6), 2.5, 1.2)
-                pp = np.array([-0.6, RL + 1.0 + max(0, hgt) + jk * 12, 4.0 + jk * 6])
-                pr = cw_project(cw, Q, Ap, pp, camL)
-                if pr is not None:
-                    rr = 0.45 * cw.f / np.linalg.norm(pp - camL)
-                    cv2.circle(img, (int(pr[0]), int(pr[1])), max(2, int(rr)), (0.55, 0.5, 0.42), -1, cv2.LINE_AA)
-                    glow_dot(img, pr[0], pr[1], (1.0, 0.9, 0.7), max(1.0, rr * 0.6), 0.5)
-                    ctx.state["jump_xy"] = pr
+                feet = np.array([-0.6, RL + 0.02 + jk * 9, 5.0 + jk * 5])
+                head = feet + np.array([0.0, 1.75, 0.0])
+                pf, ph = cw_project(cw, Q, Ap, feet, camL), cw_project(cw, Q, Ap, head, camL)
+                if pf is not None and ph is not None:
+                    from ep_apophis.scene_sky import person as _person
+                    hgt_px = float(np.hypot(pf[0] - ph[0], pf[1] - ph[1]))
+                    _person(img, pf[0], pf[1], max(20.0, hgt_px), point=None, alpha=1.0, col=(0.85, 0.85, 0.82))
+                    ctx.state["jump_xy"] = pf
         sk = L2(slide, e)
         if sk > 0:                                              # grains streaming down the big boulder's flank
             pu, rad, sd = BL[-2]

@@ -304,7 +304,7 @@ def _space(cam, h, path_to, shells, ring, gps, moon, path_alpha=1.0, mark=1.0, g
             for hb in np.arange(np.ceil(t0 * 4) / 4, path_to, 0.25):
                 bx_, by_, bz_ = cam.project(apophis_world(hb))
                 if bz_ > 0:
-                    glow_dot(img, bx_, by_, (1.0, 0.85, 0.55), 3.0, 3.0 * beads)
+                    glow_dot(img, bx_, by_, (1.0, 0.85, 0.55), 5.0, 6.0 * beads)
     A = apophis_world(path_to)
     x, y, z = cam.project(A)
     if z > 0 and not occluded(cam, A)[0] and mark > 0:
@@ -414,7 +414,7 @@ CITIES = [(38.72, -9.14), (51.5, -0.13), (48.86, 2.35), (41.9, 12.5), (30.04, 31
 
 
 @scene_factory(keys=[])
-def track(lat=(10.0, 20.0), lon=(10.0, -20.0), dist=(42000.0, 42000.0), h=(19.0, 21.0), path=(0.0, 1.0), lisbon=1.0, sight=0.0):
+def track(lat=(10.0, 20.0), lon=(10.0, -20.0), dist=(42000.0, 42000.0), h=(19.0, 21.0), path=(0.0, 1.0), lisbon=1.0, sight=0.0, wide=0.0):
     """The globe from far above with the point below Apophis tracing across it (real GMST, real night side)."""
     hs = np.linspace(18.6, 23.4, 300)
     sub = np.array([M.sub_point(x) for x in hs])
@@ -424,7 +424,8 @@ def track(lat=(10.0, 20.0), lon=(10.0, -20.0), dist=(42000.0, 42000.0), h=(19.0,
         hh = lerp(h[0], h[1], u)
         la, lo = L2(lat, e), L2(lon, e)
         cdir = ll_to_world(la, lo, hh, 1.0)
-        cam = Camera(cdir * L2(dist, e), (0.0, 0.0, 0.0), fov=34.0, up=(0.0, 0.0, 1.0))
+        tgt = apophis_world(hh) * 0.42 if wide > 0 else np.zeros(3)     # aim between Earth and the asteroid
+        cam = Camera(cdir * L2(dist, e), tgt, fov=34.0 if wide <= 0 else 30.0, up=(0.0, 0.0, 1.0))
         img = space_sky(cam, 0.6)
         draw_earth(img, cam, hh, tw=4096)
         pr = L2(path, e)
@@ -814,7 +815,7 @@ def roof(view="town", az=(110.0, 112.0), alt=(18.0, 20.0), fov=(60.0, 58.0), h=(
             faz = A - F * 0.42 + F * 0.84 * (k + 0.5) / max(1, int(round(figures)))
             fx, fy, fz = cam.project(altaz_dir(faz, -4.0 - (k % 2) * 1.5, hh) * 1e6)
             if fz > 0:
-                person(img, fx, fy, (260 + 50 * (k % 3)) * 60 / F, point=pa, alpha=1.0)
+                person(img, fx, fy, (260 + 50 * (k % 3)) * 60 / F, point=None, alpha=1.0)
         if figure > 0:
             faz = figure_az if figure_az is not None else A - F * 0.25
             fx, fy, fz = cam.project(altaz_dir(faz, -3.5, hh) * 1e6)

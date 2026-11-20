@@ -596,21 +596,30 @@ def balance(at=0.2, x=W * 0.5, y=H * 0.62, s=1.0):
 
 
 def serpent(at=0.2, x=W * 0.78, y=H * 0.3, s=1.0):
-    """Apep, the serpent of chaos, drawn as a golden hieroglyph-like snake that writes itself on."""
+    """Apep, the serpent of chaos, in the style of a hieroglyph: a thick body in three coils tapering to the tail,
+    a raised head with an eye and a forked tongue, writing itself on."""
     def f(ctx, img, t, u):
         a = fade(t, _at(ctx, at), ctx.dur, 0.35)
         if a <= 0:
             return img
+        p = prog(t, _at(ctx, at), 1.2)
         L = Layer()
-        xs = np.linspace(-200, 200, 160) * s
-        ys = 34 * s * np.sin(xs / (55 * s)) * np.linspace(0.6, 1.0, 160)
-        pts = np.stack([x + xs, y + ys], -1)
-        L.polyline(pts, GOLD, a, th=int(12 * s), progress=prog(t, _at(ctx, at), 1.2))
-        hx, hy = pts[-1]
-        if prog(t, _at(ctx, at), 1.2) > 0.98:
-            L.circle((hx + 10 * s, hy), 16 * s, GOLD, a, fill=True)
-            L.line((hx + 24 * s, hy), (hx + 40 * s, hy - 6 * s), color=RED, alpha=a, th=3)
-            L.line((hx + 24 * s, hy), (hx + 40 * s, hy + 6 * s), color=RED, alpha=a, th=3)
+        n = 200
+        q = np.linspace(0, 1, n)
+        xs = x + (q - 0.5) * 420 * s
+        ys = y + 55 * s * np.sin(q * 3 * 2 * np.pi) * (0.4 + 0.6 * q)
+        m = int(n * p)
+        for k in range(max(0, m - 1)):
+            th = int((6 + 22 * q[k]) * s)
+            L.line((xs[k], ys[k]), (xs[k + 1], ys[k + 1]), color=GOLD, alpha=a, th=max(2, th))
+        if p > 0.98:
+            hx, hy = xs[-1] + 18 * s, ys[-1] - 40 * s
+            L.line((xs[-1], ys[-1]), (hx, hy), color=GOLD, alpha=a, th=int(26 * s))
+            L.ellipse((hx + 14 * s, hy), 30 * s, 18 * s, color=GOLD, alpha=a, th=int(14 * s))
+            L.circle((hx + 14 * s, hy), 24 * s, GOLD, a, fill=True)
+            L.circle((hx + 20 * s, hy - 6 * s), 5 * s, (0.05, 0.05, 0.05), a, fill=True)
+            L.line((hx + 36 * s, hy + 4 * s), (hx + 62 * s, hy - 4 * s), color=RED, alpha=a, th=3)
+            L.line((hx + 36 * s, hy + 4 * s), (hx + 62 * s, hy + 12 * s), color=RED, alpha=a, th=3)
         return L.composite(img, 0.5)
     return f
 
