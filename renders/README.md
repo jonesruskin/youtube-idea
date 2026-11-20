@@ -19,6 +19,7 @@ One folder per video, holding everything YouTube Studio needs. Open `UPLOAD.md` 
 | 01 | [`01_black_hole`](01_black_hole) | We Let a Black Hole Loose in Our Solar System |
 | 02 | [`02_jupiter`](02_jupiter) | We Dropped a Ship Into Jupiter. Here's How Far It Got. |
 | 03 | [`03_rogue_planet`](03_rogue_planet) | A Rogue Planet Is Coming. The Date It Arrives Decides Everything. |
+| 04 | [`04_tanis`](04_tanis) | These Fish Saw the First Hour After the Dinosaur Asteroid. Here's Every Minute. |
 | – | [`episodes/ep01-zero-g/release`](../episodes/ep01-zero-g/release) | Earlier flat-animation pilot (The Blink Files, superseded) |
 
 **Upload order:** see [`EPISODES.md`](../EPISODES.md). Each episode's ending teases the next one.

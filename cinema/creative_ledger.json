@@ -1,47 +1,61 @@
 {
-  "_about": "What each shipped episode already used. The creative gate (tools/creative_gate.py) refuses a new episode whose META['creative'] repeats any of these. Append an episode here when its master is approved.",
-  "episodes": [
-    {
-      "slot": 1,
-      "ep": "ep_blackhole",
-      "title": "We Let a Black Hole Loose in Our Solar System",
-      "story_shape": "intruder approach: something invisible drifts in over years, we watch it disrupt the planets, then branch into endings",
-      "point_of_view": "god's-eye orbital view of the Solar System with a narrator addressing you",
-      "narrator": "second person: you, watching from home",
-      "hook_device": "a countdown: years left until it arrives",
-      "time_scale": "decades compressed to minutes",
-      "ending_device": "three endings for Earth (falls in, scorched, frozen) then the odds: should you worry",
-      "thumb_device": "big headline number over the scene: 30 YEARS LEFT",
-      "palette": "black space with hot orange accretion glow",
-      "signature_shot": "the black hole's lensing ring sliding past the planets"
-    },
-    {
-      "slot": 2,
-      "ep": "ep_jupiter",
-      "title": "We Dropped a Ship Into Jupiter. Here's How Far It Got.",
-      "story_shape": "descent: one object falls layer by layer with a depth and time counter until it fails",
-      "point_of_view": "ride-along inside the falling ship",
-      "narrator": "second person: you, inside the ship",
-      "hook_device": "how far does it get before something stops it",
-      "time_scale": "minutes to hours of a single fall",
-      "ending_device": "the ship is lost; we keep going without you to the core",
-      "thumb_device": "big headline text over the scene: STILL NO GROUND",
-      "palette": "amber, brown and cream Jupiter cloud bands",
-      "signature_shot": "dropping through the cloud decks into the red glowing dark"
-    },
-    {
-      "slot": 3,
-      "ep": "ep_rogue",
-      "title": "A Rogue Planet Is Coming. The Date It Arrives Decides Everything.",
-      "story_shape": "intruder approach rerun 730 times: the arrival date branches Earth into fates",
-      "point_of_view": "from the ground on Earth looking up, plus orbital views of the simulation runs",
-      "narrator": "second person: you, on the ground",
-      "hook_device": "a date on the calendar decides everything",
-      "time_scale": "days to years",
-      "ending_device": "four fates (scorched, frozen, thrown out, Moon lost) then the odds: should you worry",
-      "thumb_device": "an everyday object (a wall calendar with one date circled) framing the cosmic event outside the window",
-      "palette": "deep violet and ice blue night",
-      "signature_shot": "a giant violet planet rising over a city by the bay"
-    }
-  ]
+ "_about": "What each shipped episode already used. The creative gate (tools/creative_gate.py) refuses a new episode whose META['creative'] repeats any of these. Append an episode here when its master is approved.",
+ "episodes": [
+  {
+   "slot": 1,
+   "ep": "ep_blackhole",
+   "title": "We Let a Black Hole Loose in Our Solar System",
+   "story_shape": "intruder approach: something invisible drifts in over years, we watch it disrupt the planets, then branch into endings",
+   "point_of_view": "god's-eye orbital view of the Solar System with a narrator addressing you",
+   "narrator": "second person: you, watching from home",
+   "hook_device": "a countdown: years left until it arrives",
+   "time_scale": "decades compressed to minutes",
+   "ending_device": "three endings for Earth (falls in, scorched, frozen) then the odds: should you worry",
+   "thumb_device": "big headline number over the scene: 30 YEARS LEFT",
+   "palette": "black space with hot orange accretion glow",
+   "signature_shot": "the black hole's lensing ring sliding past the planets"
+  },
+  {
+   "slot": 2,
+   "ep": "ep_jupiter",
+   "title": "We Dropped a Ship Into Jupiter. Here's How Far It Got.",
+   "story_shape": "descent: one object falls layer by layer with a depth and time counter until it fails",
+   "point_of_view": "ride-along inside the falling ship",
+   "narrator": "second person: you, inside the ship",
+   "hook_device": "how far does it get before something stops it",
+   "time_scale": "minutes to hours of a single fall",
+   "ending_device": "the ship is lost; we keep going without you to the core",
+   "thumb_device": "big headline text over the scene: STILL NO GROUND",
+   "palette": "amber, brown and cream Jupiter cloud bands",
+   "signature_shot": "dropping through the cloud decks into the red glowing dark"
+  },
+  {
+   "slot": 3,
+   "ep": "ep_rogue",
+   "title": "A Rogue Planet Is Coming. The Date It Arrives Decides Everything.",
+   "story_shape": "intruder approach rerun 730 times: the arrival date branches Earth into fates",
+   "point_of_view": "from the ground on Earth looking up, plus orbital views of the simulation runs",
+   "narrator": "second person: you, on the ground",
+   "hook_device": "a date on the calendar decides everything",
+   "time_scale": "days to years",
+   "ending_device": "four fates (scorched, frozen, thrown out, Moon lost) then the odds: should you worry",
+   "thumb_device": "an everyday object (a wall calendar with one date circled) framing the cosmic event outside the window",
+   "palette": "deep violet and ice blue night",
+   "signature_shot": "a giant violet planet rising over a city by the bay"
+  },
+  {
+   "slot": 4,
+   "ep": "ep_tanis",
+   "title": "These Fish Saw the First Hour After the Dinosaur Asteroid. Here's Every Minute.",
+   "story_shape": "one riverbank, one clock: a two-hour vigil 3,050 km from the impact, counted by what arrives, inside a forensic frame (fossil evidence at open and close)",
+   "point_of_view": "eye level and underwater in a Cretaceous river (Tanis); no orbital Solar System views",
+   "narrator": "third person, present tense, no 'you'",
+   "hook_device": "a lightning-count: flash first, sound last, and a paddlefish breathing in glass",
+   "time_scale": "seconds to two and a half hours",
+   "ending_device": "forensic close: glass in amber and in fossil gills matched to the crater, then the sound arriving last",
+   "thumb_device": "from under the river: Snell's window full of shooting stars with a paddlefish crossing it",
+   "palette": "fern green, river silt and ember red",
+   "signature_shot": "glass beads raining from a clear sky into a river while a paddlefish feeds"
+  }
+ ]
 }
