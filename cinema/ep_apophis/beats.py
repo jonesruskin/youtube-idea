@@ -322,7 +322,7 @@ c5c = [
       over_all(lab("surface gravity changes by a few percent", 0.4), gauge(0.3)), cut=True, name="the tide on the surface"),
     B(1, surface(h=(21.77, 21.8), view_az=(-30.0, -26.0), pitch=(0.0, 1.0), fov=(60.0, 58.0), earth_az=(-10.0, -10.0), earth_alt=(24.0, 24.0), sun_alt=(14.0, 14.0), slide=(0.0, 0.6)),
       cut=True, name="grains start to slip on a steep slope"),
-    B(1, rock(dist=(620.0, 560.0), az=(60.0, 66.0), el=(30.0, 32.0), fov=(36.0, 36.0), h=(21.75, 21.75), tumble_s=(80000.0, 80600.0), slide=(0.0, 1.0)), at="landslides", cut=True,
+    B(1, surface(h=(21.8, 21.83), view_az=(-26.0, -27.0), pitch=(1.0, -6.0), fov=(58.0, 40.0), earth_az=(-10.0, -10.0), earth_alt=(24.0, 24.0), sun_alt=(14.0, 14.0), slide=(0.6, 1.0)), at="landslides",
       name="a small landslide puffs dust"),
     B(2, rock(dist=(700.0, 560.0), az=(60.0, 72.0), el=(30.0, 36.0), fov=(34.0, 30.0), h=(21.75, 21.75), tumble_s=(80600.0, 81400.0), slide=(1.0, 1.0)), cut=True,
       name="fresh, brighter rock where it slid"),

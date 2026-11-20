@@ -633,23 +633,29 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
                     _person(img, pf[0], pf[1], max(20.0, hgt_px), point=None, alpha=1.0, col=(0.85, 0.85, 0.82))
                     ctx.state["jump_xy"] = pf
         sk = L2(slide, e)
-        if sk > 0:                                              # grains streaming down the big boulder's flank
-            pu, rad, sd = BL[-2]
+        if sk > 0:                                              # a small landslide: pebbles pouring over the boulder's edge
+            pu, rad, sd = BL[-6]                                # the 0.8 m boulder about 7 m ahead
             cpos = pu * (RL + rad * 0.3)
             gt = ctx.seg["start"] + ctx.beat.t0 + t
-            for k in range(600):
+            lay = np.zeros((H, W), np.float32)
+            dust = np.zeros((H, W), np.float32)
+            for k in range(int(420 * sk)):
                 r2 = np.random.default_rng(k)
-                ph0 = r2.uniform(0, 1)
-                s_ = (gt * 0.06 + ph0) % 1.0
-                ang = r2.uniform(-0.9, 0.9)
-                th = 0.25 + s_ * 1.25
-                pp = cpos + rad * np.array([np.sin(th) * np.sin(ang + 1.6), np.cos(th), np.sin(th) * np.cos(ang + 1.6)]) * 1.02
+                ph = (gt * 0.22 + r2.uniform(0, 1)) % 1.0
+                ang = r2.uniform(-0.5, 0.5) + 1.6
+                th = 0.15 + ph * 1.45                          # from the top, over the shoulder, down the flank
+                pp = cpos + rad * np.array([np.sin(th) * np.sin(ang), np.cos(th) * 0.62, np.sin(th) * np.cos(ang)]) * 1.03
+                if th > 1.35:                                   # then out across the ground
+                    run = (th - 1.35) * 6.0 * rad
+                    pp = cpos + rad * np.array([np.sin(ang), 0.0, np.cos(ang)]) * 1.05 + np.array([np.sin(ang), 0, np.cos(ang)]) * run
+                    pp[1] = RL + 0.05
                 pr = cw_project(cw, Q, Ap, pp, camL)
-                if pr is not None:
-                    glow_dot(img, pr[0], pr[1], (0.85, 0.82, 0.76), 2.2, 1.6 * sk * sun_up + 0.4 * sk)
-            pr = cw_project(cw, Q, Ap, cpos + rad * np.array([0.6, 0.1, -0.3]), camL)
-            if pr is not None:
-                glow_dot(img, pr[0], pr[1], (0.6, 0.58, 0.55), 60 * sk, 0.08 * sk)
+                if pr is not None and 0 < pr[0] < W and 0 < pr[1] < H:
+                    cv2.circle(lay, (int(pr[0]), int(pr[1])), int(2 + 4 * r2.random()), 1.0, -1, cv2.LINE_AA)
+                    if th > 1.1:
+                        cv2.circle(dust, (int(pr[0]), int(pr[1])), 22, 1.0, -1)
+            img = img * (1 - lay[..., None] * 0.9) + lay[..., None] * np.array([0.30, 0.29, 0.27], np.float32)
+            img += clamp(cv2.GaussianBlur(dust, (0, 0), 22) * 0.6)[..., None] * np.array([0.16, 0.15, 0.14], np.float32) * sk
         if lift > 0:                                   # grains lifted a hair as the pull of gravity weakens
             gt_ = ctx.seg["start"] + ctx.beat.t0 + t
             for k in range(140):
