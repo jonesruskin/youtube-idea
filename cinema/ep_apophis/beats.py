@@ -89,6 +89,22 @@ def moons_row(at=0.3):
     return f
 
 
+def speed_bar(at=0.0):
+    """Speed as a bar that grows (no text needed): from 5.9 km/s far out to 7.4 at closest approach."""
+    def f(ctx, img, t, u):
+        v = ctx.state.get("speed")
+        a = fade(t, at, ctx.dur, 0.3)
+        if v is None or a <= 0:
+            return img
+        L = Layer()
+        x0, y0, w_, h_ = W - 160, H * 0.2, 46, H * 0.6
+        L.rect(x0, y0, x0 + w_, y0 + h_, DIM, a * 0.7, th=2)
+        k = np.clip((v - 4.0) / 4.0, 0, 1)
+        L.rect(x0 + 6, y0 + h_ - 6 - (h_ - 12) * k, x0 + w_ - 6, y0 + h_ - 6, GOLD, a, fill=True)
+        return L.composite(img, 0.4)
+    return f
+
+
 def scan_grid(at=0.2):
     """A mapping pass: a bright scan line sweeping over the rock, leaving a fine survey grid behind."""
     def f(ctx, img, t, u):
@@ -133,7 +149,7 @@ open2 = [
       name="13 April 2029: a new moving star rises in the east"),
     B(0, track(lat=(18.0, 16.0), lon=(22.0, 18.0), dist=(150000.0, 140000.0), h=(19.75, 19.9), path=(0.0, 0.0), lisbon=0.0, wide=1.0), AP("", at=0.2, ring=24), at="rise", cut=True,
       name="over Europe and Africa"),
-    B(1, R(19.95, 20.02, fov=(26.0, 24.0)), AP("", ring=26), cut=True, name="not one of ours: a point among the stars, ringed"),
+    B(1, R(19.95, 20.02, fov=(40.0, 38.0), sat=(0.2, 0.8), sat_path=((AA(19.98)[0] - 18.0, AA(19.98)[1] - 9.0), (AA(19.98)[0] + 18.0, AA(19.98)[1] + 6.0))), AP("", ring=26), cut=True, name="not one of ours: a point among the stars, ringed"),
     B(2, rock(dist=(2300.0, 2100.0), az=(70.0, 78.0), el=(8.0, 10.0), fov=(40.0, 40.0), eiffel_k=1.0, h=(20.0, 20.0), tumble_s=(0.0, 4000.0)),
       at="asteroid", cut=True, name="an asteroid, beside the Eiffel Tower to scale"),
     B(2, lane(dist=(150000.0, 125000.0), az=(100.0, 108.0), el=(40.0, 38.0), fov=(42.0, 40.0), h=(20.4, 21.2), ring=1.0, path=1.0, trail_from=-10.0),
@@ -157,18 +173,18 @@ c1a = [
     B(2, track(lat=(-24.0, -28.0), lon=(140.0, 146.0), dist=(30000.0, 26000.0), h=(10.0, 10.2), path=(0.0, 0.0), lisbon=0.0),
       over_all(tag("Siding Spring, Australia", 0.3, sub="December 2004"), pointer("aus_xy", "", 0, 0, 0.2)), at="telescope", cut=True,
       name="a telescope in Australia finds it again"),
-    B(3, odds_meter(size=(4.4, 3.2), off=(0.6, 0.4), elong=(2.4, 2.4), ghosts=1.0, zoom=(0.75, 0.75)), tag("Where it could be in April 2029", 0.4), cut=True,
+    B(3, odds_meter(size=(2.6, 1.6), off=(0.6, 0.4), elong=(2.4, 2.4), ghosts=1.0, zoom=(0.75, 0.75), odds=(0.0, 0.06)), tag("Where it could be in April 2029", 0.4), cut=True,
       name="the cloud of possible paths shrinks"),
-    B(4, odds_meter(size=(3.2, 2.0), off=(0.4, 0.25), elong=(2.4, 2.4), odds=(0.0, 0.35), ghosts=1.0, zoom=(0.75, 0.75)), at="Christmas",
+    B(4, odds_meter(size=(1.6, 1.2), off=(0.4, 0.25), elong=(2.4, 2.4), odds=(0.06, 0.15), ghosts=1.0, zoom=(0.75, 0.75)), at="Christmas",
       name="it shrinks, but Earth stays inside: the odds rise"),
 ]
 c1b = [
-    B(0, odds_meter(size=(2.0, 2.0), off=(0.25, 0.15), elong=(2.4, 3.0), odds=(0.35, 0.8), ghosts=1.0, zoom=(0.75, 1.0)), lab("1 in 37", 0.4, size=64, color=RED),
+    B(0, odds_meter(size=(1.2, 1.2), off=(0.25, 0.15), elong=(2.4, 3.0), odds=(0.15, 0.3), ghosts=1.0, zoom=(0.75, 1.0)), lab("1 in 37", 0.4, size=64, color=RED),
       name="one in thirty-seven"),
-    B(1, odds_meter(size=(2.0, 2.0), off=(0.15, 0.15), elong=(3.0, 3.0), odds=(0.8, 0.8), zoom=(1.0, 1.15)), lab("the highest risk ever rated", 0.3),
+    B(1, odds_meter(size=(1.2, 1.2), off=(0.15, 0.15), elong=(3.0, 3.0), odds=(0.3, 0.3), zoom=(1.0, 1.15)), lab("the highest risk ever rated", 0.3),
       name="the highest rating ever"),
     B(2, blink(zoom=(1.0, 1.06), ring=1.0, seed=83, aged=1.0), tag("Old pictures", 0.3, sub="March 2004"), cut=True, name="found in pictures from March"),
-    B(3, odds_meter(size=(2.0, 0.55), off=(0.15, 2.6), elong=(3.0, 3.0), odds=(0.8, 0.0)), cut=True, name="the cloud shrinks off Earth: the hit is gone"),
+    B(3, odds_meter(size=(1.2, 0.55), off=(0.15, 2.6), elong=(3.0, 3.0), odds=(0.3, 0.0)), cut=True, name="the cloud shrinks off Earth: the hit is gone"),
     B(4, odds_meter(size=(0.55, 0.55), off=(2.6, 2.6), elong=(3.0, 3.0), keyhole=(0.0, 1.0), zoom=(1.0, 1.35)), pointer("keyhole_xy", "a keyhole, ~600 m", 60, -70, 1.2),
       name="but a keyhole beside Earth"),
     B(5, odds_meter(size=(0.55, 0.55), off=(2.6, 1.9), elong=(3.0, 3.0), keyhole=(1.0, 1.0), zoom=(1.35, 1.1), ret=(0.0, 1.0)), lab("thread it, and it returns in 2036", 0.4),
@@ -294,8 +310,8 @@ c5a = [
     B(2, bend(h=(21.0, 22.2), scale=(1.6, 1.5), tilt=(80.0, 80.0)), cut=True, name="Earth is the truck"),
 ]
 c5b = [
-    B(0, bend(h=(19.0, 21.75), scale=(2.2, 2.0), tilt=(86.0, 86.0), spin=(0.0, 0.0)), speed_readout(0.3), cut=True, name="gravity grabs it: faster"),
-    B(0, bend(h=(21.75, 26.0), scale=(2.0, 2.4), tilt=(86.0, 86.0), spin=(0.0, 0.0), arrows=(0.0, 1.0)), over_all(speed_readout(0.0), bend_angle(0.8)), at="bending",
+    B(0, bend(h=(19.0, 21.75), scale=(1.3, 1.1), tilt=(86.0, 86.0), spin=(0.0, 0.0)), over_all(speed_readout(0.3), speed_bar(0.0)), cut=True, name="gravity grabs it: faster"),
+    B(0, bend(h=(21.75, 26.0), scale=(1.1, 2.4), tilt=(86.0, 86.0), spin=(0.0, 0.0), arrows=(0.0, 1.0)), over_all(speed_readout(0.0), bend_angle(0.8)), at="bending",
       name="its path bent by 27 degrees"),
     B(1, tide(arrows=(0.0, 1.0)), over_all(pointer("near_xy", "", 0, 0, 9), label("near end: pulled harder", 0.6, x=W * 0.5, y=H * 0.3, size=34), label("far end: pulled less", 1.0, x=W * 0.86, y=H * 0.72, size=34)),
       cut=True, name="the near end is pulled harder than the far end"),
@@ -368,7 +384,7 @@ end1 = [
     B(2, surface(h=(30.0, 110.0), view_az=(2.0, 4.0), pitch=(10.0, 12.0), fov=(40.0, 36.0), earth_az=(4.0, 4.0), earth_alt=(14.0, 14.0), sun_alt=(8.0, 8.0)), cut=True,
       name="from the asteroid: Earth shrinks to a point"),
     B(3, split(h_ground=(22.6, 22.9), h_rock=(40.0, 70.0)), cut=True, name="two moving stars, side by side"),
-    B(3, orbit_map(before=(0.0, 0.0), after=(1.0, 1.0), day=(30.0, 90.0), zoom=(1.6, 1.8), inside=0.0, cx=(-200.0, -260.0)), at="Only", cut=True, name="only one is changed: its new orbit"),
+    B(3, orbit_map(before=(1.0, 0.3), after=(0.0, 1.0), day=(30.0, 90.0), zoom=(1.6, 1.8), inside=0.0, cx=(-200.0, -260.0), morph=(0.0, 1.0)), at="Only", cut=True, name="only one is changed: its new orbit"),
 ]
 
 outro = [

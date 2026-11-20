@@ -432,8 +432,8 @@ def orbit_map(before=(1.0, 1.0), after=(0.0, 0.0), day=(-60.0, 0.0), zoom=(1.0, 
         pa = ap[i - 1, :2] * (1 - k) + ap[i, :2] * k
         pe = ea[i - 1, :2] * (1 - k) + ea[i, :2] * k
         qa, qe = P(pa[None])[0], P(pe[None])[0]
-        glow_dot(img, qe[0], qe[1], (0.5, 0.75, 1.0), 4, 2.2)
-        glow_dot(img, qa[0], qa[1], (1.0, 0.85, 0.6), 3, 2.6)
+        glow_dot(img, qe[0], qe[1], (0.5, 0.75, 1.0), 8, 4.0)
+        glow_dot(img, qa[0], qa[1], (1.0, 0.85, 0.6), 7, 4.5)
         ctx.state["apophis_xy"], ctx.state["earth_xy"] = qa, qe
         # perihelion points (labels sit there, so 'before' is nearer the Sun than 'after')
         for nm, pts in (("peri_before", bef), ("peri_after", aft)):

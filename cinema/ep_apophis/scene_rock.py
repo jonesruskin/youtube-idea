@@ -339,6 +339,17 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
                     if 0 < px < W and 0 < py < H:
                         cv2.circle(dust, (int(px), int(py)), int(2 + 3 * rng.random()), (0.7, 0.67, 0.62), -1, cv2.LINE_AA)
                 img += cv2.GaussianBlur(dust, (0, 0), 3.0) * 0.55 * sl
+                gt_ = ctx.seg["start"] + ctx.beat.t0 + t
+                down = np.cross(sdir, np.cross([0, 0, 1.0], sdir)); down = -down / (np.linalg.norm(down) + 1e-9)
+                for k in range(180):
+                    rng = np.random.default_rng(500 + k)
+                    ph = (gt_ * 0.35 + rng.random()) % 1.0
+                    side = np.cross(sdir, down) * rng.uniform(-35, 35)
+                    p0 = sp + side + down * (ph * 120)
+                    p1 = sp + side + down * (ph * 120 + 9)
+                    a0, a1 = cam.project(p0), cam.project(p1)
+                    if a0[2] > 0:
+                        cv2.line(img, (int(a0[0]), int(a0[1])), (int(a1[0]), int(a1[1])), (0.8, 0.77, 0.72), 2, cv2.LINE_AA)
         if eiffel_k > 0:
             fwd = (np.asarray(look) - pos) / D
             rgt = np.cross(fwd, [0, 0, 1.0]); rgt /= np.linalg.norm(rgt)
@@ -608,11 +619,11 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
             for k in range(1):
                 hgt = 0.3 * (jk * 300) - 0.5 * M.surface_g() * (jk * 300) ** 2
                 for q_ in np.linspace(0, jk, 9)[:-1]:
-                    pq = np.array([-0.6, RL + 1.0 + q_ * 12, 4.0 + q_ * 6])
+                    pq = np.array([-0.4, RL + 0.9 + q_ * 2.6, 6.0 + q_ * 1.5])
                     pr_ = cw_project(cw, Q, Ap, pq, camL)
                     if pr_ is not None:
                         glow_dot(img, pr_[0], pr_[1], (1.0, 0.85, 0.6), 2.5, 1.2)
-                feet = np.array([-0.6, RL + 0.02 + jk * 9, 5.0 + jk * 5])
+                feet = np.array([-0.4, RL + 0.02 + jk * 2.6, 6.0 + jk * 1.5])
                 head = feet + np.array([0.0, 1.75, 0.0])
                 pf, ph = cw_project(cw, Q, Ap, feet, camL), cw_project(cw, Q, Ap, head, camL)
                 if pf is not None and ph is not None:
