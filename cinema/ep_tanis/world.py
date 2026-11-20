@@ -1101,7 +1101,7 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
             ph6 = (r6.uniform(0, 1, n6) + tg6 * 0.35) % 1.0
             # a funnel in front of the mouth: wide far out, narrowing into the mouth, so the direction reads in a still
             dd6 = r6.uniform(180, 620, n6)
-            sx6, sy6 = mx2 + facing * dd6, my2 + r6.uniform(-1, 1, n6) * (0.25 + dd6 / 620.0) * 260
+            sx6, sy6 = mx2 + facing * dd6, my2 + r6.uniform(-1, 1, n6) * (0.1 + dd6 / 620.0) * 150     # a narrow funnel that tapers into the mouth
             fl6 = np.zeros((H, W), np.float32)
             for k6 in range(n6):
                 if ph6[k6] > 0.88:
@@ -1113,7 +1113,7 @@ def fish_scene(hero=(0.25, 0.65), hero_y=(0.45, 0.45), size=(520.0, 520.0), pan=
                 br = 0.55 + 0.45 * ph6[k6]                      # faint far out, bright as it gathers at the mouth
                 cv2.line(fl6, (int(xa), int(ya)), (int(x6), int(y6)), 0.35 * br, 1, cv2.LINE_AA)   # tail behind it
                 cv2.circle(fl6, (int(x6), int(y6)), 2, br, -1, cv2.LINE_AA)
-            img = img + fl6[..., None] * np.array([0.72, 0.86, 0.84], np.float32) * 0.75     # pale plankton, no glow (gold read as sparks)
+            img = img + fl6[..., None] * np.array([0.72, 0.86, 0.84], np.float32) * 1.0     # pale plankton, no glow (gold read as sparks)
         ik = L(intake)
         if ik > 0:                                      # glass beads swept into the open mouth with the water
             mx_, my_ = hx + facing * L(size) * 0.06, hy + L(size) * 0.02
