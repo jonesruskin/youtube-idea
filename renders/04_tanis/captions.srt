@@ -518,22 +518,27 @@ Next time: what that night will look like
 from the ground.
 
 110
-00:07:44,527 --> 00:07:47,977
+00:07:44,527 --> 00:07:47,976
 But for one young paddlefish, on one
 spring morning,
 
 111
-00:07:47,977 --> 00:07:51,427
+00:07:47,976 --> 00:07:51,424
 the count ended at two hours and
 thirty-two minutes.
 
 112
-00:07:52,027 --> 00:07:56,338
+00:07:52,024 --> 00:07:56,336
 And sixty-six million years later, it's
 still telling us what it saw.
 
 113
-00:07:56,938 --> 00:08:00,009
+00:07:56,936 --> 00:08:00,007
 A clock written in mud, with glass for its
 ticks.
+
+114
+00:08:02,607 --> 00:08:06,623
+Subscribe to Gravity Dial, and we'll start
+the next count together.
 

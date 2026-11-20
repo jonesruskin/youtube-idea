@@ -11,7 +11,7 @@ Everything needed to upload this episode to YouTube. Each field below is also a 
 | Tags | `tags.txt` (316 / 500 chars) |
 | Subtitles | `captions.srt` (English, synced to the narration) |
 | Pinned comment | `pinned_comment.txt` |
-| Runtime | 8:04 |
+| Runtime | 8:10 |
 
 ## Title A/B test (Studio → Test & compare)
 Upload with the main title, then add these as variants:
