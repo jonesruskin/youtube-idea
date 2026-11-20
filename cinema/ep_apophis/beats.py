@@ -125,7 +125,7 @@ open1 = [
       name="steady, silent: it glides on"),
     B(1, R(19.86, 19.90, az=(238.0, 249.0), alt=(18.0, 23.0), fov=(66.0, 34.0), sat=(0.62, 0.76), sat_path=((205.0, 14.0), (268.0, 30.0)), plane=1.0, plane_at=(246.0, 19.0, 0.0), apophis=0.0), at="blink",
       name="a plane blinks red and green; the satellite does not"),
-    B(2, lane(dist=(14000.0, 13500.0), az=(-160.0, -150.0), el=(30.0, 32.0), fov=(60.0, 59.0), h=(19.9, 19.95), ring=0.0, gps=1.0, shells=1.0, path=0.0, glint=1.0), pointer("glint_xy", "", 0, 0, 0.3, ring=26),
+    B(2, lane(dist=(14000.0, 13500.0), az=(137.1, 143.1), el=(24.2, 26.2), fov=(60.0, 59.0), h=(19.9, 19.95), ring=0.0, gps=1.0, shells=1.0, path=0.0, glint=1.0), pointer("glint_xy", "", 0, 0, 0.3, ring=26),
       cut=True, name="satellites hundreds of km above Earth's night side"),
 ]
 open2 = [
@@ -136,9 +136,9 @@ open2 = [
     B(1, R(19.95, 20.02, fov=(14.0, 12.0)), AP("", ring=26), cut=True, name="not one of ours: a point among the stars, ringed"),
     B(2, rock(dist=(2300.0, 2100.0), az=(70.0, 78.0), el=(8.0, 10.0), fov=(40.0, 40.0), eiffel_k=1.0, h=(20.0, 20.0), tumble_s=(0.0, 4000.0)),
       at="asteroid", cut=True, name="an asteroid, beside the Eiffel Tower to scale"),
-    B(2, lane(dist=(150000.0, 125000.0), az=(-62.0, -52.0), el=(24.0, 20.0), fov=(42.0, 40.0), h=(20.4, 21.2), ring=1.0, path=1.0, trail_from=-10.0),
+    B(2, lane(dist=(150000.0, 125000.0), az=(-62.0, -52.0), el=(44.0, 40.0), fov=(42.0, 40.0), h=(20.4, 21.2), ring=1.0, path=1.0, trail_from=-10.0),
       AP("Apophis", dx=-80, dy=-60, at=0.2), at="closer", cut=True, name="its path threads inside the ring of satellites"),
-    B(2, lane(dist=(125000.0, 110000.0), az=(-52.0, -46.0), el=(20.0, 18.0), fov=(40.0, 38.0), h=(21.2, 21.6), ring=1.0, path=1.0, trail_from=-10.0),
+    B(2, lane(dist=(125000.0, 110000.0), az=(-52.0, -46.0), el=(40.0, 36.0), fov=(40.0, 38.0), h=(21.2, 21.6), ring=1.0, path=1.0, trail_from=-10.0),
       AP("", at=0.0), at="weather", name="closer than the weather satellites"),
     B(3, lane(dist=(230000.0, 230000.0), az=(-40.0, -30.0), el=(16.0, 14.0), fov=(40.0, 40.0), h=(21.8, 23.5), ring=1.0, path=1.0, trail_from=-10.0), cut=True,
       name="it passes, and goes on: a miss"),
@@ -157,9 +157,9 @@ c1a = [
     B(2, track(lat=(-24.0, -28.0), lon=(140.0, 146.0), dist=(30000.0, 26000.0), h=(10.0, 10.2), path=(0.0, 0.0), lisbon=0.0),
       over_all(tag("Siding Spring, Australia", 0.3, sub="December 2004"), pointer("aus_xy", "", 0, 0, 0.2)), at="telescope", cut=True,
       name="a telescope in Australia finds it again"),
-    B(3, odds_meter(size=(7.0, 3.6), off=(0.6, 0.4), elong=(3.0, 3.0), ghosts=1.0), tag("Where it could be in April 2029", 0.4), cut=True,
+    B(3, odds_meter(size=(4.4, 2.9), off=(0.6, 0.4), elong=(2.4, 2.4), ghosts=1.0, zoom=(0.7, 0.75)), tag("Where it could be in April 2029", 0.4), cut=True,
       name="the cloud of possible paths shrinks"),
-    B(4, odds_meter(size=(3.6, 2.6), off=(0.4, 0.25), elong=(3.0, 3.0), odds=(0.0, 0.35), ghosts=1.0), at="Christmas",
+    B(4, odds_meter(size=(2.9, 2.6), off=(0.4, 0.25), elong=(2.4, 3.0), odds=(0.0, 0.35), ghosts=1.0, zoom=(0.75, 1.0)), at="Christmas",
       name="it shrinks, but Earth stays inside: the odds rise"),
 ]
 c1b = [
@@ -177,7 +177,7 @@ c1b = [
       lab("sunlight warms one side; the heat pushes back", 0.6), cut=True, name="sunlight warms one side"),
     B(6, odds_meter(size=(0.55, 0.55), off=(1.9, 1.9), elong=(3.0, 3.0), keyhole=(1.0, 1.0), drift=(0.0, 1.0)), lab("about 170 metres a year", 0.4), at="drifts",
       cut=True, name="the push drifts its orbit"),
-    B(7, radar(rot=(80.0, 100.0), scan=(0.2, 1.0)), tag("Radar, 2021", 0.3), cut=True, name="radar pins it down"),
+    B(7, radar(rot=(0.0, 20.0), scan=(0.2, 1.0)), tag("Radar, 2021", 0.3), cut=True, name="radar pins it down"),
     B(7, odds_meter(size=(0.55, 0.06), off=(1.9, 3.2), elong=(3.0, 3.0), keyhole=(1.0, 0.0), zoom=(1.9, 1.7)), lab("no danger for 100+ years", 0.4, color=(0.6, 1.0, 0.7)),
       at="ruled", cut=True, name="ruled out"),
 ]
@@ -186,7 +186,7 @@ c1b = [
 c2a = [
     B(0, rock(dist=(3200.0, 2600.0), az=(75.0, 82.0), el=(12.0, 12.0), fov=(36.0, 36.0), h=(20.0, 20.0), tumble_s=(30000.0, 33000.0)), cut=True,
       name="what is coming: the rock out of the dark"),
-    B(1, radar(rot=(95.0, 120.0), scan=(0.2, 1.0), zoom=(1.0, 1.1)), tag("Radar echo", 0.3), cut=True, name="radar: two lobes"),
+    B(1, radar(rot=(-20.0, 5.0), scan=(0.2, 1.0), zoom=(1.0, 1.1)), tag("Radar echo", 0.3), cut=True, name="radar: two lobes"),
     B(1, rock(dist=(2300.0, 2200.0), az=(90.0, 92.0), el=(5.0, 5.0), fov=(40.0, 40.0), h=(20.0, 20.0), tumble_s=(0.0, 0.0), rate=0.0, eiffel_k=0.8), lab("about 450 metres end to end", 0.3),
       at="four", cut=True, name="two lobes and a narrow waist, end to end"),
     B(2, rock(dist=(620.0, 560.0), az=(55.0, 60.0), el=(25.0, 27.0), fov=(32.0, 30.0), h=(20.0, 20.0), tumble_s=(40000.0, 41000.0)), cut=True,
@@ -257,7 +257,7 @@ c4a = [
       name="dark gravel and boulders"),
     B(1, surface(h=(20.15, 20.2), view_az=(40.0, 46.0), pitch=(1.0, 1.0), fov=(88.0, 88.0), earth_az=(10.0, 10.0), earth_alt=(9.0, 9.0), sun_alt=(12.0, 12.0)), at="horizon",
       cut=True, name="the horizon curves away close by"),
-    B(2, surface(h=(20.2, 20.3), view_az=(60.0, 60.0), pitch=(4.0, 6.0), fov=(76.0, 76.0), earth_az=(10.0, 10.0), earth_alt=(9.0, 9.0), sun_alt=(-2.0, 6.0), sun_side=1.0),
+    B(2, surface(h=(20.2, 20.3), view_az=(60.0, 60.0), pitch=(4.0, 6.0), fov=(76.0, 76.0), earth_az=(10.0, 10.0), earth_alt=(9.0, 9.0), sun_alt=(-4.0, 14.0), sun_side=1.0),
       lapse(), cut=True, name="the Sun rises at an odd angle"),
     B(3, surface(h=(20.3, 20.32), view_az=(-10.0, -8.0), pitch=(-4.0, -3.0), fov=(64.0, 64.0), earth_az=(10.0, 10.0), earth_alt=(9.0, 9.0), sun_alt=(12.0, 12.0), exposure=0.55),
       balance(0.3), cut=True, name="a person weighs the same as a paper clip"),
@@ -330,8 +330,9 @@ c6a = [
     B(4, orbit_map(before=(0.0, 0.0), after=(0.3, 1.0), day=(-40.0, 80.0), zoom=(1.15, 0.95), inside=0.0, morph=(1.0, 1.0)), lab("one evening rewrote its calendar", 0.6),
       name="one evening, a new calendar"),
     B(5, track(lat=(30.0, 30.0), lon=(-25.0, -30.0), dist=(30000.0, 28000.0), h=(22.0, 22.1), path=(1.0, 1.0), lisbon=0.0), cut=True, name="Earth, untouched"),
-    B(5, sea(atoms=(0.0, 1.0)), lab("its tide on Earth: a few atoms high", 0.6),
-      at="tide", cut=True, name="Earth won't feel a thing"),
+    B(5, sea(atoms=(0.0, 1.0)), lab("a few atoms high", 0.4), at="few", cut=True, name="the tide it raises: a few atoms"),
+    B(5, sea(atoms=(0.0, 0.0), person=1.0), lab("we won't feel a thing", 0.3),
+      at="We", cut=True, name="Earth won't feel a thing"),
 ]
 c6b = [
     B(0, probe_scene(h=(21.0, 21.1), dist=(60.0, 55.0), az=(200.0, 210.0), el=(10.0, 12.0)), cut=True, name="a probe alongside"),
@@ -355,7 +356,7 @@ next_ = [
       name="bright enough to see in daylight"),
     B(2, roof(view="west", az=(BA0, BA0), alt=(BE0, BE0), fov=(26.0, 24.0), h=(20.5, 20.52), apophis=0.0, sn=(1.0, 1.0)), tag("Next time", 0.3, sub="The night Betelgeuse explodes"),
       cut=True, name="next time: Betelgeuse"),
-    B(2, neutrino(flow=(0.0, 1.0)), at="warning", cut=True, name="the warning: neutrinos through the Earth before the light"),
+    B(2, neutrino(flow=(0.0, 1.0), flash=(1.0, 1.0)), at="warning", cut=True, name="the warning: neutrinos through the Earth before the light"),
 ]
 
 # ═══════════════════════════════ the mirror ending ═══════════════════════════════

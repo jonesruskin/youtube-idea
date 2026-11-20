@@ -258,8 +258,8 @@ def odds_meter(size=(1.0, 1.0), off=(0.0, 0.0), elong=(3.0, 3.0), keyhole=(0.0, 
             ctx.state["keyhole_xy"] = (kx, ky)
         dr = L2(drift, e)
         if dr > 0:                                     # the cloud's centre slides a little every year: one tick per year
-            for k_ in range(5):
-                if dr * 5 > k_:
+            for k_ in range(3):
+                if dr * 3 > k_:
                     eg = np.stack([np.cos(th) * el * sz, np.sin(th) * sz], -1) @ R2.T + np.array([of - 0.5 + k_ * 0.25, 0.0])
                     L.polyline(np.stack([cx + eg[:, 0] * Re, cy - eg[:, 1] * Re], -1), GOLD, 0.25 + 0.15 * k_, th=2, closed=True)
                     L.circle((cx + (of - 0.5 + k_ * 0.25) * Re, cy), 7, GOLD, 0.9, fill=True)
@@ -662,7 +662,7 @@ def timeline_scene(prog_=(0.0, 1.0), zoom=(1.0, 1.0)):
 
 
 @scene_factory(keys=[])
-def sea(zoom=(1.0, 1.0), atoms=(0.0, 1.0), h=(22.0, 22.1)):
+def sea(zoom=(1.0, 1.0), atoms=(0.0, 1.0), h=(22.0, 22.1), person=0.0):
     """A calm night sea, then a magnifier on the waterline: a lattice of atoms and the tide Apophis raises, a step
     only a few atoms high."""
     rng = np.random.default_rng(5)
@@ -670,13 +670,19 @@ def sea(zoom=(1.0, 1.0), atoms=(0.0, 1.0), h=(22.0, 22.1)):
     def f(ctx, t, u, fi):
         e = ease(u)
         xs, ys = grid()
-        hz = H * 0.52
+        hz = H * 0.42
         img, _ = make_starfield(W, H, 3000, seed=21, brightness=0.6)
-        img = img * (ys < hz)[..., None] + np.array([0.01, 0.015, 0.03], np.float32) * (ys < hz)[..., None]
+        img = img * (ys < hz)[..., None] + (np.array([0.03, 0.05, 0.1], np.float32) + 0.08 * clamp((ys - hz * 0.3) / hz)[..., None] * np.array([0.3, 0.4, 0.7], np.float32)) * (ys < hz)[..., None]
         gt = ctx.seg["start"] + ctx.beat.t0 + t
-        wave = (np.sin(xs * 0.03 + gt * 0.8 + ys * 0.08) * 0.5 + 0.5) * clamp((ys - hz) / 200)
-        img += ((ys >= hz) * (0.02 + 0.03 * wave))[..., None] * np.array([0.3, 0.45, 0.7], np.float32)
-        glow_dot(img, W * 0.7, H * 0.22, (1.0, 0.9, 0.75), 2.2, 4.0)
+        wave = (np.sin(ys * 0.35 * (1 + (ys - hz) / H) + np.sin(xs * 0.004 + ys * 0.02) * 3 + gt * 1.2) * 0.5 + 0.5) * clamp((ys - hz) / 200)
+        img += ((ys >= hz) * (0.10 + 0.12 * wave))[..., None] * np.array([0.3, 0.45, 0.7], np.float32)
+        glow_dot(img, W * 0.7, H * 0.18, (1.0, 0.95, 0.85), 14, 3.0)
+        glit = np.exp(-((xs - W * 0.7) / 60) ** 2) * (ys > hz) * wave
+        img += glit[..., None] * np.array([1.0, 0.95, 0.8], np.float32) * 0.5
+        if person > 0:                                   # someone standing calmly on the shore, the water barely lapping
+            from ep_apophis.scene_sky import person as _person
+            img[int(H * 0.86):] = img[int(H * 0.86):] * 0.2 + np.array([0.06, 0.05, 0.04], np.float32)
+            _person(img, W * 0.32, H * 0.88, 330, point=None, alpha=person)
         a = L2(atoms, e)
         if a > 0:
             L = Layer()
@@ -714,7 +720,8 @@ def neutrino(flow=(0.0, 1.0), flash=(0.0, 0.0)):
             x = (rng.uniform(0, 1) + fl * 1.6) % 1.6 * W - 0.3 * W
             L.line((x, y), (x + 140, y), color=(0.6, 0.9, 1.0), alpha=0.7, th=2)
         img = L.composite(img, 0.6)
-        glow_dot(img, W * 0.05, H * 0.5, (1.0, 0.6, 0.4), 4, 3.0 + 60 * L2(flash, e))
+        fk = smooth(clamp((u - 0.62) / 0.3)) * L2(flash, e)      # the light arrives last
+        glow_dot(img, W * 0.08, H * 0.5, (1.0, 0.85, 0.7), 6 + 120 * fk, 3.0 + 40 * fk)
         return img, dict(exposure=1.25, bloom=0.5)
     return f
 

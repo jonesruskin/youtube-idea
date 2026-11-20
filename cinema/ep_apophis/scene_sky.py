@@ -267,7 +267,7 @@ def _orbit_cam(dist, az, el, fov, look=(0.0, 0.0, 0.0), roll=0.0):
     return Camera(pos, look, fov=fov, up=(0.0, 0.0, 1.0), roll=np.radians(roll))
 
 
-def _space(cam, h, path_to, shells, ring, gps, moon, path_alpha=1.0, mark=1.0, glow=1.0, trail_from=None):
+def _space(cam, h, path_to, shells, ring, gps, moon, path_alpha=1.0, mark=1.0, glow=1.0, trail_from=None, beads=0.0):
     img = space_sky(cam, 0.9)
     if moon > 0:
         polyline3(img, cam, ring_circle(np.linalg.norm(moon_world()), inc=np.radians(28.0), node=np.radians(np.degrees(np.arctan2(moon_world()[1], moon_world()[0])) - 90)), (0.75, 0.75, 0.8), 0.3 * moon, th=1, hide=False)
@@ -300,6 +300,11 @@ def _space(cam, h, path_to, shells, ring, gps, moon, path_alpha=1.0, mark=1.0, g
         hs = np.linspace(t0, path_to, 700)
         P = np.array([apophis_world(x) for x in hs])
         polyline3(img, cam, P, GOLD, 0.75 * path_alpha, th=2)
+        if beads > 0:                                  # one bead every 15 minutes: they spread out as it speeds up
+            for hb in np.arange(np.ceil(t0 * 4) / 4, path_to, 0.25):
+                bx_, by_, bz_ = cam.project(apophis_world(hb))
+                if bz_ > 0:
+                    glow_dot(img, bx_, by_, (1.0, 0.85, 0.55), 3.0, 3.0 * beads)
     A = apophis_world(path_to)
     x, y, z = cam.project(A)
     if z > 0 and not occluded(cam, A)[0] and mark > 0:
@@ -321,13 +326,28 @@ def lane(dist=(160000.0, 120000.0), az=(-40.0, -30.0), el=(18.0, 16.0), fov=(40.
         if glint > 0:                                   # one satellite above the night side, still in sunlight, moving along its orbit
             ring_ = ring_circle(M.R_E + M.ISS_ALT, n=2000, inc=np.radians(51.6), node=np.radians(40))
             s_ = sun_world()
+            cdir_ = cam.pos / np.linalg.norm(cam.pos)
+            sp_ = s_ - cdir_ * (s_ @ cdir_)
+            sp_ = sp_ / (np.linalg.norm(sp_) + 1e-9)
+            cands = []
+            for a_ in np.linspace(0.3, 1.0, 36):                 # points 900 km up over the visible face
+                for b_ in np.linspace(-1.0, 1.0, 36):
+                    for c_ in (-0.6, -0.3, 0.0, 0.3, 0.6):
+                        d_ = cdir_ * a_ + sp_ * b_ + np.cross(cdir_, sp_) * c_
+                        cands.append(d_ / np.linalg.norm(d_) * (M.R_E + 900))
+            cands = np.array(cands)
+            ax_ = cands @ s_
+            lit_ok = (ax_ > 0) | (np.linalg.norm(cands - np.outer(ax_, s_), axis=1) > M.R_E)   # outside Earth's shadow
+            cx_, cy_, cz_ = cam.project(cands)
+            night_below = (cands / np.linalg.norm(cands, axis=1)[:, None]) @ s_ < -0.05             # the ground below is in night
+            keep = lit_ok & night_below & (cz_ > 0) & (cx_ > W * 0.2) & (cx_ < W * 0.8) & (cy_ > H * 0.2) & (cy_ < H * 0.8) & ~occluded(cam, cands)
+            ring_ = cands[keep] if keep.any() else cands[:2]
+            ring_ = ring_[np.argsort(cx_[keep] if keep.any() else np.zeros(2))]
             gx0, gy0, gz0 = cam.project(ring_)
-            vis_ = (gz0 > 0) & ~occluded(cam, ring_) & (gx0 > W * 0.15) & (gx0 < W * 0.85) & (gy0 > H * 0.15) & (gy0 < H * 0.85)
+            vis_ = (gz0 > 0) & ~occluded(cam, ring_)
             lit_ = ring_ @ s_ / np.linalg.norm(ring_, axis=1)
-            ok_ = np.where(vis_ & (lit_ > 0.02))[0]
+            ok_ = np.where(vis_)[0]
             if len(ok_):
-                ok_ = ok_[np.argsort(lit_[ok_])][: max(2, len(ok_) // 3)]
-                ok_ = np.sort(ok_)
                 j_ = ok_[int((len(ok_) - 1) * (0.2 + 0.6 * u))]
                 gx_, gy_, gz_ = cam.project(ring_[j_])
                 if gz_ > 0 and not occluded(cam, ring_[j_])[0]:
@@ -368,7 +388,7 @@ def bend(h=(19.5, 22.0), scale=(1.0, 1.0), show_angle=(0.0, 0.0), arrows=(0.0, 0
         d = 260000.0 * L2(scale, e)
         ctr = pc * 0.9                                   # centre on the bend, not on the planet
         cam = Camera(ctr + view_dir * d, ctr, fov=44.0, up=-side if abs(np.sin(tl)) > 0.2 else nrm)
-        img, (x, y) = _space(cam, hh, hh, 0.0, 0.7, 0.0, 0.0, 1.0, trail_from=-22.0)
+        img, (x, y) = _space(cam, hh, hh, 0.0, 0.7, 0.0, 0.0, 1.0, trail_from=-22.0, beads=1.0)
         # the asymptotes: where it was heading and where it ends up heading
         aa = L2(arrows, e)
         if aa > 0:
@@ -602,9 +622,9 @@ def _apophis_on(img, cam, h, gain=1.0, streak=None):
 def person(img, x, y, s, point=None, alpha=1.0, col=(0.02, 0.02, 0.025)):
     """A small silhouette on a terrace: head, body, legs; one arm pointing at `point` (screen xy)."""
     lay = np.zeros((H, W), np.float32)
-    hd = 0.13 * s
+    hd = 0.075 * s
     cv2.circle(lay, (int(x), int(y - s + hd)), int(hd), 1.0, -1, cv2.LINE_AA)
-    body = np.array([[x - 0.12 * s, y - s + 2.1 * hd], [x + 0.12 * s, y - s + 2.1 * hd], [x + 0.1 * s, y - 0.45 * s], [x - 0.1 * s, y - 0.45 * s]], np.int32)
+    body = np.array([[x - 0.11 * s, y - s + 2.3 * hd], [x + 0.11 * s, y - s + 2.3 * hd], [x + 0.09 * s, y - 0.45 * s], [x - 0.09 * s, y - 0.45 * s]], np.int32)
     cv2.fillPoly(lay, [body], 1.0, cv2.LINE_AA)
     cv2.line(lay, (int(x - 0.06 * s), int(y - 0.46 * s)), (int(x - 0.09 * s), int(y)), 1.0, max(2, int(0.07 * s)), cv2.LINE_AA)
     cv2.line(lay, (int(x + 0.06 * s), int(y - 0.46 * s)), (int(x + 0.09 * s), int(y)), 1.0, max(2, int(0.07 * s)), cv2.LINE_AA)

@@ -199,7 +199,7 @@ def render_rock(img, cam, Rb, sun, earth_dir=None, earth_k=0.0, exposure=1.0, st
     if earth_dir is not None and earth_k > 0:
         eb = (Rt @ np.asarray(earth_dir, np.float64)).astype(np.float32)
         col += ROCK_ALB * alb[..., None] * np.maximum(n @ eb, 0)[..., None] * np.array([0.45, 0.65, 1.0], np.float32) * 0.35 * earth_k
-    col += ROCK_ALB * 0.012
+    col += ROCK_ALB * alb[..., None] * 0.13                  # soft fill (sky and reflected light): no lobe ever vanishes into black
     if slide is not None:                              # a landslide: fresh, brighter rock and a dust plume
         sdir, sk = slide
         sdir = np.asarray(sdir, np.float32) / np.linalg.norm(sdir)
@@ -207,7 +207,8 @@ def render_rock(img, cam, Rb, sun, earth_dir=None, earth_k=0.0, exposure=1.0, st
         col = col * (1 + 1.3 * near)[..., None] + near[..., None] * np.array([0.06, 0.055, 0.05], np.float32)
     if heat > 0:                                       # sunlight warming one side: the warm side glows (infrared, shown red)
         warm = clamp(n @ sb)
-        col += (warm ** 1.5 * heat)[..., None] * np.array([0.35, 0.06, 0.02], np.float32) * hit[..., None]
+        col += (warm ** 1.5 * heat)[..., None] * np.array([0.45, 0.08, 0.02], np.float32) * hit[..., None]
+        col += (clamp(-(n @ sb)) * heat)[..., None] * np.array([0.0, 0.03, 0.09], np.float32) * hit[..., None]
     col *= exposure
     reg = img[y0:y1, x0:x1]
     a = cv2.GaussianBlur(hit.astype(np.float32), (0, 0), 0.6)
@@ -300,7 +301,10 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
             draw_earth(img, ce, hh, exposure=earth)
         Rb = tumble(lerp(tumble_s[0], tumble_s[1], u), rate=rate)
         sl = L2(slide, e)
-        sdir = Rb @ np.array([0.2, 0.7, 0.68])
+        cdir_b = Rb.T @ ((pos - np.asarray(look)) / D)
+        sb_dir = cdir_b + np.array([0.0, 0.0, 0.45])
+        sb_dir = sb_dir / np.linalg.norm(sb_dir)
+        sdir = Rb @ sb_dir
         if twin > 0:                                   # the same rock twice: the old tumble (left) and twice as fast (right)
             fwd_ = (np.asarray(look) - pos) / D
             rg_ = np.cross(fwd_, [0, 0, 1.0]); rg_ /= np.linalg.norm(rg_)
@@ -309,7 +313,7 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
                 render_rock(img, cam_t, tumble(lerp(tumble_s[0], tumble_s[1], u) * rate_), sun, earth_dir=edir, earth_k=0.6)
         else:
             render_rock(img, cam, Rb, sun * sun_k + (1 - sun_k) * np.array([0, 0, 1e-6]), earth_dir=edir, earth_k=0.6 + 0.6 * earth,
-                        slide=(np.array([0.2, 0.7, 0.68]), sl) if sl > 0 else None, heat=heat)
+                        slide=(sb_dir, sl) if sl > 0 else None, heat=heat)
         if heat > 0:                                   # the heat it gives off pushes back: a small arrow away from the warm side
             from engine.hud import Layer
             c0 = cam.project(np.asarray(look) + sun * 260)
@@ -320,16 +324,21 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
             for k in range(3):
                 Lh.line((c0[0], c0[1] + (k - 1) * 40), (c1[0], c1[1] + (k - 1) * 40), color=(1.0, 0.4, 0.25), alpha=0.6 * heat, th=3)
             Lh.arrow((c2[0], c2[1]), (c3[0], c3[1]), (1.0, 0.75, 0.4), heat, th=5, head=22)
+            c4 = cam.project(np.asarray(look) + sun * 900)
+            glow_dot(img, float(np.clip(c4[0], 60, W - 60)), float(np.clip(c4[1], 60, H - 60)), (1.0, 0.95, 0.85), 30, 6.0 * heat)
             img = Lh.composite(img, 0.5)
         if sl > 0:                                      # the dust plume where the slope gives way
-            sp = Rb @ (np.array([0.2, 0.7, 0.68]) / np.linalg.norm([0.2, 0.7, 0.68]) * 150.0)
+            sp = sdir * (_lookup(sb_dir[None, None, :].astype(np.float32), 0)[0, 0] + 2.0)
             x, y, z = cam.project(sp)
             if z > 0:
-                for k in range(40):
+                dust = np.zeros((H, W, 3), np.float32)
+                for k in range(260):
                     rng = np.random.default_rng(k)
-                    off = rng.normal(size=3) * 25 * sl + np.cross(sdir, [0, 0, 1]) * rng.uniform(-30, 30) * sl
-                    px, py, pz = cam.project(sp + off + sdir * rng.uniform(0, 40) * sl)
-                    glow_dot(img, px, py, (0.65, 0.62, 0.58), 10 + 22 * sl, 0.45 * sl)
+                    off = rng.normal(size=3) * 18 * sl + sdir * rng.uniform(0, 45) * sl
+                    px, py, pz = cam.project(sp + off)
+                    if 0 < px < W and 0 < py < H:
+                        cv2.circle(dust, (int(px), int(py)), int(2 + 3 * rng.random()), (0.7, 0.67, 0.62), -1, cv2.LINE_AA)
+                img += cv2.GaussianBlur(dust, (0, 0), 3.0) * 0.55 * sl
         if eiffel_k > 0:
             fwd = (np.asarray(look) - pos) / D
             rgt = np.cross(fwd, [0, 0, 1.0]); rgt /= np.linalg.norm(rgt)
@@ -340,10 +349,10 @@ def rock(dist=(1500.0, 1300.0), az=(20.0, 30.0), el=(15.0, 18.0), fov=(40.0, 40.
             fwd_ = (np.asarray(look) - pos) / D
             rg_ = np.cross(fwd_, [0, 0, 1.0]); rg_ /= np.linalg.norm(rg_)
             up_ = np.cross(rg_, fwd_)
-            pp = np.asarray(look) - fwd_ * 120 + rg_ * lerp(probe_pos[0], probe_pos[1], e) * 0.6 + up_ * 170
+            pp = np.asarray(look) - fwd_ * 160 + rg_ * lerp(probe_pos[0], probe_pos[1], e) * 0.35 + up_ * 70
             probe(img, cam, pp, sun, s=16.0, alpha=probe_k)
             if thrust > 0:
-                tgt = Rb @ (np.array([0.2, 0.7, 0.68]) / np.linalg.norm([0.2, 0.7, 0.68]) * 150.0)
+                tgt = sp if sl > 0 else sdir * 150.0
                 a_, b_ = cam.project(pp), cam.project(tgt)
                 for k in range(26):
                     f_ = k / 25
@@ -562,7 +571,7 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
             col *= np.array([0.62, 0.8, 1.15], np.float32)
         eLn = (eL / np.linalg.norm(eL)).astype(np.float32)
         col += ROCK_ALB * alb[..., None] * np.maximum(N @ eLn, 0)[..., None] * np.array([0.45, 0.68, 1.0], np.float32) * (0.05 + 1.6 * earth_light)
-        col += ROCK_ALB * alb[..., None] * 0.05
+        col += ROCK_ALB * alb[..., None] * 0.13
         # distance cue: nothing (no air), but fade the far horizon edge very slightly for anti-aliasing
         cov = anyhit.astype(np.float32)
         cov = cv2.GaussianBlur(cov, (0, 0), 0.7)
@@ -598,10 +607,15 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
         if jump[1] > 0:                                         # a bag of tools tossed up at 0.3 m/s: it never returns
             for k in range(1):
                 hgt = 0.3 * (jk * 300) - 0.5 * M.surface_g() * (jk * 300) ** 2
+                for q_ in np.linspace(0, jk, 9)[:-1]:
+                    pq = np.array([-0.6, RL + 1.0 + q_ * 12, 4.0 + q_ * 6])
+                    pr_ = cw_project(cw, Q, Ap, pq, camL)
+                    if pr_ is not None:
+                        glow_dot(img, pr_[0], pr_[1], (1.0, 0.85, 0.6), 2.5, 1.2)
                 pp = np.array([-0.6, RL + 1.0 + max(0, hgt) + jk * 12, 4.0 + jk * 6])
                 pr = cw_project(cw, Q, Ap, pp, camL)
                 if pr is not None:
-                    rr = 0.18 * cw.f / np.linalg.norm(pp - camL)
+                    rr = 0.45 * cw.f / np.linalg.norm(pp - camL)
                     cv2.circle(img, (int(pr[0]), int(pr[1])), max(2, int(rr)), (0.55, 0.5, 0.42), -1, cv2.LINE_AA)
                     glow_dot(img, pr[0], pr[1], (1.0, 0.9, 0.7), max(1.0, rr * 0.6), 0.5)
                     ctx.state["jump_xy"] = pr
