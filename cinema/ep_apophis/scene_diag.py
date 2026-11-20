@@ -175,7 +175,7 @@ def blink(frame=(0.0, 1.0), zoom=(1.0, 1.08), ring=0.0, rate=1.6, glare=(0.0, 0.
         if gl > 0:                                     # the Sun's glare creeping in from the corner: the dot is lost
             xs_, ys_ = grid()
             dd = np.hypot(xs_ - W * 1.05, ys_ + H * 0.1) / W
-            img = img + (np.exp(-dd * (3.2 - 2.2 * gl)) * 3.0 * gl)[..., None] * np.array([1.0, 0.95, 0.85], np.float32)
+            img = img + (np.exp(-dd * (4.5 - 2.0 * gl)) * 1.1 * gl)[..., None] * np.array([1.0, 0.95, 0.85], np.float32)
         z = L2(zoom, e)
         Mz = cv2.getRotationMatrix2D((W / 2, H / 2), 0, z)
         img = cv2.warpAffine(img, Mz, (W, H), borderMode=cv2.BORDER_REFLECT)

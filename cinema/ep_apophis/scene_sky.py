@@ -559,8 +559,8 @@ def _apophis_on(img, cam, h, gain=1.0, streak=None):
             lay = np.zeros((H, W), np.float32)
             cv2.polylines(lay, [np.round(np.array(pts) * 16).astype(np.int32)], False, 1.0, 2, cv2.LINE_AA, 4)
             img += (lay + fast_blur(lay, 3) * 0.8)[..., None] * np.array([1.0, 0.9, 0.75], np.float32) * 0.9 * gain
-    glow_dot(img, x, y, (1.0, 0.92, 0.80), 1.3, b)
-    glow_dot(img, x, y, (1.0, 0.85, 0.65), 5.0, b * 0.05)
+    glow_dot(img, x, y, (1.0, 0.92, 0.80), 1.8, b * 1.8)
+    glow_dot(img, x, y, (1.0, 0.85, 0.65), 7.0, b * 0.12)
     return x, y
 
 
@@ -611,10 +611,10 @@ def _plane(img, cam, h, t, k=1.0):
     if z <= 0:
         return
     on = (t * 1.1) % 1.0 < 0.12
-    glow_dot(img, x, y, (1.0, 1.0, 1.0), 1.2, 1.2 * k)
+    glow_dot(img, x, y, (1.0, 1.0, 1.0), 1.8, 3.0 * k)
     if on:
-        glow_dot(img, x - 6, y, (1.0, 0.15, 0.1), 1.6, 4.0 * k)
-        glow_dot(img, x + 6, y, (0.2, 1.0, 0.3), 1.6, 3.0 * k)
+        glow_dot(img, x - 14, y, (1.0, 0.15, 0.1), 3.0, 12.0 * k)
+        glow_dot(img, x + 14, y, (0.2, 1.0, 0.3), 3.0, 9.0 * k)
 
 
 @functools.lru_cache(None)
@@ -633,8 +633,8 @@ def _sat_on(img, cam, h, prog, gain=1.0):
     q /= np.linalg.norm(q)
     x, y, z = cam.project(q * 1e6)
     if z > 0:
-        glow_dot(img, x, y, (0.95, 0.97, 1.0), 1.2, 1.8 * gain)
-        glow_dot(img, x, y, (0.9, 0.95, 1.0), 4.5, 0.06 * gain)
+        glow_dot(img, x, y, (0.95, 0.97, 1.0), 1.8, 6.0 * gain)
+        glow_dot(img, x, y, (0.9, 0.95, 1.0), 7.0, 0.25 * gain)
     return x, y
 
 
@@ -707,7 +707,7 @@ def roof(view="town", az=(110.0, 112.0), alt=(18.0, 20.0), fov=(60.0, 58.0), h=(
             faz = A - F * 0.42 + F * 0.84 * (k + 0.5) / max(1, int(round(figures)))
             fx, fy, fz = cam.project(altaz_dir(faz, -4.0 - (k % 2) * 1.5, hh) * 1e6)
             if fz > 0:
-                person(img, fx, fy, (150 + 40 * (k % 3)) * 60 / F, point=pa, alpha=1.0)
+                person(img, fx, fy, (260 + 50 * (k % 3)) * 60 / F, point=pa, alpha=1.0)
         if figure > 0:
             faz = figure_az if figure_az is not None else A - F * 0.25
             fx, fy, fz = cam.project(altaz_dir(faz, -3.5, hh) * 1e6)

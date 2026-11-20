@@ -162,7 +162,7 @@ def render_rock(img, cam, Rb, sun, earth_dir=None, earth_k=0.0, exposure=1.0, st
     bump = np.zeros_like(n)
     for k, (v_, fq) in enumerate(((np.array([0.6, 0.3, 0.75]), 0.35), (np.array([-0.4, 0.85, 0.3]), 0.6), (np.array([0.2, -0.5, 0.85]), 1.1), (np.array([0.9, 0.1, -0.4]), 1.9))):
         ph = p @ v_.astype(np.float32) * fq
-        bump += np.cos(ph)[..., None] * np.cross(v_, [0.31, 0.52, 0.79]).astype(np.float32) * (0.35 / (k + 1))
+        bump += np.cos(ph * 2.3)[..., None] * np.cross(v_, [0.31, 0.52, 0.79]).astype(np.float32) * (0.08 / (k + 1))
     n = n + bump * hit[..., None]
     n = n / (np.linalg.norm(n, axis=-1, keepdims=True) + 1e-6)
     alb = alb * (0.85 + 0.3 * (0.5 + 0.5 * np.sin(p @ np.array([1.3, 0.7, 1.1], np.float32)) * np.sin(p @ np.array([-0.9, 1.6, 0.4], np.float32))))
@@ -523,10 +523,10 @@ def surface(view_az=(0.0, 4.0), pitch=(6.0, 7.0), fov=(62.0, 60.0), h=(20.0, 20.
         if pebble[1] > 0:
             pk = lerp(pebble[0], pebble[1], u)
             yv = RL + 1.5 * (1 - pk ** 2) * 1.0 + 0.04
-            pp = np.array([0.35, yv, 1.6])
+            pp = np.array([0.15, yv, 1.1])
             pr = cw_project(cw, Q, Ap, pp, camL)
             if pr is not None:
-                rr = 0.045 * cw.f / np.linalg.norm(pp - camL)
+                rr = 0.07 * cw.f / np.linalg.norm(pp - camL)
                 cv2.circle(img, (int(pr[0]), int(pr[1])), max(2, int(rr)), (0.32, 0.30, 0.28), -1, cv2.LINE_AA)
                 glow_dot(img, pr[0] - rr * 0.3, pr[1] - rr * 0.3, (1.0, 0.97, 0.9), max(1.0, rr * 0.4), 0.6 * sun_up)
                 # the hand that let go (fades out)
@@ -660,14 +660,14 @@ def probe_scene(h=(21.0, 21.3), dist=(60.0, 55.0), az=(200.0, 210.0), el=(10.0, 
         A, E = np.radians(L2(az, e)), np.radians(L2(el, e))
         off = L2(dist, e) * np.array([np.cos(E) * np.cos(A), np.cos(E) * np.sin(A), np.sin(E)])
         pos = pp + off + np.array([0.0, -40.0, 0.0])
-        look = np.array([0.0, 0.0, 0.0]) * 0.7 + pp * 0.3
+        look = pp * 0.85
         cam = Camera(pos, look, fov=L2(fov, e), up=(0.0, 0.0, 1.0))
         img = cam.sky(gain=0.8)
         ce = Camera(Ap + pos / 1000.0, Ap + look / 1000.0, fov=L2(fov, e), up=(0.0, 0.0, 1.0))
         draw_earth(img, ce, hh)
         Rb = tumble(lerp(tumble_s[0], tumble_s[1], u))
         render_rock(img, cam, Rb, sun, earth_dir=edir, earth_k=1.0)
-        probe(img, cam, pp, sun, s=2.2)
+        probe(img, cam, pp, sun, s=3.2)
         ctx.state["probe_xy"] = cam.project(pp)[:2]
         ctx.state["rock_xy"] = cam.project(np.zeros(3))[:2]
         return img, dict(exposure=1.35, bloom=0.45)
