@@ -163,7 +163,7 @@ c1a = [
       name="it shrinks, but Earth stays inside: the odds rise"),
 ]
 c1b = [
-    B(0, odds_meter(size=(2.6, 2.0), off=(0.25, 0.15), elong=(3.0, 3.0), odds=(0.35, 0.8)), lab("1 in 37", 0.4, size=64, color=RED),
+    B(0, odds_meter(size=(2.0, 2.0), off=(0.25, 0.15), elong=(2.4, 3.0), odds=(0.35, 0.8), ghosts=1.0, zoom=(0.75, 1.0)), lab("1 in 37", 0.4, size=64, color=RED),
       name="one in thirty-seven"),
     B(1, odds_meter(size=(2.0, 2.0), off=(0.15, 0.15), elong=(3.0, 3.0), odds=(0.8, 0.8), zoom=(1.0, 1.15)), lab("the highest risk ever rated", 0.3),
       name="the highest rating ever"),
