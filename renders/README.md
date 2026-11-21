@@ -20,6 +20,7 @@ One folder per video, holding everything YouTube Studio needs. Open `UPLOAD.md` 
 | 02 | [`02_jupiter`](02_jupiter) | We Dropped a Ship Into Jupiter. Here's How Far It Got. |
 | 03 | [`03_rogue_planet`](03_rogue_planet) | A Rogue Planet Is Coming. The Date It Arrives Decides Everything. |
 | 04 | [`04_tanis`](04_tanis) | These Fish Saw the First Hour After the Dinosaur Asteroid. Here's Every Minute. |
+| 05 | [`05_apophis`](05_apophis) | Apophis Will Pass Closer Than Our Satellites. Earth Will Change It Forever. |
 | – | [`episodes/ep01-zero-g/release`](../episodes/ep01-zero-g/release) | Earlier flat-animation pilot (The Blink Files, superseded) |
 
 **Upload order:** see [`EPISODES.md`](../EPISODES.md). Each episode's ending teases the next one.

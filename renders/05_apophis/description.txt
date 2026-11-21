@@ -1,0 +1,36 @@
+On 13 April 2029, the asteroid Apophis will pass 31,600 km above the Atlantic, lower than our geostationary satellites. It will miss. But for one night, the asteroid is the one in danger.
+
+We took NASA JPL's orbit for Apophis and followed that night from both ends: from a rooftop in Lisbon, where a new moving star crosses a fist of sky every ten minutes, and from the asteroid's own surface, where a pebble takes two and a half minutes to fall and Earth rises 37 full Moons wide. Earth bends Apophis's path by 27°, may set off landslides and change its tumble, and gives it a new year: 323 days before, 423 after.
+
+Where will you watch it from? Tell us in the comments.
+
+CHAPTERS
+0:00 A star that moves
+0:42 2004: the scare
+2:03 The rock
+2:33 The night, from the ground
+3:49 How to watch it
+4:10 The night, from Apophis
+5:20 Earth is the truck
+6:23 A new year for Apophis
+7:00 Watching up close
+7:28 Next: Betelgeuse
+
+THE SCIENCE (sources)
+• Orbit, flyby geometry, before/after elements, Lisbon sky track: NASA JPL Horizons (99942 Apophis), retrieved Nov 2026: closest approach 13 Apr 2029 21:45 UTC, 38,011 km from Earth's centre (31,640 km above the surface), 7.42 km/s; a 0.922 → 1.103 AU, period 323.5 → 423.2 days
+• Apophis facts (size ~340 m, visibility, no impact risk for at least 100 years, Aten → Apollo, a pass this close every few thousand years): NASA, science.nasa.gov/solar-system/asteroids/apophis-facts; ESA Planetary Defence, esa.int/Space_Safety/Planetary_Defence/Apophis
+• Discovery (19 June 2004, Kitt Peak: R. Tucker, D. Tholen, F. Bernardi), the December 2004 peak of 2.7 % and Torino level 4, the March 2004 Spacewatch precovery: Sansaturio & Arratia 2008 (Earth Moon Planets 102, 425); NASA/JPL CNEOS
+• Radar shape (elongated, likely bilobed) and the 2021 radar that removed the 2068 risk: Brozović et al. 2018 (Icarus 300, 115); NASA JPL, March 2021
+• Spin state (tumbler: 264.18 h and 27.3855 h, Lee et al. 2022) and its change in 2029 (effective spin could halve or double): Benson et al. 2023, Icarus 390, 115324; Hirabayashi 2025 (arXiv 2507.17710)
+• Tidal effects and possible small landslides: Yu et al. 2014 (Icarus 242, 82); DeMartini et al. 2019 (Icarus 328, 93)
+• Ramses (ESA, with JAXA): launch April 2028, arrival February 2029: esa.int; OSIRIS-APEX (NASA): arrival soon after the flyby
+• Our physics (ep_apophis/model.py): flyby re-checked as a two-body hyperbola (turn 27.2° vs 27.0° in the ephemeris); surface gravity for 340 m at 2.6 g/cm³ (1.2 × 10⁻⁴ m/s²): a 70 kg person weighs 0.9 g, a 1.5 m drop takes 156 s, escape speed 20 cm/s; Earth's tide at closest approach 2.6 % of the asteroid's own gravity; Earth seen from Apophis 19.3° wide (37 full Moons); phase of Earth from the asteroid (night side at 19:00 UTC, half lit at closest)
+
+CREDITS
+Planet textures: Solar System Scope (CC BY 4.0) — solarsystemscope.com
+Narration voice: Kokoro-82M (Apache 2.0). Music and sound design: original, synthesised for this video.
+Simulation, animation and rendering: made in-house.
+
+Gravity Dial turns one dial on the universe each episode and runs the physics. Subscribe so you don't miss the next one.
+
+#apophis #asteroid #space #astronomy #science
